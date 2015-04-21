@@ -402,7 +402,8 @@ const Carousel = React.createClass({
           position: 'absolute',
           top: 0,
           left: '50%',
-          transform: 'translateX(-50%)'
+          transform: 'translateX(-50%)',
+          webkitTransform: 'translateX(-50%)'
         }
       }
       case 'TopRight': {
@@ -417,7 +418,8 @@ const Carousel = React.createClass({
           position: 'absolute',
           top: '50%',
           left: 0,
-          transform: 'translateY(-50%)'
+          transform: 'translateY(-50%)',
+          webkitTransform: 'translateY(-50%)'
         }
       }
       case 'CenterCenter': {
@@ -425,7 +427,8 @@ const Carousel = React.createClass({
           position: 'absolute',
           top: '50%',
           left: '50%',
-          transform: 'translate(-50%,-50%)'
+          transform: 'translate(-50%,-50%)',
+          webkitTransform: 'translate(-50%, -50%)'
         }
       }
       case 'CenterRight': {
@@ -433,7 +436,8 @@ const Carousel = React.createClass({
           position: 'absolute',
           top: '50%',
           right: 0,
-          transform: 'translateY(-50%)'
+          transform: 'translateY(-50%)',
+          webkitTransform: 'translateY(-50%)'
         }
       }
       case 'BottomLeft': {
@@ -448,7 +452,8 @@ const Carousel = React.createClass({
           position: 'absolute',
           bottom: 0,
           left: '50%',
-          transform: 'translateX(-50%)'
+          transform: 'translateX(-50%)',
+          webkitTransform: 'translateX(-50%)'
         }
       }
       case 'BottomRight': {
