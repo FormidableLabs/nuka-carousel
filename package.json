@@ -1,6 +1,6 @@
 {
   "name": "nuka-carousel",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Pure React Carousel",
   "main": "index.js",
   "dependencies": {
@@ -15,12 +15,12 @@
     "babel-loader": "^4.2.0",
     "chai": "^2.1.2",
     "css-loader": "~0.9.0",
+    "del": "^1.1.1",
     "eslint": "^0.17.1",
     "eslint-loader": "^0.7.0",
     "eslint-plugin-react": "^1.5.0",
     "gulp": "^3.8.11",
     "gulp-babel": "^5.1.0",
-    "gulp-clean": "^0.3.1",
     "gulp-eslint": "^0.7.0",
     "gulp-karma": "0.0.4",
     "gulp-open": "^0.3.2",

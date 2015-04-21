@@ -4,7 +4,7 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var open = require('gulp-open');
 var babel = require('gulp-babel');
-var clean = require('gulp-clean');
+var del = require('del');
 var webpack = require('webpack');
 var gwebpack = require('gulp-webpack');
 var WebpackDevServer = require("webpack-dev-server");
@@ -20,11 +20,8 @@ gulp.task('open', function(){
   .pipe(open('',{url: 'http://localhost:8080/webpack-dev-server/'}));
 });
 
-gulp.task('clean', function(){
-  gulp.src('dist', {read: false})
-    .pipe(clean());
-  gulp.src('lib', {read: false})
-    .pipe(clean());
+gulp.task('clean', function(cb){
+  del(['lib'], cb)
 });
 
 gulp.task("babel", ['clean'], function() {

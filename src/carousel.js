@@ -42,8 +42,7 @@ const Carousel = React.createClass({
       frameWidth: 0,
       left: 0,
       slideCount: 0,
-      slideWidth: 0,
-      touchObject: null
+      slideWidth: 0
     }
   },
 
@@ -69,7 +68,7 @@ const Carousel = React.createClass({
         {this.props.decorators ?
           this.props.decorators.map(function(Decorator, index) {
             return (
-              <div style={self.getDecoratorStyles(Decorator.position)} key={index}>
+              <div style={self.getDecoratorStyles(Decorator.position)} className={'slider-decorator-' + index} key={index}>
                 <Decorator.component
                   currentSlide={self.state.currentSlide}
                   slideCount={self.state.slideCount}
@@ -89,23 +88,23 @@ const Carousel = React.createClass({
 
   // Touch Events
 
+  touchObject: {},
+
   getTouchEvents() {
     var self = this;
 
     return {
       onTouchStart() {
-        self.setState({
-          touchObject: {
-            startX: event.touches[0].pageX,
-            startY: event.touches[0].pageY
-          }
-        });
+        self.touchObject = {
+          startX: event.touches[0].pageX,
+          startY: event.touches[0].pageY
+        }
       },
       onTouchMove() {
         var direction = self.swipeDirection(
-          self.state.touchObject.startX,
+          self.touchObject.startX,
           event.touches[0].pageX,
-          self.state.touchObject.startY,
+          self.touchObject.startY,
           event.touches[0].pageY
         );
 
@@ -113,17 +112,17 @@ const Carousel = React.createClass({
           event.preventDefault();
         }
 
+        self.touchObject = {
+          startX: self.touchObject.startX,
+          startY: self.touchObject.startY,
+          endX: event.touches[0].pageX,
+          endY: event.touches[0].pageY,
+          length: Math.round(Math.sqrt(Math.pow(event.touches[0].pageX - self.touchObject.startX, 2))),
+          direction: direction
+        }
+
         self.setState({
-          touchObject: {
-            startX: self.state.touchObject.startX,
-            startY: self.state.touchObject.startY,
-            endX: event.touches[0].pageX,
-            endY: event.touches[0].pageY,
-            length: Math.round(Math.sqrt(Math.pow(event.touches[0].pageX - self.state.touchObject.startX, 2))),
-            direction: direction
-          }
-        }, function() {
-          self.setDimensions();
+          left: (self.state.slideWidth * self.state.currentSlide + (self.touchObject.length * self.touchObject.direction)) * -1
         });
       },
       onTouchEnd() {
@@ -144,11 +143,12 @@ const Carousel = React.createClass({
 
     return {
       onMouseDown() {
-        self.setState({
-          touchObject: {
+        self.touchObject = {
             startX: event.clientX,
             startY: event.clientY
-          },
+        };
+
+        self.setState({
           dragging: true
         });
       },
@@ -158,9 +158,9 @@ const Carousel = React.createClass({
         }
 
         var direction = self.swipeDirection(
-          self.state.touchObject.startX,
+          self.touchObject.startX,
           event.clientX,
-          self.state.touchObject.startY,
+          self.touchObject.startY,
           event.clientY
         );
 
@@ -168,17 +168,17 @@ const Carousel = React.createClass({
           event.preventDefault();
         }
 
+        self.touchObject = {
+          startX: self.touchObject.startX,
+          startY: self.touchObject.startY,
+          endX: event.clientX,
+          endY: event.clientY,
+          length: Math.round(Math.sqrt(Math.pow(event.clientX - self.touchObject.startX, 2))),
+          direction: direction
+        };
+
         self.setState({
-          touchObject: {
-            startX: self.state.touchObject.startX,
-            startY: self.state.touchObject.startY,
-            endX: event.clientX,
-            endY: event.clientY,
-            length: Math.round(Math.sqrt(Math.pow(event.clientX - self.state.touchObject.startX, 2))),
-            direction: direction
-          }
-        }, function() {
-          self.setDimensions();
+          left: (self.state.slideWidth * self.state.currentSlide + (self.touchObject.length * self.touchObject.direction)) * -1
         });
       },
       onMouseUp() {
@@ -199,14 +199,14 @@ const Carousel = React.createClass({
   },
 
   handleSwipe() {
-    if (this.state.touchObject.length > (this.state.slideWidth / this.props.slidesToShow) / 5) {
-      if (this.state.touchObject.direction === 1) {
+    if (this.touchObject.length > (this.state.slideWidth / this.props.slidesToShow) / 5) {
+      if (this.touchObject.direction === 1) {
         if (this.state.currentSlide >= this.props.children.length - this.props.slidesToShow) {
           this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
         } else {
           this.nextSlide();
         }
-      } else if (this.state.touchObject.direction === -1) {
+      } else if (this.touchObject.direction === -1) {
         if (this.state.currentSlide <= 0) {
           this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
         } else {
@@ -217,8 +217,9 @@ const Carousel = React.createClass({
       this.goToSlide(this.state.currentSlide);
     }
 
+    this.touchObject = {};
+
     this.setState({
-      touchObject: null,
       dragging: false
     });
   },
@@ -323,13 +324,11 @@ const Carousel = React.createClass({
     var self = this;
     var frame = React.findDOMNode(this.refs.frame);
     var slideWidth = frame.offsetWidth / this.props.slidesToShow;
-    var length = this.state.touchObject ? this.state.touchObject.length : 0;
-    var direction = this.state.touchObject ? this.state.touchObject.direction : 0;
     this.setState({
       frameWidth: frame.offsetWidth,
       slideCount: this.props.children.length,
       slideWidth: slideWidth,
-      left: (slideWidth * this.state.currentSlide + (length * direction)) * -1
+      left: (slideWidth * this.state.currentSlide) * -1
     }, function() {
       self.setExternalData();
     });
@@ -354,7 +353,9 @@ const Carousel = React.createClass({
       margin: 0,
       padding: 0,
       width: this.state.slideWidth * this.props.children.length,
-      cursor: this.state.dragging === true ? 'pointer' : 'inherit'
+      cursor: this.state.dragging === true ? 'pointer' : 'inherit',
+      transform: 'translate3d(0, 0, 0)',
+      WebkitTransform: 'translate3d(0, 0, 0)'
     }
   },
 
@@ -364,7 +365,9 @@ const Carousel = React.createClass({
       display: 'block',
       overflow: 'hidden',
       margin: 0,
-      padding: 0
+      padding: 0,
+      transform: 'translate3d(0, 0, 0)',
+      WebkitTransform: 'translate3d(0, 0, 0)'
     }
   },
 
@@ -403,7 +406,7 @@ const Carousel = React.createClass({
           top: 0,
           left: '50%',
           transform: 'translateX(-50%)',
-          '-webkit-transform': 'translateX(-50%)'
+          WebkitTransform: 'translateX(-50%)'
         }
       }
       case 'TopRight': {
@@ -419,7 +422,7 @@ const Carousel = React.createClass({
           top: '50%',
           left: 0,
           transform: 'translateY(-50%)',
-          '-webkit-transform': 'translateY(-50%)'
+          WebkitTransform: 'translateY(-50%)'
         }
       }
       case 'CenterCenter': {
@@ -428,7 +431,7 @@ const Carousel = React.createClass({
           top: '50%',
           left: '50%',
           transform: 'translate(-50%,-50%)',
-          '-webkit-transform': 'translate(-50%, -50%)'
+          WebkitTransform: 'translate(-50%, -50%)'
         }
       }
       case 'CenterRight': {
@@ -437,7 +440,7 @@ const Carousel = React.createClass({
           top: '50%',
           right: 0,
           transform: 'translateY(-50%)',
-          '-webkit-transform': 'translateY(-50%)'
+          WebkitTransform: 'translateY(-50%)'
         }
       }
       case 'BottomLeft': {
@@ -453,7 +456,7 @@ const Carousel = React.createClass({
           bottom: 0,
           left: '50%',
           transform: 'translateX(-50%)',
-          '-webkit-transform': 'translateX(-50%)'
+          WebkitTransform: 'translateX(-50%)'
         }
       }
       case 'BottomRight': {
