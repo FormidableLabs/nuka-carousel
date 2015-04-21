@@ -35,8 +35,14 @@ module.exports = {
       loader: 'babel-loader'
     }]
   },
-  externals: {
-    'react': 'react',
-    'react/addons': 'react'
-  }
+  externals: [
+    {
+      "react": {
+        root: "React",
+        commonjs2: "react",
+        commonjs: "react",
+        amd: "react"
+      }
+    }
+  ],
 };

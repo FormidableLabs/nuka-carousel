@@ -3,6 +3,7 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var open = require('gulp-open');
+var babel = require('gulp-babel');
 var clean = require('gulp-clean');
 var webpack = require('webpack');
 var gwebpack = require('gulp-webpack');
@@ -20,14 +21,16 @@ gulp.task('open', function(){
 });
 
 gulp.task('clean', function(){
-  return gulp.src('dist', {read: false})
+  gulp.src('dist', {read: false})
+    .pipe(clean());
+  gulp.src('lib', {read: false})
     .pipe(clean());
 });
 
-gulp.task("webpack", ['clean'], function() {
-  return gulp.src('index.js')
-    .pipe(gwebpack(webpackDistConfig))
-    .pipe(gulp.dest('dist/'));
+gulp.task("babel", ['clean'], function() {
+  return gulp.src('src/*.js')
+        .pipe(babel())
+        .pipe(gulp.dest('lib'));
 });
 
 gulp.task("webpack-dev-server", function(callback) {
@@ -59,5 +62,5 @@ gulp.task("karma", ['lint'], function() {
 });
 
 gulp.task('test', ['lint', 'karma']);
-gulp.task('build', ['clean', 'webpack']);
+gulp.task('build', ['clean', 'babel']);
 gulp.task('default', ['webpack-dev-server', 'open']);

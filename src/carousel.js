@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react/addons';
+import React from 'react';
 import tweenState from 'react-tween-state';
 import decorators from './decorators';
 
@@ -372,6 +372,7 @@ const Carousel = React.createClass({
     return {
       display: 'inline-block',
       listStyleType: 'none',
+      verticalAlign: 'top',
       width: this.state.slideWidth
     }
   },

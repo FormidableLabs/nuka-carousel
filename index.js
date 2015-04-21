@@ -1,5 +1,5 @@
 'use strict';
 
-import Carousel from './src/carousel';
+var Carousel = require('./lib/carousel');
 
-export default Carousel;
+module.exports = Carousel;
