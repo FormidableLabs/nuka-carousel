@@ -10,7 +10,35 @@ A Pure ReactJS Carousel Component
 npm install nuka-carousel
 ```
 
-###Example
+###Simple Example
+```javascript
+'use strict';
+
+var React = require('react');
+
+var Carousel = require('nuka-carousel');
+
+const App = React.createClass({
+  render() {
+    return (
+      <Carousel>
+        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide1"/>
+        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide2"/>
+        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide3"/>
+        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide4"/>
+        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide5"/>
+        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide6"/>
+      </Carousel>
+    )
+  }
+});
+
+module.exports = App;
+```
+
+But `Carousel` is really just a convenient wrapper on our Carousel surface class that can give you a much more fined grained level of control over presentation.
+
+###Carousel Surface Example
 ```javascript
 'use strict';
 
@@ -22,14 +50,14 @@ const App = React.createClass({
   mixins: [Carousel.ControllerMixin],
   render() {
     return (
-      <Carousel ref="carousel" data={this.setCarouselData.bind(this, 'carousel')}>
+      <Carousel.Surface ref="carousel" data={this.setCarouselData.bind(this, 'carousel')}>
         <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide1"/>
         <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide2"/>
         <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide3"/>
         <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide4"/>
         <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide5"/>
         <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide6"/>
-      </Carousel>
+      </Carousel.Surface>
     )
   }
 });

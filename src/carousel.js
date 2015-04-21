@@ -6,8 +6,8 @@ import decorators from './decorators';
 
 React.initializeTouchEvents(true);
 
-const Carousel = React.createClass({
-  displayName: 'Carousel',
+const Surface = React.createClass({
+  displayName: 'Carousel.Surface',
 
   mixins: [tweenState.Mixin],
 
@@ -475,7 +475,7 @@ const Carousel = React.createClass({
 
 });
 
-Carousel.ControllerMixin = {
+const ControllerMixin = {
   getInitialState() {
     return {
       carousels: {}
@@ -489,5 +489,20 @@ Carousel.ControllerMixin = {
     });
   }
 }
+
+const Carousel = React.createClass({
+  displayName: 'Carousel',
+  mixins: [ControllerMixin],
+  render() {
+    return (
+      <Surface ref="carousel" data={this.setCarouselData.bind(this, 'carousel')} {... this.props}>
+        {this.props.children}
+      </Surface>
+    )
+  }
+});
+
+Carousel.Surface = Surface;
+Carousel.ControllerMixin = ControllerMixin;
 
 export default Carousel;
