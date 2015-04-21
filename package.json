@@ -2,7 +2,7 @@
   "name": "nuka-carousel",
   "version": "0.0.1",
   "description": "Pure React Carousel",
-  "main": "index.js",
+  "main": "dist/nuka-carousel.js",
   "dependencies": {
     "react-tween-state": "0.0.5"
   },

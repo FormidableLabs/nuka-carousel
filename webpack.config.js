@@ -29,7 +29,7 @@ module.exports = {
   module: {
     preLoaders: [{
       test: /\.js$/,
-      exclude: [/node_modules/],
+      exclude: [/node_modules/,/dist/],
       loader: 'eslint-loader'
     }],
     loaders: [{
@@ -48,10 +48,6 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
-  ],
-  externals: {
-    'react/addons': 'React',
-    'react': 'React'
-  }
+  ]
 
 };
