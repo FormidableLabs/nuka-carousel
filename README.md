@@ -58,7 +58,7 @@ Used with the ControllerMixin to add carousel data to parent state.
 `React.PropTypes.array`
 
 An array of objects that supply internal carousel controls.
-Decorator objects have component and position properties. See below:
+Decorator objects have `component`, `position` & `style` properties. `component` takes a React component, `position` takes a predefined position string and `style` takes an object of styles to be applied to the decorator. See an example below:
 
 ```javascript
 var Decorators = [{
@@ -72,7 +72,10 @@ var Decorators = [{
       )
     }
   }),
-  position: 'CenterLeft'
+  position: 'CenterLeft',
+  style: {
+  	padding: 20
+  }
 }];
 
 // Valid position properties are TopLeft, TopCenter, TopRight
