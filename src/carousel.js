@@ -31,6 +31,7 @@ const Carousel = React.createClass({
     data: React.PropTypes.func,
     decorators: React.PropTypes.array,
     dragging: React.PropTypes.bool,
+    framePadding: React.PropTypes.string,
     easing: React.PropTypes.string,
     edgeEasing: React.PropTypes.string,
     padding: React.PropTypes.string,
@@ -124,30 +125,30 @@ const Carousel = React.createClass({
     var self = this;
 
     return {
-      onTouchStart() {
+      onTouchStart(e) {
         self.touchObject = {
           startX: event.touches[0].pageX,
           startY: event.touches[0].pageY
         }
       },
-      onTouchMove() {
+      onTouchMove(e) {
         var direction = self.swipeDirection(
           self.touchObject.startX,
-          event.touches[0].pageX,
+          e.touches[0].pageX,
           self.touchObject.startY,
-          event.touches[0].pageY
+          e.touches[0].pageY
         );
 
         if (direction !== 0) {
-          event.preventDefault();
+          e.preventDefault();
         }
 
         self.touchObject = {
           startX: self.touchObject.startX,
           startY: self.touchObject.startY,
-          endX: event.touches[0].pageX,
-          endY: event.touches[0].pageY,
-          length: Math.round(Math.sqrt(Math.pow(event.touches[0].pageX - self.touchObject.startX, 2))),
+          endX: e.touches[0].pageX,
+          endY: e.touches[0].pageY,
+          length: Math.round(Math.sqrt(Math.pow(e.touches[0].pageX - self.touchObject.startX, 2))),
           direction: direction
         }
 
@@ -155,14 +156,16 @@ const Carousel = React.createClass({
           left: (self.state.slideWidth * self.state.currentSlide + (self.touchObject.length * self.touchObject.direction)) * -1
         });
       },
-      onTouchEnd() {
-        self.handleSwipe();
+      onTouchEnd(e) {
+        self.handleSwipe(e);
       },
-      onTouchCancel() {
-        self.handleSwipe();
+      onTouchCancel(e) {
+        self.handleSwipe(e);
       }
     }
   },
+
+  clickSafe: true,
 
   getMouseEvents() {
     var self = this;
@@ -172,38 +175,38 @@ const Carousel = React.createClass({
     }
 
     return {
-      onMouseDown() {
+      onMouseDown(e) {
         self.touchObject = {
-            startX: event.clientX,
-            startY: event.clientY
+            startX: e.clientX,
+            startY: e.clientY
         };
 
         self.setState({
           dragging: true
         });
       },
-      onMouseMove() {
+      onMouseMove(e) {
         if (!self.state.dragging) {
           return;
         }
 
         var direction = self.swipeDirection(
           self.touchObject.startX,
-          event.clientX,
+          e.clientX,
           self.touchObject.startY,
-          event.clientY
+          e.clientY
         );
 
         if (direction !== 0) {
-          event.preventDefault();
+          e.preventDefault();
         }
 
         self.touchObject = {
           startX: self.touchObject.startX,
           startY: self.touchObject.startY,
-          endX: event.clientX,
-          endY: event.clientY,
-          length: Math.round(Math.sqrt(Math.pow(event.clientX - self.touchObject.startX, 2))),
+          endX: e.clientX,
+          endY: e.clientY,
+          length: Math.round(Math.sqrt(Math.pow(e.clientX - self.touchObject.startX, 2))),
           direction: direction
         };
 
@@ -211,24 +214,41 @@ const Carousel = React.createClass({
           left: self.getTargetLeft(self.touchObject.length * self.touchObject.direction)
         });
       },
-      onMouseUp() {
-        if (!self.state.dragging) {
-          return;
-        }
-
-        self.handleSwipe();
+      onClick(e) {
+        self.handleClick(e);
       },
-      onMouseLeave() {
+      onMouseUp(e) {
         if (!self.state.dragging) {
           return;
         }
 
-        self.handleSwipe();
+        self.handleSwipe(e);
+      },
+      onMouseLeave(e) {
+        if (!self.state.dragging) {
+          return;
+        }
+
+        self.handleSwipe(e);
       }
     }
   },
 
-  handleSwipe() {
+  handleClick(e) {
+    if (this.clickSafe === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.nativeEvent.stopPropagation();
+    }
+  },
+
+  handleSwipe(e) {
+    if (typeof (this.touchObject.length) !== 'undefined' && this.touchObject.length > 44) {
+      this.clickSafe = true;
+    } else {
+      this.clickSafe = false;
+    }
+
     if (this.touchObject.length > (this.state.slideWidth / this.props.slidesToShow) / 5) {
       if (this.touchObject.direction === 1) {
         if (this.state.currentSlide >= this.props.children.length - this.props.slidesToScroll) {

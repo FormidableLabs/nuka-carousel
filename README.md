@@ -88,6 +88,13 @@ var Decorators = [{
 
 Enable mouse swipe/dragging
 
+####framePadding
+`React.PropTypes.string`
+
+Used to set the margin of the slider frame. Accepts any string dimension value such as `"0px 20px"` or `"500px"`.
+
+Enable mouse swipe/dragging
+
 ####easing
 `React.PropTypes.string`
 
