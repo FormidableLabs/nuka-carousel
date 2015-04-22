@@ -7,6 +7,19 @@ import assign from 'object-assign';
 
 React.initializeTouchEvents(true);
 
+const addEvent = function(elem, type, eventHandle) {
+  if (elem == null || typeof (elem) === 'undefined') {
+    return;
+  }
+  if (elem.addEventListener) {
+    elem.addEventListener(type, eventHandle, false);
+  } else if (elem.attachEvent) {
+    elem.attachEvent('on' + type, eventHandle);
+  } else {
+    elem['on'+type] = eventHandle;
+  }
+};
+
 const Carousel = React.createClass({
   displayName: 'Carousel',
 
@@ -40,12 +53,12 @@ const Carousel = React.createClass({
       dragging: true,
       easing: 'easeOutCirc',
       edgeEasing: 'easeOutElastic',
-      framePadding: "0px",
+      framePadding: '0px',
       slidesToShow: 1,
       slidesToScroll: 1,
       slideWidth: 1,
       speed: 500,
-      width: "100%"
+      width: '100%'
     }
   },
 
@@ -346,9 +359,12 @@ const Carousel = React.createClass({
 
   bindEvents() {
     var self = this;
-    window.onresize = function() {
+    addEvent(window, 'resize', function() {
       self.setDimensions();
-    }
+    });
+    addEvent(document, 'readystatechange', function() {
+      self.setDimensions();
+    });
   },
 
   formatChildren(children) {
@@ -400,7 +416,7 @@ const Carousel = React.createClass({
       display: 'block',
       top: 0,
       left: this.getTweeningValue('left'),
-      margin: "0px " + (this.props.cellSpacing / 2) * -1 + "px",
+      margin: '0px ' + (this.props.cellSpacing / 2) * -1 + 'px',
       padding: 0,
       width: listWidth + spacingOffset,
       cursor: this.state.dragging === true ? 'pointer' : 'inherit',
