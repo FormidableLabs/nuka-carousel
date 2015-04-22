@@ -22,7 +22,7 @@ const App = React.createClass({
   mixins: [Carousel.ControllerMixin],
   render() {
     return (
-      <Carousel ref="carousel" data={this.setCarouselData.bind(this, 'carousel')}>
+      <Carousel>
         <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide1"/>
         <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide2"/>
         <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide3"/>
@@ -38,6 +38,16 @@ module.exports = App;
 ```
 
 ###Props
+
+####cellAlign
+`React.PropTypes.oneOf(['left', 'center', 'right'])`
+
+When displaying more than one slide, sets which position to anchor the current slide to.
+
+####cellSpacing
+`React.PropTypes.number`
+
+Space between slides, as an integer, but reflected as `px`
 
 ####data
 `React.PropTypes.func`
@@ -89,14 +99,27 @@ Animation easing function when swipe exceeds edge. See valid easings here: [http
 `React.PropTypes.number`
 
 Slides to show at once.
+
 ####slidesToScroll
 `React.PropTypes.number`
 
 Slides to scroll at once.
+
+####slideWidth
+
+`React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number])`
+
+Manually set slideWidth. If you want hard pixel widths, use a string like `slideWidth="20px"`, and if you prefer a percentage of the container, use a decimal integer like `slideWidth={0.8}`
+
 ####speed
 `React.PropTypes.number`
 
 Animation duration.
+
+###width
+`React.PropTypes.string`
+
+Used to hardcode the slider width. Accepts any string dimension value such as `"80%"` or `"500px"`.
 
 ###ControllerMixin
 

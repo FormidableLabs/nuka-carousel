@@ -1,9 +1,10 @@
 {
   "name": "nuka-carousel",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Pure React Carousel",
   "main": "index.js",
   "dependencies": {
+    "object-assign": "^2.0.0",
     "react-tween-state": "0.0.5"
   },
   "peerDependencies": {

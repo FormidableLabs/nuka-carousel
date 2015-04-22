@@ -3,6 +3,7 @@
 import React from 'react';
 import tweenState from 'react-tween-state';
 import decorators from './decorators';
+import assign from 'object-assign';
 
 React.initializeTouchEvents(true);
 
@@ -12,26 +13,39 @@ const Carousel = React.createClass({
   mixins: [tweenState.Mixin],
 
   propTypes: {
+    cellAlign: React.PropTypes.oneOf(['left', 'center', 'right']),
+    cellSpacing: React.PropTypes.number,
     data: React.PropTypes.func,
     decorators: React.PropTypes.array,
     dragging: React.PropTypes.bool,
     easing: React.PropTypes.string,
     edgeEasing: React.PropTypes.string,
+    padding: React.PropTypes.string,
     slidesToShow: React.PropTypes.number,
     slidesToScroll: React.PropTypes.number,
-    speed: React.PropTypes.number
+    slideWidth: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.number
+    ]),
+    speed: React.PropTypes.number,
+    width: React.PropTypes.string
   },
 
   getDefaultProps() {
     return {
+      cellAlign: 'left',
+      cellSpacing: 0,
       data: function() {},
       decorators: decorators,
       dragging: true,
-      easing: 'easeOutQuad',
+      easing: 'easeOutCirc',
       edgeEasing: 'easeOutElastic',
+      framePadding: "0px",
       slidesToShow: 1,
       slidesToScroll: 1,
-      speed: 500
+      slideWidth: 1,
+      speed: 500,
+      width: "100%"
     }
   },
 
@@ -55,7 +69,7 @@ const Carousel = React.createClass({
     var self = this;
     var children = this.formatChildren(this.props.children);
     return (
-      <div className='slider' ref="slider" style={this.getSliderStyles()}>
+      <div className='slider' ref="slider" style={assign(this.getSliderStyles(), this.props.style || {})}>
         <div className="slider-frame"
           ref="frame"
           style={this.getFrameStyles()}
@@ -68,7 +82,10 @@ const Carousel = React.createClass({
         {this.props.decorators ?
           this.props.decorators.map(function(Decorator, index) {
             return (
-              <div style={self.getDecoratorStyles(Decorator.position)} className={'slider-decorator-' + index} key={index}>
+              <div
+                style={assign(self.getDecoratorStyles(Decorator.position), Decorator.style || {})}
+                className={'slider-decorator-' + index}
+                key={index}>
                 <Decorator.component
                   currentSlide={self.state.currentSlide}
                   slideCount={self.state.slideCount}
@@ -178,7 +195,7 @@ const Carousel = React.createClass({
         };
 
         self.setState({
-          left: (self.state.slideWidth * self.state.currentSlide + (self.touchObject.length * self.touchObject.direction)) * -1
+          left: self.getTargetLeft(self.touchObject.length * self.touchObject.direction)
         });
       },
       onMouseUp() {
@@ -201,7 +218,7 @@ const Carousel = React.createClass({
   handleSwipe() {
     if (this.touchObject.length > (this.state.slideWidth / this.props.slidesToShow) / 5) {
       if (this.touchObject.direction === 1) {
-        if (this.state.currentSlide >= this.props.children.length - this.props.slidesToShow) {
+        if (this.state.currentSlide >= this.props.children.length - this.props.slidesToScroll) {
           this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
         } else {
           this.nextSlide();
@@ -300,8 +317,29 @@ const Carousel = React.createClass({
     });
   },
 
-  getTargetLeft() {
-    return this.state.slideWidth * this.state.currentSlide * -1;
+  getTargetLeft(touchOffset) {
+    var offset;
+    switch (this.props.cellAlign) {
+      case 'left': {
+        offset = 0;
+        offset -= this.props.cellSpacing * (this.state.currentSlide);
+        break;
+      }
+      case 'center': {
+        offset = (this.state.frameWidth - this.state.slideWidth) / 2;
+        offset -= this.props.cellSpacing * (this.state.currentSlide);
+        break;
+      }
+      case 'right': {
+        offset = this.state.frameWidth - this.state.slideWidth;
+        offset -= this.props.cellSpacing * (this.state.currentSlide);
+        break;
+      }
+    }
+
+    offset -= touchOffset || 0;
+
+    return ((this.state.slideWidth * this.state.currentSlide) - offset) * -1;
   },
 
   // Bootstrapping
@@ -321,17 +359,27 @@ const Carousel = React.createClass({
   },
 
   setDimensions() {
-    var self = this;
-    var frame = React.findDOMNode(this.refs.frame);
-    var slideWidth = frame.offsetWidth / this.props.slidesToShow;
+    var self = this, slideWidth, frame;
+    frame = React.findDOMNode(this.refs.frame);
+    if (typeof this.props.slideWidth !== 'number') {
+      slideWidth = parseInt(this.props.slideWidth);
+    } else {
+      slideWidth = (frame.offsetWidth / this.props.slidesToShow) * this.props.slideWidth;
+    }
     this.setState({
       frameWidth: frame.offsetWidth,
       slideCount: this.props.children.length,
-      slideWidth: slideWidth,
-      left: (slideWidth * this.state.currentSlide) * -1
+      slideWidth: slideWidth
     }, function() {
+      self.setLeft();
       self.setExternalData();
     });
+  },
+
+  setLeft() {
+    this.setState({
+      left: this.getTargetLeft()
+    })
   },
 
   // Data
@@ -345,17 +393,21 @@ const Carousel = React.createClass({
   // Styles
 
   getListStyles() {
+    var listWidth = this.state.slideWidth * this.props.children.length;
+    var spacingOffset = this.props.cellSpacing * this.props.children.length;
     return {
       position: 'relative',
       display: 'block',
       top: 0,
       left: this.getTweeningValue('left'),
-      margin: 0,
+      margin: "0px " + (this.props.cellSpacing / 2) * -1 + "px",
       padding: 0,
-      width: this.state.slideWidth * this.props.children.length,
+      width: listWidth + spacingOffset,
       cursor: this.state.dragging === true ? 'pointer' : 'inherit',
       transform: 'translate3d(0, 0, 0)',
-      WebkitTransform: 'translate3d(0, 0, 0)'
+      WebkitTransform: 'translate3d(0, 0, 0)',
+      boxSizing: 'border-box',
+      MozBoxSizing: 'border-box'
     }
   },
 
@@ -364,10 +416,12 @@ const Carousel = React.createClass({
       position: 'relative',
       display: 'block',
       overflow: 'hidden',
-      margin: 0,
+      margin: this.props.framePadding,
       padding: 0,
       transform: 'translate3d(0, 0, 0)',
-      WebkitTransform: 'translate3d(0, 0, 0)'
+      WebkitTransform: 'translate3d(0, 0, 0)',
+      boxSizing: 'border-box',
+      MozBoxSizing: 'border-box'
     }
   },
 
@@ -376,19 +430,26 @@ const Carousel = React.createClass({
       display: 'inline-block',
       listStyleType: 'none',
       verticalAlign: 'top',
-      width: this.state.slideWidth
+      width: this.state.slideWidth,
+      boxSizing: 'border-box',
+      MozBoxSizing: 'border-box',
+      marginLeft: this.props.cellSpacing / 2,
+      marginRight: this.props.cellSpacing / 2
     }
   },
 
   getSliderStyles() {
     return {
       position: 'relative',
-      display: 'block'
+      display: 'block',
+      width: this.props.width,
+      boxSizing: 'border-box',
+      MozBoxSizing: 'border-box'
     }
   },
 
   getStyleTagStyles() {
-    return '.slider-slide > img {width: 100%}'
+    return '.slider-slide > img {width: 100%;}'
   },
 
   getDecoratorStyles(position) {

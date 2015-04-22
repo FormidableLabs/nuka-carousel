@@ -10,7 +10,9 @@ const App = React.createClass({
   render() {
     return (
       <div style={{width: '50%', margin: 'auto'}}>
-        <Carousel ref="carousel" data={this.setCarouselData.bind(this, 'carousel')}>
+        <Carousel
+          ref="carousel"
+          data={this.setCarouselData.bind(this, 'carousel')}>
           <img src="http://placehold.it/1000x400&text=slide1"/>
           <img src="http://placehold.it/1000x400&text=slide2"/>
           <img src="http://placehold.it/1000x400&text=slide3"/>

@@ -1,0 +1,23 @@
+{
+  "name": "nuka-carousel",
+  "main": "index.js",
+  "version": "0.0.5",
+  "homepage": "https://github.com/kenwheeler/nuka-carousel",
+  "authors": [
+    "Ken Wheeler <ken_wheeler@me.com>"
+  ],
+  "description": "Pure React Carousel",
+  "keywords": [
+    "Carousel",
+    "React",
+    "Nuka"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
