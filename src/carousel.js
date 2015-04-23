@@ -31,10 +31,9 @@ const Carousel = React.createClass({
     data: React.PropTypes.func,
     decorators: React.PropTypes.array,
     dragging: React.PropTypes.bool,
-    framePadding: React.PropTypes.string,
     easing: React.PropTypes.string,
     edgeEasing: React.PropTypes.string,
-    padding: React.PropTypes.string,
+    framePadding: React.PropTypes.string,
     slidesToShow: React.PropTypes.number,
     slidesToScroll: React.PropTypes.number,
     slideWidth: React.PropTypes.oneOfType([
@@ -83,12 +82,13 @@ const Carousel = React.createClass({
     var self = this;
     var children = this.formatChildren(this.props.children);
     return (
-      <div className='slider' ref="slider" style={assign(this.getSliderStyles(), this.props.style || {})}>
+      <div className={['slider', this.props.className || ''].join(' ')} ref="slider" style={assign(this.getSliderStyles(), this.props.style || {})}>
         <div className="slider-frame"
           ref="frame"
           style={this.getFrameStyles()}
           {...this.getTouchEvents()}
-          {...this.getMouseEvents()}>
+          {...this.getMouseEvents()}
+          onClick={this.handleClick}>
           <ul className="slider-list" ref="list" style={this.getListStyles()}>
             {children}
           </ul>
@@ -213,9 +213,6 @@ const Carousel = React.createClass({
         self.setState({
           left: self.getTargetLeft(self.touchObject.length * self.touchObject.direction)
         });
-      },
-      onClick(e) {
-        self.handleClick(e);
       },
       onMouseUp(e) {
         if (!self.state.dragging) {
