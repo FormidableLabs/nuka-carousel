@@ -20,6 +20,19 @@ const addEvent = function(elem, type, eventHandle) {
   }
 };
 
+const removeEvent = function(elem, type, eventHandle) {
+  if (elem == null || typeof (elem) === 'undefined') {
+    return;
+  }
+  if (elem.removeEventListener) {
+    elem.removeEventListener(type, eventHandle, false);
+  } else if (elem.detachEvent) {
+    elem.detachEvent('on' + type, eventHandle);
+  } else {
+    elem['on'+type] = null;
+  }
+};
+
 const Carousel = React.createClass({
   displayName: 'Carousel',
 
@@ -76,6 +89,10 @@ const Carousel = React.createClass({
   componentDidMount() {
     this.setDimensions();
     this.bindEvents();
+  },
+
+  componentWillUnmount() {
+    this.unbindEvents();
   },
 
   render() {
@@ -376,12 +393,22 @@ const Carousel = React.createClass({
 
   bindEvents() {
     var self = this;
-    addEvent(window, 'resize', function() {
-      self.setDimensions();
-    });
-    addEvent(document, 'readystatechange', function() {
-      self.setDimensions();
-    });
+    addEvent(window, 'resize', self.onResize);
+    addEvent(window, 'readystatechange', self.onReadyStateChange);
+  },
+
+  onResize() {
+    this.setDimensions();
+  },
+
+  onReadyStateChange(event) {
+    this.setDimensions();
+  },
+
+  unbindEvents() {
+    var self = this;
+    removeEvent(window, 'resize', self.onResize);
+    removeEvent(window, 'readystatechange', self.onReadyStateChange);
   },
 
   formatChildren(children) {
