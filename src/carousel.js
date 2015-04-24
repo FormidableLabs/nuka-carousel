@@ -394,7 +394,7 @@ const Carousel = React.createClass({
   bindEvents() {
     var self = this;
     addEvent(window, 'resize', self.onResize);
-    addEvent(window, 'readystatechange', self.onReadyStateChange);
+    addEvent(document, 'readystatechange', self.onReadyStateChange);
   },
 
   onResize() {
@@ -408,7 +408,7 @@ const Carousel = React.createClass({
   unbindEvents() {
     var self = this;
     removeEvent(window, 'resize', self.onResize);
-    removeEvent(window, 'readystatechange', self.onReadyStateChange);
+    removeEvent(document, 'readystatechange', self.onReadyStateChange);
   },
 
   formatChildren(children) {
