@@ -4,6 +4,7 @@ import React from 'react';
 import tweenState from 'react-tween-state';
 import decorators from './decorators';
 import assign from 'object-assign';
+import ExecutionEnvironment from 'exenv';
 
 React.initializeTouchEvents(true);
 
@@ -319,9 +320,9 @@ const Carousel = React.createClass({
     }
     if (this.props.vertical === true) {
       if ((swipeAngle >= 35) && (swipeAngle <= 135)) {
-          return 1;
+        return 1;
       } else {
-          return -1;
+        return -1;
       }
     }
     return 0;
@@ -412,8 +413,10 @@ const Carousel = React.createClass({
 
   bindEvents() {
     var self = this;
-    addEvent(window, 'resize', self.onResize);
-    addEvent(document, 'readystatechange', self.onReadyStateChange);
+    if (ExecutionEnvironment.canUseDOM) {
+      addEvent(window, 'resize', self.onResize);
+      addEvent(document, 'readystatechange', self.onReadyStateChange);
+    }
   },
 
   onResize() {
@@ -426,8 +429,10 @@ const Carousel = React.createClass({
 
   unbindEvents() {
     var self = this;
-    removeEvent(window, 'resize', self.onResize);
-    removeEvent(document, 'readystatechange', self.onReadyStateChange);
+    if (ExecutionEnvironment.canUseDOM) {
+      removeEvent(window, 'resize', self.onResize);
+      removeEvent(document, 'readystatechange', self.onReadyStateChange);
+    }
   },
 
   formatChildren(children) {
