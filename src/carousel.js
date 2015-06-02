@@ -48,6 +48,7 @@ const Carousel = React.createClass({
     easing: React.PropTypes.string,
     edgeEasing: React.PropTypes.string,
     framePadding: React.PropTypes.string,
+    initialSlideHeight: React.PropTypes.number,
     slidesToShow: React.PropTypes.number,
     slidesToScroll: React.PropTypes.number,
     slideWidth: React.PropTypes.oneOfType([
@@ -88,6 +89,10 @@ const Carousel = React.createClass({
       slideCount: 0,
       slideWidth: 0
     }
+  },
+
+  componentWillMount() {
+    this.setInitialDimensions();
   },
 
   componentDidMount() {
@@ -439,6 +444,37 @@ const Carousel = React.createClass({
     var self = this;
     return children.map(function(child, index) {
       return <li className="slider-slide" style={self.getSlideStyles()} key={index}>{child}</li>
+    });
+  },
+
+  setInitialDimensions() {
+    var self = this, slideWidth, frameWidth, frameHeight, slideHeight;
+
+    frameWidth = this.props.width || 0;
+
+    if (typeof this.props.slideWidth !== 'number') {
+      slideWidth = parseInt(this.props.slideWidth);
+    } else {
+      if (this.props.vertical) {
+        slideWidth = (slideHeight / this.props.slidesToShow) * this.props.slideWidth;
+      } else {
+        slideWidth = (frameWidth / this.props.slidesToShow) * this.props.slideWidth;
+      }
+    }
+
+    if (!this.props.vertical) {
+      slideWidth -= this.props.cellSpacing * ((100 - (100 / this.props.slidesToShow)) / 100);
+    }
+
+    frameHeight = (this.props.initialSlideHeight || 0) + ((this.props.cellSpacing / 2) * (this.props.slidesToShow - 1));
+
+    this.setState({
+      frameWidth: this.props.vertical ? frameHeight : frameWidth,
+      slideCount: this.props.children.length,
+      slideWidth: slideWidth
+    }, function() {
+      self.setLeft();
+      self.setExternalData();
     });
   },
 
