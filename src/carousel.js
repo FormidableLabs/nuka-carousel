@@ -452,12 +452,9 @@ const Carousel = React.createClass({
     var self = this, slideWidth, frameWidth, frameHeight, slideHeight;
 
     slideWidth = this.props.vertical ? (this.props.initialSlideHeight || 0) : (this.props.initialSlideWidth || 0);
+    slideHeight = this.props.initialSlideHeight ? this.props.initialSlideHeight * this.props.slidesToShow : 0;
 
-    if (!this.props.vertical) {
-      slideWidth -= this.props.cellSpacing * ((100 - (100 / this.props.slidesToShow)) / 100);
-    }
-
-    frameHeight = ((this.props.initialSlideHeight || 0) + ((this.props.cellSpacing / 2)) * (this.props.slidesToShow - 1));
+    frameHeight = slideHeight + ((this.props.cellSpacing / 2) * (this.props.slidesToShow - 1));
 
     this.setState({
       frameWidth: this.props.vertical ? frameHeight : "100%",

@@ -1,0 +1,134 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/Users/kenwheeler/local/bin/npm', 'publish' ]
+2 info using npm@2.8.4
+3 info using node@v0.12.2
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec { raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/kenwheeler/Projects/nuka-carousel',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/kenwheeler/.npm/nuka-carousel/0.0.16/package.tgz not in flight; packing
+9 verbose tar pack [ '/Users/kenwheeler/.npm/nuka-carousel/0.0.16/package.tgz',
+9 verbose tar pack   '/Users/kenwheeler/Projects/nuka-carousel' ]
+10 verbose tarball /Users/kenwheeler/.npm/nuka-carousel/0.0.16/package.tgz
+11 verbose folder /Users/kenwheeler/Projects/nuka-carousel
+12 info prepublish nuka-carousel@0.0.16
+13 verbose addLocalTarball adding from inside cache /Users/kenwheeler/.npm/nuka-carousel/0.0.16/package.tgz
+14 silly cache afterAdd nuka-carousel@0.0.16
+15 verbose afterAdd /Users/kenwheeler/.npm/nuka-carousel/0.0.16/package/package.json not in flight; writing
+16 verbose afterAdd /Users/kenwheeler/.npm/nuka-carousel/0.0.16/package/package.json written
+17 silly publish { name: 'nuka-carousel',
+17 silly publish   version: '0.0.16',
+17 silly publish   description: 'Pure React Carousel',
+17 silly publish   main: 'index.js',
+17 silly publish   dependencies:
+17 silly publish    { exenv: '^1.1.0',
+17 silly publish      'object-assign': '^2.0.0',
+17 silly publish      'react-tween-state': '0.0.5' },
+17 silly publish   peerDependencies: { react: '0.13.x' },
+17 silly publish   devDependencies:
+17 silly publish    { 'babel-core': '^4.7.16',
+17 silly publish      'babel-eslint': '^2.0.2',
+17 silly publish      'babel-loader': '^4.2.0',
+17 silly publish      chai: '^2.1.2',
+17 silly publish      'css-loader': '~0.9.0',
+17 silly publish      del: '^1.1.1',
+17 silly publish      eslint: '^0.17.1',
+17 silly publish      'eslint-loader': '^0.7.0',
+17 silly publish      'eslint-plugin-react': '^1.5.0',
+17 silly publish      gulp: '^3.8.11',
+17 silly publish      'gulp-babel': '^5.1.0',
+17 silly publish      'gulp-eslint': '^0.7.0',
+17 silly publish      'gulp-karma': '0.0.4',
+17 silly publish      'gulp-open': '^0.3.2',
+17 silly publish      'gulp-util': '^3.0.4',
+17 silly publish      'gulp-webpack': '^1.3.0',
+17 silly publish      istanbul: '^0.3.13',
+17 silly publish      'istanbul-instrumenter-loader': '^0.1.2',
+17 silly publish      karma: '~0.12.21',
+17 silly publish      'karma-chrome-launcher': '~0.1.4',
+17 silly publish      'karma-coverage': '^0.3.1',
+17 silly publish      'karma-firefox-launcher': '~0.1.3',
+17 silly publish      'karma-mocha': '^0.1.10',
+17 silly publish      'karma-mocha-reporter': '^1.0.2',
+17 silly publish      'karma-phantomjs-launcher': '~0.1.3',
+17 silly publish      'karma-script-launcher': '~0.1.0',
+17 silly publish      'karma-sinon-chai': '^0.3.0',
+17 silly publish      'karma-webpack': '^1.5.0',
+17 silly publish      mocha: '^2.2.1',
+17 silly publish      react: '0.13.x',
+17 silly publish      'react-hot-loader': '^1.0.7',
+17 silly publish      sinon: '^1.14.1',
+17 silly publish      'sinon-chai': '^2.7.0',
+17 silly publish      'style-loader': '~0.8.0',
+17 silly publish      'url-loader': '~0.5.5',
+17 silly publish      webpack: '~1.4.3',
+17 silly publish      'webpack-dev-server': '~1.6.5' },
+17 silly publish   scripts: { test: 'echo "Error: no test specified" && exit 1' },
+17 silly publish   repository:
+17 silly publish    { type: 'git',
+17 silly publish      url: 'git+https://github.com/kenwheeler/nuka-carousel.git' },
+17 silly publish   keywords: [ 'react', 'carousel', 'nuka' ],
+17 silly publish   author: { name: 'Ken Wheeler' },
+17 silly publish   license: 'MIT',
+17 silly publish   bugs: { url: 'https://github.com/kenwheeler/nuka-carousel/issues' },
+17 silly publish   homepage: 'https://github.com/kenwheeler/nuka-carousel',
+17 silly publish   readme: '#nuka-carousel\n\nA Pure ReactJS Carousel Component\n\n![http://i.imgur.com/UwP5gle.gif](http://i.imgur.com/UwP5gle.gif)\n\n###Install\n\n```\nnpm install nuka-carousel\n```\n\n###Example\n```javascript\n\'use strict\';\n\nvar React = require(\'react\');\n\nvar Carousel = require(\'nuka-carousel\');\n\nconst App = React.createClass({\n  mixins: [Carousel.ControllerMixin],\n  render() {\n    return (\n      <Carousel>\n        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide1"/>\n        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide2"/>\n        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide3"/>\n        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide4"/>\n        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide5"/>\n        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide6"/>\n      </Carousel>\n    )\n  }\n});\n\nmodule.exports = App;\n```\n\n###Props\n\n####cellAlign\n`React.PropTypes.oneOf([\'left\', \'center\', \'right\'])`\n\nWhen displaying more than one slide, sets which position to anchor the current slide to.\n\n####cellSpacing\n`React.PropTypes.number`\n\nSpace between slides, as an integer, but reflected as `px`\n\n####data\n`React.PropTypes.func`\n\nUsed with the ControllerMixin to add carousel data to parent state.\n\n####decorators\n`React.PropTypes.array`\n\nAn array of objects that supply internal carousel controls.\nDecorator objects have `component`, `position` & `style` properties. `component` takes a React component, `position` takes a predefined position string and `style` takes an object of styles to be applied to the decorator. See an example below:\n\n```javascript\nvar Decorators = [{\n  component: React.createClass({\n    render() {\n      return (\n        <button\n          onClick={this.props.previousSlide}>\n          Previous Slide\n        </button>\n      )\n    }\n  }),\n  position: \'CenterLeft\',\n  style: {\n  \tpadding: 20\n  }\n}];\n\n// Valid position properties are TopLeft, TopCenter, TopRight\n// CenterLeft, CenterCenter, CenterRight, BottomLeft, BottomCenter\n// and BottomRight\n```\n\n####dragging\n`React.PropTypes.bool`\n\nEnable mouse swipe/dragging\n\n####framePadding\n`React.PropTypes.string`\n\nUsed to set the margin of the slider frame. Accepts any string dimension value such as `"0px 20px"` or `"500px"`.\n\nEnable mouse swipe/dragging\n\n####easing\n`React.PropTypes.string`\n\nAnimation easing function. See valid easings here: [https://github.com/chenglou/tween-functions](https://github.com/chenglou/tween-functions)\n\n####edgeEasing\n`React.PropTypes.string`\n\nAnimation easing function when swipe exceeds edge. See valid easings here: [https://github.com/chenglou/tween-functions](https://github.com/chenglou/tween-functions)\n\n####slidesToShow\n`React.PropTypes.number`\n\nSlides to show at once.\n\n####slidesToScroll\n`React.PropTypes.number`\n\nSlides to scroll at once.\n\n####slideWidth\n\n`React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number])`\n\nManually set slideWidth. If you want hard pixel widths, use a string like `slideWidth="20px"`, and if you prefer a percentage of the container, use a decimal integer like `slideWidth={0.8}`\n\n####speed\n`React.PropTypes.number`\n\nAnimation duration.\n\n###width\n`React.PropTypes.string`\n\nUsed to hardcode the slider width. Accepts any string dimension value such as `"80%"` or `"500px"`.\n\n###ControllerMixin\n\nThe ControllerMixin provides a way to add external controllers for a carousel. To use the controller mixin, add it to your parent component as shown below:\n\n```javascript\nconst App = React.createClass({\n  mixins: [Carousel.ControllerMixin],\n  render() {\n    return (\n      <Carousel ref="carousel" data={this.setCarouselData.bind(this, \'carousel\')}>\n        ...\n      </Carousel>\n    )\n  }\n});\n```\n\nIt is required to give your component a ref value, and to pass the setCarouselData method to the data prop with the same ref as an argument.\n\nAfter setting this up, your parent component has a carousels object in it\'s state. You can now control your carousels from other child components:\n\n```javascript\nconst App = React.createClass({\n  mixins: [Carousel.ControllerMixin],\n  render() {\n    return (\n      <Carousel ref="carousel" data={this.setCarouselData.bind(this, \'carousel\')}>\n        ...\n      </Carousel>\n      {this.state.carousels.carousel ? <button type="button" onClick={this.state.carousels.carousel.goToSlide.bind(null,4)}>\n        Go to slide 5\n      </button> : null}\n    )\n  }\n});\n\n```',
+17 silly publish   readmeFilename: 'README.md',
+17 silly publish   gitHead: 'f4d64ac55720b3edc94d2da2362331ad394dc344',
+17 silly publish   _id: 'nuka-carousel@0.0.16',
+17 silly publish   _shasum: '9175dabd1e567dc0fb26748fb3ebc00fef5330c2',
+17 silly publish   _from: '.' }
+18 silly mapToRegistry name nuka-carousel
+19 silly mapToRegistry using default registry
+20 silly mapToRegistry registry https://registry.npmjs.org/
+21 silly mapToRegistry uri https://registry.npmjs.org/nuka-carousel
+22 verbose publish registryBase https://registry.npmjs.org/
+23 silly publish uploading /Users/kenwheeler/.npm/nuka-carousel/0.0.16/package.tgz
+24 verbose request uri https://registry.npmjs.org/nuka-carousel
+25 verbose request sending authorization for write operation
+26 info attempt registry request try #1 at 2:02:35 PM
+27 verbose request using bearer token for auth
+28 verbose request id 0b235f8e6c7ce32f
+29 http request PUT https://registry.npmjs.org/nuka-carousel
+30 http 403 https://registry.npmjs.org/nuka-carousel
+31 verbose headers { 'content-type': 'application/json',
+31 verbose headers   'cache-control': 'max-age=60',
+31 verbose headers   'content-length': '96',
+31 verbose headers   'accept-ranges': 'bytes',
+31 verbose headers   date: 'Tue, 02 Jun 2015 18:02:37 GMT',
+31 verbose headers   via: '1.1 varnish',
+31 verbose headers   connection: 'keep-alive',
+31 verbose headers   'x-served-by': 'cache-sjc3120-SJC',
+31 verbose headers   'x-cache': 'MISS',
+31 verbose headers   'x-cache-hits': '0',
+31 verbose headers   'x-timer': 'S1433268156.370936,VS0,VE1075' }
+32 verbose request invalidating /Users/kenwheeler/.npm/registry.npmjs.org/nuka-carousel on PUT
+33 error publish Failed PUT 403
+34 verbose stack Error: "You cannot publish over the previously published version 0.0.16." : nuka-carousel
+34 verbose stack     at CachingRegistryClient.<anonymous> (/Users/kenwheeler/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:247:14)
+34 verbose stack     at Request._callback (/Users/kenwheeler/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:170:14)
+34 verbose stack     at Request.self.callback (/Users/kenwheeler/local/lib/node_modules/npm/node_modules/request/request.js:368:22)
+34 verbose stack     at Request.emit (events.js:110:17)
+34 verbose stack     at Request.<anonymous> (/Users/kenwheeler/local/lib/node_modules/npm/node_modules/request/request.js:1219:14)
+34 verbose stack     at Request.emit (events.js:129:20)
+34 verbose stack     at IncomingMessage.<anonymous> (/Users/kenwheeler/local/lib/node_modules/npm/node_modules/request/request.js:1167:12)
+34 verbose stack     at IncomingMessage.emit (events.js:129:20)
+34 verbose stack     at _stream_readable.js:908:16
+34 verbose stack     at process._tickCallback (node.js:355:11)
+35 verbose statusCode 403
+36 verbose pkgid nuka-carousel
+37 verbose cwd /Users/kenwheeler/Projects/nuka-carousel
+38 error Darwin 14.1.0
+39 error argv "node" "/Users/kenwheeler/local/bin/npm" "publish"
+40 error node v0.12.2
+41 error npm  v2.8.4
+42 error code E403
+43 error "You cannot publish over the previously published version 0.0.16." : nuka-carousel
+44 error If you need help, you may report this error at:
+44 error     <https://github.com/npm/npm/issues>
+45 verbose exit [ 1, true ]
