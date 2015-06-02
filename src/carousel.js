@@ -49,6 +49,7 @@ const Carousel = React.createClass({
     edgeEasing: React.PropTypes.string,
     framePadding: React.PropTypes.string,
     initialSlideHeight: React.PropTypes.number,
+    initialSlideWidth: React.PropTypes.number,
     slidesToShow: React.PropTypes.number,
     slidesToScroll: React.PropTypes.number,
     slideWidth: React.PropTypes.oneOfType([
@@ -450,17 +451,7 @@ const Carousel = React.createClass({
   setInitialDimensions() {
     var self = this, slideWidth, frameWidth, frameHeight, slideHeight;
 
-    frameWidth = this.props.width || 0;
-
-    if (typeof this.props.slideWidth !== 'number') {
-      slideWidth = parseInt(this.props.slideWidth);
-    } else {
-      if (this.props.vertical) {
-        slideWidth = (slideHeight / this.props.slidesToShow) * this.props.slideWidth;
-      } else {
-        slideWidth = (frameWidth / this.props.slidesToShow) * this.props.slideWidth;
-      }
-    }
+    slideWidth = this.props.vertical ? (this.props.initialSlideHeight || 0) : (this.props.initialSlideWidth || 0);
 
     if (!this.props.vertical) {
       slideWidth -= this.props.cellSpacing * ((100 - (100 / this.props.slidesToShow)) / 100);
@@ -469,7 +460,7 @@ const Carousel = React.createClass({
     frameHeight = (this.props.initialSlideHeight || 0) + ((this.props.cellSpacing / 2) * (this.props.slidesToShow - 1));
 
     this.setState({
-      frameWidth: this.props.vertical ? frameHeight : frameWidth,
+      frameWidth: this.props.vertical ? frameHeight : "100%",
       slideCount: this.props.children.length,
       slideWidth: slideWidth
     }, function() {
