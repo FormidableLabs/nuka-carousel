@@ -600,9 +600,9 @@ const Carousel = React.createClass({
         return {
           position: 'absolute',
           top: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          WebkitTransform: 'translateX(-50%)'
+          display: 'flex',
+          justify-content: 'center',
+          width: '100%'
         }
       }
       case 'TopRight': {
@@ -650,9 +650,9 @@ const Carousel = React.createClass({
         return {
           position: 'absolute',
           bottom: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          WebkitTransform: 'translateX(-50%)'
+          display: 'flex',
+          justify-content: 'center',
+          width: '100%'
         }
       }
       case 'BottomRight': {
