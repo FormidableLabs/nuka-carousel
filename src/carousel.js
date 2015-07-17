@@ -601,7 +601,7 @@ const Carousel = React.createClass({
           position: 'absolute',
           top: 0,
           display: 'flex',
-          justify-content: 'center',
+          justifycontent: 'center',
           width: '100%'
         }
       }
@@ -651,7 +651,7 @@ const Carousel = React.createClass({
           position: 'absolute',
           bottom: 0,
           display: 'flex',
-          justify-content: 'center',
+          justifyContent: 'center',
           width: '100%'
         }
       }
