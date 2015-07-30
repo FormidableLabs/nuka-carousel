@@ -8,9 +8,6 @@
     "object-assign": "^2.0.0",
     "react-tween-state": "0.0.5"
   },
-  "peerDependencies": {
-    "react": "0.13.x"
-  },
   "devDependencies": {
     "babel-core": "^4.7.16",
     "babel-eslint": "^2.0.2",
@@ -41,7 +38,7 @@
     "karma-sinon-chai": "^0.3.0",
     "karma-webpack": "^1.5.0",
     "mocha": "^2.2.1",
-    "react": "0.13.x",
+    "react": "^0.13.3",
     "react-hot-loader": "^1.0.7",
     "sinon": "^1.14.1",
     "sinon-chai": "^2.7.0",
