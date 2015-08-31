@@ -99,6 +99,11 @@ const Carousel = React.createClass({
   componentDidMount() {
     this.setDimensions();
     this.bindEvents();
+    this.setExternalData();
+  },
+
+  componentWillReceiveProps(nextProps) {
+    this.setDimensions();
   },
 
   componentWillUnmount() {
@@ -107,7 +112,7 @@ const Carousel = React.createClass({
 
   render() {
     var self = this;
-    var children = this.formatChildren(this.props.children);
+    var children = React.Children.count(this.props.children) > 1 ? this.formatChildren(this.props.children) : this.props.children;
     return (
       <div className={['slider', this.props.className || ''].join(' ')} ref="slider" style={assign(this.getSliderStyles(), this.props.style || {})}>
         <div className="slider-frame"
@@ -280,7 +285,7 @@ const Carousel = React.createClass({
 
     if (this.touchObject.length > (this.state.slideWidth / this.props.slidesToShow) / 5) {
       if (this.touchObject.direction === 1) {
-        if (this.state.currentSlide >= this.props.children.length - this.props.slidesToScroll) {
+        if (this.state.currentSlide >= React.Children.count(this.props.children) - this.props.slidesToScroll) {
           this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
         } else {
           this.nextSlide();
@@ -339,7 +344,7 @@ const Carousel = React.createClass({
 
   goToSlide(index) {
     var self = this;
-    if (index >= this.props.children.length || index < 0) {
+    if (index >= React.Children.count(this.props.children) || index < 0) {
       return;
     }
     this.setState({
@@ -352,7 +357,7 @@ const Carousel = React.createClass({
 
   nextSlide() {
     var self = this;
-    if ((this.state.currentSlide + this.props.slidesToScroll) >= this.props.children.length) {
+    if ((this.state.currentSlide + this.props.slidesToScroll) >= React.Children.count(this.props.children)) {
       return;
     }
     this.setState({
@@ -443,7 +448,7 @@ const Carousel = React.createClass({
 
   formatChildren(children) {
     var self = this;
-    return children.map(function(child, index) {
+    return React.Children.map(children, function(child, index) {
       return <li className="slider-slide" style={self.getSlideStyles()} key={index}>{child}</li>
     });
   },
@@ -457,8 +462,8 @@ const Carousel = React.createClass({
     frameHeight = slideHeight + ((this.props.cellSpacing / 2) * (this.props.slidesToShow - 1));
 
     this.setState({
-      frameWidth: this.props.vertical ? frameHeight : "100%",
-      slideCount: this.props.children.length,
+      frameWidth: this.props.vertical ? frameHeight : '100%',
+      slideCount: React.Children.count(this.props.children),
       slideWidth: slideWidth
     }, function() {
       self.setLeft();
@@ -471,8 +476,12 @@ const Carousel = React.createClass({
 
     frame = React.findDOMNode(this.refs.frame);
     firstSlide = frame.childNodes[0].childNodes[0];
-    firstSlide.style.height = 'auto';
-    slideHeight = firstSlide.offsetHeight * this.props.slidesToShow;
+    if (firstSlide) {
+      firstSlide.style.height = 'auto';
+      slideHeight = firstSlide.offsetHeight * this.props.slidesToShow;
+    } else {
+      slideHeight = 100;
+    }
 
     if (typeof this.props.slideWidth !== 'number') {
       slideWidth = parseInt(this.props.slideWidth);
@@ -492,11 +501,10 @@ const Carousel = React.createClass({
 
     this.setState({
       frameWidth: this.props.vertical ? frameHeight : frame.offsetWidth,
-      slideCount: this.props.children.length,
-      slideWidth: slideWidth
-    }, function() {
-      self.setLeft();
-      self.setExternalData();
+      slideCount: React.Children.count(this.props.children),
+      slideWidth: slideWidth,
+      left: this.props.vertical ? 0 : this.getTargetLeft(),
+      top: this.props.vertical ? this.getTargetLeft() : 0
     });
   },
 
@@ -518,8 +526,8 @@ const Carousel = React.createClass({
   // Styles
 
   getListStyles() {
-    var listWidth = this.state.slideWidth * this.props.children.length;
-    var spacingOffset = this.props.cellSpacing * this.props.children.length;
+    var listWidth = this.state.slideWidth * React.Children.count(this.props.children);
+    var spacingOffset = this.props.cellSpacing * React.Children.count(this.props.children);
     return {
       position: 'relative',
       display: 'block',
