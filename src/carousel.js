@@ -505,6 +505,8 @@ const Carousel = React.createClass({
       slideWidth: slideWidth,
       left: this.props.vertical ? 0 : this.getTargetLeft(),
       top: this.props.vertical ? this.getTargetLeft() : 0
+    }, function() {
+      self.setLeft()
     });
   },
 
