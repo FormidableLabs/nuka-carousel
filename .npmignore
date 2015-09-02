@@ -1,0 +1,8 @@
+demo
+src
+test
+.eslintrc
+bower.json
+Gulpfile.js
+karma.conf.js
+webpack.*
