@@ -111,9 +111,14 @@ Animation easing function when swipe exceeds edge. See valid easings here: [http
 Slides to show at once.
 
 ####slidesToScroll
-`React.PropTypes.number`
+```
+slidesToScroll: React.PropTypes.oneOfType([
+  React.PropTypes.number,
+  React.PropTypes.oneOf(['auto'])
+])
+```
 
-Slides to scroll at once.
+Slides to scroll at once. Set to `"auto"` to always scroll the current number of visible slides.
 
 ####slideWidth
 

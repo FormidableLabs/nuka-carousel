@@ -398,6 +398,65 @@ describe('Carousel', function () {
         expect(component.state.currentSlide).to.equal(2);
     });
 
+    it('should set slidesToScroll to passed in slidesToScroll', function() {
+        component = React.render(
+          React.createElement(carousel, {slidesToScroll: 3, width: "600px"},
+            React.createElement('p', {className: 'test-slide'}, 'Slide 1'),
+            React.createElement('p', null, 'Slide 2'),
+            React.createElement('p', null, 'Slide 3')
+          ),
+          container
+        );
+
+        expect(component.state.slidesToScroll).to.equal(3);
+    });
+
+    it('should set slidesToScroll to 2 if slideWidth is 250px and slidesToScroll is auto',
+      function() {
+        component = React.render(
+          React.createElement(carousel, {slideWidth: "250px", width: "600px", slidesToScroll: "auto"},
+            React.createElement('p', {className: 'test-slide'}, 'Slide 1'),
+            React.createElement('p', null, 'Slide 2'),
+            React.createElement('p', null, 'Slide 3')
+          ),
+          container
+        );
+
+        expect(component.state.slidesToScroll).to.equal(2);
+    });
+
+    it('should set slidesToScroll to 3 with slideWidth: 100px, cellSpacing: 100, slidesToScroll:auto',
+      function() {
+        component = React.render(
+          React.createElement(carousel, {
+            slideWidth: "100px",
+            width: "600px",
+            cellSpacing: 100,
+            slidesToScroll: "auto"
+          },
+            React.createElement('p', {className: 'test-slide'}, 'Slide 1'),
+            React.createElement('p', null, 'Slide 2'),
+            React.createElement('p', null, 'Slide 3')
+          ),
+          container
+        );
+
+        expect(component.state.slidesToScroll).to.equal(3);
+    });
+
+    it('should set slidesToScroll to 6 if slideWidth is 100px and slidesToScroll is auto',
+      function() {
+        component = React.render(
+          React.createElement(carousel, {slideWidth: "100px", width: "600px", slidesToScroll: "auto"},
+            React.createElement('p', {className: 'test-slide'}, 'Slide 1'),
+            React.createElement('p', null, 'Slide 2'),
+            React.createElement('p', null, 'Slide 3')
+          ),
+          container
+        );
+
+        expect(component.state.slidesToScroll).to.equal(6);
+    });
   });
 
   describe('Methods', function() {
