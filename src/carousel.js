@@ -51,7 +51,10 @@ const Carousel = React.createClass({
     initialSlideHeight: React.PropTypes.number,
     initialSlideWidth: React.PropTypes.number,
     slidesToShow: React.PropTypes.number,
-    slidesToScroll: React.PropTypes.number,
+    slidesToScroll: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.oneOf(['auto'])
+    ]),
     slideWidth: React.PropTypes.oneOfType([
       React.PropTypes.string,
       React.PropTypes.number
@@ -88,7 +91,8 @@ const Carousel = React.createClass({
       left: 0,
       top: 0,
       slideCount: 0,
-      slideWidth: 0
+      slideWidth: 0,
+      slidesToScroll: this.props.slidesToScroll
     }
   },
 
@@ -135,8 +139,11 @@ const Carousel = React.createClass({
                 <Decorator.component
                   currentSlide={self.state.currentSlide}
                   slideCount={self.state.slideCount}
+                  frameWidth={self.state.frameWidth}
+                  slideWidth={self.state.slideWidth}
+                  slidesToScroll={self.state.slidesToScroll}
+                  cellSpacing={self.props.cellSpacing}
                   slidesToShow={self.props.slidesToShow}
-                  slidesToScroll={self.props.slidesToScroll}
                   nextSlide={self.nextSlide}
                   previousSlide={self.previousSlide}
                   goToSlide={self.goToSlide} />
@@ -285,7 +292,7 @@ const Carousel = React.createClass({
 
     if (this.touchObject.length > (this.state.slideWidth / this.props.slidesToShow) / 5) {
       if (this.touchObject.direction === 1) {
-        if (this.state.currentSlide >= React.Children.count(this.props.children) - this.props.slidesToScroll) {
+        if (this.state.currentSlide >= React.Children.count(this.props.children) - this.state.slidesToScroll) {
           this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
         } else {
           this.nextSlide();
@@ -357,11 +364,11 @@ const Carousel = React.createClass({
 
   nextSlide() {
     var self = this;
-    if ((this.state.currentSlide + this.props.slidesToScroll) >= React.Children.count(this.props.children)) {
+    if ((this.state.currentSlide + this.state.slidesToScroll) >= React.Children.count(this.props.children)) {
       return;
     }
     this.setState({
-      currentSlide: this.state.currentSlide + this.props.slidesToScroll
+      currentSlide: this.state.currentSlide + this.state.slidesToScroll
     }, function() {
       self.animateSlide();
       self.setExternalData();
@@ -370,11 +377,11 @@ const Carousel = React.createClass({
 
   previousSlide() {
     var self = this;
-    if ((this.state.currentSlide - this.props.slidesToScroll) < 0) {
+    if ((this.state.currentSlide - this.state.slidesToScroll) < 0) {
       return;
     }
     this.setState({
-      currentSlide: this.state.currentSlide - this.props.slidesToScroll
+      currentSlide: this.state.currentSlide - this.state.slidesToScroll
     }, function() {
       self.animateSlide();
       self.setExternalData();
@@ -454,7 +461,7 @@ const Carousel = React.createClass({
   },
 
   setInitialDimensions() {
-    var self = this, slideWidth, frameWidth, frameHeight, slideHeight;
+    var self = this, slideWidth, frameHeight, slideHeight;
 
     slideWidth = this.props.vertical ? (this.props.initialSlideHeight || 0) : (this.props.initialSlideWidth || 0);
     slideHeight = this.props.initialSlideHeight ? this.props.initialSlideHeight * this.props.slidesToShow : 0;
@@ -472,8 +479,16 @@ const Carousel = React.createClass({
   },
 
   setDimensions() {
-    var self = this, slideWidth, firstSlide, frame, frameHeight, slideHeight;
+    var self = this,
+      slideWidth,
+      slidesToScroll,
+      firstSlide,
+      frame,
+      frameWidth,
+      frameHeight,
+      slideHeight;
 
+    slidesToScroll = this.props.slidesToScroll;
     frame = React.findDOMNode(this.refs.frame);
     firstSlide = frame.childNodes[0].childNodes[0];
     if (firstSlide) {
@@ -498,11 +513,17 @@ const Carousel = React.createClass({
     }
 
     frameHeight = slideHeight + ((this.props.cellSpacing / 2) * (this.props.slidesToShow - 1));
+    frameWidth = this.props.vertical ? frameHeight : frame.offsetWidth;
+
+    if (this.props.slidesToScroll === 'auto') {
+      slidesToScroll = Math.floor(frameWidth / (slideWidth + this.props.cellSpacing));
+    }
 
     this.setState({
-      frameWidth: this.props.vertical ? frameHeight : frame.offsetWidth,
+      frameWidth: frameWidth,
       slideCount: React.Children.count(this.props.children),
       slideWidth: slideWidth,
+      slidesToScroll: slidesToScroll,
       left: this.props.vertical ? 0 : this.getTargetLeft(),
       top: this.props.vertical ? this.getTargetLeft() : 0
     }, function() {
