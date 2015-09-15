@@ -1,0 +1,26 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/Users/kenwheeler/local/bin/npm', 'version', 'patch' ]
+2 info using npm@2.8.4
+3 info using node@v0.12.2
+4 info git [ 'status', '--porcelain' ]
+5 verbose stack Error: Git working directory not clean.
+5 verbose stack M lib/carousel.js
+5 verbose stack M lib/decorators.js
+5 verbose stack     at /Users/kenwheeler/local/lib/node_modules/npm/lib/version.js:138:37
+5 verbose stack     at ChildProcess.exithandler (child_process.js:742:7)
+5 verbose stack     at ChildProcess.emit (events.js:110:17)
+5 verbose stack     at maybeClose (child_process.js:1015:16)
+5 verbose stack     at Socket.<anonymous> (child_process.js:1183:11)
+5 verbose stack     at Socket.emit (events.js:107:17)
+5 verbose stack     at Pipe.close (net.js:485:12)
+6 verbose cwd /Users/kenwheeler/Projects/nuka-carousel
+7 error Darwin 14.5.0
+8 error argv "node" "/Users/kenwheeler/local/bin/npm" "version" "patch"
+9 error node v0.12.2
+10 error npm  v2.8.4
+11 error Git working directory not clean.
+11 error M lib/carousel.js
+11 error M lib/decorators.js
+12 error If you need help, you may report this error at:
+12 error     <https://github.com/npm/npm/issues>
+13 verbose exit [ 1, true ]
