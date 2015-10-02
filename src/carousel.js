@@ -166,8 +166,8 @@ const Carousel = React.createClass({
     return {
       onTouchStart(e) {
         self.touchObject = {
-          startX: event.touches[0].pageX,
-          startY: event.touches[0].pageY
+          startX: e.touches[0].pageX,
+          startY: e.touches[0].pageY
         }
       },
       onTouchMove(e) {
@@ -441,7 +441,7 @@ const Carousel = React.createClass({
     this.setDimensions();
   },
 
-  onReadyStateChange(event) {
+  onReadyStateChange() {
     this.setDimensions();
   },
 
