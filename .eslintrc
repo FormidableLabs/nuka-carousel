@@ -62,10 +62,9 @@
         "space-before-blocks": 1,
         "no-empty": 1,
 
-        "space-before-function-parentheses": [1, "never"],
+        "space-before-function-paren": [1, "never"],
         "wrap-iife": 1,
 
-        "space-in-brackets": [1, "never"],
         "space-in-parens": [1, "never"],
 
         "space-infix-ops": 1,

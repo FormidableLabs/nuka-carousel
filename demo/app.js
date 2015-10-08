@@ -1,7 +1,8 @@
 'use strict';
 
-import Carousel from '../src/Carousel';
-import React from 'react/addons';
+import Carousel from '../src/carousel';
+import React from 'react';
+import ReactDom from 'react-dom';
 
 window.React = React;
 
@@ -27,5 +28,5 @@ const App = React.createClass({
 
 const content = document.getElementById('content');
 
-React.render(<App/>, content)
+ReactDom.render(<App/>, content)
 

@@ -1,15 +1,14 @@
 'use strict';
 
 import React from 'react';
+import ReactDom from 'react-dom';
 import tweenState from 'react-tween-state';
 import decorators from './decorators';
 import assign from 'object-assign';
 import ExecutionEnvironment from 'exenv';
 
-React.initializeTouchEvents(true);
-
 const addEvent = function(elem, type, eventHandle) {
-  if (elem == null || typeof (elem) === 'undefined') {
+  if (elem === null || typeof (elem) === 'undefined') {
     return;
   }
   if (elem.addEventListener) {
@@ -22,7 +21,7 @@ const addEvent = function(elem, type, eventHandle) {
 };
 
 const removeEvent = function(elem, type, eventHandle) {
-  if (elem == null || typeof (elem) === 'undefined') {
+  if (elem === null || typeof (elem) === 'undefined') {
     return;
   }
   if (elem.removeEventListener) {
@@ -489,7 +488,7 @@ const Carousel = React.createClass({
       slideHeight;
 
     slidesToScroll = this.props.slidesToScroll;
-    frame = React.findDOMNode(this.refs.frame);
+    frame = ReactDom.findDOMNode(this.refs.frame);
     firstSlide = frame.childNodes[0].childNodes[0];
     if (firstSlide) {
       firstSlide.style.height = 'auto';
