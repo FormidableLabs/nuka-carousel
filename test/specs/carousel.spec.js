@@ -24,7 +24,7 @@ describe('Carousel', function () {
     });
 
     afterEach(function() {
-      React.unmountComponentAtNode(container);
+      ReactDOM.unmountComponentAtNode(container);
     });
 
     it('should render into the document', function() {
@@ -41,7 +41,7 @@ describe('Carousel', function () {
     });
 
     afterEach(function() {
-      React.unmountComponentAtNode(container);
+      ReactDOM.unmountComponentAtNode(container);
     });
 
     it('should render a .slider div', function() {
@@ -144,7 +144,7 @@ describe('Carousel', function () {
     });
 
     afterEach(function() {
-      React.unmountComponentAtNode(container);
+      ReactDOM.unmountComponentAtNode(container);
     });
 
     it('should render with class "slider" with no props supplied', function() {
@@ -468,7 +468,7 @@ describe('Carousel', function () {
     });
 
     afterEach(function() {
-      React.unmountComponentAtNode(container);
+      ReactDOM.unmountComponentAtNode(container);
     });
 
     it('should advance if nextSlide() is called', function() {
