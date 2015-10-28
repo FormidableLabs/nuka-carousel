@@ -369,6 +369,9 @@ const Carousel = React.createClass({
     this.setState({
       currentSlide: this.state.currentSlide + this.state.slidesToScroll
     }, function() {
+      if (self.props.onSlideChange) {
+        self.props.onSlideChange(this.state.currentSlide);
+      }
       self.animateSlide();
       self.setExternalData();
     });
@@ -382,6 +385,9 @@ const Carousel = React.createClass({
     this.setState({
       currentSlide: this.state.currentSlide - this.state.slidesToScroll
     }, function() {
+      if (self.props.onSlideChange) {
+        self.props.onSlideChange(this.state.currentSlide);
+      }
       self.animateSlide();
       self.setExternalData();
     });
