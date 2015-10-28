@@ -10,7 +10,7 @@ import ExecutionEnvironment from 'exenv';
 const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof (elem) === 'undefined') {
     return;
-  }
+  }т
   if (elem.addEventListener) {
     elem.addEventListener(type, eventHandle, false);
   } else if (elem.attachEvent) {
@@ -369,6 +369,9 @@ const Carousel = React.createClass({
     this.setState({
       currentSlide: this.state.currentSlide + this.state.slidesToScroll
     }, function() {
+      if (self.props.onSlideChange) {
+        self.props.onSlideChange(this.state.currentSlide);
+      }
       self.animateSlide();
       self.setExternalData();
     });
@@ -382,6 +385,9 @@ const Carousel = React.createClass({
     this.setState({
       currentSlide: this.state.currentSlide - this.state.slidesToScroll
     }, function() {
+      if (self.props.onSlideChange) {
+        self.props.onSlideChange(this.state.currentSlide);
+      }
       self.animateSlide();
       self.setExternalData();
     });
