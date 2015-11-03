@@ -42,7 +42,23 @@ const Carousel = React.createClass({
     cellAlign: React.PropTypes.oneOf(['left', 'center', 'right']),
     cellSpacing: React.PropTypes.number,
     data: React.PropTypes.func,
-    decorators: React.PropTypes.array,
+    decorators: React.PropTypes.arrayOf(
+      React.PropTypes.shape({
+        component: React.PropTypes.func,
+        position: React.PropTypes.oneOf([
+          'TopLeft',
+          'TopCenter',
+          'TopRight',
+          'CenterLeft',
+          'CenterCenter',
+          'CenterRight',
+          'BottomLeft',
+          'BottomCenter',
+          'BottomRight'
+        ]),
+        style: React.PropTypes.object
+      })
+    ),
     dragging: React.PropTypes.bool,
     easing: React.PropTypes.string,
     edgeEasing: React.PropTypes.string,
