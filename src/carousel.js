@@ -113,7 +113,8 @@ const Carousel = React.createClass({
       slideCount: 0,
       slidesToScroll: this.props.slidesToScroll,
       slideWidth: 0,
-      top: 0
+      top: 0,
+      clickSafe: true
     }
   },
 
@@ -232,8 +233,6 @@ const Carousel = React.createClass({
     }
   },
 
-  clickSafe: true,
-
   getMouseEvents() {
     var self = this;
 
@@ -303,7 +302,7 @@ const Carousel = React.createClass({
   },
 
   handleClick(e) {
-    if (this.clickSafe === true) {
+    if (this.state.clickSafe === true) {
       e.preventDefault();
       e.stopPropagation();
 
@@ -314,10 +313,14 @@ const Carousel = React.createClass({
   },
 
   handleSwipe(e) {
-    if (typeof (this.touchObject.length) !== 'undefined' && this.touchObject.length > 44) {
-      this.clickSafe = true;
+    if (typeof (this.touchObject.length) === 'undefined' || this.touchObject.length < 2) {
+      this.setState({
+        clickSafe: true
+      });
     } else {
-      this.clickSafe = false;
+      this.setState({
+        clickSafe: false
+      });
     }
 
     if (this.touchObject.length > (this.state.slideWidth / this.props.slidesToShow) / 5) {
