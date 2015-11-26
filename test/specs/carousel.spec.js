@@ -225,7 +225,7 @@ describe('Carousel', function () {
           component,
           'slider-list'
         );
-        expect(slider.props.style.left).to.equal(0);
+        expect(slider.props.style.transform).to.equal('translate3d(0px, 0, 0)');
     });
 
     it('should align to 200 if cellAlign is center', function() {
@@ -242,7 +242,7 @@ describe('Carousel', function () {
         component,
           'slider-list'
         );
-        expect(slider.props.style.left).to.equal(200);
+        expect(slider.props.style.transform).to.equal('translate3d(200px, 0, 0)');
     });
 
     it('should align to 400 if cellAlign is right', function() {
@@ -259,7 +259,7 @@ describe('Carousel', function () {
         component,
           'slider-list'
         );
-        expect(slider.props.style.left).to.equal(400);
+        expect(slider.props.style.transform).to.equal('translate3d(400px, 0, 0)');
     });
 
     it('should set slide width to 200 if cellSpacing is not provided', function() {

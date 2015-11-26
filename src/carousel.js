@@ -532,7 +532,6 @@ const Carousel = React.createClass({
 
   setLeft() {
     this.setState({
-      transform: `translateX(${this.props.vertical ? 0 : this.getTargetLeft()})`,
       left: this.props.vertical ? 0 : this.getTargetLeft(),
       top: this.props.vertical ? this.getTargetLeft() : 0
     })
