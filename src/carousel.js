@@ -532,6 +532,7 @@ const Carousel = React.createClass({
 
   setLeft() {
     this.setState({
+      transform: `translateX(${this.props.vertical ? 0 : this.getTargetLeft()})`,
       left: this.props.vertical ? 0 : this.getTargetLeft(),
       top: this.props.vertical ? this.getTargetLeft() : 0
     })
@@ -550,19 +551,20 @@ const Carousel = React.createClass({
   getListStyles() {
     var listWidth = this.state.slideWidth * React.Children.count(this.props.children);
     var spacingOffset = this.props.cellSpacing * React.Children.count(this.props.children);
+    var transform = 'translate3d(' +
+      this.getTweeningValue('left') + 'px, ' +
+      this.getTweeningValue('top') + ', 0)'
     return {
+      transform,
+      WebkitTransform: transform,
       position: 'relative',
       display: 'block',
-      top: this.getTweeningValue('top'),
-      left: this.getTweeningValue('left'),
       margin: this.props.vertical ? (this.props.cellSpacing / 2) * -1 + 'px 0px'
                                   : '0px ' + (this.props.cellSpacing / 2) * -1 + 'px',
       padding: 0,
       height: this.props.vertical ? listWidth + spacingOffset : 'auto',
       width: this.props.vertical ? 'auto' : listWidth + spacingOffset,
       cursor: this.state.dragging === true ? 'pointer' : 'inherit',
-      transform: 'translate3d(0, 0, 0)',
-      WebkitTransform: 'translate3d(0, 0, 0)',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box'
     }
