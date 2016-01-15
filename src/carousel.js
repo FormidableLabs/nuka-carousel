@@ -556,6 +556,9 @@ const Carousel = React.createClass({
     return {
       transform,
       WebkitTransform: transform,
+      msTransform: 'translate(' +
+        this.getTweeningValue('left') + 'px, ' +
+        this.getTweeningValue('top') + ')',
       position: 'relative',
       display: 'block',
       margin: this.props.vertical ? (this.props.cellSpacing / 2) * -1 + 'px 0px'
@@ -579,6 +582,7 @@ const Carousel = React.createClass({
       padding: 0,
       transform: 'translate3d(0, 0, 0)',
       WebkitTransform: 'translate3d(0, 0, 0)',
+      msTransform: 'translate(0, 0)',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box'
     }
@@ -631,7 +635,8 @@ const Carousel = React.createClass({
           top: 0,
           left: '50%',
           transform: 'translateX(-50%)',
-          WebkitTransform: 'translateX(-50%)'
+          WebkitTransform: 'translateX(-50%)',
+          msTransform: 'translateX(-50%)'
         }
       }
       case 'TopRight': {
@@ -647,7 +652,8 @@ const Carousel = React.createClass({
           top: '50%',
           left: 0,
           transform: 'translateY(-50%)',
-          WebkitTransform: 'translateY(-50%)'
+          WebkitTransform: 'translateY(-50%)',
+          msTransform: 'translateY(-50%)'
         }
       }
       case 'CenterCenter': {
@@ -656,7 +662,8 @@ const Carousel = React.createClass({
           top: '50%',
           left: '50%',
           transform: 'translate(-50%,-50%)',
-          WebkitTransform: 'translate(-50%, -50%)'
+          WebkitTransform: 'translate(-50%, -50%)',
+          msTransform: 'translate(-50%, -50%)'
         }
       }
       case 'CenterRight': {
@@ -665,7 +672,8 @@ const Carousel = React.createClass({
           top: '50%',
           right: 0,
           transform: 'translateY(-50%)',
-          WebkitTransform: 'translateY(-50%)'
+          WebkitTransform: 'translateY(-50%)',
+          msTransform: 'translateY(-50%)'
         }
       }
       case 'BottomLeft': {
@@ -681,7 +689,8 @@ const Carousel = React.createClass({
           bottom: 0,
           left: '50%',
           transform: 'translateX(-50%)',
-          WebkitTransform: 'translateX(-50%)'
+          WebkitTransform: 'translateX(-50%)',
+          msTransform: 'translateX(-50%)'
         }
       }
       case 'BottomRight': {
