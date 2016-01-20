@@ -60,7 +60,9 @@ const Carousel = React.createClass({
     ]),
     speed: React.PropTypes.number,
     vertical: React.PropTypes.bool,
-    width: React.PropTypes.string
+    width: React.PropTypes.string,
+    beforeSlide: React.PropTypes.func,
+    afterSlide: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -78,7 +80,9 @@ const Carousel = React.createClass({
       slideWidth: 1,
       speed: 500,
       vertical: false,
-      width: '100%'
+      width: '100%',
+      beforeSlide: function(){},
+      afterSlide: function(){}
     }
   },
 
@@ -353,10 +357,14 @@ const Carousel = React.createClass({
     if (index >= React.Children.count(this.props.children) || index < 0) {
       return;
     }
+
+    this.props.beforeSlide(this.state.currentSlide, index);
+
     this.setState({
       currentSlide: index
     }, function() {
       self.animateSlide();
+      this.props.afterSlide(index);
       self.setExternalData();
     });
   },
@@ -366,12 +374,8 @@ const Carousel = React.createClass({
     if ((this.state.currentSlide + this.state.slidesToScroll) >= React.Children.count(this.props.children)) {
       return;
     }
-    this.setState({
-      currentSlide: this.state.currentSlide + this.state.slidesToScroll
-    }, function() {
-      self.animateSlide();
-      self.setExternalData();
-    });
+
+    this.goToSlide(this.state.currentSlide + this.state.slidesToScroll);
   },
 
   previousSlide() {
@@ -379,12 +383,8 @@ const Carousel = React.createClass({
     if ((this.state.currentSlide - this.state.slidesToScroll) < 0) {
       return;
     }
-    this.setState({
-      currentSlide: this.state.currentSlide - this.state.slidesToScroll
-    }, function() {
-      self.animateSlide();
-      self.setExternalData();
-    });
+
+    this.goToSlide(this.state.currentSlide - this.state.slidesToScroll);
   },
 
   // Animation
