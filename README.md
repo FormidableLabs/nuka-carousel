@@ -173,3 +173,7 @@ const App = React.createClass({
 });
 
 ```
+
+### Contributing
+
+See the [Contribution Docs](CONTRIBUTING.md).
