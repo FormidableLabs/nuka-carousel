@@ -12,6 +12,7 @@ const App = React.createClass({
     return (
       <div style={{width: '50%', margin: 'auto'}}>
         <Carousel
+          currentSlide='1'
           ref="carousel"
           data={this.setCarouselData.bind(this, 'carousel')}>
           <img src="http://placehold.it/1000x400&text=slide1"/>
@@ -29,4 +30,3 @@ const App = React.createClass({
 const content = document.getElementById('content');
 
 ReactDom.render(<App/>, content)
-
