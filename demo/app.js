@@ -10,9 +10,11 @@ const App = React.createClass({
   mixins: [Carousel.ControllerMixin],
   render() {
     return (
-      <div style={{width: '50%', margin: 'auto'}}>
-        <Carousel
-          currentSlide='1'
+      <div style={{width: '100%', height: '100%'}}>
+        <Carousel style={{height: '100%'}}
+          frameStyle={{height: '100%'}}
+          listStyle={{height: '100%'}}
+          currentSlide={0}
           ref="carousel"
           data={this.setCarouselData.bind(this, 'carousel')}>
           <img src="http://placehold.it/1000x400&text=slide1"/>

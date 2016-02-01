@@ -62,7 +62,8 @@ const Carousel = React.createClass({
     vertical: React.PropTypes.bool,
     width: React.PropTypes.string,
     beforeSlide: React.PropTypes.func,
-    afterSlide: React.PropTypes.func
+    afterSlide: React.PropTypes.func,
+    currentSlide: React.PropTypes.number
   },
 
   getDefaultProps() {
@@ -124,11 +125,11 @@ const Carousel = React.createClass({
       <div className={['slider', this.props.className || ''].join(' ')} ref="slider" style={assign(this.getSliderStyles(), this.props.style || {})}>
         <div className="slider-frame"
           ref="frame"
-          style={this.getFrameStyles()}
+          style={assign(this.getFrameStyles(), this.props.frameStyle || {})}
           {...this.getTouchEvents()}
           {...this.getMouseEvents()}
           onClick={this.handleClick}>
-          <ul className="slider-list" ref="list" style={this.getListStyles()}>
+          <ul className="slider-list" ref="list" style={assign(this.getListStyles(), this.props.listStyle || {})}>
             {children}
           </ul>
         </div>
