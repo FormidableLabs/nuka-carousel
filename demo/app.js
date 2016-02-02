@@ -11,12 +11,9 @@ const App = React.createClass({
   render() {
     return (
       <div style={{width: '100%', height: '100%'}}>
-        <Carousel style={{height: '100%'}}
-          frameStyle={{height: '100%'}}
-          listStyle={{height: '100%'}}
-          currentSlide={0}
-          ref="carousel"
-          data={this.setCarouselData.bind(this, 'carousel')}>
+        <Carousel ref="carousel"
+          data={this.setCarouselData.bind(this, 'carousel')}
+          currentSlide={0}>
           <img src="http://placehold.it/1000x400&text=slide1"/>
           <img src="http://placehold.it/1000x400&text=slide2"/>
           <img src="http://placehold.it/1000x400&text=slide3"/>

@@ -456,7 +456,7 @@ const Carousel = React.createClass({
   formatChildren(children) {
     var self = this;
     return React.Children.map(children, function(child, index) {
-      return <li className="slider-slide" style={self.getSlideStyles()} key={index}>{child}</li>
+      return <li className="slider-slide" style={assign(self.getSlideStyles(), self.props.slideStyle || {})} key={index}>{child}</li>
     });
   },
 
