@@ -10,10 +10,10 @@ const App = React.createClass({
   mixins: [Carousel.ControllerMixin],
   render() {
     return (
-      <div style={{width: '50%', margin: 'auto'}}>
-        <Carousel
-          ref="carousel"
-          data={this.setCarouselData.bind(this, 'carousel')}>
+      <div style={{width: '100%', height: '100%'}}>
+        <Carousel ref="carousel"
+          data={this.setCarouselData.bind(this, 'carousel')}
+          currentSlide={0}>
           <img src="http://placehold.it/1000x400&text=slide1"/>
           <img src="http://placehold.it/1000x400&text=slide2"/>
           <img src="http://placehold.it/1000x400&text=slide3"/>
@@ -29,4 +29,3 @@ const App = React.createClass({
 const content = document.getElementById('content');
 
 ReactDom.render(<App/>, content)
-

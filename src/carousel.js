@@ -78,7 +78,8 @@ const Carousel = React.createClass({
     vertical: React.PropTypes.bool,
     width: React.PropTypes.string,
     beforeSlide: React.PropTypes.func,
-    afterSlide: React.PropTypes.func
+    afterSlide: React.PropTypes.func,
+    currentSlide: React.PropTypes.number
   },
 
   getDefaultProps() {
@@ -104,7 +105,7 @@ const Carousel = React.createClass({
 
   getInitialState() {
     return {
-      currentSlide: 0,
+      currentSlide: this.props.currentSlide || 0,
       dragging: false,
       frameWidth: 0,
       left: 0,
@@ -140,11 +141,11 @@ const Carousel = React.createClass({
       <div className={['slider', this.props.className || ''].join(' ')} ref="slider" style={assign(this.getSliderStyles(), this.props.style || {})}>
         <div className="slider-frame"
           ref="frame"
-          style={this.getFrameStyles()}
+          style={assign(this.getFrameStyles(), this.props.frameStyle || {})}
           {...this.getTouchEvents()}
           {...this.getMouseEvents()}
           onClick={this.handleClick}>
-          <ul className="slider-list" ref="list" style={this.getListStyles()}>
+          <ul className="slider-list" ref="list" style={assign(this.getListStyles(), this.props.listStyle || {})}>
             {children}
           </ul>
         </div>
@@ -471,7 +472,7 @@ const Carousel = React.createClass({
   formatChildren(children) {
     var self = this;
     return React.Children.map(children, function(child, index) {
-      return <li className="slider-slide" style={self.getSlideStyles()} key={index}>{child}</li>
+      return <li className="slider-slide" style={assign(self.getSlideStyles(), self.props.slideStyle || {})} key={index}>{child}</li>
     });
   },
 
@@ -507,7 +508,7 @@ const Carousel = React.createClass({
     frame = ReactDom.findDOMNode(this.refs.frame);
     firstSlide = frame.childNodes[0].childNodes[0];
     if (firstSlide) {
-      firstSlide.style.height = 'auto';
+      firstSlide.style.height = this.props.vertical && 'auto';
       slideHeight = firstSlide.offsetHeight * this.props.slidesToShow;
     } else {
       slideHeight = 100;
