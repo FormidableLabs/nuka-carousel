@@ -125,6 +125,11 @@ Initial height of the slides in pixels.
 
 Initial width of the slides in pixels.
 
+####slideIndex
+`React.PropTypes.number`
+
+Manually set the index of the slide to be shown.
+
 ####slidesToShow
 `React.PropTypes.number`
 
