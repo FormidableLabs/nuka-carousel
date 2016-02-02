@@ -88,17 +88,17 @@ var Decorators = [{
 
 Enable mouse swipe/dragging
 
+####easing
+`React.PropTypes.string`
+
+Animation easing function. See valid easings here: [https://github.com/chenglou/tween-functions](https://github.com/chenglou/tween-functions)
+
 ####framePadding
 `React.PropTypes.string`
 
 Used to set the margin of the slider frame. Accepts any string dimension value such as `"0px 20px"` or `"500px"`.
 
 Enable mouse swipe/dragging
-
-####easing
-`React.PropTypes.string`
-
-Animation easing function. See valid easings here: [https://github.com/chenglou/tween-functions](https://github.com/chenglou/tween-functions)
 
 ####edgeEasing
 `React.PropTypes.string`
