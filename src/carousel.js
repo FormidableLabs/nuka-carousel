@@ -39,6 +39,8 @@ const Carousel = React.createClass({
   mixins: [tweenState.Mixin],
 
   propTypes: {
+    afterSlide: React.PropTypes.func,
+    beforeSlide: React.PropTypes.func,
     cellAlign: React.PropTypes.oneOf(['left', 'center', 'right']),
     cellSpacing: React.PropTypes.number,
     data: React.PropTypes.func,
@@ -76,13 +78,13 @@ const Carousel = React.createClass({
     ]),
     speed: React.PropTypes.number,
     vertical: React.PropTypes.bool,
-    width: React.PropTypes.string,
-    beforeSlide: React.PropTypes.func,
-    afterSlide: React.PropTypes.func
+    width: React.PropTypes.string
   },
 
   getDefaultProps() {
     return {
+      afterSlide: function(){},
+      beforeSlide: function(){},
       cellAlign: 'left',
       cellSpacing: 0,
       data: function() {},
@@ -91,14 +93,12 @@ const Carousel = React.createClass({
       easing: 'easeOutCirc',
       edgeEasing: 'easeOutElastic',
       framePadding: '0px',
-      slidesToShow: 1,
       slidesToScroll: 1,
+      slidesToShow: 1,
       slideWidth: 1,
       speed: 500,
       vertical: false,
-      width: '100%',
-      beforeSlide: function(){},
-      afterSlide: function(){}
+      width: '100%'
     }
   },
 
@@ -108,10 +108,10 @@ const Carousel = React.createClass({
       dragging: false,
       frameWidth: 0,
       left: 0,
-      top: 0,
       slideCount: 0,
+      slidesToScroll: this.props.slidesToScroll,
       slideWidth: 0,
-      slidesToScroll: this.props.slidesToScroll
+      top: 0
     }
   },
 

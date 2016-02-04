@@ -39,6 +39,16 @@ module.exports = App;
 
 ###Props
 
+####afterSlide
+`React.PropTypes.func`
+
+Hook to be called after a slide is changed.
+
+####beforeSlide
+`React.PropTypes.func`
+
+Hook to be called before a slide is changed.
+
 ####cellAlign
 `React.PropTypes.oneOf(['left', 'center', 'right'])`
 
@@ -88,6 +98,11 @@ var Decorators = [{
 
 Enable mouse swipe/dragging
 
+####easing
+`React.PropTypes.string`
+
+Animation easing function. See valid easings here: [https://github.com/chenglou/tween-functions](https://github.com/chenglou/tween-functions)
+
 ####framePadding
 `React.PropTypes.string`
 
@@ -95,15 +110,20 @@ Used to set the margin of the slider frame. Accepts any string dimension value s
 
 Enable mouse swipe/dragging
 
-####easing
-`React.PropTypes.string`
-
-Animation easing function. See valid easings here: [https://github.com/chenglou/tween-functions](https://github.com/chenglou/tween-functions)
-
 ####edgeEasing
 `React.PropTypes.string`
 
 Animation easing function when swipe exceeds edge. See valid easings here: [https://github.com/chenglou/tween-functions](https://github.com/chenglou/tween-functions)
+
+####initialSlideHeight
+`React.PropTypes.number`
+
+Initial height of the slides in pixels.
+
+####initialSlideWidth
+`React.PropTypes.number`
+
+Initial width of the slides in pixels.
 
 ####slidesToShow
 `React.PropTypes.number`
@@ -131,7 +151,12 @@ Manually set slideWidth. If you want hard pixel widths, use a string like `slide
 
 Animation duration.
 
-###width
+####vertical
+`React.PropTypes.bool`
+
+Enable the slides to transition vertically.
+
+####width
 `React.PropTypes.string`
 
 Used to hardcode the slider width. Accepts any string dimension value such as `"80%"` or `"500px"`.
