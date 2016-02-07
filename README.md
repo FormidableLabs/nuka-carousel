@@ -37,6 +37,17 @@ const App = React.createClass({
 module.exports = App;
 ```
 
+###Running demo locally
+
+The demo can be launched on local machine via `webpack-dev-server`. Run the following:
+
+```javascript
+// if webpack-dev-server is not installed globally
+./node_modules/.bin/webpack-dev-server
+
+```
+Now, you can access the application on  your localhost at following url: <a href="http://localhost:8080/demo" target="_blank">Demo</a>
+
 ###Props
 
 ####afterSlide
