@@ -8,11 +8,21 @@ describe('Carousel', function () {
 
   var carousel, container, component;
 
+  function setup() {
+    carousel = require('carousel');
+    container = document.createElement('DIV');
+    document.body.appendChild(container);
+  }
+  function teardown() {
+    ReactDOM.unmountComponentAtNode(container);
+    document.body.removeChild(container);
+    container = null;
+  }
+
   describe('Mounting', function() {
 
     beforeEach(function() {
-      carousel = require('carousel');
-      container = document.body;
+      setup();
       component = ReactDOM.render(
         React.createElement(carousel, {},
           React.createElement('p', null, 'Slide 1'),
@@ -24,7 +34,7 @@ describe('Carousel', function () {
     });
 
     afterEach(function() {
-      ReactDOM.unmountComponentAtNode(container);
+      teardown();
     });
 
     it('should render into the document', function() {
@@ -36,12 +46,11 @@ describe('Carousel', function () {
   describe('Build', function() {
 
     beforeEach(function() {
-      carousel = require('carousel');
-      container = document.body;
+      setup();
     });
 
     afterEach(function() {
-      ReactDOM.unmountComponentAtNode(container);
+      teardown();
     });
 
     it('should render a .slider div', function() {
@@ -139,12 +148,11 @@ describe('Carousel', function () {
   describe('Props', function() {
 
     beforeEach(function() {
-      carousel = require('carousel');
-      container = document.body;
+      setup();
     });
 
     afterEach(function() {
-      ReactDOM.unmountComponentAtNode(container);
+      teardown();
     });
 
     it('should render with class "slider" with no props supplied', function() {
@@ -463,12 +471,11 @@ describe('Carousel', function () {
   describe('Methods', function() {
 
     beforeEach(function() {
-      carousel = require('carousel');
-      container = document.body;
+      setup();
     });
 
     afterEach(function() {
-      ReactDOM.unmountComponentAtNode(container);
+      teardown();
     });
 
     it('should advance if nextSlide() is called', function() {
