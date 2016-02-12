@@ -317,7 +317,7 @@ const Carousel = React.createClass({
 
     if (this.touchObject.length > (this.state.slideWidth / this.props.slidesToShow) / 5) {
       if (this.touchObject.direction === 1) {
-        if (this.state.currentSlide >= React.Children.count(this.props.children) - this.state.slidesToScroll) {
+        if (this.state.currentSlide >= React.Children.count(this.props.children) - this.props.slidesToShow) {
           this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
         } else {
           this.nextSlide();
@@ -392,21 +392,20 @@ const Carousel = React.createClass({
   },
 
   nextSlide() {
-    var self = this;
-    if ((this.state.currentSlide + this.state.slidesToScroll) >= React.Children.count(this.props.children)) {
+    var childrenCount = React.Children.count(this.props.children);
+    if (this.state.currentSlide >= childrenCount - this.props.slidesToShow) {
       return;
     }
 
-    this.goToSlide(this.state.currentSlide + this.state.slidesToScroll);
+    this.goToSlide(Math.min(this.state.currentSlide + this.state.slidesToScroll, childrenCount - this.props.slidesToShow));
   },
 
   previousSlide() {
-    var self = this;
-    if ((this.state.currentSlide - this.state.slidesToScroll) < 0) {
+    if (this.state.currentSlide <= 0) {
       return;
     }
 
-    this.goToSlide(this.state.currentSlide - this.state.slidesToScroll);
+    this.goToSlide(Math.max(0, this.state.currentSlide - this.state.slidesToScroll));
   },
 
   // Animation
