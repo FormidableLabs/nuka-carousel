@@ -97,7 +97,6 @@ const Carousel = React.createClass({
       slideIndex: 0,
       slidesToShow: 1,
       slidesToScroll: 1,
-      slidesToShow: 1,
       slideWidth: 1,
       speed: 500,
       vertical: false,
