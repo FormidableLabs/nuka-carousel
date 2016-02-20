@@ -392,7 +392,23 @@ describe('Carousel', function () {
         expect(slide[0].props.style.width).to.equal(200);
     });
 
-    it('should have currentSlide equal 2 if slidesToScroll is 2 and it advances', function() {
+    it('should have currentSlide equal 2 for 4 slides if slidesToShow is 2, slidesToScroll is 2, and it advances', function() {
+        component = ReactDOM.render(
+          React.createElement(carousel, {slidesToShow: 2, slidesToScroll: 2},
+            React.createElement('p', null, 'Slide 1'),
+            React.createElement('p', null, 'Slide 2'),
+            React.createElement('p', null, 'Slide 3'),
+            React.createElement('p', null, 'Slide 4')
+          ),
+          container
+        );
+
+        component.nextSlide();
+
+        expect(component.state.currentSlide).to.equal(2+7);
+    });
+
+    it('should have currentSlide equal 1 for 3 slides if slidesToShow is 2, slidesToScroll is 2, and it advances', function() {
         component = ReactDOM.render(
           React.createElement(carousel, {slidesToShow: 2, slidesToScroll: 2},
             React.createElement('p', null, 'Slide 1'),
@@ -404,7 +420,7 @@ describe('Carousel', function () {
 
         component.nextSlide();
 
-        expect(component.state.currentSlide).to.equal(2);
+        expect(component.state.currentSlide).to.equal(1);
     });
 
     it('should set slidesToScroll to passed in slidesToScroll', function() {
