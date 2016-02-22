@@ -9,8 +9,12 @@ const DefaultDecorators = [
         return (
           <button
             style={this.getButtonStyles(this.props.currentSlide === 0)}
-            onClick={this.props.previousSlide}>PREV</button>
+            onClick={this.handleClick}>PREV</button>
         )
+      },
+      handleClick(e) {
+        e.preventDefault();
+        this.props.previousSlide();
       },
       getButtonStyles(disabled) {
         return {
@@ -32,8 +36,12 @@ const DefaultDecorators = [
         return (
           <button
             style={this.getButtonStyles(this.props.currentSlide + this.props.slidesToScroll >= this.props.slideCount)}
-            onClick={this.props.nextSlide}>NEXT</button>
+            onClick={this.handleClick}>NEXT</button>
         )
+      },
+      handleClick(e) {
+        e.preventDefault();
+        this.props.nextSlide();
       },
       getButtonStyles(disabled) {
         return {

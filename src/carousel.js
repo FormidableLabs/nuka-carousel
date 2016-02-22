@@ -33,7 +33,7 @@ const removeEvent = function(elem, type, eventHandle) {
   }
 };
 
-const Carousel = React.createClass({
+Carousel = React.createClass({
   displayName: 'Carousel',
 
   mixins: [tweenState.Mixin],
