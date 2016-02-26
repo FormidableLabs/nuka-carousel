@@ -95,7 +95,6 @@ Carousel = React.createClass({
       edgeEasing: 'easeOutElastic',
       framePadding: '0px',
       slideIndex: 0,
-      slidesToShow: 1,
       slidesToScroll: 1,
       slideWidth: 1,
       speed: 500,
