@@ -405,7 +405,7 @@ describe('Carousel', function () {
 
         component.nextSlide();
 
-        expect(component.state.currentSlide).to.equal(2+7);
+        expect(component.state.currentSlide).to.equal(2);
     });
 
     it('should have currentSlide equal 1 for 3 slides if slidesToShow is 2, slidesToScroll is 2, and it advances', function() {

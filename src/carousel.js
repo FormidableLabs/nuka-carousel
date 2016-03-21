@@ -16,7 +16,7 @@ const addEvent = function(elem, type, eventHandle) {
   } else if (elem.attachEvent) {
     elem.attachEvent('on' + type, eventHandle);
   } else {
-    elem['on'+type] = eventHandle;
+    elem['on' + type] = eventHandle;
   }
 };
 
@@ -29,11 +29,11 @@ const removeEvent = function(elem, type, eventHandle) {
   } else if (elem.detachEvent) {
     elem.detachEvent('on' + type, eventHandle);
   } else {
-    elem['on'+type] = null;
+    elem['on' + type] = null;
   }
 };
 
-Carousel = React.createClass({
+const Carousel = React.createClass({
   displayName: 'Carousel',
 
   mixins: [tweenState.Mixin],
@@ -84,8 +84,8 @@ Carousel = React.createClass({
 
   getDefaultProps() {
     return {
-      afterSlide: function(){},
-      beforeSlide: function(){},
+      afterSlide: function() { },
+      beforeSlide: function() { },
       cellAlign: 'left',
       cellSpacing: 0,
       data: function() {},
@@ -96,6 +96,7 @@ Carousel = React.createClass({
       framePadding: '0px',
       slideIndex: 0,
       slidesToScroll: 1,
+      slidesToShow: 1,
       slideWidth: 1,
       speed: 500,
       vertical: false,
@@ -240,8 +241,8 @@ Carousel = React.createClass({
     return {
       onMouseDown(e) {
         self.touchObject = {
-            startX: e.clientX,
-            startY: e.clientY
+          startX: e.clientX,
+          startY: e.clientY
         };
 
         self.setState({
@@ -302,7 +303,7 @@ Carousel = React.createClass({
     if (this.clickSafe === true) {
       e.preventDefault();
       e.stopPropagation();
-      
+
       if (e.nativeEvent) {
         e.nativeEvent.stopPropagation();
       }
@@ -422,21 +423,21 @@ Carousel = React.createClass({
   getTargetLeft(touchOffset) {
     var offset;
     switch (this.props.cellAlign) {
-      case 'left': {
-        offset = 0;
-        offset -= this.props.cellSpacing * (this.state.currentSlide);
-        break;
-      }
-      case 'center': {
-        offset = (this.state.frameWidth - this.state.slideWidth) / 2;
-        offset -= this.props.cellSpacing * (this.state.currentSlide);
-        break;
-      }
-      case 'right': {
-        offset = this.state.frameWidth - this.state.slideWidth;
-        offset -= this.props.cellSpacing * (this.state.currentSlide);
-        break;
-      }
+    case 'left': {
+      offset = 0;
+      offset -= this.props.cellSpacing * (this.state.currentSlide);
+      break;
+    }
+    case 'center': {
+      offset = (this.state.frameWidth - this.state.slideWidth) / 2;
+      offset -= this.props.cellSpacing * (this.state.currentSlide);
+      break;
+    }
+    case 'right': {
+      offset = this.state.frameWidth - this.state.slideWidth;
+      offset -= this.props.cellSpacing * (this.state.currentSlide);
+      break;
+    }
     }
 
     if (this.props.vertical) {
@@ -510,7 +511,7 @@ Carousel = React.createClass({
       slideHeight;
 
     slidesToScroll = this.props.slidesToScroll;
-    frame = ReactDom.findDOMNode(this.refs.frame);
+    frame = this.refs.frame;
     firstSlide = frame.childNodes[0].childNodes[0];
     if (firstSlide) {
       firstSlide.style.height = 'auto';
@@ -639,86 +640,86 @@ Carousel = React.createClass({
 
   getDecoratorStyles(position) {
     switch (position) {
-      case 'TopLeft': {
-        return {
-          position: 'absolute',
-          top: 0,
-          left: 0
-        }
+    case 'TopLeft': {
+      return {
+        position: 'absolute',
+        top: 0,
+        left: 0
       }
-      case 'TopCenter': {
-        return {
-          position: 'absolute',
-          top: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          WebkitTransform: 'translateX(-50%)'
-        }
+    }
+    case 'TopCenter': {
+      return {
+        position: 'absolute',
+        top: 0,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        WebkitTransform: 'translateX(-50%)'
       }
-      case 'TopRight': {
-        return {
-          position: 'absolute',
-          top: 0,
-          right: 0
-        }
+    }
+    case 'TopRight': {
+      return {
+        position: 'absolute',
+        top: 0,
+        right: 0
       }
-      case 'CenterLeft': {
-        return {
-          position: 'absolute',
-          top: '50%',
-          left: 0,
-          transform: 'translateY(-50%)',
-          WebkitTransform: 'translateY(-50%)'
-        }
+    }
+    case 'CenterLeft': {
+      return {
+        position: 'absolute',
+        top: '50%',
+        left: 0,
+        transform: 'translateY(-50%)',
+        WebkitTransform: 'translateY(-50%)'
       }
-      case 'CenterCenter': {
-        return {
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%,-50%)',
-          WebkitTransform: 'translate(-50%, -50%)'
-        }
+    }
+    case 'CenterCenter': {
+      return {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%,-50%)',
+        WebkitTransform: 'translate(-50%, -50%)'
       }
-      case 'CenterRight': {
-        return {
-          position: 'absolute',
-          top: '50%',
-          right: 0,
-          transform: 'translateY(-50%)',
-          WebkitTransform: 'translateY(-50%)'
-        }
+    }
+    case 'CenterRight': {
+      return {
+        position: 'absolute',
+        top: '50%',
+        right: 0,
+        transform: 'translateY(-50%)',
+        WebkitTransform: 'translateY(-50%)'
       }
-      case 'BottomLeft': {
-        return {
-          position: 'absolute',
-          bottom: 0,
-          left: 0
-        }
+    }
+    case 'BottomLeft': {
+      return {
+        position: 'absolute',
+        bottom: 0,
+        left: 0
       }
-      case 'BottomCenter': {
-        return {
-          position: 'absolute',
-          bottom: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          WebkitTransform: 'translateX(-50%)'
-        }
+    }
+    case 'BottomCenter': {
+      return {
+        position: 'absolute',
+        bottom: 0,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        WebkitTransform: 'translateX(-50%)'
       }
-      case 'BottomRight': {
-        return {
-          position: 'absolute',
-          bottom: 0,
-          right: 0
-        }
+    }
+    case 'BottomRight': {
+      return {
+        position: 'absolute',
+        bottom: 0,
+        right: 0
       }
-      default: {
-        return {
-          position: 'absolute',
-          top: 0,
-          left: 0
-        }
+    }
+    default: {
+      return {
+        position: 'absolute',
+        top: 0,
+        left: 0
       }
+    }
     }
   }
 
