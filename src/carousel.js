@@ -128,6 +128,9 @@ const Carousel = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
+    this.setState({
+      slideCount: nextProps.children.length
+    });
     this.setDimensions();
     if (nextProps.slideIndex !== this.state.currentSlide) {
       this.goToSlide(nextProps.slideIndex);
@@ -543,7 +546,6 @@ const Carousel = React.createClass({
 
     this.setState({
       frameWidth: frameWidth,
-      slideCount: React.Children.count(this.props.children),
       slideWidth: slideWidth,
       slidesToScroll: slidesToScroll,
       left: this.props.vertical ? 0 : this.getTargetLeft(),
