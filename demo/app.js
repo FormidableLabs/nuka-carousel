@@ -22,16 +22,11 @@ const App = React.createClass({
           <img src="http://placehold.it/1000x400&text=slide1"/>
           <img src="http://placehold.it/1000x400&text=slide2"/>
           <img src="http://placehold.it/1000x400&text=slide3"/>
-          <img src="http://placehold.it/1000x400&text=slide4"/>
-          <img src="http://placehold.it/1000x400&text=slide5"/>
-          <img src="http://placehold.it/1000x400&text=slide6"/>
+          {null}
         </Carousel>
         <button onClick={() => this.setState({ slideIndex: 0 })}>1</button>
         <button onClick={() => this.setState({ slideIndex: 1 })}>2</button>
         <button onClick={() => this.setState({ slideIndex: 2 })}>3</button>
-        <button onClick={() => this.setState({ slideIndex: 3 })}>4</button>
-        <button onClick={() => this.setState({ slideIndex: 4 })}>5</button>
-        <button onClick={() => this.setState({ slideIndex: 5 })}>6</button>
       </div>
     )
   }
