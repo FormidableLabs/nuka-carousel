@@ -575,19 +575,23 @@ const Carousel = React.createClass({
   getListStyles() {
     var listWidth = this.state.slideWidth * React.Children.count(this.props.children);
     var spacingOffset = this.props.cellSpacing * React.Children.count(this.props.children);
+    var transform = 'translate3d(' +
+      this.getTweeningValue('left') + 'px, ' +
+      this.getTweeningValue('top') + 'px, 0)'
     return {
+      transform,
+      WebkitTransform: transform,
+      msTransform: 'translate(' +
+        this.getTweeningValue('left') + 'px, ' +
+        this.getTweeningValue('top') + 'px)',
       position: 'relative',
       display: 'block',
-      top: this.getTweeningValue('top'),
-      left: this.getTweeningValue('left'),
       margin: this.props.vertical ? (this.props.cellSpacing / 2) * -1 + 'px 0px'
                                   : '0px ' + (this.props.cellSpacing / 2) * -1 + 'px',
       padding: 0,
       height: this.props.vertical ? listWidth + spacingOffset : 'auto',
       width: this.props.vertical ? 'auto' : listWidth + spacingOffset,
       cursor: this.state.dragging === true ? 'pointer' : 'inherit',
-      transform: 'translate3d(0, 0, 0)',
-      WebkitTransform: 'translate3d(0, 0, 0)',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box'
     }
@@ -603,6 +607,7 @@ const Carousel = React.createClass({
       padding: 0,
       transform: 'translate3d(0, 0, 0)',
       WebkitTransform: 'translate3d(0, 0, 0)',
+      msTransform: 'translate(0, 0)',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box'
     }
@@ -642,86 +647,101 @@ const Carousel = React.createClass({
 
   getDecoratorStyles(position) {
     switch (position) {
-    case 'TopLeft': {
-      return {
-        position: 'absolute',
-        top: 0,
-        left: 0
+    case 'TopLeft':
+      {
+        return {
+          position: 'absolute',
+          top: 0,
+          left: 0
+        };
       }
-    }
-    case 'TopCenter': {
-      return {
-        position: 'absolute',
-        top: 0,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        WebkitTransform: 'translateX(-50%)'
+    case 'TopCenter':
+      {
+        return {
+          position: 'absolute',
+          top: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          WebkitTransform: 'translateX(-50%)',
+          msTransform: 'translateX(-50%)'
+        };
       }
-    }
-    case 'TopRight': {
-      return {
-        position: 'absolute',
-        top: 0,
-        right: 0
+    case 'TopRight':
+      {
+        return {
+          position: 'absolute',
+          top: 0,
+          right: 0
+        };
       }
-    }
-    case 'CenterLeft': {
-      return {
-        position: 'absolute',
-        top: '50%',
-        left: 0,
-        transform: 'translateY(-50%)',
-        WebkitTransform: 'translateY(-50%)'
+    case 'CenterLeft':
+      {
+        return {
+          position: 'absolute',
+          top: '50%',
+          left: 0,
+          transform: 'translateY(-50%)',
+          WebkitTransform: 'translateY(-50%)',
+          msTransform: 'translateY(-50%)'
+        };
       }
-    }
-    case 'CenterCenter': {
-      return {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%,-50%)',
-        WebkitTransform: 'translate(-50%, -50%)'
+    case 'CenterCenter':
+      {
+        return {
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%,-50%)',
+          WebkitTransform: 'translate(-50%, -50%)',
+          msTransform: 'translate(-50%, -50%)'
+        };
       }
-    }
-    case 'CenterRight': {
-      return {
-        position: 'absolute',
-        top: '50%',
-        right: 0,
-        transform: 'translateY(-50%)',
-        WebkitTransform: 'translateY(-50%)'
+    case 'CenterRight':
+      {
+        return {
+          position: 'absolute',
+          top: '50%',
+          right: 0,
+          transform: 'translateY(-50%)',
+          WebkitTransform: 'translateY(-50%)',
+          msTransform: 'translateY(-50%)'
+        };
       }
-    }
-    case 'BottomLeft': {
-      return {
-        position: 'absolute',
-        bottom: 0,
-        left: 0
+    case 'BottomLeft':
+      {
+        return {
+          position: 'absolute',
+          bottom: 0,
+          left: 0
+        };
       }
-    }
-    case 'BottomCenter': {
-      return {
-        position: 'absolute',
-        bottom: 0,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        WebkitTransform: 'translateX(-50%)'
+    case 'BottomCenter':
+      {
+        return {
+          position: 'absolute',
+          bottom: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          WebkitTransform: 'translateX(-50%)',
+          msTransform: 'translateX(-50%)'
+        };
       }
-    }
-    case 'BottomRight': {
-      return {
-        position: 'absolute',
-        bottom: 0,
-        right: 0
+    case 'BottomRight':
+      {
+        return {
+          position: 'absolute',
+          bottom: 0,
+          right: 0
+        };
       }
-    }
-    default: {
-      return {
-        position: 'absolute',
-        top: 0,
-        left: 0
+    default:
+      {
+        return {
+          position: 'absolute',
+          top: 0,
+          left: 0
+        };
       }
-    }
     }
   }
 
