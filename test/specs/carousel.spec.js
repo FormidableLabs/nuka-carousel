@@ -200,8 +200,8 @@ describe('Carousel', function () {
           component,
           'slider'
         );
-        expect(slider.props.style.backgroundColor).to.equal('black');
-        expect(slider.props.style.display).to.equal('block');
+        expect(slider.style.backgroundColor).to.equal('black');
+        expect(slider.style.display).to.equal('block');
     });
 
     it('should merge provided styles with the defaults', function() {
@@ -217,8 +217,8 @@ describe('Carousel', function () {
           component,
           'slider'
         );
-        expect(slider.props.style.backgroundColor).to.equal('black');
-        expect(slider.props.style.display).to.equal('block');
+        expect(slider.style.backgroundColor).to.equal('black');
+        expect(slider.style.display).to.equal('block');
     });
 
     it('should align to 0 if cellAlign is left', function() {
@@ -234,7 +234,7 @@ describe('Carousel', function () {
           component,
           'slider-list'
         );
-        expect(slider.props.style.transform).to.equal('translate3d(0px, 0px, 0)');
+        expect(slider.style.transform).to.equal('translate3d(0px, 0px, 0)');
     });
 
     it('should align to 200 if cellAlign is center', function() {
@@ -251,7 +251,7 @@ describe('Carousel', function () {
         component,
           'slider-list'
         );
-        expect(slider.props.style.transform).to.equal('translate3d(200px, 0px, 0)');
+        expect(slider.style.transform).to.equal('translate3d(200px, 0px, 0)');
     });
 
     it('should align to 400 if cellAlign is right', function() {
@@ -268,7 +268,7 @@ describe('Carousel', function () {
         component,
           'slider-list'
         );
-        expect(slider.props.style.transform).to.equal('translate3d(400px, 0px, 0)');
+        expect(slider.style.transform).to.equal('translate3d(400px, 0px, 0)');
     });
 
     it('should set slide width to 200 if cellSpacing is not provided', function() {
@@ -285,7 +285,7 @@ describe('Carousel', function () {
         component,
           'slider-slide'
         );
-        expect(slider[0].props.style.width).to.equal(200);
+        expect(slider[0].style.width).to.equal('200px');
     });
 
     it('should set slide width to 180 if cellSpacing is set to 30', function() {
@@ -302,7 +302,7 @@ describe('Carousel', function () {
         component,
           'slider-slide'
         );
-        expect(slider[0].props.style.width).to.equal(180);
+        expect(slider[0].style.width).to.equal('180px');
     });
 
     it('should not add mouse handlers if dragging is false', function() {
@@ -319,7 +319,7 @@ describe('Carousel', function () {
         component,
           'slider-frame'
         );
-        expect(frame.props.onMouseDown).to.be.undefined;
+        expect(frame.onMouseDown).to.be.undefined;
     });
 
     it('should add mouse handlers if dragging is true', function() {
@@ -336,7 +336,7 @@ describe('Carousel', function () {
         component,
           'slider-frame'
         );
-        expect(frame.props.onMouseDown).to.be.defined;
+        expect(frame.onMouseDown).to.be.defined;
     });
 
     it('should add frame margin if framePadding is supplied a value', function() {
@@ -353,7 +353,7 @@ describe('Carousel', function () {
         component,
           'slider-frame'
         );
-        expect(frame.props.style.margin).to.equal('40px');
+        expect(frame.style.margin).to.equal('40px');
     });
 
     it('should set slideWidth to 1000 if slidesToShow is 1', function() {
@@ -371,7 +371,7 @@ describe('Carousel', function () {
           'slider-slide'
         );
 
-        expect(slide[0].props.style.width).to.equal(1000);
+        expect(slide[0].style.width).to.equal('1000px');
     });
 
     it('should set slideWidth to 200 if slidesToShow is 3', function() {
@@ -389,7 +389,7 @@ describe('Carousel', function () {
           'slider-slide'
         );
 
-        expect(slide[0].props.style.width).to.equal(200);
+        expect(slide[0].style.width).to.equal('200px');
     });
 
     it('should have currentSlide equal 2 for 4 slides if slidesToShow is 2, slidesToScroll is 2, and it advances', function() {
