@@ -640,7 +640,7 @@ const Carousel = React.createClass({
       height: 'auto',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
-      visibility: this.state.slideWidth ? 'visible' : 'hidden'
+      visibility: this.state.slideWidth ? 'inherit' : 'hidden'
     }
   },
 
