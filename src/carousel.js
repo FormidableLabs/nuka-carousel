@@ -580,14 +580,14 @@ const Carousel = React.createClass({
     var listWidth = this.state.slideWidth * React.Children.toArray(this.props.children).filter(c => React.isValidElement(c)).length;
     var spacingOffset = this.props.cellSpacing * React.Children.toArray(this.props.children).filter(c => React.isValidElement(c)).length;
     var transform = 'translate3d(' +
-      this.getTweeningValue('left') + 'px, ' +
-      this.getTweeningValue('top') + 'px, 0)'
+      Math.round(this.getTweeningValue('left')) + 'px, ' +
+      Math.round(this.getTweeningValue('top')) + 'px, 0)';
     return {
       transform,
       WebkitTransform: transform,
       msTransform: 'translate(' +
-        this.getTweeningValue('left') + 'px, ' +
-        this.getTweeningValue('top') + 'px)',
+        Math.round(this.getTweeningValue('left')) + 'px, ' +
+        Math.round(this.getTweeningValue('top')) + 'px)',
       position: 'relative',
       display: 'block',
       margin: this.props.vertical ? (this.props.cellSpacing / 2) * -1 + 'px 0px'
