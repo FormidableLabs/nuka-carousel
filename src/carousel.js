@@ -104,7 +104,7 @@ const Carousel = React.createClass({
       vertical: false,
       width: '100%',
       autoplay: false,
-      autoplaySpeed: 300
+      autoplaySpeed: 3000
     }
   },
 
@@ -406,10 +406,7 @@ const Carousel = React.createClass({
   },
 
   nextSlide(auto) {
-    console.log("NEXXT SLIDE");
-    if (auto) {
-      // Do nothing 
-    } else {
+    if (!auto) {
       this.clearAutoPlay(); 
     }
     var childrenCount = React.Children.count(this.props.children);

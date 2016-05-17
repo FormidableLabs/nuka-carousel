@@ -52,7 +52,7 @@ Now, you can access the application on  your localhost at following url: <a href
 
 `autoplay`
 ```
-<Carousel autoplay={true}>
+<Carousel autoplay={true} autoplaySpeed={3000}>
   ...
 </Carousel>
 ```
