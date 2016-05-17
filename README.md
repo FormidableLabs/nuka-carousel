@@ -48,6 +48,15 @@ The demo can be launched on local machine via `webpack-dev-server`. Run the foll
 ```
 Now, you can access the application on  your localhost at following url: <a href="http://localhost:8080/demo" target="_blank">Demo</a>
 
+###Options
+
+`autoplay`
+```
+<Carousel autoplay={true}>
+  ...
+</Carousel>
+```
+
 ###Props
 
 ####afterSlide
