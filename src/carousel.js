@@ -407,7 +407,7 @@ const Carousel = React.createClass({
 
   nextSlide(auto) {
     if (!auto) {
-      this.clearAutoPlay(); 
+      this.clearAutoPlay();
     }
     var childrenCount = React.Children.count(this.props.children);
     if (this.state.currentSlide >= childrenCount - this.props.slidesToShow) {
@@ -472,16 +472,16 @@ const Carousel = React.createClass({
       addEvent(window, 'resize', self.onResize);
       addEvent(document, 'readystatechange', self.onReadyStateChange);
 
-      if(self.props.autoplay) {
+      if (self.props.autoplay) {
         self.autoPlay();
-      } 
+      }
     }
   },
 
   autoPlay() {
     var self = this;
     self.autoPlayInterval = setInterval(function() {
-     self.nextSlide(true)
+      self.nextSlide(true);
     }, self.props.autoplaySpeed);
   },
 
@@ -506,7 +506,7 @@ const Carousel = React.createClass({
     if (ExecutionEnvironment.canUseDOM) {
       removeEvent(window, 'resize', self.onResize);
       removeEvent(document, 'readystatechange', self.onReadyStateChange);
-      if(self.props.autoplay) {
+      if (self.props.autoplay) {
         self.clearAutoPlay();
       }
     }
