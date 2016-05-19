@@ -25,6 +25,7 @@ const App = React.createClass({
           <img src="http://placehold.it/1000x400&text=slide4"/>
           <img src="http://placehold.it/1000x400&text=slide5"/>
           <img src="http://placehold.it/1000x400&text=slide6"/>
+          {null}
         </Carousel>
         <button onClick={() => this.setState({ slideIndex: 0 })}>1</button>
         <button onClick={() => this.setState({ slideIndex: 1 })}>2</button>
