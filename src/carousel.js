@@ -483,8 +483,13 @@ const Carousel = React.createClass({
 
   formatChildren(children) {
     var self = this;
+
+    const { currentSlide } = this.state;
+    const { slidesToShow } = this.props;
+
     return React.Children.map(children, function(child, index) {
-      return <li className="slider-slide" style={self.getSlideStyles()} key={index}>{child}</li>
+      let visible = index >= currentSlide && index < currentSlide + slidesToShow;
+      return <li className={'slider-slide' + (visible ? ' slide-visible' : '')} style={self.getSlideStyles()} key={index}>{child}</li>
     });
   },
 
