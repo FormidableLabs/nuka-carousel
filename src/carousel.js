@@ -68,6 +68,8 @@ const Carousel = React.createClass({
     initialSlideHeight: React.PropTypes.number,
     initialSlideWidth: React.PropTypes.number,
     slideIndex: React.PropTypes.number,
+    autoplay: React.PropTypes.bool,
+    autoplaySpeed: React.PropTypes.number,
     slidesToShow: React.PropTypes.number,
     slidesToScroll: React.PropTypes.oneOfType([
       React.PropTypes.number,
@@ -100,7 +102,9 @@ const Carousel = React.createClass({
       slideWidth: 1,
       speed: 500,
       vertical: false,
-      width: '100%'
+      width: '100%',
+      autoplay: false,
+      autoplaySpeed: 3000
     }
   },
 
@@ -113,7 +117,9 @@ const Carousel = React.createClass({
       slideCount: 0,
       slidesToScroll: this.props.slidesToScroll,
       slideWidth: 0,
-      top: 0
+      top: 0,
+      autoplay: this.props.autoplay,
+      autoplaySpeed: this.props.autoplaySpeed
     }
   },
 
@@ -399,7 +405,10 @@ const Carousel = React.createClass({
     });
   },
 
-  nextSlide() {
+  nextSlide(auto) {
+    if (!auto) {
+      this.clearAutoPlay();
+    }
     var childrenCount = React.Children.count(this.props.children);
     if (this.state.currentSlide >= childrenCount - this.props.slidesToShow) {
       return;
@@ -462,6 +471,25 @@ const Carousel = React.createClass({
     if (ExecutionEnvironment.canUseDOM) {
       addEvent(window, 'resize', self.onResize);
       addEvent(document, 'readystatechange', self.onReadyStateChange);
+
+      if (self.props.autoplay) {
+        self.autoPlay();
+      }
+    }
+  },
+
+  autoPlay() {
+    var self = this;
+    self.autoPlayInterval = setInterval(function() {
+      self.nextSlide(true);
+    }, self.props.autoplaySpeed);
+  },
+
+  clearAutoPlay() {
+    var self = this;
+    if (typeof self.autoPlayInterval !== 'undefined') {
+      clearInterval(self.autoPlayInterval);
+      self.setState({autplay: false});
     }
   },
 
@@ -478,6 +506,9 @@ const Carousel = React.createClass({
     if (ExecutionEnvironment.canUseDOM) {
       removeEvent(window, 'resize', self.onResize);
       removeEvent(document, 'readystatechange', self.onReadyStateChange);
+      if (self.props.autoplay) {
+        self.clearAutoPlay();
+      }
     }
   },
 
