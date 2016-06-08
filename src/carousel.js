@@ -65,6 +65,7 @@ const Carousel = React.createClass({
     easing: React.PropTypes.string,
     edgeEasing: React.PropTypes.string,
     framePadding: React.PropTypes.string,
+    frameOverflow: React.PropTypes.string,
     initialSlideHeight: React.PropTypes.number,
     initialSlideWidth: React.PropTypes.number,
     slideIndex: React.PropTypes.number,
@@ -94,6 +95,7 @@ const Carousel = React.createClass({
       easing: 'easeOutCirc',
       edgeEasing: 'easeOutElastic',
       framePadding: '0px',
+      frameOverflow: 'hidden',
       slideIndex: 0,
       slidesToScroll: 1,
       slidesToShow: 1,
@@ -323,9 +325,14 @@ const Carousel = React.createClass({
       this.clickSafe = false;
     }
 
-    if (this.touchObject.length > (this.state.slideWidth / this.props.slidesToShow) / 5) {
+    var slidesToShow = this.props.slidesToShow;
+    if (this.props.slidesToScroll === 'auto') {
+      slidesToShow = this.state.slidesToScroll;
+    }
+
+    if (this.touchObject.length > (this.state.slideWidth / slidesToShow) / 5) {
       if (this.touchObject.direction === 1) {
-        if (this.state.currentSlide >= React.Children.count(this.props.children) - this.props.slidesToShow) {
+        if (this.state.currentSlide >= React.Children.count(this.props.children) - slidesToShow) {
           this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
         } else {
           this.nextSlide();
@@ -401,11 +408,14 @@ const Carousel = React.createClass({
 
   nextSlide() {
     var childrenCount = React.Children.count(this.props.children);
-    if (this.state.currentSlide >= childrenCount - this.props.slidesToShow) {
+    var slidesToShow = this.props.slidesToShow;
+    if (this.props.slidesToScroll === 'auto') {
+      slidesToShow = this.state.slidesToScroll;
+    }
+    if (this.state.currentSlide >= childrenCount - slidesToShow) {
       return;
     }
-
-    this.goToSlide(Math.min(this.state.currentSlide + this.state.slidesToScroll, childrenCount - this.props.slidesToShow));
+    this.goToSlide(Math.min(this.state.currentSlide + this.state.slidesToScroll, childrenCount - slidesToShow));
   },
 
   previousSlide() {
@@ -450,9 +460,17 @@ const Carousel = React.createClass({
       offset = offset / 2;
     }
 
+    var left = this.state.slideWidth * this.state.currentSlide;
+
+    var lastSlide = this.state.currentSlide + this.state.slidesToScroll >= this.state.slideCount;
+
+    if (lastSlide && this.props.slideWidth !== 1) {
+      left = (this.state.slideWidth * this.state.slideCount) - this.state.frameWidth;
+    }
+
     offset -= touchOffset || 0;
 
-    return ((this.state.slideWidth * this.state.currentSlide) - offset) * -1;
+    return (left - offset) * -1;
   },
 
   // Bootstrapping
@@ -606,7 +624,7 @@ const Carousel = React.createClass({
     return {
       position: 'relative',
       display: 'block',
-      overflow: 'hidden',
+      overflow: this.props.frameOverflow,
       height: this.props.vertical ? this.state.frameWidth || 'initial' : 'auto',
       margin: this.props.framePadding,
       padding: 0,
