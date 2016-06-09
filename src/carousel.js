@@ -507,7 +507,7 @@ const Carousel = React.createClass({
 
     var lastSlide = target + this.state.slidesToScroll >= this.state.slideCount;
 
-    if (lastSlide && this.props.slideWidth !== 1) {
+    if (lastSlide && this.props.slideWidth !== 1 && !this.props.wrapAround) {
       left = (this.state.slideWidth * this.state.slideCount) - this.state.frameWidth;
     }
 
@@ -707,23 +707,22 @@ const Carousel = React.createClass({
   getSlideTargetPosition(index, positionValue) {
     var slidesToShow = (this.state.frameWidth / this.state.slideWidth);
     var targetPosition = (this.state.slideWidth + this.props.cellSpacing) * index;
-    var behindBeginning = positionValue > 0;
     var end = ((this.state.slideWidth + this.props.cellSpacing) * slidesToShow) * -1;
-    var afterEnd = positionValue < end;
-    var slidesOver = null;
 
-    console.log(this.state.frameWidth / this.state.slideWidth)
-    console.log(positionValue, end, this.state.slideWidth);
-
-    if (behindBeginning && this.props.wrapAround) {
-      slidesOver = Math.ceil(positionValue / this.state.slideWidth);
-      if (this.state.slideCount - slidesOver <= index) {
+    if (this.props.wrapAround) {
+      var slidesBefore = Math.ceil(positionValue / (this.state.slideWidth));
+      if (this.state.slideCount - slidesBefore <= index) {
         return (this.state.slideWidth + this.props.cellSpacing) *
           (this.state.slideCount - index) * -1;
       }
-    } else if (afterEnd && this.props.wrapAround) {
-      slidesOver = Math.ceil((Math.abs(positionValue) - Math.abs(end)) / this.state.slideWidth)
-      if (index <= slidesOver - 1) {
+
+      var slidesAfter = Math.ceil((Math.abs(positionValue) - Math.abs(end)) / this.state.slideWidth);
+
+      if (this.state.slideWidth !== 1) {
+        slidesAfter = Math.ceil((Math.abs(positionValue) - (this.state.slideWidth)) / this.state.slideWidth);
+      }
+
+      if (index <= slidesAfter - 1) {
         return (this.state.slideWidth + this.props.cellSpacing) * (this.state.slideCount + index);
       }
     }
