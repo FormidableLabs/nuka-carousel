@@ -119,7 +119,10 @@ Animation easing function. See valid easings here: [https://github.com/chenglou/
 
 Used to set the margin of the slider frame. Accepts any string dimension value such as `"0px 20px"` or `"500px"`.
 
-Enable mouse swipe/dragging
+####frameOverflow
+`React.PropTypes.string`
+
+Used to set overflow style property on slider frame. Defaults to `hidden`.
 
 ####edgeEasing
 `React.PropTypes.string`
@@ -176,6 +179,11 @@ Enable the slides to transition vertically.
 `React.PropTypes.string`
 
 Used to hardcode the slider width. Accepts any string dimension value such as `"80%"` or `"500px"`.
+
+####wrapAround
+`React.PropTypes.bool`
+
+Sets infinite wrapAround mode. Defaults to `false`
 
 ###ControllerMixin
 
