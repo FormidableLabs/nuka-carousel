@@ -504,6 +504,9 @@ const Carousel = React.createClass({
     if (this.props.wrapAround) {
       this.goToSlide(this.state.currentSlide + this.state.slidesToScroll);
     } else {
+      if (this.props.slideWidth !== 1) {
+        return this.goToSlide(this.state.currentSlide + this.state.slidesToScroll);
+      }
       this.goToSlide(
         Math.min(this.state.currentSlide + this.state.slidesToScroll, childrenCount - slidesToShow)
       );
