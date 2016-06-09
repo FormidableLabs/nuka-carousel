@@ -55,6 +55,16 @@ Now, you can access the application on  your localhost at following url: <a href
 
 Hook to be called after a slide is changed.
 
+####autoplay
+`React.PropTypes.bool`
+
+Autoplay mode active. Defaults to false.
+
+####autoplayInterval
+`React.PropTypes.number`
+
+Interval for autoplay iteration. Defaults to 3000.
+
 ####beforeSlide
 `React.PropTypes.func`
 

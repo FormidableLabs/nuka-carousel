@@ -40,6 +40,8 @@ const Carousel = React.createClass({
 
   propTypes: {
     afterSlide: React.PropTypes.func,
+    autoplay: React.PropTypes.bool,
+    autoplayInterval: React.PropTypes.number,
     beforeSlide: React.PropTypes.func,
     cellAlign: React.PropTypes.oneOf(['left', 'center', 'right']),
     cellSpacing: React.PropTypes.number,
@@ -87,6 +89,8 @@ const Carousel = React.createClass({
   getDefaultProps() {
     return {
       afterSlide: function() { },
+      autoplay: false,
+      autoplayInterval: 3000,
       beforeSlide: function() { },
       cellAlign: 'left',
       cellSpacing: 0,
@@ -129,6 +133,9 @@ const Carousel = React.createClass({
     this.setDimensions();
     this.bindEvents();
     this.setExternalData();
+    if (this.props.autoplay) {
+      this.startAutoplay();
+    }
   },
 
   componentWillReceiveProps(nextProps) {
@@ -138,6 +145,13 @@ const Carousel = React.createClass({
     this.setDimensions(nextProps);
     if (nextProps.slideIndex !== this.state.currentSlide) {
       this.goToSlide(nextProps.slideIndex);
+    }
+    if (this.props.autoplay !== nextProps.autoplay) {
+      if (nextProps.autoplay) {
+        this.startAutoplay();
+      } else {
+        this.stopAutoplay();
+      }
     }
   },
 
@@ -201,6 +215,7 @@ const Carousel = React.createClass({
           startX: e.touches[0].pageX,
           startY: e.touches[0].pageY
         }
+        self.handleMouseOver();
       },
       onTouchMove(e) {
         var direction = self.swipeDirection(
@@ -233,6 +248,7 @@ const Carousel = React.createClass({
       },
       onTouchEnd(e) {
         self.handleSwipe(e);
+        self.handleMouseOut();
       },
       onTouchCancel(e) {
         self.handleSwipe(e);
@@ -250,6 +266,12 @@ const Carousel = React.createClass({
     }
 
     return {
+      onMouseOver() {
+        self.handleMouseOver();
+      },
+      onMouseOut() {
+        self.handleMouseOut();
+      },
       onMouseDown(e) {
         self.touchObject = {
           startX: e.clientX,
@@ -307,6 +329,20 @@ const Carousel = React.createClass({
 
         self.handleSwipe(e);
       }
+    }
+  },
+
+  handleMouseOver() {
+    if (this.props.autoplay) {
+      this.autoplayPaused = true;
+      this.stopAutoplay();
+    }
+  },
+
+  handleMouseOut() {
+    if (this.props.autoplay && this.autoplayPaused) {
+      this.startAutoplay();
+      this.autoplayPaused = null;
     }
   },
 
@@ -391,6 +427,25 @@ const Carousel = React.createClass({
     }
     return 0;
 
+  },
+
+  autoplayIterator() {
+    if (this.props.wrapAround) {
+      return this.nextSlide();
+    }
+    if (this.state.currentSlide !== this.state.slideCount - this.state.slidesToShow) {
+      this.nextSlide();
+    } else {
+      this.stopAutoplay();
+    }
+  },
+
+  startAutoplay() {
+    this.autoplayID = setInterval(this.autoplayIterator, this.props.autoplayInterval);
+  },
+
+  stopAutoplay() {
+    this.autoplayID && clearInterval(this.autoplayID);
   },
 
   // Action Methods
