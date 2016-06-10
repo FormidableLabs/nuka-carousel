@@ -444,6 +444,13 @@ const Carousel = React.createClass({
     this.autoplayID = setInterval(this.autoplayIterator, this.props.autoplayInterval);
   },
 
+  resetAutoplay() {
+    if (this.props.autoplay && !this.autoplayPaused) {
+      this.stopAutoplay();
+      this.startAutoplay();
+    }
+  },
+
   stopAutoplay() {
     this.autoplayID && clearInterval(this.autoplayID);
   },
@@ -462,6 +469,7 @@ const Carousel = React.createClass({
           self.animateSlide(null, null, self.getTargetLeft(null, index), function() {
             self.animateSlide(null, 0.01);
             self.props.afterSlide(0);
+            self.resetAutoplay();
             self.setExternalData();
           });
         });
@@ -474,6 +482,7 @@ const Carousel = React.createClass({
           self.animateSlide(null, null, self.getTargetLeft(null, index), function() {
             self.animateSlide(null, 0.01);
             self.props.afterSlide(endSlide);
+            self.resetAutoplay();
             self.setExternalData();
           });
         });
@@ -487,6 +496,7 @@ const Carousel = React.createClass({
     }, function() {
       self.animateSlide();
       this.props.afterSlide(index);
+      self.resetAutoplay();
       self.setExternalData();
     });
   },
