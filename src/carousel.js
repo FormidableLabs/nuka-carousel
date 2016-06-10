@@ -576,7 +576,7 @@ const Carousel = React.createClass({
     var lastSlide = target + this.state.slidesToScroll >= this.state.slideCount;
 
 
-    if (lastSlide && this.props.slideWidth !== 1 && !this.props.wrapAround) {
+    if (lastSlide && this.props.slideWidth !== 1 && !this.props.wrapAround && this.props.slidesToScroll === 'auto') {
       left = (this.state.slideWidth * this.state.slideCount) - this.state.frameWidth;
       offset = 0;
       offset -= this.props.cellSpacing * (this.state.slideCount - 1);
