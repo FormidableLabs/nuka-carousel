@@ -575,8 +575,11 @@ const Carousel = React.createClass({
 
     var lastSlide = target + this.state.slidesToScroll >= this.state.slideCount;
 
+
     if (lastSlide && this.props.slideWidth !== 1 && !this.props.wrapAround) {
-      left = (this.state.slideWidth * this.state.slideCount) - this.state.frameWidth + this.props.cellSpacing;
+      left = (this.state.slideWidth * this.state.slideCount) - this.state.frameWidth;
+      offset = 0;
+      offset -= this.props.cellSpacing * (this.state.slideCount - 1);
     }
 
     offset -= touchOffset || 0;
