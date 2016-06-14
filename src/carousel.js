@@ -157,6 +157,7 @@ const Carousel = React.createClass({
 
   componentWillUnmount() {
     this.unbindEvents();
+    this.stopAutoplay();
   },
 
   render() {
