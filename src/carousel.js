@@ -143,7 +143,7 @@ const Carousel = React.createClass({
       slideCount: nextProps.children.length
     });
     this.setDimensions(nextProps);
-    if (nextProps.slideIndex !== this.state.currentSlide) {
+    if (nextProps.slideIndex && nextProps.slideIndex !== this.state.currentSlide) {
       this.goToSlide(nextProps.slideIndex);
     }
     if (this.props.autoplay !== nextProps.autoplay) {
