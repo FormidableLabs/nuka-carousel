@@ -373,7 +373,7 @@ const Carousel = React.createClass({
     if (this.touchObject.length > (this.state.slideWidth / slidesToShow) / 5) {
       if (this.touchObject.direction === 1) {
         if (
-          this.state.currentSlide >= React.Children.count(this.props.children) - slidesToShow &&
+          this.state.currentSlide >= (React.Children.count(this.props.children) - 1) &&
           !this.props.wrapAround
         ) {
           this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
