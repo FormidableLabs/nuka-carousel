@@ -801,6 +801,7 @@ const Carousel = React.createClass({
     var height = 'auto';
     
     if (this.props.initialSlideHeight) {
+      console.log('setting height');
       height = this.props.initialSlideHeight + 'px';
     }
     
