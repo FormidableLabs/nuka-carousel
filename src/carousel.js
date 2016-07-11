@@ -735,12 +735,18 @@ const Carousel = React.createClass({
     }
   },
 
-  getFrameStyles() {
+  getFrameStyles() 
+    var height = 'auto';
+    if (this.props.initialSlideHeight) {
+      console.log('beep');
+      height = initialSlideHeight + 'px';
+    }
+  
     return {
       position: 'relative',
       display: 'block',
       overflow: this.props.frameOverflow,
-      height: this.props.vertical ? this.state.frameWidth || 'initial' : 'auto',
+      height: this.props.vertical ? this.state.frameWidth || 'initial' : height,
       margin: this.props.framePadding,
       padding: 0,
       transform: 'translate3d(0, 0, 0)',
