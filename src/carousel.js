@@ -798,11 +798,17 @@ const Carousel = React.createClass({
   },
 
   getSliderStyles() {
+    var height = 'auto';
+    
+    if (this.props.initialSlideHeight) {
+      height = this.props.initialSlideHeight + 'px';
+    }
+    
     return {
       position: 'relative',
       display: 'block',
       width: this.props.width,
-      height: 'auto',
+      height: height,
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
       visibility: this.state.slideWidth ? 'visible' : 'hidden'
