@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "exenv": "^1.2.0",
-    "object-assign": "^4.0.1",
+    "object-assign": "^4.1.0",
     "kw-react-tween-state": "^0.1.5"
   },
   "devDependencies": {
