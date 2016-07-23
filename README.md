@@ -68,7 +68,12 @@ Interval for autoplay iteration. Defaults to 3000.
 ####beforeSlide
 `React.PropTypes.func`
 
-Hook to be called before a slide is changed.
+Hook to be called before a slide is changed. Return `false` if you want to prevent the carousel from transitioning.
+
+####alwaysAllowBackSlide
+`React.PropTypes.bool`
+
+Overrides a false `beforeSlide` hook if the carousel is moving backwards.  Defaults to `true`.
 
 ####cellAlign
 `React.PropTypes.oneOf(['left', 'center', 'right'])`
