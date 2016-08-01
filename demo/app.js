@@ -56,6 +56,22 @@ const LazyCarousel = ({count, ...props}) => {
   );
 };
 
+const VariableHeightCarousel = props => {
+  const Slide = props => <div style={{border: '5px', 'border-style': 'outset'}} {...props} />;
+
+  return <Carousel {...props}>
+    <Slide>Hello</Slide>
+    <Slide>Sometimes one slide needs to wrap more text than others do.</Slide>
+    <Slide>Other times they may not.</Slide>
+    <Slide>We would like the slider to render nicely...</Slide>
+    <Slide>either way.</Slide>
+    <Slide>We may even<ul><li>want more complicated slides</li><li>with nested elements</li></ul>sometimes</Slide>
+    <Slide>or not</Slide>
+    <Slide>just filling in space now...</Slide>
+    <Slide>because I have nothing more to say here</Slide>
+  </Carousel>;
+};
+
 // TODO: Is there a cleaner way to hide the dots?
 const noDots = Carousel.getDefaultProps().decorators.slice(0, 2);
 
@@ -75,6 +91,12 @@ const App = () => (
 
     <h1>Disable dragging</h1>
     <LazyCarousel count={6} dragging={false}/>
+
+    <h1>Varying heights</h1>
+    <VariableHeightCarousel slidesToShow={4} slideHeight='auto'/>
+
+    <h1>Vertical slider</h1>
+    <LazyCarousel count={10} vertical={true} slidesToShow={3}/>
   </div>
 );
 
