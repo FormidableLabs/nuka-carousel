@@ -57,7 +57,7 @@ const LazyCarousel = ({count, ...props}) => {
 };
 
 const VariableHeightCarousel = props => {
-  const Slide = props => <div style={{border: '5px', 'border-style': 'outset'}} {...props} />;
+  const Slide = props => <div style={{border: '5px', borderStyle: 'outset'}} {...props} />;
 
   return <Carousel {...props}>
     <Slide>Hello</Slide>
@@ -93,7 +93,10 @@ const App = () => (
     <LazyCarousel count={6} dragging={false}/>
 
     <h1>Varying heights</h1>
-    <VariableHeightCarousel slidesToShow={4} slideHeight='auto'/>
+    <VariableHeightCarousel slidesToShow={4}/>
+
+    <h1>Varying heights (adaptive)</h1>
+    <VariableHeightCarousel slidesToShow={4} heightMode='adaptive'/>
 
     <h1>Vertical slider</h1>
     <LazyCarousel count={10} vertical={true} slidesToShow={3}/>
