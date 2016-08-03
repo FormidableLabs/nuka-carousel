@@ -6,7 +6,6 @@ import tweenState from 'kw-react-tween-state';
 import decorators from './decorators';
 import assign from 'object-assign';
 import ExecutionEnvironment from 'exenv';
-import {isEqual} from 'lodash';
 
 const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof (elem) === 'undefined') {
@@ -140,9 +139,9 @@ const Carousel = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props, nextProps)) {
+    //if (!isEqual(this.props, nextProps)) {
       this.setState({
-        slideCount: nextProps.children.length
+        slideCount: React.Children.count(nextProps.children)
       });
       if (this.props.slidesToShow !== nextProps.slidesToShow) {
         this.setInitialDimensions(nextProps);
@@ -158,7 +157,7 @@ const Carousel = React.createClass({
           this.stopAutoplay();
         }
       }
-    }
+    //}
   },
 
   componentWillUnmount() {
