@@ -37,6 +37,7 @@
     "karma-script-launcher": "~0.1.0",
     "karma-sinon-chai": "^1.1.0",
     "karma-webpack": "^1.7.0",
+    "lodash": "^4.13.1",
     "mocha": "^2.3.3",
     "phantomjs": "^1.9.18",
     "react": "^15.0.1",

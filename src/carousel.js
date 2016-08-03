@@ -126,7 +126,7 @@ const Carousel = React.createClass({
   },
 
   componentWillMount() {
-    this.setInitialDimensions();
+    this.setInitialDimensions(this.props);
   },
 
   componentDidMount() {
@@ -139,20 +139,25 @@ const Carousel = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      slideCount: nextProps.children.length
-    });
-    this.setDimensions(nextProps);
-    if (this.props.slideIndex !== nextProps.slideIndex && nextProps.slideIndex !== this.state.currentSlide) {
-      this.goToSlide(nextProps.slideIndex);
-    }
-    if (this.props.autoplay !== nextProps.autoplay) {
-      if (nextProps.autoplay) {
-        this.startAutoplay();
-      } else {
-        this.stopAutoplay();
+    //if (!isEqual(this.props, nextProps)) {
+      this.setState({
+        slideCount: React.Children.count(nextProps.children)
+      });
+      if (this.props.slidesToShow !== nextProps.slidesToShow) {
+        this.setInitialDimensions(nextProps);
       }
-    }
+      this.setDimensions(nextProps);
+      if (nextProps.slideIndex && nextProps.slideIndex !== this.state.currentSlide) {
+        this.goToSlide(nextProps.slideIndex);
+      }
+      if (this.props.autoplay !== nextProps.autoplay) {
+        if (nextProps.autoplay) {
+          this.startAutoplay();
+        } else {
+          this.stopAutoplay();
+        }
+      }
+    //}
   },
 
   componentWillUnmount() {
@@ -617,18 +622,20 @@ const Carousel = React.createClass({
     });
   },
 
-  setInitialDimensions() {
-    var self = this, slideWidth, frameHeight, slideHeight;
+  setInitialDimensions(props = this.props) {
+    var self = this, slideCount, currentSlide, slideWidth, frameHeight, slideHeight;
 
-    slideWidth = this.props.vertical ? (this.props.initialSlideHeight || 0) : (this.props.initialSlideWidth || 0);
-    slideHeight = this.props.initialSlideHeight ? this.props.initialSlideHeight * this.props.slidesToShow : 0;
+    currentSlide = this.state.currentSlide - (this.state.currentSlide % props.slidesToShow);
+    slideWidth = props.vertical ? (props.initialSlideHeight || 0) : (props.initialSlideWidth || 0);
+    slideHeight = props.initialSlideHeight ? props.initialSlideHeight * props.slidesToShow : 0;
 
-    frameHeight = slideHeight + (this.props.cellSpacing * (this.props.slidesToShow - 1));
+    frameHeight = slideHeight + (props.cellSpacing * (props.slidesToShow - 1));
 
     this.setState({
+      currentSlide: currentSlide,
       slideHeight: slideHeight,
-      frameWidth: this.props.vertical ? frameHeight : '100%',
-      slideCount: React.Children.count(this.props.children),
+      frameWidth: props.vertical ? frameHeight : '100%',
+      slideCount: React.Children.count(props.children),
       slideWidth: slideWidth
     }, function() {
       self.setLeft();
