@@ -18,6 +18,7 @@ const ControlledCarousel = React.createClass({
           ref="carousel"
           data={this.setCarouselData.bind(this, 'carousel')}
           slideIndex={this.state.slideIndex}
+          wrapAround={true}
           afterSlide={newSlideIndex => this.setState({ slideIndex: newSlideIndex })}>
           <img src="http://placehold.it/1000x400&text=slide1"/>
           <img src="http://placehold.it/1000x400&text=slide2"/>
