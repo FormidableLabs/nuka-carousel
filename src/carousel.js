@@ -727,7 +727,7 @@ const Carousel = React.createClass({
       margin: this.props.vertical ? (this.props.cellSpacing / 2) * -1 + 'px 0px'
                                   : '0px ' + (this.props.cellSpacing / 2) * -1 + 'px',
       padding: 0,
-      height: this.props.vertical ? listWidth + spacingOffset : this.state.slideHeight,
+      height: this.props.vertical ? listWidth + spacingOffset : 'auto',
       width: this.props.vertical ? 'auto' : listWidth + spacingOffset,
       cursor: this.state.dragging === true ? 'pointer' : 'inherit',
       boxSizing: 'border-box',
@@ -754,7 +754,7 @@ const Carousel = React.createClass({
   getSlideStyles(index, positionValue) {
     var targetPosition = this.getSlideTargetPosition(index, positionValue);
     return {
-      position: 'absolute',
+      position: 'relative',
       left: this.props.vertical ? 0 : targetPosition,
       top: this.props.vertical ? targetPosition : 0,
       display: this.props.vertical ? 'block' : 'inline-block',
@@ -773,14 +773,13 @@ const Carousel = React.createClass({
 
   getSlideTargetPosition(index, positionValue) {
     var slidesToShow = (this.state.frameWidth / this.state.slideWidth);
-    var targetPosition = (this.state.slideWidth + this.props.cellSpacing) * index;
+    var targetPosition = 0;
     var end = ((this.state.slideWidth + this.props.cellSpacing) * slidesToShow) * -1;
 
     if (this.props.wrapAround) {
       var slidesBefore = Math.ceil(positionValue / (this.state.slideWidth));
       if (this.state.slideCount - slidesBefore <= index) {
-        return (this.state.slideWidth + this.props.cellSpacing) *
-          (this.state.slideCount - index) * -1;
+        return (this.state.slideWidth + this.props.cellSpacing) * -(index + 1);
       }
 
       var slidesAfter = Math.ceil((Math.abs(positionValue) - Math.abs(end)) / this.state.slideWidth);
@@ -790,7 +789,7 @@ const Carousel = React.createClass({
       }
 
       if (index <= slidesAfter - 1) {
-        return (this.state.slideWidth + this.props.cellSpacing) * (this.state.slideCount + index);
+        return (this.state.slideWidth + this.props.cellSpacing) * this.state.slideCount;
       }
     }
 
