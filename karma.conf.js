@@ -69,7 +69,10 @@ module.exports = function (config) {
       require('karma-webpack')
     ],
     coverageReporter: {
-      type : 'text'
+      reporters: [
+        {type : 'text'},
+        {type : 'html', subdir: 'coverage/'},
+      ],
     },
     captureTimeout: 60000,
     singleRun: true
