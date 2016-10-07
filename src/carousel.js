@@ -70,6 +70,7 @@ const Carousel = React.createClass({
     frameOverflow: React.PropTypes.string,
     initialSlideHeight: React.PropTypes.number,
     initialSlideWidth: React.PropTypes.number,
+    lazyLoad: React.PropTypes.bool,
     slideIndex: React.PropTypes.number,
     slidesToShow: React.PropTypes.number,
     slidesToScroll: React.PropTypes.oneOfType([
@@ -612,8 +613,12 @@ const Carousel = React.createClass({
   formatChildren(children) {
     var self = this;
     var positionValue = this.props.vertical ? this.getTweeningValue('top') : this.getTweeningValue('left');
+    const start = Math.max(this.state.currentSlide - this.props.slidesToShow, 0);
+    const end = Math.min(this.state.currentSlide + (2 * this.props.slidesToShow), this.state.slideCount);
     return React.Children.map(children, function(child, index) {
-      return <li className="slider-slide" style={self.getSlideStyles(index, positionValue)} key={index}>{child}</li>
+      if (!self.props.lazyLoad || (start <= index && index < end)) {
+        return <li className="slider-slide" style={self.getSlideStyles(index, positionValue)} key={index}>{child}</li>;
+      }
     });
   },
 
