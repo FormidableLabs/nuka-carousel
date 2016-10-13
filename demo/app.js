@@ -37,10 +37,12 @@ const ControlledCarousel = React.createClass({
   }
 });
 
-const makeChildren = n => {
+const makeChildren = (n, cute) => {
   var children = [];
   for (let i = 0; i < n; i++) {
-    children.push(
+    cute ? children.push(
+      <img src={`https://placekitten.com/500/300`} key={i} />
+    ) : children.push(
       <img key={i} src={`http://placehold.it/1000x400&text=Slide%20${i + 1}`}/>
     );
   }
@@ -52,6 +54,14 @@ const LazyCarousel = ({count, ...props}) => {
   return (
     <Carousel {...props} lazyLoad={true}>
       {makeChildren(count)}
+    </Carousel>
+  );
+};
+
+const CatCarousel = ({count, ...props}) => {
+  return (
+    <Carousel {...props} lazyLoad={true}>
+      {makeChildren(count, true)}
     </Carousel>
   );
 };
@@ -85,6 +95,9 @@ const App = () => (
 
     <h1>Multiple slides</h1>
     <LazyCarousel count={10} slidesToShow={4} slidesToScroll='auto'/>
+
+    <h1>Growing slides</h1>
+    <CatCarousel count={10} growFactor={1.5} slidesToShow={4} slidesToScroll='auto'/>
 
     <h1>Center mode</h1>
     <LazyCarousel count={10} slidesToShow={4} slidesToScroll='auto' cellAlign='center'/>

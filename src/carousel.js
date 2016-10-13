@@ -39,6 +39,7 @@ const Carousel = React.createClass({
   mixins: [tweenState.Mixin],
 
   propTypes: {
+    growFactor: React.PropTypes.number,
     afterSlide: React.PropTypes.func,
     autoplay: React.PropTypes.bool,
     autoplayInterval: React.PropTypes.number,
@@ -90,6 +91,7 @@ const Carousel = React.createClass({
 
   getDefaultProps() {
     return {
+      growFactor: 1,
       afterSlide: function() { },
       autoplay: false,
       autoplayInterval: 3000,
@@ -165,7 +167,7 @@ const Carousel = React.createClass({
 
   render() {
     var self = this;
-    var children = React.Children.count(this.props.children) > 1 ? this.formatChildren(this.props.children) : this.props.children;
+    var children = React.Children.count(this.props.children) > 1 ? this.formatChildren(this.props.children, this) : this.props.children;
     return (
       <div className={['slider', this.props.className || ''].join(' ')} ref="slider" style={assign(this.getSliderStyles(), this.props.style || {})}>
         <div className="slider-frame"
@@ -612,14 +614,14 @@ const Carousel = React.createClass({
     }
   },
 
-  formatChildren(children) {
+  formatChildren(children, slider) {
     var self = this;
     var positionValue = this.props.vertical ? this.getTweeningValue('top') : this.getTweeningValue('left');
     const start = Math.max(this.state.currentSlide - this.props.slidesToShow, 0);
     const end = Math.min(this.state.currentSlide + (2 * this.props.slidesToShow), this.state.slideCount);
     return React.Children.map(children, function(child, index) {
       if (!self.props.lazyLoad || (start <= index && index < end)) {
-        return <li className="slider-slide" style={self.getSlideStyles(index, positionValue)} key={index}>{child}</li>;
+        return <li className="slider-slide" style={self.getSlideStyles(index, positionValue)} onMouseOver={() => slider.setState({hoveredIndex: index})} onMouseOut={() => slider.setState({hoveredIndex: null})} key={index}>{child}</li>;
       }
     });
   },
@@ -769,14 +771,32 @@ const Carousel = React.createClass({
 
   getSlideStyles(index, positionValue) {
     var targetPosition = this.getSlideTargetPosition(index, positionValue);
+    const hoveringLeftEdge = this.state.hoveredIndex === 0 + this.props.slideIndex;
+    const hoveringRightEdge = this.state.hoveredIndex === 4 + this.props.slideIndex;
+    let translateDirection = 0;
+    if (this.state.hoveredIndex !== undefined && this.state.hoveredIndex !== null) {
+      const translateDistance = this.state.slideWidth * (this.props.growFactor - 1) / (hoveringLeftEdge || hoveringRightEdge ? 1 : 2);
+      if (index <= this.state.hoveredIndex) {
+        translateDirection = hoveringLeftEdge ? 0 : -translateDistance;
+      } else {
+        translateDirection = hoveringRightEdge ? 0 : translateDistance;
+      }
+    }
+
+    let width = this.state.slideWidth;
+    if (index === this.state.hoveredIndex) {
+      width = width * this.props.growFactor;
+    }
+
     return {
       position: 'absolute',
-      left: this.props.vertical ? 0 : targetPosition,
+      transition: '0.2s ease-in-out',
+      left: this.props.vertical ? 0 : targetPosition + translateDirection,
       top: this.props.vertical ? targetPosition : 0,
       display: this.props.vertical ? 'block' : 'inline-block',
       listStyleType: 'none',
       verticalAlign: 'top',
-      width: this.props.vertical ? '100%' : this.state.slideWidth,
+      width: this.props.vertical ? '100%' : width,
       height: 'auto',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
