@@ -41,7 +41,7 @@ const makeChildren = (n, cute) => {
   var children = [];
   for (let i = 0; i < n; i++) {
     cute ? children.push(
-      <img src={`https://placekitten.com/500/300`} key={i} />
+      <img style={{margin: '40px 0'}} src={`https://placekitten.com/500/300`} key={i} />
     ) : children.push(
       <img key={i} src={`http://placehold.it/1000x400&text=Slide%20${i + 1}`}/>
     );
