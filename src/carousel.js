@@ -793,6 +793,7 @@ const Carousel = React.createClass({
       transition: '0.2s ease-in-out',
       left: this.props.vertical ? 0 : targetPosition + translateDirection,
       top: this.props.vertical ? targetPosition : 0,
+      transform: index === this.state.hoveredIndex && this.props.growFactor !== 1 ? `translateY(${-this.props.growFactor * 8.25}%)` : null,
       display: this.props.vertical ? 'block' : 'inline-block',
       listStyleType: 'none',
       verticalAlign: 'top',
