@@ -72,6 +72,7 @@ const Carousel = React.createClass({
     initialSlideHeight: React.PropTypes.number,
     initialSlideWidth: React.PropTypes.number,
     lazyLoad: React.PropTypes.bool,
+    scrollMode: React.PropTypes.oneOf(['page', 'remainder']),
     slideIndex: React.PropTypes.number,
     slidesToShow: React.PropTypes.number,
     slidesToScroll: React.PropTypes.oneOfType([
@@ -104,6 +105,7 @@ const Carousel = React.createClass({
       framePadding: '0px',
       frameOverflow: 'hidden',
       heightMode: 'max',
+      scrollMode: 'remainder',
       slideIndex: 0,
       slidesToScroll: 1,
       slidesToShow: 1,
@@ -521,9 +523,13 @@ const Carousel = React.createClass({
       if (this.props.slideWidth !== 1) {
         return this.goToSlide(this.state.currentSlide + this.state.slidesToScroll);
       }
-      this.goToSlide(
-        Math.min(this.state.currentSlide + this.state.slidesToScroll, childrenCount - slidesToShow)
-      );
+
+      // If scrollMode = remainder, only scroll the amount of slides necessary without showing blank slides.
+      if (this.props.scrollMode === 'remainder') {
+        this.goToSlide(Math.min(this.state.currentSlide + this.state.slidesToScroll, childrenCount - slidesToShow))
+      } else if (this.props.scrollMode === 'page') { // Otherwise, slidesToScroll always equals slides to show
+        this.goToSlide(this.state.currentSlide + this.state.slidesToScroll);
+      }
     }
   },
 
@@ -535,7 +541,11 @@ const Carousel = React.createClass({
     if (this.props.wrapAround) {
       this.goToSlide(this.state.currentSlide - this.state.slidesToScroll);
     } else {
-      this.goToSlide(Math.max(0, this.state.currentSlide - this.state.slidesToScroll));
+      if (this.props.scrollMode === 'remainder') {
+        this.goToSlide(Math.max(0, this.state.currentSlide - this.state.slidesToScroll));
+      } else if (this.props.scrollMode === 'page') {
+        this.goToSlide(this.state.currentSlide - this.state.slidesToScroll);
+      }
     }
   },
 
