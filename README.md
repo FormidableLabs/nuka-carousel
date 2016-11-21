@@ -180,6 +180,12 @@ Manually set slideWidth. If you want hard pixel widths, use a string like `slide
 
 Animation duration.
 
+####swiping
+`React.PropTypes.bool`
+
+Enable touch swipe/dragging
+
+
 ####vertical
 `React.PropTypes.bool`
 

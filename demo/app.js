@@ -92,6 +92,9 @@ const App = () => (
     <h1>Disable dragging</h1>
     <LazyCarousel count={6} dragging={false}/>
 
+    <h1>Disable dragging / swipping</h1>
+    <LazyCarousel count={6} dragging={false} swiping={false}/>
+
     <h1>Varying heights</h1>
     <VariableHeightCarousel slidesToShow={4}/>
 

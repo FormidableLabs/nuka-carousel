@@ -289,7 +289,7 @@ describe('Carousel', function () {
 
     it('should add mouse handlers if dragging is true', function() {
         component = ReactDOM.render(
-          React.createElement(carousel, {dragging: false},
+          React.createElement(carousel, {dragging: true},
             React.createElement('p', null, 'Slide 1'),
             React.createElement('p', null, 'Slide 2'),
             React.createElement('p', null, 'Slide 3')
@@ -299,6 +299,34 @@ describe('Carousel', function () {
 
         var frame = getSingleComponentWithClassName(component, 'slider-frame');
         expect(frame.onMouseDown).to.be.defined;
+    });
+
+    it('should not add touch handlers if swiping is false', function() {
+      component = ReactDOM.render(
+        React.createElement(carousel, {swiping: false},
+          React.createElement('p', null, 'Slide 1'),
+          React.createElement('p', null, 'Slide 2'),
+          React.createElement('p', null, 'Slide 3')
+        ),
+        container
+      );
+
+      var frame = getSingleComponentWithClassName(component, 'slider-frame');
+      expect(frame.onTouchStart).to.be.undefined;
+    });
+
+    it('should add touch handlers if swiping is true', function() {
+      component = ReactDOM.render(
+        React.createElement(carousel, {swiping: true},
+          React.createElement('p', null, 'Slide 1'),
+          React.createElement('p', null, 'Slide 2'),
+          React.createElement('p', null, 'Slide 3')
+        ),
+        container
+      );
+
+      var frame = getSingleComponentWithClassName(component, 'slider-frame');
+      expect(frame.onTouchStart).to.be.defined;
     });
 
     it('should add frame margin if framePadding is supplied a value', function() {
