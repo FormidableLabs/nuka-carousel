@@ -88,7 +88,7 @@ const DefaultDecorators = [
           arr.push(i);
         }
 
-        if (arr.slice(-1)[0] !== count - 1 && this.props.scrollMode === 'remainder') {
+        if (arr.slice(-1)[0] !== count - 1 && this.props.scrollMode === 'page') {
           arr.push(count - 1);
         }
 
