@@ -188,6 +188,7 @@ const Carousel = React.createClass({
                 className={'slider-decorator-' + index}
                 key={index}>
                 <Decorator.component
+                  scrollMode={self.props.scrollMode}
                   currentSlide={self.state.currentSlide}
                   slideCount={self.state.slideCount}
                   frameWidth={self.state.frameWidth}
@@ -377,7 +378,6 @@ const Carousel = React.createClass({
 
     if (this.touchObject.length > (this.state.slideWidth / slidesToShow) / 5) {
       if (this.touchObject.direction === 1) {
-        console.log(this.state.currentSlide, React.Children.count(this.props.children));
         if (
           this.state.currentSlide >= (React.Children.count(this.props.children) - 1) &&
           !this.props.wrapAround

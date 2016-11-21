@@ -88,9 +88,10 @@ const DefaultDecorators = [
           arr.push(i);
         }
 
-        if (arr.slice(-1)[0] !== count - 1) {
+        if (arr.slice(-1)[0] !== count - 1 && this.props.scrollMode === 'remainder') {
           arr.push(count - 1);
         }
+
         return arr;
       },
       getListStyles() {
