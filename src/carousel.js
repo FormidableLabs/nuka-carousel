@@ -377,8 +377,9 @@ const Carousel = React.createClass({
 
     if (this.touchObject.length > (this.state.slideWidth / slidesToShow) / 5) {
       if (this.touchObject.direction === 1) {
+        console.log(this.state.currentSlide, React.Children.count(this.props.children));
         if (
-          this.state.currentSlide >= React.Children.count(this.props.children) - slidesToShow &&
+          this.state.currentSlide >= (React.Children.count(this.props.children) - 1) &&
           !this.props.wrapAround
         ) {
           this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
@@ -510,10 +511,12 @@ const Carousel = React.createClass({
   nextSlide() {
     var childrenCount = React.Children.count(this.props.children);
     var slidesToShow = this.props.slidesToShow;
+
     if (this.props.slidesToScroll === 'auto') {
       slidesToShow = this.state.slidesToScroll;
     }
-    if (this.state.currentSlide >= childrenCount - slidesToShow && !this.props.wrapAround) {
+
+    if (this.state.currentSlide > childrenCount && !this.props.wrapAround) {
       return;
     }
 
@@ -526,7 +529,9 @@ const Carousel = React.createClass({
 
       // If scrollMode = remainder, only scroll the amount of slides necessary without showing blank slides.
       if (this.props.scrollMode === 'remainder') {
-        this.goToSlide(Math.min(this.state.currentSlide + this.state.slidesToScroll, childrenCount - slidesToShow))
+        this.goToSlide(
+          Math.min(this.state.currentSlide + this.state.slidesToScroll, childrenCount - 1)
+        );
       } else if (this.props.scrollMode === 'page') { // Otherwise, slidesToScroll always equals slides to show
         this.goToSlide(this.state.currentSlide + this.state.slidesToScroll);
       }
@@ -542,7 +547,18 @@ const Carousel = React.createClass({
       this.goToSlide(this.state.currentSlide - this.state.slidesToScroll);
     } else {
       if (this.props.scrollMode === 'remainder') {
-        this.goToSlide(Math.max(0, this.state.currentSlide - this.state.slidesToScroll));
+        var { currentSlide, slidesToScroll } = this.state;
+        var index = 0;
+
+        while (index < currentSlide) {
+          if (index + slidesToScroll >= currentSlide) {
+            break;
+          }
+
+          index += slidesToScroll;
+        }
+
+        this.goToSlide(index);
       } else if (this.props.scrollMode === 'page') {
         this.goToSlide(this.state.currentSlide - this.state.slidesToScroll);
       }

@@ -33,9 +33,10 @@ const DefaultDecorators = [
   {
     component: React.createClass({
       render() {
+
         return (
           <button
-            style={this.getButtonStyles(this.props.currentSlide + this.props.slidesToScroll >= this.props.slideCount && !this.props.wrapAround)}
+            style={this.getButtonStyles(this.props.currentSlide === this.props.slideCount - 1 && !this.props.wrapAround)}
             onClick={this.handleClick}>NEXT</button>
         )
       },
@@ -82,8 +83,13 @@ const DefaultDecorators = [
       },
       getIndexes(count, inc) {
         var arr = [];
+
         for (var i = 0; i < count; i += inc) {
           arr.push(i);
+        }
+
+        if (arr.slice(-1)[0] !== count - 1) {
+          arr.push(count - 1);
         }
         return arr;
       },
