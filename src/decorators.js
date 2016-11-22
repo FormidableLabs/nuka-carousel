@@ -33,10 +33,21 @@ const DefaultDecorators = [
   {
     component: React.createClass({
       render() {
+        let cellOffsetPosition = this.props.slideCount - 1;
+
+        if (this.props.scrollMode === 'remainder') {
+          switch (this.props.cellAlign) {
+          case 'center':
+            cellOffsetPosition = this.props.slideCount - Math.ceil(this.props.slidesToShow / 2)
+            break;
+          case 'left':
+            cellOffsetPosition = this.props.slideCount - this.props.slidesToShow;
+          }
+        }
 
         return (
           <button
-            style={this.getButtonStyles(this.props.currentSlide === this.props.slideCount - 1 && !this.props.wrapAround)}
+            style={this.getButtonStyles(this.props.currentSlide === cellOffsetPosition && !this.props.wrapAround)}
             onClick={this.handleClick}>NEXT</button>
         )
       },
@@ -82,14 +93,35 @@ const DefaultDecorators = [
         )
       },
       getIndexes(count, inc) {
-        var arr = [];
+        const arr = [];
 
         for (var i = 0; i < count; i += inc) {
           arr.push(i);
         }
 
-        if (arr.slice(-1)[0] !== count - 1 && this.props.scrollMode === 'page') {
+
+
+        if (arr[arr.length - 1] < count - 1) {
           arr.push(count - 1);
+        }
+
+        if (this.props.scrollMode === 'remainder') {
+          if (this.props.cellAlign === 'left') {
+            const offset = this.props.slidesToShow;
+
+            if (arr.indexOf(count - offset) > -1) {
+              console.log('fdfd')
+              arr.pop();
+            } else {
+              arr[arr.length - 1] = count - offset;
+            }
+          } else if (this.props.cellAlign === 'center') {
+            const offset = Math.floor(this.props.slidesToShow / 2);
+            
+            if (arr[arr.length - 1] >= count - offset) {
+              arr[arr.length - 1] = arr[arr.length - 1] - offset;
+            }
+          }
         }
 
         return arr;
