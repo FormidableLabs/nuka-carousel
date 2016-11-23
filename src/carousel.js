@@ -380,8 +380,25 @@ const Carousel = React.createClass({
 
     if (this.touchObject.length > (this.state.slideWidth / slidesToShow) / 5) {
       if (this.touchObject.direction === 1) {
+        let lastPossibleIndex;
+        const count = React.Children.count(this.props.children);
+
+        switch (this.props.cellAlign) {
+        case 'left':
+          lastPossibleIndex = count - this.props.slidesToShow;
+          break;
+        case 'center':
+          lastPossibleIndex =
+            count - Math.ceil(this.props.slidesToShow / 2)
+            - (this.props.slidesToShow % 2 === 0 ? 1 : 0);
+          break;
+        case 'right':
+          lastPossibleIndex = count - 1;
+          break;
+        }
+
         if (
-          this.state.currentSlide >= (React.Children.count(this.props.children) - (this.props.scrollMode === 'remainder' ? this.state.slidesToScroll : 1)) &&
+          this.state.currentSlide >= (this.props.scrollMode === 'remainder' ? lastPossibleIndex : count - 1) &&
           !this.props.wrapAround
         ) {
           this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);

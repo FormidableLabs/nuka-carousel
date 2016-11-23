@@ -38,7 +38,9 @@ const DefaultDecorators = [
         if (this.props.scrollMode === 'remainder') {
           switch (this.props.cellAlign) {
           case 'center':
-            cellOffsetPosition = this.props.slideCount - Math.ceil(this.props.slidesToShow / 2)
+            cellOffsetPosition =
+              this.props.slideCount - Math.ceil(this.props.slidesToShow / 2)
+              - (this.props.slidesToShow % 2 === 0 ? 1 : 0);
             break;
           case 'left':
             cellOffsetPosition = this.props.slideCount - this.props.slidesToShow;
@@ -73,7 +75,7 @@ const DefaultDecorators = [
     component: React.createClass({
       render() {
         var self = this;
-        var indexes = this.getIndexes(self.props.slideCount, self.props.slidesToScroll);
+        var indexes = this.getIndexes(self.props.slideCount, self.props.slidesToScroll, this.props.scrollMode === 'page');
         return (
           <ul style={self.getListStyles()}>
             {
@@ -92,39 +94,47 @@ const DefaultDecorators = [
           </ul>
         )
       },
-      getIndexes(count, inc) {
+      getIndexes(count, inc, remainderScroll) {
         const arr = [];
 
-        for (var i = 0; i < count; i += inc) {
-          arr.push(i);
-        }
+        if (remainderScroll) {
+          for (var i = 0; i < count; i += inc) {
+            arr.push(i);
+          }
 
+          if (arr[arr.length - 1] < count - 1) {
+            arr.push(count - 1);
+          }
+        } else {
+          let lastPossibleIndex;
 
+          switch (this.props.cellAlign) {
+          case 'left':
+            lastPossibleIndex = count - this.props.slidesToShow;
+            break;
+          case 'center':
+            lastPossibleIndex =
+              count - Math.ceil(this.props.slidesToShow / 2)
+              - (this.props.slidesToShow % 2 === 0 ? 1 : 0);
+            break;
+          case 'right':
+            lastPossibleIndex = count - 1;
+            break;
+          }
 
-        if (arr[arr.length - 1] < count - 1) {
-          arr.push(count - 1);
-        }
-
-        if (this.props.scrollMode === 'remainder') {
-          if (this.props.cellAlign === 'left') {
-            const offset = this.props.slidesToShow;
-
-            if (arr.indexOf(count - offset) > -1) {
-              console.log('fdfd')
-              arr.pop();
-            } else {
-              arr[arr.length - 1] = count - offset;
-            }
-          } else if (this.props.cellAlign === 'center') {
-            const offset = Math.floor(this.props.slidesToShow / 2);
-            
-            if (arr[arr.length - 1] >= count - offset) {
-              arr[arr.length - 1] = arr[arr.length - 1] - offset;
-            }
+          for (var i = 0; i <= count; i += inc) {
+            arr.push(i < lastPossibleIndex ? i : lastPossibleIndex);
           }
         }
 
-        return arr;
+        const log = {};
+        return arr.filter((val) => {
+          if (log[val] === undefined) {
+            log[val] = val;
+
+            return true;
+          }
+        }).sort();
       },
       getListStyles() {
         return {
