@@ -94,7 +94,8 @@ const Carousel = React.createClass({
       afterSlide: function() { },
       autoplay: false,
       autoplayInterval: 3000,
-      beforeSlide: function() { },
+      beforeSlide: function() { return true; },
+      alwaysAllowBackSlide: true,
       cellAlign: 'left',
       cellSpacing: 0,
       data: function() {},
@@ -480,51 +481,89 @@ const Carousel = React.createClass({
   stopAutoplay() {
     this.autoplayID && clearInterval(this.autoplayID);
   },
-
   // Action Methods
+  /**
+   * wrappedAnimation returns a function used to animate a carousel animation
+   * that wraps start <-> end;
+   * @param  {int} index     The index the user is trying to slide to. (< 0 || > children.length)
+   * @param  {int} nextSlide The actual slide the user is moving to. (Should be within the children[])
+   * @return {func} animationFunc The function to be passed to the setState call that sets the new slide index
+   */
+  wrappedAnimation(index, nextSlide) {
+    return () => {
+      this.animateSlide(null, null, this.getTargetLeft(null, index), () => {
+        this.animateSlide(null, 0.01);
+        this.props.afterSlide(nextSlide);
+        this.resetAutoplay();
+        this.setExternalData();
+      });
+    }
+  },
+  /**
+   * A simpler animationFunc for normal transitions that don't wrap.
+   * @param  {int} nextSlide The slide the user is moving to.
+   * @return {func} animationFunc The function to be passed to the setState call that sets the new slide index
+   */
+  basicAnimation(nextSlide) {
+    return () => {
+      this.animateSlide();
+      this.props.afterSlide(nextSlide);
+      this.resetAutoplay();
+      this.setExternalData();
+    }
+  },
+  /**
+   * Returns the index of the nextSlide, as well as the animationFunc that should
+   * be used to move there. Uses the attempted index and the current
+   * state/props.
+   * @param  {int} index The index the user is trying to move to.
+   * @return {[int, func]} The actual slide index to move to, and the animation func to get there.
+   */
+  getNextSlideAndAndimationFunc(index) {
+    // Get the data we need out of props, and state.
+    const { wrapAround, children, beforeSlide, alwaysAllowBackSlide } = this.props;
+    const { currentSlide, slidesToScroll } = this.state;
+    const { basicAnimation, wrappedAnimation } = this;
+
+    // And setup some variables to ease the conditionals...
+
+    // We're attempting to move out of bounds if index is < 0 or > than children count.
+    const overflow = index >= React.Children.count(children);
+    const underflow = index < 0;
+    const outOfBounds = overflow || underflow;
+
+    // The last slide is children.length - the amount we scroll.
+    const endSlide = React.Children.count(children) - slidesToScroll;
+
+    // Wrapped slide is the index of the first or end slide, depending
+    // on how (if?) we're out of bounds.
+    const wrappedSlide = overflow ? 0 : endSlide;
+
+    // If we're not out of bounds, our next slide should just be where ever the user was trying to go (index);
+    const nextSlide = outOfBounds ? wrappedSlide : index;
+    const movingBack = nextSlide < currentSlide;
+    const beforeHookCheck = beforeSlide(currentSlide, nextSlide) !== false;
+
+    // If we're trying to move out of bounds, but don't have wrap enabled, just return the currentSlide.
+    if (outOfBounds && !wrapAround) {
+      return [currentSlide, basicAnimation(nextSlide)];
+    }
+
+    // If we always allowBackSliding, and we're moving back, we should be good to continue.
+    // Otherwise we need to make sure the beforeSlide check is ok.
+    if ((alwaysAllowBackSlide && movingBack) || beforeHookCheck) {
+      // Different animation funcs depending on where we're going.
+      return [nextSlide, outOfBounds ? wrappedAnimation(index, nextSlide) : basicAnimation(nextSlide)];
+    }
+
+    // Not currently allowed to slide... Stay put!
+    return [currentSlide, basicAnimation(currentSlide)];
+  },
 
   goToSlide(index) {
     var self = this;
-    if ((index >= React.Children.count(this.props.children) || index < 0)) {
-      if (!this.props.wrapAround) { return };
-      if (index >= React.Children.count(this.props.children)) {
-        this.props.beforeSlide(this.state.currentSlide, 0);
-        return this.setState({
-          currentSlide: 0
-        }, function() {
-          self.animateSlide(null, null, self.getTargetLeft(null, index), function() {
-            self.animateSlide(null, 0.01);
-            self.props.afterSlide(0);
-            self.resetAutoplay();
-            self.setExternalData();
-          });
-        });
-      } else {
-        var endSlide = React.Children.count(this.props.children) - this.state.slidesToScroll;
-        this.props.beforeSlide(this.state.currentSlide, endSlide);
-        return this.setState({
-          currentSlide: endSlide
-        }, function() {
-          self.animateSlide(null, null, self.getTargetLeft(null, index), function() {
-            self.animateSlide(null, 0.01);
-            self.props.afterSlide(endSlide);
-            self.resetAutoplay();
-            self.setExternalData();
-          });
-        });
-      }
-    }
-
-    this.props.beforeSlide(this.state.currentSlide, index);
-
-    this.setState({
-      currentSlide: index
-    }, function() {
-      self.animateSlide();
-      this.props.afterSlide(index);
-      self.resetAutoplay();
-      self.setExternalData();
-    });
+    const [currentSlide, animationFunc] = this.getNextSlideAndAndimationFunc(index);
+    return this.setState({ currentSlide }, animationFunc);
   },
 
   nextSlide() {
