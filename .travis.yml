@@ -1,0 +1,13 @@
+language: node_js
+
+node_js:
+  - "5.0"
+  - "6.0"
+before_install:
+  - npm install -g gulp
+  - npm install -g npm@3
+  - npm --version
+
+script:
+  - gulp test
+  - gulp build
