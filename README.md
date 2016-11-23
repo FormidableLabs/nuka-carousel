@@ -149,6 +149,19 @@ Initial height of the slides in pixels.
 
 Initial width of the slides in pixels.
 
+####scrollMode
+```
+scrollMode: React.PropTypes.oneOf([
+  'page',
+  'remainder'
+])
+```
+
+Sets scroll limit of the carousel. `'page'` will scroll until
+the last slide is in the `props.cellAlign` position, but is 
+overridden by `wrapAround`. `'remainder'` will scroll until 
+the last slide is in the last slot established by `slidesToShow`.
+
 ####slideIndex
 `React.PropTypes.number`
 
