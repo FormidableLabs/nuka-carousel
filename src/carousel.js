@@ -188,17 +188,20 @@ const Carousel = React.createClass({
                 className={'slider-decorator-' + index}
                 key={index}>
                 <Decorator.component
-                  currentSlide={self.state.currentSlide}
-                  slideCount={self.state.slideCount}
-                  frameWidth={self.state.frameWidth}
-                  slideWidth={self.state.slideWidth}
-                  slidesToScroll={self.state.slidesToScroll}
                   cellSpacing={self.props.cellSpacing}
-                  slidesToShow={self.props.slidesToShow}
-                  wrapAround={self.props.wrapAround}
+                  cellAlign={self.props.cellAlign}
+                  currentSlide={self.state.currentSlide}
+                  frameWidth={self.state.frameWidth}
+                  goToSlide={self.goToSlide}
                   nextSlide={self.nextSlide}
                   previousSlide={self.previousSlide}
-                  goToSlide={self.goToSlide} />
+                  scrollMode={self.props.scrollMode}
+                  slideCount={self.state.slideCount}
+                  slidesToScroll={self.state.slidesToScroll}
+                  slidesToShow={self.props.slidesToShow}
+                  slideWidth={self.state.slideWidth}
+                  wrapAround={self.props.wrapAround}
+                />
               </div>
             )
           })
@@ -377,8 +380,25 @@ const Carousel = React.createClass({
 
     if (this.touchObject.length > (this.state.slideWidth / slidesToShow) / 5) {
       if (this.touchObject.direction === 1) {
+        let lastPossibleIndex;
+        const count = React.Children.count(this.props.children);
+
+        switch (this.props.cellAlign) {
+        case 'left':
+          lastPossibleIndex = count - this.props.slidesToShow;
+          break;
+        case 'center':
+          lastPossibleIndex =
+            count - Math.ceil(this.props.slidesToShow / 2)
+            - (this.props.slidesToShow % 2 === 0 ? 1 : 0);
+          break;
+        case 'right':
+          lastPossibleIndex = count - 1;
+          break;
+        }
+
         if (
-          this.state.currentSlide >= React.Children.count(this.props.children) - slidesToShow &&
+          this.state.currentSlide >= (this.props.scrollMode === 'remainder' ? lastPossibleIndex : count - 1) &&
           !this.props.wrapAround
         ) {
           this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
@@ -510,10 +530,12 @@ const Carousel = React.createClass({
   nextSlide() {
     var childrenCount = React.Children.count(this.props.children);
     var slidesToShow = this.props.slidesToShow;
+
     if (this.props.slidesToScroll === 'auto') {
       slidesToShow = this.state.slidesToScroll;
     }
-    if (this.state.currentSlide >= childrenCount - slidesToShow && !this.props.wrapAround) {
+
+    if (this.state.currentSlide > childrenCount && !this.props.wrapAround) {
       return;
     }
 
@@ -525,11 +547,25 @@ const Carousel = React.createClass({
       }
 
       // If scrollMode = remainder, only scroll the amount of slides necessary without showing blank slides.
-      if (this.props.scrollMode === 'remainder') {
-        this.goToSlide(Math.min(this.state.currentSlide + this.state.slidesToScroll, childrenCount - slidesToShow))
-      } else if (this.props.scrollMode === 'page') { // Otherwise, slidesToScroll always equals slides to show
-        this.goToSlide(this.state.currentSlide + this.state.slidesToScroll);
+      if (this.props.scrollMode === 'remainder' && this.props.cellAlign !== 'right') {
+        const { currentSlide, slidesToScroll } = this.state;
+        const { cellAlign } = this.props;
+        let lastIndex = childrenCount - slidesToShow;
+
+        if (cellAlign === 'center') {
+          lastIndex =  (childrenCount - 1) - Math.floor(slidesToShow / 2);
+        }
+        return this.goToSlide(
+          currentSlide + slidesToScroll >= lastIndex ?
+            lastIndex
+            :
+            currentSlide + slidesToScroll
+        );
       }
+
+      this.goToSlide(
+        Math.min(this.state.currentSlide + this.state.slidesToScroll, childrenCount - 1)
+      );
     }
   },
 
@@ -541,11 +577,18 @@ const Carousel = React.createClass({
     if (this.props.wrapAround) {
       this.goToSlide(this.state.currentSlide - this.state.slidesToScroll);
     } else {
-      if (this.props.scrollMode === 'remainder') {
-        this.goToSlide(Math.max(0, this.state.currentSlide - this.state.slidesToScroll));
-      } else if (this.props.scrollMode === 'page') {
-        this.goToSlide(this.state.currentSlide - this.state.slidesToScroll);
+      const { currentSlide, slidesToScroll } = this.state;
+      let index = 0;
+
+      while (index < currentSlide) {
+        if (index + slidesToScroll >= currentSlide) {
+          break;
+        }
+
+        index += slidesToScroll
       }
+
+      this.goToSlide(index);
     }
   },
 
