@@ -516,14 +516,18 @@ const Carousel = React.createClass({
     }
 
     this.props.beforeSlide(this.state.currentSlide, index);
+    const previousIndex = this.state.currentSlide;
 
     this.setState({
       currentSlide: index
     }, function() {
       self.animateSlide();
-      this.props.afterSlide(index);
       self.resetAutoplay();
       self.setExternalData();
+
+      if (previousIndex !== index) {
+        this.props.afterSlide(index);
+      }
     });
   },
 
