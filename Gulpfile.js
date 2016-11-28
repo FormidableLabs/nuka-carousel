@@ -12,7 +12,7 @@ var WebpackDevServer = require("webpack-dev-server");
 var karma = require('karma').server;
 
 var webpackDistConfig = require('./webpack.dist.config.js'),
-    webpackDevConfig = require('./webpack.config.js');
+    webpackDevConfig = require('./webpack.demo.config.js');
 
 gulp.task('open', function(){
   open('',{url: 'http://localhost:8080/webpack-dev-server/'});

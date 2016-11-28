@@ -11,8 +11,6 @@ module.exports = {
     libraryTarget: 'umd'
   },
 
-  debug: false,
-  devtool: false,
   entry: './index.js',
 
   stats: {
@@ -25,7 +23,7 @@ module.exports = {
   ],
 
   resolve: {
-    extensions: ['', '.js']
+    extensions: ['.js']
   },
 
   module: {

@@ -12,11 +12,16 @@ module.exports = {
   },
 
   cache: true,
-  debug: false,
   devtool: false,
   entry: [
     './demo/app.js'
   ],
+
+  devServer: {
+    publicPath: "/assets/",
+    contentBase: "demo",
+    port: 8080
+  },
 
   stats: {
     colors: true,
@@ -24,12 +29,14 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.js']
+    extensions: ['.js']
   },
+
   module: {
-    preLoaders: [{
+    rules: [{
       test: /\.js$/,
-      exclude: [/node_modules/,/dist/],
+      enforce: 'pre',
+      exclude: [/node_modules/, /dist/],
       loader: 'eslint-loader'
     }],
     loaders: [{
