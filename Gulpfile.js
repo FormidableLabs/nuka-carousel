@@ -9,7 +9,6 @@ var webpack = require('webpack');
 var gwebpack = require('gulp-webpack');
 var WebpackDevServer = require("webpack-dev-server");
 
-var eslint= require('gulp-eslint');
 var karma = require('karma').server;
 
 var webpackDistConfig = require('./webpack.dist.config.js'),
@@ -39,20 +38,13 @@ gulp.task("webpack-dev-server", function(callback) {
 
 });
 
-gulp.task('lint', function () {
-  return gulp.src(['src/**/*.js'])
-    .pipe(eslint())
-    .pipe(eslint.format())
-});
-
-
-gulp.task("karma", ['lint'], function() {
+gulp.task("karma", function() {
   karma.start({
     configFile: __dirname + '/karma.conf.js',
     singleRun: true
   });
 });
 
-gulp.task('test', ['lint', 'karma']);
+gulp.task('test', ['karma']);
 gulp.task('build', ['babel']);
 gulp.task('default', ['webpack-dev-server', 'open']);
