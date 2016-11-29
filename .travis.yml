@@ -9,6 +9,4 @@ before_install:
   - npm --version
 
 script:
-  - npm run lint
-  - gulp test
-  - gulp build
+  - npm start
