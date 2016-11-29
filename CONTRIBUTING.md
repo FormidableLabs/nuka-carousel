@@ -3,11 +3,11 @@
 Install dependencies using `npm install`.
 
 ## Running the demo
-Run the webpack-dev-server on http://localhost:8080 using `gulp`.
+Run the webpack-dev-server on http://localhost:8080 using `npm run demo`.
 
 ## Tests
-Run the tests using `gulp test`.
+Run the tests using `npm run test`.
 
 ## Building
 
-Build the source code using `gulp build`.
+Build the source code using `npm run build`.
