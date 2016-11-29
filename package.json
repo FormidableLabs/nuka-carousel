@@ -55,12 +55,12 @@
     "react-dom": "^0.14.8 || ^15.0.1"
   },
   "scripts": {
-    "test": "jest",
-    "update-test": "jest -u",
+    "test": "node_modules/.bin/jest",
+    "update-test": "node_modules/.bin/jest -u",
     "lint": "node_modules/.bin/eslint -c .eslintrc src/**/*.js",
     "build-modules": "node_modules/.bin/babel src -d lib",
     "build-dist": "node_modules/.bin/webpack --config webpack.dist.config.js",
-    "build": "npm run lint && npm run test && npm run build-npm && npm run build-dist",
+    "build": "npm run lint && npm run build-modules && npm run build-dist",
     "start": "npm run build",
     "demo": "node_modules/.bin/webpack-dev-server --config webpack.demo.config.js"
   },
