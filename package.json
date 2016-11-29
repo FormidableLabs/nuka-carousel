@@ -16,6 +16,7 @@
     "babel-loader": "^6.2.8",
     "babel-preset-latest": "^6.16.0",
     "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-2": "^6.18.0",
     "chai": "^3.3.0",
     "css-loader": "^0.19.0",
     "del": "^2.0.2",
@@ -64,10 +65,11 @@
     "test": "jest",
     "update-test": "jest -u",
     "lint": "node_modules/.bin/eslint -c .eslintrc src/**/*.js",
-    "build-npm": "node_modules/.bin/babel src -d lib",
-    "build-dist": "webpack --config webpack.dist.config.js",
+    "build-modules": "node_modules/.bin/babel src -d lib",
+    "build-dist": "node_modules/.bin/webpack --config webpack.dist.config.js",
     "build": "npm run lint && npm run test && npm run build-npm && npm run build-dist",
-    "start": "webpack --config webpack.demo.config.js"
+    "start": "npm run build",
+    "demo": "node_modules/.bin/webpack-dev-server --config webpack.demo.config.js"
   },
   "repository": {
     "type": "git",

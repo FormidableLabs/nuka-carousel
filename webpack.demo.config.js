@@ -20,6 +20,7 @@ module.exports = {
   devServer: {
     publicPath: "/assets/",
     contentBase: "demo",
+    hot: true,
     port: 8080
   },
 
@@ -33,16 +34,10 @@ module.exports = {
   },
 
   module: {
-    rules: [{
-      test: /\.js$/,
-      enforce: 'pre',
-      exclude: [/node_modules/, /dist/],
-      loader: 'eslint-loader'
-    }],
     loaders: [{
       test: /\.js$/,
       exclude: [/node_modules/],
-      loader: 'babel-loader'
+      loaders: ['babel-loader?presets[]=latest,presets[]=stage-2,presets[]=react', 'eslint-loader']
     }, {
       test: /\.css$/,
       loader: 'style-loader!css-loader'

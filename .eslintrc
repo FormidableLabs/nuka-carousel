@@ -11,6 +11,7 @@
         "$isAndroid",
         "$isBrowser"
     },
+    "plugins": ["react"],
     "parser": "babel-eslint",
     "ecmaFeatures": {
         "arrowFunctions": true,
