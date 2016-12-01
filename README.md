@@ -124,6 +124,16 @@ Enable mouse swipe/dragging
 
 Animation easing function. See valid easings here: [https://github.com/chenglou/tween-functions](https://github.com/chenglou/tween-functions)
 
+####fixedHeight
+`React.PropTypes.bool`
+
+If set to `true` will set the height of the frame to the tallest slide in the carousel.
+If set to `false, will set the height of the frame to the height of the current slide.
+Default value is `true`.
+
+Note: If `slidesToShow > 1` the height of the frame may clip other shown slides if their
+height are greater than the current slide.
+
 ####framePadding
 `React.PropTypes.string`
 

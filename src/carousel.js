@@ -66,6 +66,7 @@ const Carousel = React.createClass({
     dragging: React.PropTypes.bool,
     easing: React.PropTypes.string,
     edgeEasing: React.PropTypes.string,
+    fixedHeight: React.PropTypes.bool,
     framePadding: React.PropTypes.string,
     frameOverflow: React.PropTypes.string,
     heightMode: React.PropTypes.oneOf(['max', 'adaptive']).isRequired,
@@ -102,6 +103,7 @@ const Carousel = React.createClass({
       dragging: true,
       easing: 'easeOutCirc',
       edgeEasing: 'easeOutElastic',
+      fixedHeight: true,
       framePadding: '0px',
       frameOverflow: 'hidden',
       heightMode: 'max',
@@ -810,11 +812,17 @@ const Carousel = React.createClass({
   },
 
   getFrameStyles() {
+    let horizontalHeight = 'auto';
+
+    if (!this.props.vertical && !this.props.fixedHeight && this.refs.list) {
+      horizontalHeight = this.refs.list.childNodes[this.state.currentSlide].offsetHeight;
+    }
+
     return {
       position: 'relative',
       display: 'block',
       overflow: this.props.frameOverflow,
-      height: this.props.vertical ? this.state.frameWidth || 'initial' : 'auto',
+      height: this.props.vertical ? this.state.frameWidth || 'initial' : horizontalHeight,
       margin: this.props.framePadding,
       padding: 0,
       transform: 'translate3d(0, 0, 0)',
