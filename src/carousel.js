@@ -149,7 +149,7 @@ const Carousel = React.createClass({
     });
     this.setDimensions(nextProps);
     if (this.props.slideIndex !== nextProps.slideIndex && nextProps.slideIndex !== this.state.currentSlide) {
-      this.goToSlide(nextProps.slideIndex);
+      this._goToSlide(nextProps, nextProps.slideIndex);
     }
     if (this.props.autoplay !== nextProps.autoplay) {
       if (nextProps.autoplay) {
@@ -483,12 +483,12 @@ const Carousel = React.createClass({
 
   // Action Methods
 
-  goToSlide(index) {
+  _goToSlide(props, index) {
     var self = this;
-    if ((index >= React.Children.count(this.props.children) || index < 0)) {
-      if (!this.props.wrapAround) { return };
-      if (index >= React.Children.count(this.props.children)) {
-        this.props.beforeSlide(this.state.currentSlide, 0);
+    if ((index >= React.Children.count(props.children) || index < 0)) {
+      if (!props.wrapAround) { return };
+      if (index >= React.Children.count(props.children)) {
+        props.beforeSlide(this.state.currentSlide, 0);
         return this.setState({
           currentSlide: 0
         }, function() {
@@ -500,8 +500,8 @@ const Carousel = React.createClass({
           });
         });
       } else {
-        var endSlide = React.Children.count(this.props.children) - this.state.slidesToScroll;
-        this.props.beforeSlide(this.state.currentSlide, endSlide);
+        var endSlide = React.Children.count(props.children) - this.state.slidesToScroll;
+        props.beforeSlide(this.state.currentSlide, endSlide);
         return this.setState({
           currentSlide: endSlide
         }, function() {
@@ -529,6 +529,10 @@ const Carousel = React.createClass({
         this.props.afterSlide(index);
       }
     });
+  },
+
+  goToSlide(index) {
+    this._goToSlide(this.props, index);
   },
 
   nextSlide() {

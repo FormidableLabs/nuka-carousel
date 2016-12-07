@@ -713,6 +713,27 @@ describe('Carousel', function () {
         expect(component.state.currentSlide).to.equal(2);
     });
 
+    it('should go to 3 if slideIndex and the number of slides changes', function() {
+      component = ReactDOM.render(
+        React.createElement(carousel, {slideIndex: 1 },
+          React.createElement('p', null, 'Slide 1'),
+          React.createElement('p', null, 'Slide 2')
+        ),
+        container
+      );
+      ReactDOM.render(
+        React.createElement(carousel, {slideIndex: 3 },
+          React.createElement('p', null, 'Slide 1'),
+          React.createElement('p', null, 'Slide 2'),
+          React.createElement('p', null, 'Slide 3'),
+          React.createElement('p', null, 'Slide 4')
+        ),
+        container
+      );
+
+      expect(component.state.currentSlide).to.equal(3);
+    });
+
   });
 
 });
