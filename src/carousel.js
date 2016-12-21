@@ -484,6 +484,10 @@ const Carousel = React.createClass({
   // Action Methods
 
   goToSlide(index) {
+    if (this.state.currentSlide === index) {
+      return;
+    }
+
     var self = this;
     if ((index >= React.Children.count(this.props.children) || index < 0)) {
       if (!this.props.wrapAround) { return };
@@ -516,7 +520,6 @@ const Carousel = React.createClass({
     }
 
     this.props.beforeSlide(this.state.currentSlide, index);
-    const previousIndex = this.state.currentSlide;
 
     this.setState({
       currentSlide: index
@@ -524,10 +527,7 @@ const Carousel = React.createClass({
       self.animateSlide();
       self.resetAutoplay();
       self.setExternalData();
-
-      if (previousIndex !== index) {
-        this.props.afterSlide(index);
-      }
+      this.props.afterSlide(index);
     });
   },
 
