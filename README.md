@@ -105,7 +105,7 @@ var Decorators = [{
   }),
   position: 'CenterLeft',
   style: {
-  	padding: 20
+    padding: 20
   }
 }];
 
@@ -202,6 +202,11 @@ Manually set slideWidth. If you want hard pixel widths, use a string like `slide
 `React.PropTypes.number`
 
 Animation duration.
+
+####swiping
+`React.PropTypes.bool`
+
+Enable touch swipe/dragging
 
 ####vertical
 `React.PropTypes.bool`
