@@ -33,9 +33,23 @@ const DefaultDecorators = [
   {
     component: React.createClass({
       render() {
+        let cellOffsetPosition = this.props.slideCount - 1;
+
+        if (this.props.scrollMode === 'remainder') {
+          switch (this.props.cellAlign) {
+          case 'center':
+            cellOffsetPosition =
+              this.props.slideCount - Math.ceil(this.props.slidesToShow / 2)
+              - (this.props.slidesToShow % 2 === 0 ? 1 : 0);
+            break;
+          case 'left':
+            cellOffsetPosition = this.props.slideCount - this.props.slidesToShow;
+          }
+        }
+
         return (
           <button
-            style={this.getButtonStyles(this.props.currentSlide + this.props.slidesToScroll >= this.props.slideCount && !this.props.wrapAround)}
+            style={this.getButtonStyles(this.props.currentSlide === cellOffsetPosition && !this.props.wrapAround)}
             onClick={this.handleClick}>NEXT</button>
         )
       },
@@ -61,7 +75,7 @@ const DefaultDecorators = [
     component: React.createClass({
       render() {
         var self = this;
-        var indexes = this.getIndexes(self.props.slideCount, self.props.slidesToScroll);
+        var indexes = this.getIndexes(self.props.slideCount, self.props.slidesToScroll, this.props.scrollMode === 'page');
         return (
           <ul style={self.getListStyles()}>
             {
@@ -80,12 +94,47 @@ const DefaultDecorators = [
           </ul>
         )
       },
-      getIndexes(count, inc) {
-        var arr = [];
-        for (var i = 0; i < count; i += inc) {
-          arr.push(i);
+      getIndexes(count, inc, remainderScroll) {
+        const arr = [];
+
+        if (remainderScroll) {
+          for (var i = 0; i < count; i += inc) {
+            arr.push(i);
+          }
+
+          if (arr[arr.length - 1] < count - 1) {
+            arr.push(count - 1);
+          }
+        } else {
+          let lastPossibleIndex;
+
+          switch (this.props.cellAlign) {
+          case 'left':
+            lastPossibleIndex = count - this.props.slidesToShow;
+            break;
+          case 'center':
+            lastPossibleIndex =
+              count - Math.ceil(this.props.slidesToShow / 2)
+              - (this.props.slidesToShow % 2 === 0 ? 1 : 0);
+            break;
+          case 'right':
+            lastPossibleIndex = count - 1;
+            break;
+          }
+
+          for (var i = 0; i <= count; i += inc) {
+            arr.push(i < lastPossibleIndex ? i : lastPossibleIndex);
+          }
         }
-        return arr;
+
+        const log = {};
+        return arr.filter((val) => {
+          if (log[val] === undefined) {
+            log[val] = val;
+
+            return true;
+          }
+        }).sort();
       },
       getListStyles() {
         return {
