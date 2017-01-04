@@ -81,6 +81,7 @@ const Carousel = React.createClass({
       React.PropTypes.number
     ]),
     speed: React.PropTypes.number,
+    swiping: React.PropTypes.bool,
     vertical: React.PropTypes.bool,
     width: React.PropTypes.string,
     wrapAround: React.PropTypes.bool,
@@ -106,6 +107,7 @@ const Carousel = React.createClass({
       slidesToShow: 1,
       slideWidth: 1,
       speed: 500,
+      swiping: true,
       vertical: false,
       width: '100%',
       wrapAround: false
@@ -209,6 +211,10 @@ const Carousel = React.createClass({
 
   getTouchEvents() {
     var self = this;
+
+    if (self.props.swiping === false) {
+      return null;
+    }
 
     return {
       onTouchStart(e) {
