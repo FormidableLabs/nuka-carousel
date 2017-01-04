@@ -222,7 +222,7 @@ const Carousel = React.createClass({
   getTouchEvents() {
     var self = this;
 
-    if (this.props.swiping === false) {
+    if (self.props.swiping === false) {
       return null;
     }
 
