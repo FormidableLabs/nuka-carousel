@@ -19,12 +19,12 @@ const ControlledCarousel = React.createClass({
           data={this.setCarouselData.bind(this, 'carousel')}
           slideIndex={this.state.slideIndex}
           afterSlide={newSlideIndex => this.setState({ slideIndex: newSlideIndex })}>
-          <img src="http://placehold.it/1000x400&text=slide1"/>
-          <img src="http://placehold.it/1000x400&text=slide2"/>
-          <img src="http://placehold.it/1000x400&text=slide3"/>
-          <img src="http://placehold.it/1000x400&text=slide4"/>
-          <img src="http://placehold.it/1000x400&text=slide5"/>
-          <img src="http://placehold.it/1000x400&text=slide6"/>
+          <img src="http://dummyimage.com/1000x400/ccc/fff.png&text=slide1"/>
+          <img src="http://dummyimage.com/1000x400/ccc/fff.png&text=slide2"/>
+          <img src="http://dummyimage.com/1000x400/ccc/fff.png&text=slide3"/>
+          <img src="http://dummyimage.com/1000x400/ccc/fff.png&text=slide4"/>
+          <img src="http://dummyimage.com/1000x400/ccc/fff.png&text=slide5"/>
+          <img src="http://dummyimage.com/1000x400/ccc/fff.png&text=slide6"/>
         </Carousel>
         <button onClick={() => this.setState({ slideIndex: 0 })}>1</button>
         <button onClick={() => this.setState({ slideIndex: 1 })}>2</button>
@@ -41,7 +41,7 @@ const makeChildren = n => {
   var children = [];
   for (let i = 0; i < n; i++) {
     children.push(
-      <img key={i} src={`http://placehold.it/1000x400&text=Slide%20${i + 1}`}/>
+      <img key={i} src={`http://dummyimage.com/1000x400/ccc/fff.png&text=Slide${i + 1}`}/>
     );
   }
   return children;
