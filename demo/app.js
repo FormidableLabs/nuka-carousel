@@ -6,14 +6,14 @@ import ReactDom from 'react-dom';
 
 window.React = React;
 
-const App = React.createClass({
+const ControlledCarousel = React.createClass({
   mixins: [Carousel.ControllerMixin],
 
   getInitialState() { return { slideIndex: 0 }; },
 
   render() {
     return (
-      <div style={{width: '50%', margin: 'auto'}}>
+      <div>
         <Carousel
           ref="carousel"
           data={this.setCarouselData.bind(this, 'carousel')}
@@ -36,6 +36,86 @@ const App = React.createClass({
     )
   }
 });
+
+const makeChildren = (n, cute) => {
+  var children = [];
+  for (let i = 0; i < n; i++) {
+    cute ? children.push(
+      <img style={{margin: '40px 0'}} src={`https://placekitten.com/500/300`} key={i} />
+    ) : children.push(
+      <img key={i} src={`http://placehold.it/1000x400&text=Slide%20${i + 1}`}/>
+    );
+  }
+  return children;
+};
+
+
+const LazyCarousel = ({count, ...props}) => {
+  return (
+    <Carousel {...props} lazyLoad={true}>
+      {makeChildren(count)}
+    </Carousel>
+  );
+};
+
+const CatCarousel = ({count, ...props}) => {
+  return (
+    <Carousel {...props} lazyLoad={true}>
+      {makeChildren(count, true)}
+    </Carousel>
+  );
+};
+
+const VariableHeightCarousel = props => {
+  const Slide = props => <div style={{border: '5px', borderStyle: 'outset'}} {...props} />;
+
+  return <Carousel {...props}>
+    <Slide>Hello</Slide>
+    <Slide>Sometimes one slide needs to wrap more text than others do.</Slide>
+    <Slide>Other times they may not.</Slide>
+    <Slide>We would like the slider to render nicely...</Slide>
+    <Slide>either way.</Slide>
+    <Slide>We may even<ul><li>want more complicated slides</li><li>with nested elements</li></ul>sometimes</Slide>
+    <Slide>or not</Slide>
+    <Slide>just filling in space now...</Slide>
+    <Slide>because I have nothing more to say here</Slide>
+  </Carousel>;
+};
+
+// TODO: Is there a cleaner way to hide the dots?
+const noDots = Carousel.getDefaultProps().decorators.slice(0, 2);
+
+const App = () => (
+  <div style={{width: '50%', margin: 'auto'}}>
+    <h1>External controls</h1>
+    <ControlledCarousel/>
+
+    <h1>Lazy loading</h1>
+    <LazyCarousel count={1000} decorators={noDots}/>
+
+    <h1>Multiple slides</h1>
+    <LazyCarousel count={10} slidesToShow={4} slidesToScroll='auto'/>
+
+    <h1>Growing slides</h1>
+    <CatCarousel count={10} growFactor={1.5} slidesToShow={4} slidesToScroll='auto'/>
+
+    <h1>Center mode</h1>
+    <LazyCarousel count={10} slidesToShow={4} slidesToScroll='auto' cellAlign='center'/>
+
+    <h1>Disable dragging</h1>
+    <LazyCarousel count={6} dragging={false}/>
+
+    <h1>Varying heights</h1>
+    <VariableHeightCarousel slidesToShow={4}/>
+
+    <h1>Varying heights (adaptive)</h1>
+    <VariableHeightCarousel slidesToShow={4} heightMode='adaptive'/>
+
+    <h1>Vertical slider</h1>
+    <LazyCarousel count={10} vertical={true} slidesToShow={3}/>
+  </div>
+);
+
 
 const content = document.getElementById('content');
 

@@ -39,6 +39,7 @@ const Carousel = React.createClass({
   mixins: [tweenState.Mixin],
 
   propTypes: {
+    growFactor: React.PropTypes.number,
     afterSlide: React.PropTypes.func,
     autoplay: React.PropTypes.bool,
     autoplayInterval: React.PropTypes.number,
@@ -68,8 +69,10 @@ const Carousel = React.createClass({
     edgeEasing: React.PropTypes.string,
     framePadding: React.PropTypes.string,
     frameOverflow: React.PropTypes.string,
+    heightMode: React.PropTypes.oneOf(['max', 'adaptive']).isRequired,
     initialSlideHeight: React.PropTypes.number,
     initialSlideWidth: React.PropTypes.number,
+    lazyLoad: React.PropTypes.bool,
     slideIndex: React.PropTypes.number,
     slidesToShow: React.PropTypes.number,
     slidesToScroll: React.PropTypes.oneOfType([
@@ -89,6 +92,7 @@ const Carousel = React.createClass({
 
   getDefaultProps() {
     return {
+      growFactor: 1,
       afterSlide: function() { },
       autoplay: false,
       autoplayInterval: 3000,
@@ -102,6 +106,7 @@ const Carousel = React.createClass({
       edgeEasing: 'easeOutElastic',
       framePadding: '0px',
       frameOverflow: 'hidden',
+      heightMode: 'max',
       slideIndex: 0,
       slidesToScroll: 1,
       slidesToShow: 1,
@@ -164,7 +169,7 @@ const Carousel = React.createClass({
 
   render() {
     var self = this;
-    var children = React.Children.count(this.props.children) > 1 ? this.formatChildren(this.props.children) : this.props.children;
+    var children = React.Children.count(this.props.children) > 1 ? this.formatChildren(this.props.children, this) : this.props.children;
     return (
       <div className={['slider', this.props.className || ''].join(' ')} ref="slider" style={assign(this.getSliderStyles(), this.props.style || {})}>
         <div className="slider-frame"
@@ -615,11 +620,15 @@ const Carousel = React.createClass({
     }
   },
 
-  formatChildren(children) {
+  formatChildren(children, slider) {
     var self = this;
     var positionValue = this.props.vertical ? this.getTweeningValue('top') : this.getTweeningValue('left');
+    const start = Math.max(this.state.currentSlide - this.props.slidesToShow, 0);
+    const end = Math.min(this.state.currentSlide + (2 * this.props.slidesToShow), this.state.slideCount);
     return React.Children.map(children, function(child, index) {
-      return <li className="slider-slide" style={self.getSlideStyles(index, positionValue)} key={index}>{child}</li>
+      if (!self.props.lazyLoad || (start <= index && index < end)) {
+        return <li className="slider-slide" style={self.getSlideStyles(index, positionValue)} onMouseOver={() => slider.setState({hoveredIndex: index})} onMouseOut={() => slider.setState({hoveredIndex: null})} key={index}>{child}</li>;
+      }
     });
   },
 
@@ -648,22 +657,28 @@ const Carousel = React.createClass({
     var self = this,
       slideWidth,
       slidesToScroll,
-      firstSlide,
       frame,
       frameWidth,
       frameHeight,
-      slideHeight;
+      slideHeight,
+      toScroll;
 
     slidesToScroll = props.slidesToScroll;
     frame = this.refs.frame;
-    firstSlide = frame.childNodes[0].childNodes[0];
-    if (firstSlide) {
-      firstSlide.style.height = 'auto';
-      slideHeight = this.props.vertical ?
-        firstSlide.offsetHeight * props.slidesToShow :
-        firstSlide.offsetHeight;
+    const slides = frame.childNodes[0].childNodes;
+
+    if (this.props.vertical) {
+      if (slides.length) {
+        slides[0].style.height = 'auto';
+        slideHeight = slides[0].offsetHeight * props.slidesToShow;
+      } else {
+        slideHeight = 100;
+      }
     } else {
-      slideHeight = 100;
+      slideHeight = props.heightMode === 'max' && this.state.slideHeight || props.initialSlideHeight || 0;
+      for (let i = 0; i < slides.length; i++) {
+        slideHeight = Math.max(slideHeight, slides[i].offsetHeight);
+      }
     }
 
     if (typeof props.slideWidth !== 'number') {
@@ -684,7 +699,10 @@ const Carousel = React.createClass({
     frameWidth = props.vertical ? frameHeight : frame.offsetWidth;
 
     if (props.slidesToScroll === 'auto') {
-      slidesToScroll = Math.floor(frameWidth / (slideWidth + props.cellSpacing));
+      toScroll = frameWidth / (slideWidth + props.cellSpacing);
+      slidesToScroll = props.slideWidth === 1
+        ? Math.ceil(toScroll)
+        : Math.floor(toScroll);
     }
 
     this.setState({
@@ -759,14 +777,33 @@ const Carousel = React.createClass({
 
   getSlideStyles(index, positionValue) {
     var targetPosition = this.getSlideTargetPosition(index, positionValue);
+    const hoveringLeftEdge = this.state.hoveredIndex === 0 + this.props.slideIndex;
+    const hoveringRightEdge = this.state.hoveredIndex === 4 + this.props.slideIndex;
+    let translateDirection = 0;
+    if (this.state.hoveredIndex !== undefined && this.state.hoveredIndex !== null) {
+      const translateDistance = this.state.slideWidth * (this.props.growFactor - 1) / (hoveringLeftEdge || hoveringRightEdge ? 1 : 2);
+      if (index <= this.state.hoveredIndex) {
+        translateDirection = hoveringLeftEdge ? 0 : -translateDistance;
+      } else {
+        translateDirection = hoveringRightEdge ? 0 : translateDistance;
+      }
+    }
+
+    let width = this.state.slideWidth;
+    if (index === this.state.hoveredIndex) {
+      width = width * this.props.growFactor;
+    }
+
     return {
       position: 'absolute',
-      left: this.props.vertical ? 0 : targetPosition,
+      transition: '0.2s ease-in-out',
+      left: this.props.vertical ? 0 : targetPosition + translateDirection,
       top: this.props.vertical ? targetPosition : 0,
+      transform: index === this.state.hoveredIndex && this.props.growFactor !== 1 ? `translateY(${-this.props.growFactor * 8.25}%)` : null,
       display: this.props.vertical ? 'block' : 'inline-block',
       listStyleType: 'none',
       verticalAlign: 'top',
-      width: this.props.vertical ? '100%' : this.state.slideWidth,
+      width: this.props.vertical ? '100%' : width,
       height: 'auto',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
