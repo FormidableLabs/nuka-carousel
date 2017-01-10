@@ -806,7 +806,6 @@ const Carousel = React.createClass({
   getSliderStyles() {
     return {
       position: 'relative',
-      display: 'block',
       width: this.props.width,
       height: 'auto',
       boxSizing: 'border-box',
