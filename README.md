@@ -149,6 +149,11 @@ Initial height of the slides in pixels.
 
 Initial width of the slides in pixels.
 
+####notImageSlider
+`React.PropTypes.bool`
+
+By default the slider includes a style tag so image sliders work properly. If you're creating a custom slider that doesn't use pictures as elements, set this property to clean up the generated code.
+
 ####slideIndex
 `React.PropTypes.number`
 
