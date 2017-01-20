@@ -502,7 +502,9 @@ const Carousel = React.createClass({
       currentSlide: index
     }, function() {
       self.animateSlide();
-      this.props.afterSlide(index);
+      if (index !== this.state.currentSlide) {
+        this.props.afterSlide(index);
+      }
       self.resetAutoplay();
       self.setExternalData();
     });
