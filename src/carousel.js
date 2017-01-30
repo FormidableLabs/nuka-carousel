@@ -70,6 +70,7 @@ const Carousel = React.createClass({
     frameOverflow: React.PropTypes.string,
     initialSlideHeight: React.PropTypes.number,
     initialSlideWidth: React.PropTypes.number,
+    peaking: React.PropTypes.bool,
     slideIndex: React.PropTypes.number,
     slidesToShow: React.PropTypes.number,
     slidesToScroll: React.PropTypes.oneOfType([
@@ -110,7 +111,8 @@ const Carousel = React.createClass({
       swiping: true,
       vertical: false,
       width: '100%',
-      wrapAround: false
+      wrapAround: false,
+      peaking: false,
     }
   },
 
@@ -784,6 +786,7 @@ const Carousel = React.createClass({
 
     if (this.props.wrapAround) {
       var slidesBefore = Math.ceil(positionValue / (this.state.slideWidth));
+      if (this.props.peaking) slidesBefore += 1;
       if (this.state.slideCount - slidesBefore <= index) {
         return (this.state.slideWidth + this.props.cellSpacing) *
           (this.state.slideCount - index) * -1;
@@ -793,6 +796,8 @@ const Carousel = React.createClass({
 
       if (this.state.slideWidth !== 1) {
         var visibleSlides = this.props.slidesToShow;
+        if (this.props.peaking) visibleSlides += 1;
+
         slidesAfter = Math.ceil((Math.abs(positionValue) - (this.state.slideWidth * visibleSlides)) / this.state.slideWidth);
       }
 
