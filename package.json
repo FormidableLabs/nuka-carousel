@@ -1,6 +1,6 @@
 {
-  "name": "nuka-carousel",
-  "version": "2.0.4",
+  "name": "@appearhere/nuka-carousel",
+  "version": "2.1.4",
   "description": "Pure React Carousel",
   "main": "index.js",
   "dependencies": {
@@ -54,12 +54,15 @@
     "react": "^0.14.8 || ^15.0.1",
     "react-dom": "^0.14.8 || ^15.0.1"
   },
+  "publishConfig": {
+    "access": "restricted"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kenwheeler/nuka-carousel.git"
+    "url": "https://github.com/appearhere/nuka-carousel.git"
   },
   "keywords": [
     "react",

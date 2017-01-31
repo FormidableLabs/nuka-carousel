@@ -200,6 +200,12 @@ Used to hardcode the slider width. Accepts any string dimension value such as `"
 
 Sets infinite wrapAround mode. Defaults to `false`
 
+####peaking
+`React.PropTypes.bool`
+
+Ensures theres always a slide before and after the ones in view
+Allows half slides to be shown either side. Defaults to `false`
+
 ###ControllerMixin
 
 The ControllerMixin provides a way to add external controllers for a carousel. To use the controller mixin, add it to your parent component as shown below:
