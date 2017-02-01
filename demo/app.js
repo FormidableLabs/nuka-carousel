@@ -9,7 +9,7 @@ window.React = React;
 const App = React.createClass({
   mixins: [Carousel.ControllerMixin],
 
-  getInitialState() { return { slideIndex: 0 }; },
+  getInitialState() { return { slideIndex: 0, dragging: true, swiping: true }; },
 
   render() {
     return (
@@ -18,7 +18,9 @@ const App = React.createClass({
           ref="carousel"
           data={this.setCarouselData.bind(this, 'carousel')}
           slideIndex={this.state.slideIndex}
-          afterSlide={newSlideIndex => this.setState({ slideIndex: newSlideIndex })}>
+          afterSlide={newSlideIndex => this.setState({ slideIndex: newSlideIndex })}
+          dragging={this.state.dragging}
+          swiping={this.state.swiping}>
           <img src="http://placehold.it/1000x400&text=slide1"/>
           <img src="http://placehold.it/1000x400&text=slide2"/>
           <img src="http://placehold.it/1000x400&text=slide3"/>
@@ -32,6 +34,12 @@ const App = React.createClass({
         <button onClick={() => this.setState({ slideIndex: 3 })}>4</button>
         <button onClick={() => this.setState({ slideIndex: 4 })}>5</button>
         <button onClick={() => this.setState({ slideIndex: 5 })}>6</button>
+        <button onClick={() => this.setState({dragging: !this.state.dragging})}>
+          {this.state.dragging ? 'Disable dragging' : 'Enable dragging'}
+        </button>
+        <button onClick={() => this.setState({swiping: !this.state.swiping})}>
+          {this.state.swiping ? 'Disable swiping' : 'Enable swiping'}
+        </button>
       </div>
     )
   }
