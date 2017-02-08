@@ -7,12 +7,10 @@ const DefaultDecorators = [
     component: React.createClass({
       render() {
         return (
-          <span>
-          {this.props.showNextPrev ?
-            <button style={this.getButtonStyles(this.props.currentSlide === 0 && !this.props.wrapAround)}
-            onClick={this.handleClick}>PREV</button> : '' }
-          </span>
-        )
+          this.props.showNextPrev ?
+          <button style={this.getButtonStyles(this.props.currentSlide === 0 && !this.props.wrapAround)}
+          onClick={this.handleClick}>PREV</button> : null
+          )
       },
       handleClick(e) {
         e.preventDefault();
@@ -36,13 +34,10 @@ const DefaultDecorators = [
     component: React.createClass({
       render() {
         return (
-        <span>
-          {this.props.showNextPrev ?
-            <button
-            style={this.getButtonStyles(this.props.currentSlide + this.props.slidesToScroll >= this.props.slideCount && !this.props.wrapAround)}
-            onClick={this.handleClick}>NEXT</button> : '' }
-          </span>
-        )
+          this.props.showNextPrev ?
+          <button style={this.getButtonStyles(this.props.currentSlide + this.props.slidesToScroll >= this.props.slideCount && !this.props.wrapAround)}
+          onClick={this.handleClick}>NEXT</button> : null
+          )
       },
       handleClick(e) {
         e.preventDefault();
