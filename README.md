@@ -200,6 +200,11 @@ Used to hardcode the slider width. Accepts any string dimension value such as `"
 
 Sets infinite wrapAround mode. Defaults to `false`
 
+####showNextPrev
+`React.PropTypes.bool`
+
+Set false to remove Prev and Next buttons. Defaults to `true`
+
 ###ControllerMixin
 
 The ControllerMixin provides a way to add external controllers for a carousel. To use the controller mixin, add it to your parent component as shown below:
