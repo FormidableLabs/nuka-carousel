@@ -152,7 +152,7 @@ Initial width of the slides in pixels.
 ####showNextPrev
 `React.PropTypes.bool`
 
-Set false to remove Prev and Next buttons. Defaults to `true`
+Set false to completely remove Next and Prev buttons. Defaults to `true`
 
 ####slideIndex
 `React.PropTypes.number`
