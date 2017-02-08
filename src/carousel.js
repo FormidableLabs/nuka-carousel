@@ -85,6 +85,8 @@ const Carousel = React.createClass({
     vertical: React.PropTypes.bool,
     width: React.PropTypes.string,
     wrapAround: React.PropTypes.bool,
+    showNextPrev: React.PropTypes.bool,
+
   },
 
   getDefaultProps() {
@@ -110,7 +112,8 @@ const Carousel = React.createClass({
       swiping: true,
       vertical: false,
       width: '100%',
-      wrapAround: false
+      wrapAround: false,
+      showNextPrev: true
     }
   },
 
@@ -195,7 +198,9 @@ const Carousel = React.createClass({
                   wrapAround={self.props.wrapAround}
                   nextSlide={self.nextSlide}
                   previousSlide={self.previousSlide}
-                  goToSlide={self.goToSlide} />
+                  goToSlide={self.goToSlide}
+                  showNextPrev={self.props.showNextPrev}
+                />
               </div>
             )
           })
