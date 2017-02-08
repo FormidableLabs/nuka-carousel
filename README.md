@@ -149,6 +149,11 @@ Initial height of the slides in pixels.
 
 Initial width of the slides in pixels.
 
+####showNextPrev
+`React.PropTypes.bool`
+
+Set false to remove Prev and Next buttons. Defaults to `true`
+
 ####slideIndex
 `React.PropTypes.number`
 
@@ -199,11 +204,6 @@ Used to hardcode the slider width. Accepts any string dimension value such as `"
 `React.PropTypes.bool`
 
 Sets infinite wrapAround mode. Defaults to `false`
-
-####showNextPrev
-`React.PropTypes.bool`
-
-Set false to remove Prev and Next buttons. Defaults to `true`
 
 ###ControllerMixin
 
