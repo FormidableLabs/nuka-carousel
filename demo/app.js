@@ -13,12 +13,14 @@ const App = React.createClass({
 
   render() {
     return (
-/*      <div style={{width: '50%', margin: 'auto'}}>
+      <div style={{width: '50%', margin: 'auto'}}>
         <Carousel
           ref="carousel"
           data={this.setCarouselData.bind(this, 'carousel')}
           slideIndex={this.state.slideIndex}
-          afterSlide={newSlideIndex => this.setState({ slideIndex: newSlideIndex })}>
+          afterSlide={newSlideIndex => this.setState({ slideIndex: newSlideIndex })}
+          showNextPrev={false}
+        >
           <img src="http://placehold.it/1000x400&text=slide1"/>
           <img src="http://placehold.it/1000x400&text=slide2"/>
           <img src="http://placehold.it/1000x400&text=slide3"/>
@@ -32,19 +34,7 @@ const App = React.createClass({
         <button onClick={() => this.setState({ slideIndex: 3 })}>4</button>
         <button onClick={() => this.setState({ slideIndex: 4 })}>5</button>
         <button onClick={() => this.setState({ slideIndex: 5 })}>6</button>
-      </div>*/
-
-        <div style={{width: '50%', margin: 'auto'}}>
-
-            <Carousel autoplay={true} wrapAround={false} showNextPrev={false} width="100%">
-                <img src="http://placehold.it/1000x400&text=slide1"/>
-                <img src="http://placehold.it/1000x400&text=slide2"/>
-                <img src="http://placehold.it/1000x400&text=slide3"/>
-                <img src="http://placehold.it/1000x400&text=slide4"/>
-            </Carousel>
-
-        </div>
-
+      </div>
     )
   }
 });
