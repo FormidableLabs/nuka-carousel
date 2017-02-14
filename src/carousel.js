@@ -684,8 +684,9 @@ const Carousel = React.createClass({
     const end = Math.min(this.state.currentSlide + (2 * this.props.slidesToShow), this.state.slideCount);
     return React.Children.map(children, function(child, index) {
       if (!self.props.lazyLoad || (start <= index && index < end)) {
+        var isActive = self.state.currentSlide === index;
         const slideKey = (typeof child.props === 'object' && child.props.id) ? child.props.id : index;
-        return <li className="slider-slide" style={self.getSlideStyles(index, positionValue)} key={slideKey}>{child}</li>;
+        return <li className={'slider-slide' + (isActive ? ' active' : '')} style={self.getSlideStyles(index, positionValue)} key={slideKey}>{child}</li>;
       }
     });
   },
