@@ -66,6 +66,7 @@ const Carousel = React.createClass({
     dragging: React.PropTypes.bool,
     easing: React.PropTypes.string,
     edgeEasing: React.PropTypes.string,
+    edgeEasingEnabled: React.PropTypes.bool,
     framePadding: React.PropTypes.string,
     frameOverflow: React.PropTypes.string,
     initialSlideHeight: React.PropTypes.number,
@@ -100,6 +101,7 @@ const Carousel = React.createClass({
       dragging: true,
       easing: 'easeOutCirc',
       edgeEasing: 'easeOutElastic',
+      edgeEasingEnabled: true,
       framePadding: '0px',
       frameOverflow: 'hidden',
       slideIndex: 0,
@@ -248,7 +250,7 @@ const Carousel = React.createClass({
           direction: direction
         }
 
-        self.setState({
+        self.props.edgeEasingEnabled && self.setState({
           left: self.props.vertical ? 0 : self.getTargetLeft(self.touchObject.length * self.touchObject.direction),
           top: self.props.vertical ? self.getTargetLeft(self.touchObject.length * self.touchObject.direction) : 0
         });
@@ -317,7 +319,7 @@ const Carousel = React.createClass({
           direction: direction
         };
 
-        self.setState({
+        self.props.edgeEasingEnabled && self.setState({
           left: self.props.vertical ? 0 : self.getTargetLeft(self.touchObject.length * self.touchObject.direction),
           top: self.props.vertical ? self.getTargetLeft(self.touchObject.length * self.touchObject.direction) : 0
         });
