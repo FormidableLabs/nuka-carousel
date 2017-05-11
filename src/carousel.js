@@ -669,7 +669,7 @@ const Carousel = React.createClass({
       }
     } else {
       slideHeight = props.heightMode === 'max' && self.state.slideHeight || props.initialSlideHeight || 0;
-      slideHeight = self.getTallestSlide(slideHeight, slides)
+      slideHeight = self.getTallestSlide(slideHeight, slides);
     }
 
     if (typeof props.slideWidth !== 'number') {
@@ -708,7 +708,7 @@ const Carousel = React.createClass({
   getTallestSlide(slideHeight, slides) {
     if (slides && slides.length) {
       for (var i = 0; i < slides.length; i++) {
-        const s = slides[i]
+        var s = slides[i];
 
         if (s.offsetHeight > slideHeight) {
           slideHeight = s.offsetHeight;
