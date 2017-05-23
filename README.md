@@ -8,6 +8,14 @@
 
 Note: if you set `autoplayInterval` prop to less than 1000, You need to set the `speed` prop to less than 300 at the same time.
 
+#### develop
+
+```sh
+# after modify and submit to master, you need add tag by yourself, e.g.
+git tag v2.2.0
+git push --tags
+```
+
 ------------
 
 #nuka-carousel
