@@ -1,12 +1,13 @@
 {
-  "name": "nuka-carousel",
-  "version": "2.0.4",
+  "name": "rmc-nuka-carousel",
+  "version": "2.2.0",
   "description": "Pure React Carousel",
   "main": "index.js",
   "dependencies": {
+    "create-react-class": "^15.5.3",
     "exenv": "^1.2.0",
-    "object-assign": "^4.1.0",
-    "kw-react-tween-state": "^0.1.5"
+    "kw-react-tween-state": "^0.1.5",
+    "object-assign": "^4.1.0"
   },
   "devDependencies": {
     "babel-core": "^5.8.25",

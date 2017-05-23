@@ -3,10 +3,10 @@
 import Carousel from '../src/carousel';
 import React from 'react';
 import ReactDom from 'react-dom';
-
+import createReactClass from 'create-react-class';
 window.React = React;
 
-const App = React.createClass({
+const App = createReactClass({
   mixins: [Carousel.ControllerMixin],
 
   getInitialState() { return { slideIndex: 0 }; },
@@ -16,6 +16,12 @@ const App = React.createClass({
       <div style={{width: '50%', margin: 'auto'}}>
         <Carousel
           ref="carousel"
+          autoplay
+          wrapAround
+          speed={200}
+          autoplayInterval={300}
+          resetAutoplay={false}
+          swipeSpeed={35}
           data={this.setCarouselData.bind(this, 'carousel')}
           slideIndex={this.state.slideIndex}
           afterSlide={newSlideIndex => this.setState({ slideIndex: newSlideIndex })}>
