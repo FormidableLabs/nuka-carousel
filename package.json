@@ -1,6 +1,6 @@
 {
   "name": "rmc-nuka-carousel",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Pure React Carousel",
   "main": "index.js",
   "dependencies": {
@@ -58,6 +58,7 @@
     "react-dom": "^0.14.9 || ^15.3.0"
   },
   "scripts": {
+    "start": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
