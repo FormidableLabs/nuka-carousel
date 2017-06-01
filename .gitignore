@@ -32,3 +32,6 @@ bower_components/
 .tmp
 dist
 /src/scripts/main.js
+
+*.log
+*.log.*

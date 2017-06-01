@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ReactDom from 'react-dom';
+import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import tweenState from 'kw-react-tween-state';
 import decorators from './decorators';
@@ -34,7 +35,7 @@ const removeEvent = function(elem, type, eventHandle) {
   }
 };
 
-const Carousel = React.createClass({
+const Carousel = createReactClass({
   displayName: 'Carousel',
 
   mixins: [tweenState.Mixin],
@@ -42,6 +43,8 @@ const Carousel = React.createClass({
   propTypes: {
     afterSlide: PropTypes.func,
     autoplay: PropTypes.bool,
+    resetAutoplay: PropTypes.bool,  // by warmhug
+    swipeSpeed: PropTypes.number,  // by warmhug
     autoplayInterval: PropTypes.number,
     beforeSlide: PropTypes.func,
     cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
@@ -92,6 +95,8 @@ const Carousel = React.createClass({
     return {
       afterSlide: function() { },
       autoplay: false,
+      resetAutoplay: true,
+      swipeSpeed: 5,
       autoplayInterval: 3000,
       beforeSlide: function() { },
       cellAlign: 'left',
@@ -377,7 +382,7 @@ const Carousel = React.createClass({
       slidesToShow = this.state.slidesToScroll;
     }
 
-    if (this.touchObject.length > (this.state.slideWidth / slidesToShow) / 5) {
+    if (this.touchObject.length > (this.state.slideWidth / slidesToShow) / this.props.swipeSpeed) {
       if (this.touchObject.direction === 1) {
         if (
           this.state.currentSlide >= React.Children.count(this.props.children) - slidesToShow &&
@@ -453,7 +458,7 @@ const Carousel = React.createClass({
   },
 
   resetAutoplay() {
-    if (this.props.autoplay && !this.autoplayPaused) {
+    if (this.props.resetAutoplay && this.props.autoplay && !this.autoplayPaused) {  // by warmhug
       this.stopAutoplay();
       this.startAutoplay();
     }
@@ -895,10 +900,8 @@ const Carousel = React.createClass({
         return {
           position: 'absolute',
           bottom: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          WebkitTransform: 'translateX(-50%)',
-          msTransform: 'translateX(-50%)'
+          width: '100%',
+          textAlign: 'center',
         };
       }
     case 'BottomRight':

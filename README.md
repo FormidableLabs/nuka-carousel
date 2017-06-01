@@ -1,3 +1,23 @@
+
+## Modify from upstream nuka-carousel@2.0.4
+> Search for `by warmhug` comments in source file to see detailed changes.
+> This fork stream's version begin from `2.2.0` and the npm package name is `rmc-nuka-carousel`.
+
+- add `swipeSpeed` prop, you can configure the swipe sensitivity.
+- add `resetAutoplay` props, when set false, you can remove the sense of frustration between the items to switch.（自动循环播放时、第一个和第二个项目之间切换时的顿挫感）
+
+Note: if you set `autoplayInterval` prop to less than 1000, You need to set the `speed` prop to less than 300 at the same time.
+
+#### develop
+
+```sh
+# after modify and submit to master, you need add tag by yourself, e.g.
+git tag v2.2.0
+git push --tags
+```
+
+------------
+
 #nuka-carousel
 
 A Pure ReactJS Carousel Component
