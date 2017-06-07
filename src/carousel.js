@@ -34,6 +34,11 @@ const removeEvent = function(elem, type, eventHandle) {
   }
 };
 
+const reverseChildren = (children, rtl) => rtl ?
+  // Create a new copy
+  [...children].reverse() :
+  children;
+
 const Carousel = React.createClass({
   displayName: 'Carousel',
 
@@ -86,6 +91,7 @@ const Carousel = React.createClass({
     vertical: PropTypes.bool,
     width: PropTypes.string,
     wrapAround: PropTypes.bool,
+    rtl: PropTypes.bool,
   },
 
   getDefaultProps() {
@@ -111,18 +117,28 @@ const Carousel = React.createClass({
       swiping: true,
       vertical: false,
       width: '100%',
-      wrapAround: false
+      wrapAround: false,
+      rtl: false
     }
   },
 
   getInitialState() {
+    const {
+      rtl,
+      children,
+      slideIndex,
+      slidesToScroll,
+      slidesToShow
+    } = this.props;
     return {
-      currentSlide: this.props.slideIndex,
+      // When `rtl` mode is active, start at the end but take into account
+      //  how many slides should be shown, start at `slideIndex` otherwise.
+      currentSlide: rtl ? children.length - slidesToShow : slideIndex,
       dragging: false,
       frameWidth: 0,
       left: 0,
       slideCount: 0,
-      slidesToScroll: this.props.slidesToScroll,
+      slidesToScroll: slidesToScroll,
       slideWidth: 0,
       top: 0
     }
@@ -164,18 +180,34 @@ const Carousel = React.createClass({
   },
 
   render() {
-    var self = this;
-    var children = React.Children.count(this.props.children) > 1 ? this.formatChildren(this.props.children) : this.props.children;
+    const self = this;
+    const {rtl, children} = this.props;
+    const orderedChildren = reverseChildren(children, rtl);
+    const formatedChildren = React.Children.count(orderedChildren) > 1 ?
+      this.formatChildren(orderedChildren) :
+      orderedChildren;
+
+    // `dir` attribute should be `ltr` to preserve css positioning
+    // and animations.
     return (
-      <div className={['slider', this.props.className || ''].join(' ')} ref="slider" style={assign(this.getSliderStyles(), this.props.style || {})}>
+      <div
+          className={['slider', this.props.className || ''].join(' ')}
+          dir="ltr"
+          ref="slider"
+          style={assign(this.getSliderStyles(), this.props.style || {})}>
         <div className="slider-frame"
+          dir="ltr"
           ref="frame"
           style={this.getFrameStyles()}
           {...this.getTouchEvents()}
           {...this.getMouseEvents()}
           onClick={this.handleClick}>
-          <ul className="slider-list" ref="list" style={this.getListStyles()}>
-            {children}
+          <ul
+            className="slider-list"
+            dir="ltr"
+            ref="list"
+            style={this.getListStyles()}>
+            {formatedChildren}
           </ul>
         </div>
         {this.props.decorators ?
