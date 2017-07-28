@@ -894,7 +894,7 @@ const Carousel = React.createClass({
       {
         return {
           position: 'absolute',
-          bottom: 0,
+          bottom: '-70',
           left: '50%',
           transform: 'translateX(-50%)',
           WebkitTransform: 'translateX(-50%)',

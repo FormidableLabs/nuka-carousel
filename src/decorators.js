@@ -6,25 +6,46 @@ const DefaultDecorators = [
   {
     component: React.createClass({
       render() {
+        var self = this;
         return (
           <button
-            style={this.getButtonStyles(this.props.currentSlide === 0 && !this.props.wrapAround)}
-            onClick={this.handleClick}>PREV</button>
+            style={self.getButtonStyles(self.props.currentSlide === 0 && !self.props.wrapAround)}
+            onClick={self.handleClick}>
+            <span style={self.getSpanStyles()}></span>
+          </button>
         )
       },
       handleClick(e) {
         e.preventDefault();
         this.props.previousSlide();
       },
-      getButtonStyles(disabled) {
+      getButtonStyles() {
         return {
-          border: 0,
-          background: 'rgba(0,0,0,0.4)',
-          color: 'white',
-          padding: 10,
+          fontSize: 0,
+          left: '-45px',
+          lineHeight: 0,
+          position: 'absolute',
+          top: '50%',
+          display: 'block',
+          width: '20px',
+          height: '20px',
+          marginTop: '-10px',
+          padding: 0,
+          cursor: 'pointer',
+          color: 'transparent',
+          border: 'none',
           outline: 0,
-          opacity: disabled ? 0.3 : 1,
-          cursor: 'pointer'
+          background: 'transparent'
+        }
+      },
+      getSpanStyles() {
+        return {
+          display: 'block',
+          left: '-60px',
+          height: '40px',
+          width: '20px',
+          backgroundImage: "url('../static/images/sliders/slider-prev.svg')",
+          backgroundSize: '20px 40px'
         }
       }
     }),
@@ -33,25 +54,46 @@ const DefaultDecorators = [
   {
     component: React.createClass({
       render() {
+        var self = this;
         return (
           <button
-            style={this.getButtonStyles(this.props.currentSlide + this.props.slidesToScroll >= this.props.slideCount && !this.props.wrapAround)}
-            onClick={this.handleClick}>NEXT</button>
+            style={self.getButtonStyles(self.props.currentSlide + self.props.slidesToScroll >= self.props.slideCount && !self.props.wrapAround)}
+            onClick={self.handleClick}>
+            <span style={self.getSpanStyles()}></span>
+          </button>
         )
       },
       handleClick(e) {
         e.preventDefault();
         this.props.nextSlide();
       },
-      getButtonStyles(disabled) {
+      getButtonStyles() {
         return {
-          border: 0,
-          background: 'rgba(0,0,0,0.4)',
-          color: 'white',
-          padding: 10,
+          fontSize: 0,
+          right: '-45px',
+          lineHeight: 0,
+          position: 'absolute',
+          top: '50%',
+          display: 'block',
+          width: '20px',
+          height: '20px',
+          marginTop: '-10px',
+          padding: 0,
+          cursor: 'pointer',
+          color: 'transparent',
+          border: 'none',
           outline: 0,
-          opacity: disabled ? 0.3 : 1,
-          cursor: 'pointer'
+          background: 'transparent'
+        }
+      },
+      getSpanStyles() {
+        return {
+          display: 'block',
+          left: '-60px',
+          height: '40px',
+          width: '20px',
+          backgroundImage: "url('../static/images/sliders/slider-prev.svg')",
+          backgroundSize: '20px 40px'
         }
       }
     }),
@@ -103,14 +145,15 @@ const DefaultDecorators = [
       },
       getButtonStyles(active) {
         return {
+          fontFamily: 'slick',
           border: 0,
           background: 'transparent',
           color: 'black',
           cursor: 'pointer',
-          padding: 10,
+          padding: 12,
           outline: 0,
-          fontSize: 24,
-          opacity: active ? 1 : 0.5
+          fontSize: 6,
+          opacity: active ? 1 : 0.25
         }
       }
     }),
