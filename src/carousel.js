@@ -69,6 +69,7 @@ const Carousel = React.createClass({
     edgeEasing: PropTypes.string,
     framePadding: PropTypes.string,
     frameOverflow: PropTypes.string,
+    heightMode: React.PropTypes.oneOf(['max', 'adaptive']).isRequired,
     initialSlideHeight: PropTypes.number,
     initialSlideWidth: PropTypes.number,
     slideIndex: PropTypes.number,
@@ -103,6 +104,7 @@ const Carousel = React.createClass({
       edgeEasing: 'easeOutElastic',
       framePadding: '0px',
       frameOverflow: 'hidden',
+      heightMode: 'max',
       slideIndex: 0,
       slidesToScroll: 1,
       slidesToShow: 1,
@@ -651,7 +653,6 @@ const Carousel = React.createClass({
     var self = this,
       slideWidth,
       slidesToScroll,
-      firstSlide,
       frame,
       frameWidth,
       frameHeight,
@@ -659,14 +660,18 @@ const Carousel = React.createClass({
 
     slidesToScroll = props.slidesToScroll;
     frame = this.refs.frame;
-    firstSlide = frame.childNodes[0].childNodes[0];
-    if (firstSlide) {
-      firstSlide.style.height = 'auto';
-      slideHeight = this.props.vertical ?
-        firstSlide.offsetHeight * props.slidesToShow :
-        firstSlide.offsetHeight;
+    var slides = frame.childNodes[0].childNodes;
+
+    if (props.vertical) {
+      if (slides && slides.length) {
+        slides[0].style.height = 'auto';
+        slideHeight = slides[0].offsetHeight * props.slidesToShow;
+      } else {
+        slideHeight = 100;
+      }
     } else {
-      slideHeight = 100;
+      slideHeight = props.heightMode === 'max' && self.state.slideHeight || props.initialSlideHeight || 0;
+      slideHeight = self.getTallestSlide(slideHeight, slides);
     }
 
     if (typeof props.slideWidth !== 'number') {
@@ -700,6 +705,20 @@ const Carousel = React.createClass({
     }, function() {
       self.setLeft()
     });
+  },
+
+  getTallestSlide(slideHeight, slides) {
+    if (slides && slides.length) {
+      for (var i = 0; i < slides.length; i++) {
+        var s = slides[i];
+
+        if (s.offsetHeight > slideHeight) {
+          slideHeight = s.offsetHeight;
+        }
+      }
+    }
+
+    return slideHeight
   },
 
   setLeft() {

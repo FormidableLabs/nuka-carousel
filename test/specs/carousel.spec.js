@@ -572,6 +572,56 @@ describe('Carousel', function () {
         expect(component.state.currentSlide).to.equal(2);
     });
 
+    it('should return the heighest slide from an array of sldies', function() {
+        component = ReactDOM.render(
+          React.createElement(carousel, null,
+            React.createElement('p', null, 'Slide 1')
+          ),
+          container
+        );
+
+        var mocks = [{
+          offsetHeight: 20
+        }, {
+          offsetHeight: 50
+        }, {
+          offsetHeight: 20
+        }, {
+          offsetHeight: 200
+        }, {
+          offsetHeight: 50
+        }];
+
+        var result = component.getTallestSlide(0, mocks);
+
+        expect(result).to.equal(200);
+    });
+
+    it('should return the provided slideHeight if slides are all smaller', function() {
+        component = ReactDOM.render(
+          React.createElement(carousel, null,
+            React.createElement('p', null, 'Slide 1')
+          ),
+          container
+        );
+
+        var mocks = [{
+          offsetHeight: 20
+        }, {
+          offsetHeight: 50
+        }, {
+          offsetHeight: 20
+        }, {
+          offsetHeight: 50
+        }, {
+          offsetHeight: 50
+        }];
+
+        var result = component.getTallestSlide(100, mocks);
+
+        expect(result).to.equal(100);
+    });
+
   });
 
 });
