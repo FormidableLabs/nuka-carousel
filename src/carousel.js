@@ -655,7 +655,8 @@ const Carousel = React.createClass({
       frame,
       frameWidth,
       frameHeight,
-      slideHeight;
+      slideHeight,
+      toScroll;
 
     slidesToScroll = props.slidesToScroll;
     frame = this.refs.frame;
@@ -687,7 +688,10 @@ const Carousel = React.createClass({
     frameWidth = props.vertical ? frameHeight : frame.offsetWidth;
 
     if (props.slidesToScroll === 'auto') {
-      slidesToScroll = Math.floor(frameWidth / (slideWidth + props.cellSpacing));
+      toScroll = frameWidth / (slideWidth + props.cellSpacing);
+      slidesToScroll = props.slideWidth === 1
+        ? Math.ceil(toScroll)
+        : Math.floor(toScroll);
     }
 
     this.setState({

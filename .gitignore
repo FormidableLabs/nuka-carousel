@@ -29,6 +29,7 @@ $RECYCLE.BIN/
 
 node_modules/
 bower_components/
+coverage/
 .tmp
 dist
 /src/scripts/main.js
