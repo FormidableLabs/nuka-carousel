@@ -1,6 +1,6 @@
 {
   "name": "nuka-carousel",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Pure React Carousel",
   "main": "index.js",
   "dependencies": {
@@ -63,11 +63,7 @@
     "type": "git",
     "url": "https://github.com/kenwheeler/nuka-carousel.git"
   },
-  "keywords": [
-    "react",
-    "carousel",
-    "nuka"
-  ],
+  "keywords": ["react", "carousel", "nuka"],
   "author": "Ken Wheeler",
   "license": "MIT",
   "bugs": {
