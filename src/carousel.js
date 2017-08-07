@@ -173,7 +173,7 @@ const Carousel = React.createClass({
           style={this.getFrameStyles()}
           {...this.getTouchEvents()}
           {...this.getMouseEvents()}
-          onClick={this.handleClick}>
+          onClickCapture={this.handleClick}>
           <ul className="slider-list" ref="list" style={this.getListStyles()}>
             {children}
           </ul>
