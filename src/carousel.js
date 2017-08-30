@@ -7,6 +7,7 @@ import tweenState from 'kw-react-tween-state';
 import decorators from './decorators';
 import assign from 'object-assign';
 import ExecutionEnvironment from 'exenv';
+import createReactClass from 'create-react-class';
 
 const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
@@ -34,7 +35,7 @@ const removeEvent = function(elem, type, eventHandle) {
   }
 };
 
-const Carousel = React.createClass({
+const Carousel = createReactClass({
   displayName: 'Carousel',
 
   mixins: [tweenState.Mixin],
