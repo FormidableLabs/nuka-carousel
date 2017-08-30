@@ -879,11 +879,16 @@ const Carousel = createReactClass({
   },
 
   getFrameStyles() {
+    var height = 'auto';
+    if (this.props.initialSlideHeight) {
+      height = this.props.initialSlideHeight + 'px';
+    }
+  
     return {
       position: 'relative',
       display: 'block',
       overflow: this.props.frameOverflow,
-      height: this.props.vertical ? this.state.frameWidth || 'initial' : 'auto',
+      height: this.props.vertical ? this.state.frameWidth || 'initial' : height,
       margin: this.props.framePadding,
       padding: 0,
       transform: 'translate3d(0, 0, 0)',
@@ -954,11 +959,17 @@ const Carousel = createReactClass({
   },
 
   getSliderStyles() {
+    var height = 'auto';
+    
+    if (this.props.initialSlideHeight) {
+      height = this.props.initialSlideHeight + 'px';
+    }
+    
     return {
       position: 'relative',
       display: 'block',
       width: this.props.width,
-      height: 'auto',
+      height: height,
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
       visibility: this.state.slideWidth ? 'visible' : 'hidden',
