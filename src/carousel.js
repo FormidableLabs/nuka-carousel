@@ -166,10 +166,7 @@ const Carousel = createReactClass({
 
   render() {
     var self = this;
-    var children =
-      React.Children.count(this.props.children) > 1
-        ? this.formatChildren(this.props.children)
-        : this.props.children;
+    var children = this.formatChildren(this.props.children);
     return (
       <div
         className={['slider', this.props.className || ''].join(' ')}
