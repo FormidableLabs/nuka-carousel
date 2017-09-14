@@ -35,3 +35,4 @@ dist
 
 *.log
 *.log.*
+yarn.lock
