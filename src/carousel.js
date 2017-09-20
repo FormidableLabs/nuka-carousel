@@ -574,17 +574,17 @@ const Carousel = createReactClass({
 
     this.props.beforeSlide(this.state.currentSlide, index);
 
-    if (index !== this.state.currentSlide) {
-      this.props.afterSlide(index);
-    }
     this.setState(
       {
         currentSlide: index,
       },
       function() {
-        self.animateSlide();
-        self.resetAutoplay();
-        self.setExternalData();
+        self.animateSlide(null, null, null, function () {
+          self.animateSlide(null, 0.01);
+          self.props.afterSlide(index);
+          self.resetAutoplay();
+          self.setExternalData();
+        });
       }
     );
   },
