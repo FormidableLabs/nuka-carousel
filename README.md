@@ -12,30 +12,54 @@ npm install nuka-carousel
 
 ### Example
 ```javascript
-'use strict';
+import React from 'react';
+import Carousel from '../src/carousel';
+import Decorators from '../src/decorators'
 
-var React = require('react');
-var createReactClass = require('create-react-class');
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      slideIndex: 0,
+      carousels: {}
+    }
+  }
 
-var Carousel = require('nuka-carousel');
+  setCarouselData = () => {
+    this.setState({
+      carousels: {
+        carousel: this.carouselComponent
+      }
+    })
+  }
 
-const App = createReactClass({
-  mixins: [Carousel.ControllerMixin],
   render() {
     return (
-      <Carousel>
-        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide1"/>
-        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide2"/>
-        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide3"/>
-        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide4"/>
-        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide5"/>
-        <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide6"/>
-      </Carousel>
+      <div style={{width: '50%', margin: 'auto'}}>
+        <Carousel
+          ref={ref => { this.carouselComponent = ref }}
+          data={this.setCarouselData}
+          slideIndex={this.state.slideIndex}
+          afterSlide={newSlideIndex => this.setState({ slideIndex: newSlideIndex })}
+          decorators={Decorators}
+        >
+          <img src="http://placehold.it/1000x400&text=slide1"/>
+          <img src="http://placehold.it/1000x400&text=slide2"/>
+          <img src="http://placehold.it/1000x400&text=slide3"/>
+          <img src="http://placehold.it/1000x400&text=slide4"/>
+          <img src="http://placehold.it/1000x400&text=slide5"/>
+          <img src="http://placehold.it/1000x400&text=slide6"/>
+        </Carousel>
+        <button onClick={() => this.carouselComponent.goToSlide(0)}>1</button>
+        <button onClick={() => this.carouselComponent.goToSlide(1)}>2</button>
+        <button onClick={() => this.carouselComponent.goToSlide(2)}>3</button>
+        <button onClick={() => this.carouselComponent.goToSlide(3)}>4</button>
+        <button onClick={() => this.carouselComponent.goToSlide(4)}>5</button>
+        <button onClick={() => this.carouselComponent.goToSlide(5)}>6</button>
+      </div>
     )
   }
-});
-
-module.exports = App;
+}
 ```
 
 ### Running demo locally

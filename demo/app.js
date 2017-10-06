@@ -1,10 +1,7 @@
-'use strict';
-
-import Carousel from '../src/carousel';
-import React from 'react';
 import ReactDom from 'react-dom';
+import React from 'react';
+import Carousel from '../src/carousel';
 import Decorators from '../src/decorators'
-window.React = React;
 
 class App extends React.Component {
   constructor(props) {
