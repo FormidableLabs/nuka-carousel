@@ -21,7 +21,9 @@ gulp.task('open', function(){
 
 gulp.task("babel", function() {
   return gulp.src('src/*.js')
-        .pipe(babel())
+        .pipe(babel({
+          presets: ['es2015', 'stage-0', 'react']
+        }))
         .pipe(gulp.dest('lib'));
 });
 
