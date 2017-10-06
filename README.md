@@ -1,4 +1,4 @@
-# nuka-carousel
+# vuka-carousel
 
 A Pure ReactJS Carousel Component
 
