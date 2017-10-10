@@ -12,26 +12,17 @@
         "$isBrowser"
     },
     "parser": "babel-eslint",
-    "ecmaFeatures": {
-        "arrowFunctions": true,
-        "binaryLiterals": true,
-        "blockBindings": true,
-        "classes": true,
-        "defaultParams": true,
-        "destructuring": true,
-        "forOf": true,
-        "generators": true,
-        "modules": true,
-        "objectLiteralComputedProperties": true,
-        "objectLiteralDuplicateProperties": true,
-        "objectLiteralShorthandMethods": true,
-        "objectLiteralShorthandProperties": true,
-        "spread": true,
-        "superInFunctions": true,
-        "templateStrings": true,
-        "unicodeCodePointEscapes": true,
-        "jsx": true
+    "parserOptions": {
+      "ecmaVersion": 7,
+      "ecmaFeatures": {
+        "jsx": true,
+      }
     },
+    "plugins": [
+      "react",
+      "babel"
+    ],
+    "extends": ["eslint:recommended"],
     "rules": {
 
         // Lint Rules
@@ -56,7 +47,7 @@
 
         "no-with": 1,
         "no-eval": 1,
-        "space-after-keywords": 1,
+        "keyword-spacing": 1,
 
         "curly": [1, "all"],
         "space-before-blocks": 1,

@@ -2,11 +2,12 @@
 
 var path = require('path');
 
-module.exports = function (config) {
+module.exports = function(config) {
   config.set({
     basePath: '',
     frameworks: ['mocha', 'sinon-chai'],
     files: [
+      'node_modules/babel-polyfill/dist/polyfill.js',
       'test/helpers/**/*.js',
       'test/specs/**/*.spec.js'
     ],
@@ -20,12 +21,12 @@ module.exports = function (config) {
           test: /\.js$/,
           exclude: [/node_modules/],
           loader: 'babel-loader'
-        },{
+        }, {
           test: /\.css$/,
-          loader: "style-loader!css-loader"
+          loader: 'style-loader!css-loader'
         }, {
           test: /\.styl$/,
-          loader: "style-loader!css-loader!stylus-loader"
+          loader: 'style-loader!css-loader!stylus-loader'
         }],
         postLoaders: [{
           test: /\.js$/,
@@ -51,12 +52,12 @@ module.exports = function (config) {
     browsers: ['PhantomJS'],
     'PhantomJS_Desktop': {
       base: 'PhantomJS',
-        options: {
+      options: {
           viewportSize: {
             width: 1000,
             height: 600
+          }
         }
-      }
     },
     reporters: ['mocha', 'coverage'],
     browserNoActivityTimeout: 60000,
