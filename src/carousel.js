@@ -573,11 +573,16 @@ class Carousel extends React.Component {
       newDimensions.slideWidth !== this.state.slideWidth
   }
 
+  _activeSlideReference = () => {
+    const frame = this.refs.frame
+    return frame.childNodes[0].childNodes[this.state.currentSlide]
+  }
+
   updateDimensions = () => {
     const frame = this.refs.frame
-    const firstSlide = frame.childNodes[0].childNodes[0]
+    const targetSlide = this._activeSlideReference()
 
-    const slideHeight = this._slideHeight(firstSlide, this.props)
+    const slideHeight = this._slideHeight(targetSlide, this.props)
     const slideWidth = this._slideWidth(frame, this.props, slideHeight)
     const frameWidth = this._frameWidth(frame, slideHeight, this.props)
 
@@ -595,10 +600,10 @@ class Carousel extends React.Component {
   setDimensions = (targetProps) => {
     const props = targetProps || this.props
     const frame = this.refs.frame
-    const firstSlide = frame.childNodes[0].childNodes[0]
-    if (firstSlide) firstSlide.style.height = 'auto'
+    const targetSlide = this._activeSlideReference()
+    if (targetSlide) targetSlide.style.height = 'auto'
 
-    const slideHeight = this._slideHeight(firstSlide, props)
+    const slideHeight = this._slideHeight(targetSlide, props)
     const slideWidth = this._slideWidth(frame, props, slideHeight)
     const frameWidth = this._frameWidth(frame, slideHeight, props)
 
