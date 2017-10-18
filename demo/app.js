@@ -25,6 +25,7 @@ class App extends React.Component {
       <div style={{width: '50%', margin: 'auto'}}>
         <Carousel
           ref={ref => { this.carouselComponent = ref }}
+          wrapAround
           data={this.setCarouselData}
           slideIndex={this.state.slideIndex}
           afterSlide={newSlideIndex => this.setState({ slideIndex: newSlideIndex })}

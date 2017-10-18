@@ -701,25 +701,26 @@ class Carousel extends React.Component {
   }
 
   getSlideTargetPosition = (index, positionValue) => {
-    const slidesToShow = (this.state.frameWidth / this.state.slideWidth)
-    const targetPosition = (this.state.slideWidth + this.props.cellSpacing) * index
-    const end = ((this.state.slideWidth + this.props.cellSpacing) * slidesToShow) * -1
+    const { wrapAround, cellSpacing} = this.props
+    const { slideWidth, slideCount, frameWidth} = this.state
 
-    if (this.props.wrapAround) {
-      const slidesBefore = Math.ceil(positionValue / (this.state.slideWidth))
-      if (this.state.slideCount - slidesBefore <= index) {
-        return (this.state.slideWidth + this.props.cellSpacing) *
-          (this.state.slideCount - index) * -1
+    const fullSlideWidth = slideWidth + cellSpacing
+    const slidesToShow = (frameWidth / fullSlideWidth)
+    const targetPosition = fullSlideWidth * index
+
+    if (wrapAround) {
+      const slidesBefore = Math.ceil(positionValue / fullSlideWidth)
+      if (slideCount - slidesBefore <= index) {
+        return fullSlideWidth * (slideCount - index) * -1
       }
 
-      let slidesAfter = Math.ceil((Math.abs(positionValue) - Math.abs(end)) / this.state.slideWidth)
-
-      if (this.state.slideWidth !== 1) {
-        slidesAfter = Math.ceil((Math.abs(positionValue) - (this.state.slideWidth)) / this.state.slideWidth)
-      }
+      const end = fullSlideWidth * slidesToShow * -1
+      const slidesAfter = slideWidth !== 1
+        ? Math.ceil((Math.abs(positionValue) - fullSlideWidth) / fullSlideWidth)
+        : Math.ceil((Math.abs(positionValue) - Math.abs(end)) / fullSlideWidth)
 
       if (index <= slidesAfter - 1) {
-        return (this.state.slideWidth + this.props.cellSpacing) * (this.state.slideCount + index)
+        return fullSlideWidth * (slideCount + index)
       }
     }
 
