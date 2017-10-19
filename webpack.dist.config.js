@@ -10,8 +10,6 @@ module.exports = {
     filename: 'nuka-carousel.js',
     libraryTarget: 'umd'
   },
-
-  debug: false,
   devtool: false,
   entry: './index.js',
 
@@ -25,7 +23,8 @@ module.exports = {
   ],
 
   resolve: {
-    extensions: ['', '.js']
+    enforceExtension: false,
+    extensions: ['.js']
   },
 
   module: {

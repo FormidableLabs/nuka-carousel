@@ -27,16 +27,15 @@ module.exports = function(config) {
         }, {
           test: /\.styl$/,
           loader: 'style-loader!css-loader!stylus-loader'
-        }],
-        postLoaders: [{
+        }, {
           test: /\.js$/,
+          enforce: 'post',
           exclude: /(node_modules|bower_components|plugins|[.]spec[.]js)/,
-          loader: 'istanbul-instrumenter'
-        }]
+          loader: 'istanbul-instrumenter-loader'
+        }],
       },
       resolve: {
-        root: [__dirname],
-        modulesDirectories: ['node_modules', 'src']
+        modules: [path.resolve(__dirname, 'src'), 'node_modules']
       }
     },
     webpackServer: {
