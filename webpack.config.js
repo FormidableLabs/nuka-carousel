@@ -12,7 +12,6 @@ module.exports = {
   },
 
   cache: true,
-  debug: false,
   devtool: false,
   entry: [
     './demo/app.js'
@@ -24,15 +23,16 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.js']
+    enforceExtension: false,
+    extensions: ['.js']
   },
   module: {
-    preLoaders: [{
+    loaders: [{
       test: /\.js$/,
+      enforce: 'pre',
       exclude: [/node_modules/,/dist/],
       loader: 'eslint-loader'
-    }],
-    loaders: [{
+    }, {
       test: /\.js$/,
       exclude: [/node_modules/],
       loader: 'babel-loader'
@@ -47,7 +47,10 @@ module.exports = {
 
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.LoaderOptionsPlugin({
+      debug: true
+    })
   ]
 
 };
