@@ -637,6 +637,10 @@ const Carousel = createReactClass({
     }
   },
 
+  getCurrentSlideIndex() {
+    return this.state.currentSlide
+  },
+
   // Animation
 
   animateSlide(easing, duration, endValue, callback) {
