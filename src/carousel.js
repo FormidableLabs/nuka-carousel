@@ -309,6 +309,7 @@ const Carousel = createReactClass({
     var self = this;
 
     if (this.props.dragging === false) {
+      this.clickSafe = false;
       return null;
     }
 
