@@ -20,12 +20,12 @@ const App = createReactClass({
           data={this.setCarouselData.bind(this, 'carousel')}
           slideIndex={this.state.slideIndex}
           afterSlide={newSlideIndex => this.setState({ slideIndex: newSlideIndex })}>
-          <img src="http://placehold.it/1000x400&text=slide1"/>
-          <img src="http://placehold.it/1000x400&text=slide2"/>
-          <img src="http://placehold.it/1000x400&text=slide3"/>
-          <img src="http://placehold.it/1000x400&text=slide4"/>
-          <img src="http://placehold.it/1000x400&text=slide5"/>
-          <img src="http://placehold.it/1000x400&text=slide6"/>
+          <img src="http://placehold.it/1000x400&text=slide1" draggable="false"/>
+          <img src="http://placehold.it/1000x400&text=slide2" draggable="false"/>
+          <img src="http://placehold.it/1000x400&text=slide3" draggable="false"/>
+          <img src="http://placehold.it/1000x400&text=slide4" draggable="false"/>
+          <img src="http://placehold.it/1000x400&text=slide5" draggable="false"/>
+          <img src="http://placehold.it/1000x400&text=slide6" draggable="false"/>
         </Carousel>
         <button onClick={() => this.setState({ slideIndex: 0 })}>1</button>
         <button onClick={() => this.setState({ slideIndex: 1 })}>2</button>
