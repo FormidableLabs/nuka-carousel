@@ -186,6 +186,11 @@ Animation duration.
 
 Enable touch swipe/dragging
 
+### use3d
+`React.PropTypes.bool`
+
+Enable to use CSS property translate3d instead of translate, this can change scroll performance. Defaults to `true`.
+
 #### vertical
 `React.PropTypes.bool`
 
