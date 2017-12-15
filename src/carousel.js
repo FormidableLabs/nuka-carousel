@@ -695,7 +695,7 @@ class Carousel extends React.Component {
       listStyleType: 'none',
       verticalAlign: 'top',
       width: this.props.vertical ? '100%' : this.state.slideWidth,
-      height: '400px',
+      height: 'auto',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
       marginLeft: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
