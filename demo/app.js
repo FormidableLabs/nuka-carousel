@@ -13,13 +13,20 @@ const App = createReactClass({
   getInitialState() { return { slideIndex: 0 }; },
 
   render() {
+    const slideStyle = {backgroundColor: '#eeeeee', width: '765px', height: '300px'};
+
     return (
       <div style={{width: '50%', margin: 'auto'}}>
         <Carousel
           ref="carousel"
           data={this.setCarouselData.bind(this, 'carousel')}
+          dragging={false}
           slideIndex={this.state.slideIndex}
           afterSlide={newSlideIndex => this.setState({ slideIndex: newSlideIndex })}>
+          <div style={slideStyle}>
+            <input type="checkbox" id="sample-checkbox" />
+            <label htmlFor="sample-checkbox">Sample checkbox</label>
+          </div>
           <img src="http://placehold.it/1000x400&text=slide1"/>
           <img src="http://placehold.it/1000x400&text=slide2"/>
           <img src="http://placehold.it/1000x400&text=slide3"/>
