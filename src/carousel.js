@@ -80,6 +80,7 @@ const Carousel = createReactClass({
     ]),
     slideWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     speed: PropTypes.number,
+    transitionDelay: PropTypes.number,
     swiping: PropTypes.bool,
     vertical: PropTypes.bool,
     width: PropTypes.string,
@@ -106,6 +107,7 @@ const Carousel = createReactClass({
       slidesToShow: 1,
       slideWidth: 1,
       speed: 500,
+      transitionDelay: 0,
       swiping: true,
       vertical: false,
       width: '100%',
@@ -645,6 +647,7 @@ const Carousel = createReactClass({
       easing: easing || tweenState.easingTypes[this.props.easing],
       duration: duration || this.props.speed,
       endValue: endValue || this.getTargetLeft(),
+      delay: this.props.transitionDelay,
       onEnd: callback || null,
     });
   },
@@ -773,7 +776,6 @@ const Carousel = createReactClass({
     var self = this,
       slideWidth,
       slidesToScroll,
-      firstSlide,
       frame,
       frameWidth,
       frameHeight,
@@ -781,12 +783,13 @@ const Carousel = createReactClass({
 
     slidesToScroll = props.slidesToScroll;
     frame = this.refs.frame;
-    firstSlide = frame.childNodes[0].childNodes[0];
-    if (firstSlide) {
-      firstSlide.style.height = 'auto';
-      slideHeight = this.props.vertical
-        ? firstSlide.offsetHeight * props.slidesToShow
-        : firstSlide.offsetHeight;
+    const slidesArray = Array.prototype.slice.call(frame.childNodes[0].childNodes);
+    const heights = slidesArray.map((slide) => slide.offsetHeight);
+    const maxHeight = Math.max.apply(null, heights);
+    const highestSlide = slidesArray.filter((slide) => slide.offsetHeight === maxHeight);
+    if (highestSlide.length) {
+      highestSlide[0].style.height = 'auto';
+      slideHeight = this.props.vertical ? highestSlide[0].offsetHeight * props.slidesToShow : highestSlide[0].offsetHeight;
     } else {
       slideHeight = 100;
     }
