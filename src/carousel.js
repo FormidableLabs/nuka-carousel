@@ -529,6 +529,9 @@ const Carousel = createReactClass({
   // Action Methods
 
   goToSlide(index) {
+    if (index === this.state.currentSlide) {
+      return;
+    }
     var self = this;
     if (index >= React.Children.count(this.props.children) || index < 0) {
       if (!this.props.wrapAround) {
