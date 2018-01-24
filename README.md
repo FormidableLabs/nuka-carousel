@@ -150,6 +150,20 @@ Initial height of the slides in pixels.
 
 Initial width of the slides in pixels.
 
+#### heightMode
+`React.PropTypes.oneOf('first', 'max')`
+
+By default is equal to first
+
+Height mode for carousel
+
+#### needRecalculateHeight
+`React.PropTypes.bool`
+
+By default is equal to false
+
+Carousel will be recalculate own height, when one of children was updated
+
 #### slideIndex
 `React.PropTypes.number`
 
