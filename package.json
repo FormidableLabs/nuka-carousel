@@ -81,5 +81,6 @@
   "bugs": {
     "url": "https://github.com/kenwheeler/nuka-carousel/issues"
   },
-  "homepage": "https://github.com/kenwheeler/nuka-carousel"
+  "homepage": "https://github.com/kenwheeler/nuka-carousel",
+  "sideEffects": false
 }
