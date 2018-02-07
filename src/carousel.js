@@ -859,11 +859,11 @@ const Carousel = createReactClass({
     var spacingOffset =
       this.props.cellSpacing * React.Children.count(this.props.children);
     var transform =
-      'translate3d(' +
+      'translate(' +
       this.getTweeningValue('left') +
       'px, ' +
       this.getTweeningValue('top') +
-      'px, 0)';
+      'px)';
     return {
       transform,
       WebkitTransform: transform,
@@ -897,8 +897,8 @@ const Carousel = createReactClass({
       height: this.props.vertical ? this.state.frameWidth || 'initial' : 'auto',
       margin: this.props.framePadding,
       padding: 0,
-      transform: 'translate3d(0, 0, 0)',
-      WebkitTransform: 'translate3d(0, 0, 0)',
+      transform: 'translate(0, 0)',
+      WebkitTransform: 'translate(0, 0)',
       msTransform: 'translate(0, 0)',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
