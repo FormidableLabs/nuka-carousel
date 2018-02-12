@@ -451,7 +451,9 @@ const Carousel = createReactClass({
         }
       }
     } else {
-      this.goToSlide(this.state.currentSlide);
+      if (this.touchObject.direction !== 0) {
+        this.goToSlide(this.state.currentSlide);
+      }
     }
 
     this.touchObject = {};
