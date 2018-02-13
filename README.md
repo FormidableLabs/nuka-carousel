@@ -174,6 +174,27 @@ Initial height of the slides in pixels.
 
 Initial width of the slides in pixels.
 
+#### Placeholder
+`React.PropTypes.func`
+
+Placeholder component.
+
+#### placeholderMode
+`React.PropTypes.bool`
+
+Activates placeholder mode (rendering a Placeholder instead of Slide for some slides). Defaults to `false`.
+If placeholderMode is activated, a Placeholder component must be provided. Otherwise, the real Slide will be rendered.
+
+#### preloadedChildrenLevel
+`React.PropTypes.number`
+
+Sets the level of preloaded children, for which the real Slide is rendered (not including the current slide), when placeholderMode is active. Defaults to `1`.
+
+#### Slide
+`React.PropTypes.func`
+
+Slide component.
+
 #### slideIndex
 `React.PropTypes.number`
 
