@@ -181,6 +181,11 @@ Manually set slideWidth. If you want hard pixel widths, use a string like `slide
 
 Animation duration.
 
+#### swipeDetectionSensitivity
+`React.PropTypes.number`
+
+Amount of pixels dragged to be detected as swipe. Defaults to `slideWidth / slidesToShow / 5`.
+
 #### swiping
 `React.PropTypes.bool`
 
