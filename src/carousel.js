@@ -86,6 +86,10 @@ const Carousel = createReactClass({
     vertical: PropTypes.bool,
     width: PropTypes.string,
     wrapAround: PropTypes.bool,
+    contentAlign: PropTypes.oneOfType([
+      PropTypes.oneOf(['left', 'center', 'right']),
+      PropTypes.func,
+    ]),
   },
 
   getDefaultProps() {
@@ -113,6 +117,7 @@ const Carousel = createReactClass({
       vertical: false,
       width: '100%',
       wrapAround: false,
+      contentAlign: 'center'
     };
   },
 
@@ -909,7 +914,9 @@ const Carousel = createReactClass({
 
   getSlideStyles(index, positionValue) {
     var targetPosition = this.getSlideTargetPosition(index, positionValue);
+    const textAlign = this.getContentAlign(index);
     return {
+      textAlign,
       position: 'absolute',
       left: this.props.vertical ? 0 : targetPosition,
       top: this.props.vertical ? targetPosition : 0,
@@ -925,6 +932,14 @@ const Carousel = createReactClass({
       marginTop: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
       marginBottom: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
     };
+  },
+
+  getContentAlign(index) {
+    if (typeof this.props.contentAlign === 'string') {
+      return this.props.contentAlign;
+    }
+
+    return this.props.contentAlign(index, this.state.currentSlide);
   },
 
   getSlideTargetPosition(index, positionValue) {
