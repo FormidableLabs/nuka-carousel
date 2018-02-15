@@ -150,6 +150,11 @@ Initial height of the slides in pixels.
 
 Initial width of the slides in pixels.
 
+#### preventMultiFingerSwipe
+`React.PropTypes.bool`
+
+Stop detecting touch events as swipe or drag if there is multiple touch points active. Defaults to false.
+
 #### slideIndex
 `React.PropTypes.number`
 
