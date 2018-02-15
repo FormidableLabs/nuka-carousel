@@ -251,7 +251,7 @@ const Carousel = createReactClass({
         self.handleMouseOver();
       },
       onTouchMove(e) {
-        if (!this.props.preventMultiFingerSwipe || (this.props.preventMultiFinterSwipe && e.touches.length === 1) ) {
+        if (e.touches.length === 1 || !this.props.preventMultiFingerSwipe) {
           var direction = self.swipeDirection(
             self.touchObject.startX,
             e.touches[0].pageX,
@@ -423,7 +423,7 @@ const Carousel = createReactClass({
   },
 
   handleSwipe(e) {
-    if (!this.props.preventMultiFingerSwipe || (this.props.preventMultiFingerSwipe && e.touches.length <= 1)) {
+    if (e.touches.length <= 1 || !this.props.preventMultiFingerSwipe) {
       if (
         typeof this.touchObject.length !== 'undefined' &&
         this.touchObject.length > 44
