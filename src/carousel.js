@@ -72,6 +72,7 @@ const Carousel = createReactClass({
     frameOverflow: PropTypes.string,
     initialSlideHeight: PropTypes.number,
     initialSlideWidth: PropTypes.number,
+    preventMultiFingerSwipe: PropTypes.bool,
     swipeDetectionSensitivity: PropTypes.number,
     slideIndex: PropTypes.number,
     slidesToShow: PropTypes.number,
@@ -102,6 +103,7 @@ const Carousel = createReactClass({
       edgeEasing: 'easeOutElastic',
       framePadding: '0px',
       frameOverflow: 'hidden',
+      preventMultiFingerSwipe: false,
       slideIndex: 0,
       slidesToScroll: 1,
       slidesToShow: 1,
@@ -249,50 +251,52 @@ const Carousel = createReactClass({
         self.handleMouseOver();
       },
       onTouchMove(e) {
-        var direction = self.swipeDirection(
-          self.touchObject.startX,
-          e.touches[0].pageX,
-          self.touchObject.startY,
-          e.touches[0].pageY
-        );
-
-        if (direction !== 0) {
-          e.preventDefault();
-        }
-
-        var length = self.props.vertical
-          ? Math.round(
-            Math.sqrt(
-              Math.pow(e.touches[0].pageY - self.touchObject.startY, 2)
-            )
-          )
-          : Math.round(
-            Math.sqrt(
-              Math.pow(e.touches[0].pageX - self.touchObject.startX, 2)
-            )
+        if (!this.props.preventMultiFingerSwipe || (this.props.preventMultiFinterSwipe && e.touches.length === 1) ) {
+          var direction = self.swipeDirection(
+            self.touchObject.startX,
+            e.touches[0].pageX,
+            self.touchObject.startY,
+            e.touches[0].pageY
           );
 
-        self.touchObject = {
-          startX: self.touchObject.startX,
-          startY: self.touchObject.startY,
-          endX: e.touches[0].pageX,
-          endY: e.touches[0].pageY,
-          length: length,
-          direction: direction,
-        };
+          if (direction !== 0) {
+            e.preventDefault();
+          }
 
-        self.setState({
-          left: self.props.vertical
-            ? 0
-            : self.getTargetLeft(
-              self.touchObject.length * self.touchObject.direction
-            ),
-          top: self.props.vertical
-            ? self.getTargetLeft(
-              self.touchObject.length * self.touchObject.direction
+          var length = self.props.vertical
+            ? Math.round(
+              Math.sqrt(
+                Math.pow(e.touches[0].pageY - self.touchObject.startY, 2)
+              )
             )
-            : 0,
-        });
+            : Math.round(
+              Math.sqrt(
+                Math.pow(e.touches[0].pageX - self.touchObject.startX, 2)
+              )
+            );
+
+          self.touchObject = {
+            startX: self.touchObject.startX,
+            startY: self.touchObject.startY,
+            endX: e.touches[0].pageX,
+            endY: e.touches[0].pageY,
+            length: length,
+            direction: direction,
+          };
+
+          self.setState({
+            left: self.props.vertical
+              ? 0
+              : self.getTargetLeft(
+                self.touchObject.length * self.touchObject.direction
+              ),
+            top: self.props.vertical
+              ? self.getTargetLeft(
+                self.touchObject.length * self.touchObject.direction
+              )
+              : 0,
+          });
+        }
       },
       onTouchEnd(e) {
         self.handleSwipe(e);
@@ -419,42 +423,43 @@ const Carousel = createReactClass({
   },
 
   handleSwipe(e) {
-
-    if (
-      typeof this.touchObject.length !== 'undefined' &&
-      this.touchObject.length > 44
-    ) {
-      this.clickSafe = true;
-    } else {
-      this.clickSafe = false;
-    }
-
-    var slidesToShow = this.props.slidesToShow;
-    if (this.props.slidesToScroll === 'auto') {
-      slidesToShow = this.state.slidesToScroll;
-    }
-
-    const sensitivity = this.props.swipeDetectionSensitivity || this.state.slideWidth / slidesToShow / 5;
-    if (this.touchObject.length > sensitivity) {
-      if (this.touchObject.direction === 1) {
-        if (
-          this.state.currentSlide >=
-            React.Children.count(this.props.children) - slidesToShow &&
-          !this.props.wrapAround
-        ) {
-          this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
-        } else {
-          this.nextSlide();
-        }
-      } else if (this.touchObject.direction === -1) {
-        if (this.state.currentSlide <= 0 && !this.props.wrapAround) {
-          this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
-        } else {
-          this.previousSlide();
-        }
+    if (!this.props.preventMultiFingerSwipe || (this.props.preventMultiFingerSwipe && this.touches.length <= 1)) {
+      if (
+        typeof this.touchObject.length !== 'undefined' &&
+        this.touchObject.length > 44
+      ) {
+        this.clickSafe = true;
+      } else {
+        this.clickSafe = false;
       }
-    } else {
-      this.goToSlide(this.state.currentSlide);
+
+      var slidesToShow = this.props.slidesToShow;
+      if (this.props.slidesToScroll === 'auto') {
+        slidesToShow = this.state.slidesToScroll;
+      }
+
+      const sensitivity = this.props.swipeDetectionSensitivity || this.state.slideWidth / slidesToShow / 5;
+      if (this.touchObject.length > sensitivity) {
+        if (this.touchObject.direction === 1) {
+          if (
+            this.state.currentSlide >=
+            React.Children.count(this.props.children) - slidesToShow &&
+            !this.props.wrapAround
+          ) {
+            this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
+          } else {
+            this.nextSlide();
+          }
+        } else if (this.touchObject.direction === -1) {
+          if (this.state.currentSlide <= 0 && !this.props.wrapAround) {
+            this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
+          } else {
+            this.previousSlide();
+          }
+        }
+      } else {
+        this.goToSlide(this.state.currentSlide);
+      }
     }
 
     this.touchObject = {};
