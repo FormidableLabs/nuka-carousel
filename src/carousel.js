@@ -423,7 +423,7 @@ const Carousel = createReactClass({
   },
 
   handleSwipe(e) {
-    if (!this.props.preventMultiFingerSwipe || (this.props.preventMultiFingerSwipe && this.touches.length <= 1)) {
+    if (!this.props.preventMultiFingerSwipe || (this.props.preventMultiFingerSwipe && e.touches.length <= 1)) {
       if (
         typeof this.touchObject.length !== 'undefined' &&
         this.touchObject.length > 44
