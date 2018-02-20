@@ -16,7 +16,7 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   # Node4 comes with npm2. Update to npm3.
-  - if [[ `npm -v` == 2* ]]; then echo npm i -g npm@3; fi
+  - if [[ `npm -v` == 2* ]]; then npm i -g npm@3; fi
 
 script:
   - ./node_modules/.bin/gulp build
