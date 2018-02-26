@@ -572,6 +572,22 @@ describe('Carousel', function() {
       expect(component.state.currentSlide).to.equal(2);
     });
 
+    it('should return the current slide index if getCurrentSlideIndex() is called', function() {
+      component = ReactDOM.render(
+        React.createElement(carousel, null,
+          React.createElement('p', null, 'Slide 1'),
+          React.createElement('p', null, 'Slide 2'),
+          React.createElement('p', null, 'Slide 3')
+        ),
+        container
+      );
+
+      component.goToSlide(2);
+      var currentSlideIndex = component.getCurrentSlideIndex();
+
+      expect(currentSlideIndex).to.equal(2);
+    });
+
   });
 
 });
