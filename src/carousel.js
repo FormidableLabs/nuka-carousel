@@ -721,8 +721,8 @@ const Carousel = createReactClass({
   formatChildren(children) {
     var self = this;
     var positionValue = this.props.vertical
-      ? this.getTweeningValue('top')
-      : this.getTweeningValue('left');
+      ? Math.round(this.getTweeningValue('top'))
+      : Math.round(this.getTweeningValue('left'));
     return React.Children.map(children, function(child, index) {
       return (
         <li
@@ -853,18 +853,18 @@ const Carousel = createReactClass({
       this.props.cellSpacing * React.Children.count(this.props.children);
     var transform =
       'translate3d(' +
-      this.getTweeningValue('left') +
+      Math.round(this.getTweeningValue('left')) +
       'px, ' +
-      this.getTweeningValue('top') +
+      Math.round(this.getTweeningValue('top')) +
       'px, 0)';
     return {
       transform,
       WebkitTransform: transform,
       msTransform:
         'translate(' +
-        this.getTweeningValue('left') +
+        Math.round(this.getTweeningValue('left')) +
         'px, ' +
-        this.getTweeningValue('top') +
+        Math.round(this.getTweeningValue('top')) +
         'px)',
       position: 'relative',
       display: 'block',
