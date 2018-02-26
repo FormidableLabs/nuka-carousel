@@ -81,6 +81,7 @@ const Carousel = createReactClass({
     slideWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     speed: PropTypes.number,
     swiping: PropTypes.bool,
+    use3d: PropTypes.bool,
     vertical: PropTypes.bool,
     width: PropTypes.string,
     wrapAround: PropTypes.bool,
@@ -107,6 +108,7 @@ const Carousel = createReactClass({
       slideWidth: 1,
       speed: 500,
       swiping: true,
+      use3d: true,
       vertical: false,
       width: '100%',
       wrapAround: false,
@@ -846,17 +848,20 @@ const Carousel = createReactClass({
 
   // Styles
 
+  getTranslate (value) {
+    if (this.props.use3d) {
+      return 'translate3d(' + value + ', 0)';
+    }
+
+    return 'translate(' + value + ')';
+  },
+
   getListStyles() {
     var listWidth =
       this.state.slideWidth * React.Children.count(this.props.children);
     var spacingOffset =
       this.props.cellSpacing * React.Children.count(this.props.children);
-    var transform =
-      'translate3d(' +
-      this.getTweeningValue('left') +
-      'px, ' +
-      this.getTweeningValue('top') +
-      'px, 0)';
+    var transform = this.getTranslate('' + this.getTweeningValue('left') + 'px, ' + this.getTweeningValue('top') + 'px');
     return {
       transform,
       WebkitTransform: transform,
@@ -890,8 +895,8 @@ const Carousel = createReactClass({
       height: this.props.vertical ? this.state.frameWidth || 'initial' : 'auto',
       margin: this.props.framePadding,
       padding: 0,
-      transform: 'translate3d(0, 0, 0)',
-      WebkitTransform: 'translate3d(0, 0, 0)',
+      transform: this.getTranslate('0, 0'),
+      WebkitTransform: this.getTranslate('0, 0'),
       msTransform: 'translate(0, 0)',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',

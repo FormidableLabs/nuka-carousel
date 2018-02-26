@@ -482,6 +482,40 @@ describe('Carousel', function() {
 
         expect(component.state.slidesToScroll).to.equal(6);
       });
+
+    it('should not use translate3d when use3d is false',
+      function () {
+        component = ReactDOM.render(
+          React.createElement(carousel, {slidesToShow: 3, cellAlign: 'left', width: '500px', use3d: false},
+            React.createElement('p', null, 'Slide 1'),
+            React.createElement('p', null, 'Slide 2'),
+            React.createElement('p', null, 'Slide 3')
+          ),
+          container
+        );
+        var slider = TestUtils.findRenderedDOMComponentWithClass(
+          component,
+          'slider-list'
+        );
+        expect(slider.style.transform).to.equal('translate(0px, 0px)');
+      });
+
+    it('should align to 200 if cellAlign is center also when use3d is false ', function() {
+      component = ReactDOM.render(
+        React.createElement(carousel, {slidesToShow: 3, cellAlign: 'center', width: '600px', use3d: false},
+          React.createElement('p', null, 'Slide 1'),
+          React.createElement('p', null, 'Slide 2'),
+          React.createElement('p', null, 'Slide 3')
+        ),
+        container
+      );
+
+      var slider = TestUtils.findRenderedDOMComponentWithClass(
+        component,
+        'slider-list'
+      );
+      expect(slider.style.transform).to.equal('translate(200px, 0px)');
+    });
   });
 
   describe('Methods', function() {
