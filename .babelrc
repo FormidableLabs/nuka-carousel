@@ -1,4 +1,10 @@
 {
-  "presets": ["env", "react"],
   "plugins": ["add-module-exports", "transform-object-rest-spread"],
+  "presets": [["env", { "modules": false }], "react"],
+  "env": {
+    "commonjs": {
+      "presets": ["env", "react"],
+      "plugins": ["add-module-exports", "transform-object-rest-spread"]
+    }
+  }
 }
