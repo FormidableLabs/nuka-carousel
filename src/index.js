@@ -246,13 +246,11 @@ const Carousel = createReactClass({
     }
 
     return {
-      onMouseOver() {
-        this.handleMouseOver();
-      },
-      onMouseOut() {
-        this.handleMouseOut();
-      },
-      onMouseDown(e) {
+      onMouseOver: () => this.handleMouseOver(),
+
+      onMouseOut: () => this.handleMouseOut(),
+
+      onMouseDown: e => {
         this.touchObject = {
           startX: e.clientX,
           startY: e.clientY
@@ -262,7 +260,7 @@ const Carousel = createReactClass({
           dragging: true
         });
       },
-      onMouseMove(e) {
+      onMouseMove: e => {
         if (!this.state.dragging) {
           return;
         }
@@ -308,14 +306,14 @@ const Carousel = createReactClass({
             : 0
         });
       },
-      onMouseUp(e) {
+      onMouseUp: e => {
         if (!this.state.dragging) {
           return;
         }
 
         this.handleSwipe(e);
       },
-      onMouseLeave(e) {
+      onMouseLeave: e => {
         if (!this.state.dragging) {
           return;
         }

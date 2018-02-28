@@ -1,10 +1,11 @@
 {
-  "plugins": ["add-module-exports", "transform-object-rest-spread"],
-  "presets": [["env", { "modules": false }], "react"],
+  "presets": [
+    ["@babel/preset-env", { "modules": false }],
+    "@babel/preset-react"
+  ],
   "env": {
     "commonjs": {
-      "presets": ["env", "react"],
-      "plugins": ["add-module-exports", "transform-object-rest-spread"]
+      "presets": ["@babel/preset-env", "@babel/preset-react"]
     }
   }
 }

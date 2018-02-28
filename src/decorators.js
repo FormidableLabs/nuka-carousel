@@ -108,15 +108,15 @@ const DefaultDecorators = [
           this.props.slidesToScroll
         );
         return (
-          <ul style={self.getListStyles()}>
+          <ul style={this.getListStyles()}>
             {indexes.map(index => {
               return (
-                <li style={self.getListItemStyles()} key={index}>
+                <li style={this.getListItemStyles()} key={index}>
                   <button
-                    style={self.getButtonStyles(
-                      self.props.currentSlide === index
+                    style={this.getButtonStyles(
+                      this.props.currentSlide === index
                     )}
-                    onClick={self.props.goToSlide.bind(null, index)}
+                    onClick={this.props.goToSlide.bind(null, index)}
                   >
                     &bull;
                   </button>
