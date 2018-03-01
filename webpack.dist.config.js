@@ -2,12 +2,14 @@ const path = require('path');
 
 module.exports = {
   output: {
-    path: `${__dirname}/dist/`,
-    filename: 'nuka-carousel.js',
-    libraryTarget: 'umd'
+    path: path.join(__dirname, 'dist'),
+    filename: 'nuka-carousel.min.js',
+    library: 'Nuka',
+    libraryTarget: 'umd',
+    libraryExport: 'default'
   },
 
-  entry: './index.js',
+  entry: path.join(__dirname, 'src/index.js'),
 
   resolve: {
     extensions: ['.js'],
