@@ -482,6 +482,30 @@ describe('Carousel', function() {
 
         expect(component.state.slidesToScroll).to.equal(6);
       });
+
+    it('should set prop heightMode is "first" by default',
+        function() {
+          component = ReactDOM.render(
+              React.createElement(carousel, null,
+                  React.createElement('p', {className: 'test-slide'}, 'Slide 1'),
+              ),
+              container
+          );
+
+          expect(component.props.heightMode).to.equal('first');
+        });
+
+    it('should needRecalculateHeight is false by default',
+        function() {
+          component = ReactDOM.render(
+              React.createElement(carousel, null,
+                  React.createElement('p', {className: 'test-slide'}, 'Slide 1'),
+              ),
+              container
+          );
+
+          expect(component.props.needRecalculateHeight).to.equal(false);
+        });
   });
 
   describe('Methods', function() {
@@ -570,6 +594,46 @@ describe('Carousel', function() {
       component.goToSlide(2);
 
       expect(component.state.currentSlide).to.equal(2);
+    });
+
+    it('should correct find slide with max height', function() {
+      component = ReactDOM.render(
+          React.createElement(carousel, {heightMode : 'max'},
+              React.createElement('div', {style: {height: '200px'}}, 'Slide 1'),
+              React.createElement('div', {style: {height: '300px'}}, 'Slide 2'),
+              React.createElement('div', {style: {height: '400px'}}, 'Slide 3'),
+              React.createElement('div', {style: {height: '300px'}}, 'Slide 4'),
+              React.createElement('div', {style: {height: '200px'}}, 'Slide 5'),
+          ),
+          container
+      );
+      
+      expect(component.state.slideHeight).to.equal(400);
+    });
+
+    it('should correct recalculate height when child is update', function() {
+      var unstableStyles = {
+        style: {
+          height : '400px'
+        }
+      };
+      component = ReactDOM.render(
+          React.createElement(carousel, {heightMode : 'max', needRecalculateHeight : true},
+              React.createElement('div', {style: {height: '200px'}}, 'Slide 1'),
+              React.createElement('div', {style: {height: '300px'}}, 'Slide 2'),
+              React.createElement('div', {style: {height: '400px'}}, 'Slide 3'),
+              React.createElement('div', {style: {height: '300px'}}, 'Slide 4'),
+              React.createElement('div', {style: {height: '200px'}}, 'Slide 5'),
+          ),
+          container
+      );
+      
+      var frame = component.refs.frame;
+      var thirdSlide = frame.childNodes[0].childNodes[2];
+      thirdSlide.style.height = '600px';
+      component.forceUpdate();
+      
+      expect(component.state.slideHeight).to.equal(600);
     });
 
   });
