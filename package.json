@@ -6,7 +6,6 @@
   "module": "es/index.js",
   "jsnext:main": "es/index.js",
   "dependencies": {
-    "builder": "^4.0.0",
     "create-react-class": "^15.6.2",
     "cross-env": "^5.1.3",
     "exenv": "^1.2.0",
@@ -24,6 +23,7 @@
     "@babel/cli": "^7.0.0-beta.40",
     "babel-eslint": "^7.2.3",
     "babel-loader": "8.0.0-beta.2",
+    "builder": "^4.0.0",
     "chai": "^3.3.0",
     "css-loader": "^0.28.10",
     "del": "^2.0.2",
