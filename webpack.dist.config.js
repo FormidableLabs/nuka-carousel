@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
@@ -8,27 +7,19 @@ module.exports = {
     libraryTarget: 'umd'
   },
 
-  debug: false,
-  devtool: false,
   entry: './index.js',
 
-  stats: {
-    colors: true,
-    reasons: false
-  },
-
-  plugins: [new webpack.optimize.UglifyJsPlugin()],
-
   resolve: {
-    extensions: ['', '.js']
+    extensions: ['.js'],
+    modules: [path.join(__dirname, 'node_modules')]
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: [/node_modules/],
-        loader: 'babel-loader'
+        use: 'babel-loader'
       }
     ]
   },

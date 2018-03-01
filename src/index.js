@@ -697,7 +697,7 @@ const Carousel = createReactClass({
     let slidesToScroll;
     let slideHeight;
 
-    const frame = this.refs.frame;
+    const frame = this.frame;
     const firstSlide = frame.childNodes[0].childNodes[0];
 
     slidesToScroll = props.slidesToScroll;
@@ -985,18 +985,17 @@ const Carousel = createReactClass({
     return (
       <div
         className={['slider', this.props.className || ''].join(' ')}
-        ref="slider"
         style={assign(this.getSliderStyles(), this.props.style || {})}
       >
         <div
           className="slider-frame"
-          ref="frame"
+          ref={frame => (this.frame = frame)}
           style={this.getFrameStyles()}
           {...this.getTouchEvents()}
           {...this.getMouseEvents()}
           onClick={this.handleClick}
         >
-          <ul className="slider-list" ref="list" style={this.getListStyles()}>
+          <ul className="slider-list" style={this.getListStyles()}>
             {children}
           </ul>
         </div>
@@ -1008,7 +1007,7 @@ const Carousel = createReactClass({
                     this.getDecoratorStyles(Decorator.position),
                     Decorator.style || {}
                   )}
-                  className={'slider-decorator-' + index}
+                  className={`slider-decorator-${index}`}
                   key={index}
                 >
                   <Decorator.component
