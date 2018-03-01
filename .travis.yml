@@ -1,7 +1,6 @@
 language: node_js
 
 node_js:
-  - "4"
   - "6"
   - "8"
 
@@ -19,5 +18,5 @@ before_install:
   - if [[ `npm -v` == 2* ]]; then npm i -g npm@3; fi
 
 script:
-  - ./node_modules/.bin/gulp build
-  - ./node_modules/.bin/gulp test
+  - npm run build-lib
+  - npm run build-es
