@@ -151,7 +151,7 @@ Initial height of the slides in pixels.
 Initial width of the slides in pixels.
 
 #### heightMode
-`React.PropTypes.oneOf('first', 'max')`
+`React.PropTypes.oneOf('first', 'max', 'auto')`
 
 By default is equal to first
 
