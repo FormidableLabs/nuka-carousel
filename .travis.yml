@@ -20,3 +20,4 @@ before_install:
 script:
   - npm run build-lib
   - npm run build-es
+  - npm test
