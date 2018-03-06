@@ -1,23 +1,17 @@
 import Carousel from '../src/index';
 import React from 'react';
 import ReactDom from 'react-dom';
-import createReactClass from 'create-react-class';
 
-window.React = React;
-
-const App = createReactClass({
-  mixins: [Carousel.ControllerMixin],
-
-  getInitialState() {
-    return { slideIndex: 0 };
-  },
+class App extends React.Component {
+  state = {
+    slideIndex: 0
+  };
 
   render() {
     return (
       <div style={{ width: '50%', margin: 'auto' }}>
         <Carousel
           ref="carousel"
-          data={this.setCarouselData.bind(this, 'carousel')}
           slideIndex={this.state.slideIndex}
           afterSlide={newSlideIndex =>
             this.setState({ slideIndex: newSlideIndex })
@@ -39,8 +33,6 @@ const App = createReactClass({
       </div>
     );
   }
-});
+}
 
-const content = document.getElementById('content');
-
-ReactDom.render(<App />, content);
+ReactDom.render(<App />, document.getElementById('content'));
