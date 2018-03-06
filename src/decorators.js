@@ -1,24 +1,23 @@
 import React from 'react';
-import createReactClass from 'create-react-class';
 
-const DefaultDecorators = [
+export default [
   {
-    component: createReactClass({
-      handleClick(e) {
+    component: class extends React.Component {
+      handleClick = e => {
         e.preventDefault();
         this.props.previousSlide();
-      },
-      getButtonStyles(disabled) {
-        return {
-          border: 0,
-          background: 'rgba(0,0,0,0.4)',
-          color: 'white',
-          padding: 10,
-          outline: 0,
-          opacity: disabled ? 0.3 : 1,
-          cursor: 'pointer'
-        };
-      },
+      };
+
+      getButtonStyles = disabled => ({
+        border: 0,
+        background: 'rgba(0,0,0,0.4)',
+        color: 'white',
+        padding: 10,
+        outline: 0,
+        opacity: disabled ? 0.3 : 1,
+        cursor: 'pointer'
+      });
+
       render() {
         return (
           <button
@@ -31,26 +30,27 @@ const DefaultDecorators = [
           </button>
         );
       }
-    }),
+    },
+
     position: 'CenterLeft'
   },
   {
-    component: createReactClass({
-      handleClick(e) {
+    component: class extends React.Component {
+      handleClick = e => {
         e.preventDefault();
         this.props.nextSlide();
-      },
-      getButtonStyles(disabled) {
-        return {
-          border: 0,
-          background: 'rgba(0,0,0,0.4)',
-          color: 'white',
-          padding: 10,
-          outline: 0,
-          opacity: disabled ? 0.3 : 1,
-          cursor: 'pointer'
-        };
-      },
+      };
+
+      getButtonStyles = disabled => ({
+        border: 0,
+        background: 'rgba(0,0,0,0.4)',
+        color: 'white',
+        padding: 10,
+        outline: 0,
+        opacity: disabled ? 0.3 : 1,
+        cursor: 'pointer'
+      });
+
       render() {
         return (
           <button
@@ -64,44 +64,43 @@ const DefaultDecorators = [
           </button>
         );
       }
-    }),
+    },
+
     position: 'CenterRight'
   },
   {
-    component: createReactClass({
-      getIndexes(count, inc) {
+    component: class extends React.Component {
+      getIndexes = (count, inc) => {
         const arr = [];
         for (let i = 0; i < count; i += inc) {
           arr.push(i);
         }
         return arr;
-      },
-      getListStyles() {
-        return {
-          position: 'relative',
-          margin: 0,
-          top: -10,
-          padding: 0
-        };
-      },
-      getListItemStyles() {
-        return {
-          listStyleType: 'none',
-          display: 'inline-block'
-        };
-      },
-      getButtonStyles(active) {
-        return {
-          border: 0,
-          background: 'transparent',
-          color: 'black',
-          cursor: 'pointer',
-          padding: 10,
-          outline: 0,
-          fontSize: 24,
-          opacity: active ? 1 : 0.5
-        };
-      },
+      };
+
+      getListStyles = () => ({
+        position: 'relative',
+        margin: 0,
+        top: -10,
+        padding: 0
+      });
+
+      getListItemStyles = () => ({
+        listStyleType: 'none',
+        display: 'inline-block'
+      });
+
+      getButtonStyles = active => ({
+        border: 0,
+        background: 'transparent',
+        color: 'black',
+        cursor: 'pointer',
+        padding: 10,
+        outline: 0,
+        fontSize: 24,
+        opacity: active ? 1 : 0.5
+      });
+
       render() {
         const indexes = this.getIndexes(
           this.props.slideCount,
@@ -126,9 +125,8 @@ const DefaultDecorators = [
           </ul>
         );
       }
-    }),
+    },
+
     position: 'BottomCenter'
   }
 ];
-
-export default DefaultDecorators;
