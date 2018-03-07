@@ -11,22 +11,26 @@
     "exenv": "^1.2.0",
     "object-assign": "^4.1.0",
     "prop-types": "^15.6.0",
-    "react-tween-state": "^0.1.5",
-    "webpack-cli": "^2.0.9"
+    "react-tween-state": "^0.1.5"
   },
   "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.40",
     "@babel/core": "^7.0.0-beta.40",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.40",
+    "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.40",
     "@babel/polyfill": "^7.0.0-beta.40",
     "@babel/preset-env": "^7.0.0-beta.40",
     "@babel/preset-react": "^7.0.0-beta.40",
-    "@babel/cli": "^7.0.0-beta.40",
+    "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^7.2.3",
+    "babel-jest": "^22.4.1",
     "babel-loader": "8.0.0-beta.2",
     "builder": "^4.0.0",
     "chai": "^3.3.0",
     "css-loader": "^0.28.10",
     "del": "^2.0.2",
+    "enzyme": "^3.3.0",
+    "enzyme-matchers": "^5.0.1",
     "eslint": "^4.8.0",
     "eslint-config-formidable": "^3.0.0",
     "eslint-config-prettier": "^2.9.0",
@@ -36,13 +40,19 @@
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.4.0",
+    "jest": "^22.4.2",
+    "jest-environment-enzyme": "^5.0.1",
+    "jest-enzyme": "^5.0.1",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-hot-loader": "^1.3.0",
+    "react-test-renderer": "^16.2.0",
+    "sinon": "^4.4.2",
     "style-loader": "^0.20.2",
     "url-loader": "^0.6.2",
     "webpack": "^4.0.1",
+    "webpack-cli": "^2.0.9",
     "webpack-dev-server": "^3.0.0"
   },
   "peerDependencies": {
@@ -50,12 +60,13 @@
     "react-dom": "^0.14.9 || ^15.3.0 || ^16.0.0"
   },
   "scripts": {
+    "start": "webpack-dev-server --mode development",
     "build-babel": "babel src",
     "build-es": "builder run build-babel -- -d es",
     "build-lib":
       "builder run --env \"{\\\"BABEL_ENV\\\":\\\"commonjs\\\"}\" build-babel -- -d lib",
     "build-dist": "webpack --config webpack.dist.config.js --mode production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest test"
   },
   "repository": {
     "type": "git",
@@ -65,8 +76,12 @@
   "author": "Ken Wheeler",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kenwheeler/nuka-carousel/issues"
+    "url": "https://github.com/FormidableLabs/nuka-carousel/issues"
   },
-  "homepage": "https://github.com/kenwheeler/nuka-carousel",
-  "sideEffects": false
+  "homepage": "https://github.com/FormidableLabs/nuka-carousel",
+  "sideEffects": false,
+  "jest": {
+    "testEnvironment": "enzyme",
+    "setupTestFrameworkScriptFile": "./node_modules/jest-enzyme/lib/index.js"
+  }
 }

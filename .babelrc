@@ -6,6 +6,9 @@
   "env": {
     "commonjs": {
       "presets": ["@babel/preset-env", "@babel/preset-react"]
+    },
+    "test": {
+      "plugins": ["@babel/plugin-transform-modules-commonjs"]
     }
   }
 }
