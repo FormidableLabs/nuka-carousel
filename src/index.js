@@ -40,7 +40,7 @@ const Carousel = createReactClass({
     autoplay: PropTypes.bool,
     autoplayInterval: PropTypes.number,
     beforeSlide: PropTypes.func,
-      animation: PropTypes.oneOf(['animation']),
+      animation: PropTypes.oneOf(['zoom']),
     cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
     cellSpacing: PropTypes.number,
     data: PropTypes.func,
