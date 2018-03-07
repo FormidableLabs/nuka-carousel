@@ -11,8 +11,7 @@
     "exenv": "^1.2.0",
     "object-assign": "^4.1.0",
     "prop-types": "^15.6.0",
-    "react-tween-state": "^0.1.5",
-    "webpack-cli": "^2.0.9"
+    "react-tween-state": "^0.1.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.40",
@@ -31,7 +30,7 @@
     "css-loader": "^0.28.10",
     "del": "^2.0.2",
     "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-matchers": "^5.0.1",
     "eslint": "^4.8.0",
     "eslint-config-formidable": "^3.0.0",
     "eslint-config-prettier": "^2.9.0",
@@ -42,6 +41,8 @@
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.4.0",
     "jest": "^22.4.2",
+    "jest-environment-enzyme": "^5.0.1",
+    "jest-enzyme": "^5.0.1",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -51,6 +52,7 @@
     "style-loader": "^0.20.2",
     "url-loader": "^0.6.2",
     "webpack": "^4.0.1",
+    "webpack-cli": "^2.0.9",
     "webpack-dev-server": "^3.0.0"
   },
   "peerDependencies": {
@@ -79,9 +81,7 @@
   "homepage": "https://github.com/kenwheeler/nuka-carousel",
   "sideEffects": false,
   "jest": {
-    "setupFiles": [
-      "<rootDir>/test/helpers/raf-polyfill.js",
-      "<rootDir>/test/helpers/jest-setup.js"
-    ]
+    "testEnvironment": "enzyme",
+    "setupTestFrameworkScriptFile": "./node_modules/jest-enzyme/lib/index.js"
   }
 }

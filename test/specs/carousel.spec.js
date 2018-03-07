@@ -115,9 +115,8 @@ describe('<Carousel />', () => {
         </Carousel>
       );
       const slider = wrapper.find('div.slider');
-      expect(slider.props().style).toEqual(
-        expect.objectContaining({ backgroundColor: 'black', display: 'block' })
-      );
+      expect(slider).toHaveStyle('backgroundColor', 'black');
+      expect(slider).toHaveStyle('display', 'block');
     });
 
     it('should align to 0 when `cellAlign` is `left`.', () => {
@@ -129,9 +128,7 @@ describe('<Carousel />', () => {
         </Carousel>
       );
       const slider = wrapper.find('.slider-list');
-      expect(slider.props().style).toEqual(
-        expect.objectContaining({ transform: 'translate3d(0px, 0px, 0)' })
-      );
+      expect(slider).toHaveStyle('transform', 'translate3d(0px, 0px, 0)');
     });
   });
 
@@ -144,9 +141,9 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
         </Carousel>
       );
-      expect(wrapper.state().currentSlide).toEqual(0);
+      expect(wrapper).toHaveState({ currentSlide: 0 });
       wrapper.instance().nextSlide();
-      expect(wrapper.state().currentSlide).toEqual(1);
+      expect(wrapper).toHaveState({ currentSlide: 1 });
     });
 
     it('should not advance past the last slide.', () => {
@@ -159,9 +156,9 @@ describe('<Carousel />', () => {
       );
       wrapper.instance().nextSlide();
       wrapper.instance().nextSlide();
-      expect(wrapper.state().currentSlide).toEqual(2);
+      expect(wrapper).toHaveState({ currentSlide: 2 });
       wrapper.instance().nextSlide();
-      expect(wrapper.state().currentSlide).toEqual(2);
+      expect(wrapper).toHaveState({ currentSlide: 2 });
     });
 
     it('should not go back to the previous slide when index is 0.', () => {
@@ -185,11 +182,11 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
         </Carousel>
       );
-      expect(wrapper.state().currentSlide).toEqual(0);
+      expect(wrapper).toHaveState({ currentSlide: 0 });
       wrapper.instance().nextSlide();
       wrapper.instance().nextSlide();
       wrapper.instance().previousSlide();
-      expect(wrapper.state().currentSlide).toEqual(1);
+      expect(wrapper).toHaveState({ currentSlide: 1 });
     });
 
     it('should go to correct slide when `goToSlide` is called.', () => {
@@ -200,9 +197,9 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
         </Carousel>
       );
-      expect(wrapper.state().currentSlide).toEqual(0);
+      expect(wrapper).toHaveState({ currentSlide: 0 });
       wrapper.instance().goToSlide(2);
-      expect(wrapper.state().currentSlide).toEqual(2);
+      expect(wrapper).toHaveState({ currentSlide: 2 });
     });
   });
 });
