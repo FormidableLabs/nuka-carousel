@@ -462,17 +462,8 @@ export default class extends React.Component {
             currentSlide: 0
           },
           () => {
-            this.animateSlide(
-              null,
-              null,
-              this.getTargetLeft(null, index),
-              () => {
-                this.animateSlide(null, 0.01);
-                this.props.afterSlide(0);
-                this.resetAutoplay();
-                this.setExternalData();
-              }
-            );
+            this.resetAutoplay();
+            this.setExternalData();
           }
         );
         return;
@@ -484,19 +475,12 @@ export default class extends React.Component {
           {
             currentSlide: endSlide
           },
-          () => {
-            this.animateSlide(
-              null,
-              null,
-              this.getTargetLeft(null, index),
-              () => {
-                this.animateSlide(null, 0.01);
-                this.props.afterSlide(endSlide);
-                this.resetAutoplay();
-                this.setExternalData();
-              }
-            );
-          }
+          () =>
+            setTimeout(() => {
+              this.props.afterSlide(endSlide);
+              this.resetAutoplay();
+              this.setExternalData();
+            }, this.props.speed)
         );
         return;
       }
@@ -512,7 +496,6 @@ export default class extends React.Component {
         currentSlide: index
       },
       () => {
-        this.animateSlide();
         this.resetAutoplay();
         this.setExternalData();
       }
@@ -563,15 +546,6 @@ export default class extends React.Component {
   };
 
   // Animation
-
-  animateSlide = () => {
-    // this.tweenState(this.props.vertical ? 'top' : 'left', {
-    //   easing: easing || tweenState.easingTypes[this.props.easing],
-    //   duration: duration || this.props.speed,
-    //   endValue: endValue || this.getTargetLeft(),
-    //   onEnd: callback || null
-    // });
-  };
 
   getTargetLeft = (touchOffset, slide) => {
     let offset;
@@ -626,13 +600,9 @@ export default class extends React.Component {
     }
   };
 
-  onResize = () => {
-    this.setDimensions();
-  };
+  onResize = () => this.setDimensions();
 
-  onReadyStateChange = () => {
-    this.setDimensions();
-  };
+  onReadyStateChange = () => this.setDimensions();
 
   unbindEvents = () => {
     if (ExecutionEnvironment.canUseDOM) {
@@ -642,10 +612,9 @@ export default class extends React.Component {
   };
 
   formatChildren = children => {
-    // const positionValue = this.props.vertical
-    //   ? this.getTweeningValue('top')
-    //   : this.getTweeningValue('left');
-    const positionValue = 0;
+    const positionValue = this.props.vertical
+      ? this.state.top
+      : this.state.left;
     return React.Children.map(children, (child, index) => {
       return (
         <li
@@ -760,20 +729,16 @@ export default class extends React.Component {
 
   // Styles
 
-  getListStyles = () => {
+  getListStyles = ({ tx, ty }) => {
     const listWidth =
       this.state.slideWidth * React.Children.count(this.props.children);
     const spacingOffset =
       this.props.cellSpacing * React.Children.count(this.props.children);
-    // const transform = `translate3d(${this.getTweeningValue(
-    //   'left'
-    // )}px, ${this.getTweeningValue('top')}px, 0)`;
+    const transform = `translate3d(${tx}px, ${ty}px, 0)`;
     return {
-      // transform,
-      // WebkitTransform: transform,
-      // msTransform: `translate(${this.getTweeningValue(
-      //   'left'
-      // )}px, ${this.getTweeningValue('top')}px)`,
+      transform,
+      WebkitTransform: transform,
+      msTransform: `translate(${tx}px, ${ty}px)`,
       position: 'relative',
       display: 'block',
       margin: this.props.vertical
@@ -971,13 +936,21 @@ export default class extends React.Component {
     }
   };
 
+  getOffsetDeltas = () => {
+    const offset = this.getTargetLeft(
+      this.touchObject.length * this.touchObject.direction
+    );
+    return {
+      tx: [this.props.vertical ? 0 : offset],
+      ty: [this.props.vertical ? offset : 0]
+    };
+  };
+
   render() {
     const children =
       React.Children.count(this.props.children) > 1
         ? this.formatChildren(this.props.children)
         : this.props.children;
-    const deltaTx = this.props.vertical ? 0 : this.getTargetLeft();
-    const deltaTy = this.props.vertical ? this.getTargetLeft() : 0;
 
     return (
       <div
@@ -986,11 +959,13 @@ export default class extends React.Component {
       >
         <Animate
           show
-          start={{ tx: deltaTx, ty: deltaTy }}
+          start={{ tx: 0, ty: 0 }}
           update={{
-            tx: [deltaTx],
-            ty: [deltaTy],
-            timing: { duration: this.props.speed, ease: easeCubicInOut }
+            ...this.getOffsetDeltas(),
+            timing: {
+              duration: this.state.dragging ? 0.1 : this.props.speed,
+              ease: easeCubicInOut
+            }
           }}
           children={({ tx, ty }) => (
             <div
@@ -1003,10 +978,7 @@ export default class extends React.Component {
             >
               <ul
                 className="slider-list"
-                style={{
-                  ...this.getListStyles(),
-                  transform: `translate3d(${tx}px, ${ty}px, 0`
-                }}
+                style={this.getListStyles({ tx, ty })}
               >
                 {children}
               </ul>
