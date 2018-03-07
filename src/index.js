@@ -40,6 +40,7 @@ const Carousel = createReactClass({
     autoplay: PropTypes.bool,
     autoplayInterval: PropTypes.number,
     beforeSlide: PropTypes.func,
+      animation: PropTypes.oneOf(['animation']),
     cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
     cellSpacing: PropTypes.number,
     data: PropTypes.func,
@@ -711,7 +712,9 @@ const Carousel = createReactClass({
       slideHeight = 100;
     }
 
-    if (typeof props.slideWidth !== 'number') {
+    if (this.props.animation === "zoom") {
+    	slideWidth = frame.offsetWidth - (frame.offsetWidth * 15 / 100);
+    } else if (typeof props.slideWidth !== 'number') {
       slideWidth = parseInt(props.slideWidth);
     } else if (props.vertical) {
       slideWidth = slideHeight / props.slidesToShow * props.slideWidth;
@@ -822,6 +825,8 @@ const Carousel = createReactClass({
       listStyleType: 'none',
       verticalAlign: 'top',
       width: this.props.vertical ? '100%' : this.state.slideWidth,
+		transition: "transform .4s linear",
+		transform: this.props.animation === "zoom" && this.state.currentSlide !== index ? "scale(0.85)": "scale(1.0)",
       height: 'auto',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
@@ -839,13 +844,21 @@ const Carousel = createReactClass({
     const end =
       (this.state.slideWidth + this.props.cellSpacing) * slidesToShow * -1;
 
+	  let offset = 0;
+
+	  if (this.props.animation === "zoom" && (this.state.currentSlide === index + 1 || this.state.currentSlide === 0 && index === this.props.children.length - 1)) {
+		  offset = this.props.slideLeftOffset;
+	  } else if (this.props.animation === "zoom" && (this.state.currentSlide === index - 1 || this.state.currentSlide === this.props.children.length - 1 && index === 0)) {
+		  offset = - this.props.slideLeftOffset;
+	  }
+
     if (this.props.wrapAround) {
       const slidesBefore = Math.ceil(positionValue / this.state.slideWidth);
       if (this.state.slideCount - slidesBefore <= index) {
         return (
           (this.state.slideWidth + this.props.cellSpacing) *
           (this.state.slideCount - index) *
-          -1
+          -1 + offset
         );
       }
 
@@ -863,12 +876,12 @@ const Carousel = createReactClass({
       if (index <= slidesAfter - 1) {
         return (
           (this.state.slideWidth + this.props.cellSpacing) *
-          (this.state.slideCount + index)
+          (this.state.slideCount + index) + offset
         );
       }
     }
 
-    return targetPosition;
+    return targetPosition + offset;
   },
 
   getSliderStyles() {
