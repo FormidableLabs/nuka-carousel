@@ -71,6 +71,16 @@ Interval for autoplay iteration. Defaults to 3000.
 
 Hook to be called before a slide is changed.
 
+#### animation
+`React.PropTypes.oneOf(['zoom'])`
+
+When displaying 3 slides, add a zoom effect on slide. A ```transform: scale(.85)``` property is applied on all slides except the current 1
+
+#### slideLeftOffset (only if animation = "zoom")
+`React.PropTypes.number`
+
+while using prop ```animation = "zoom"```, you can configure space around current slide with slideLeftOffset.
+
 #### cellAlign
 `React.PropTypes.oneOf(['left', 'center', 'right'])`
 
