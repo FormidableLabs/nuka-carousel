@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import decorators from './decorators';
 import ExecutionEnvironment from 'exenv';
 import Animate from 'react-move/Animate';
-import { easeCubicInOut } from 'd3-ease';
+import * as easing from 'd3-ease';
 
 const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
@@ -88,8 +88,8 @@ export default class extends React.Component {
     data() {},
     decorators,
     dragging: true,
-    easing: 'easeOutCirc',
-    edgeEasing: 'easeOutElastic',
+    easing: 'easeCircleOut',
+    edgeEasing: 'easeElasticOut',
     framePadding: '0px',
     frameOverflow: 'hidden',
     slideIndex: 0,
@@ -113,7 +113,8 @@ export default class extends React.Component {
     slideCount: 0,
     slidesToScroll: this.props.slidesToScroll,
     slideWidth: 0,
-    top: 0
+    top: 0,
+    easing: easing.easeCircleOut
   };
 
   componentWillMount() {
@@ -363,13 +364,13 @@ export default class extends React.Component {
             React.Children.count(this.props.children) - slidesToShow &&
           !this.props.wrapAround
         ) {
-          // this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
+          this.setState({ easing: easing[this.props.edgeEasing] });
         } else {
           this.nextSlide();
         }
       } else if (this.touchObject.direction === -1) {
         if (this.state.currentSlide <= 0 && !this.props.wrapAround) {
-          // this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
+          this.setState({ easing: easing[this.props.edgeEasing] });
         } else {
           this.previousSlide();
         }
@@ -451,6 +452,8 @@ export default class extends React.Component {
   // Action Methods
 
   goToSlide = index => {
+    this.setState({ easing: easing[this.props.easing] });
+
     if (index >= React.Children.count(this.props.children) || index < 0) {
       if (!this.props.wrapAround) {
         return;
@@ -964,7 +967,7 @@ export default class extends React.Component {
             ...this.getOffsetDeltas(),
             timing: {
               duration: this.state.dragging ? 0.1 : this.props.speed,
-              ease: easeCubicInOut
+              ease: this.state.easing
             }
           }}
           children={({ tx, ty }) => (
@@ -1022,18 +1025,3 @@ export default class extends React.Component {
     );
   }
 }
-
-// Carousel.ControllerMixin = {
-//   getInitialState() {
-//     return {
-//       carousels: {}
-//     };
-//   },
-//   setCarouselData(carousel) {
-//     const data = this.state.carousels;
-//     data[carousel] = this.refs[carousel];
-//     this.setState({
-//       carousels: data
-//     });
-//   }
-// };

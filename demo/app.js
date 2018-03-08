@@ -11,7 +11,6 @@ class App extends React.Component {
     return (
       <div style={{ width: '50%', margin: 'auto' }}>
         <Carousel
-          ref="carousel"
           slideIndex={this.state.slideIndex}
           afterSlide={newSlideIndex =>
             this.setState({ slideIndex: newSlideIndex })
