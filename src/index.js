@@ -465,6 +465,7 @@ export default class extends React.Component {
             currentSlide: 0
           },
           () => {
+            this.props.afterSlide(0);
             this.resetAutoplay();
             this.setExternalData();
           }
