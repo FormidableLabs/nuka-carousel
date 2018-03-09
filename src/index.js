@@ -489,11 +489,17 @@ export default class extends React.Component {
           React.Children.count(this.props.children) - this.state.slidesToScroll;
         this.props.beforeSlide(this.state.currentSlide, endSlide);
         this.setState(
-          {
+          prevState => ({
+            left: this.props.vertical
+              ? 0
+              : this.getTargetLeft(-1, prevState.currentSlide),
+            top: this.props.vertical
+              ? this.getTargetLeft(-1, prevState.currentSlide)
+              : 0,
             currentSlide: endSlide,
             isWrappingAround: true,
             wrapToIndex: index
-          },
+          }),
           () =>
             setTimeout(() => {
               this.setState(
