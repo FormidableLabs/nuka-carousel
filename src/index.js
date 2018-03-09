@@ -114,7 +114,10 @@ export default class extends React.Component {
     slidesToScroll: this.props.slidesToScroll,
     slideWidth: 0,
     top: 0,
-    easing: easing.easeCircleOut
+    easing: easing.easeCircleOut,
+    isWrappingAround: false,
+    wrapToIndex: null,
+    resetWrapAroundPosition: false
   };
 
   componentWillMount() {
@@ -139,7 +142,8 @@ export default class extends React.Component {
     this.setDimensions(nextProps);
     if (
       this.props.slideIndex !== nextProps.slideIndex &&
-      nextProps.slideIndex !== this.state.currentSlide
+      nextProps.slideIndex !== this.state.currentSlide &&
+      !this.state.isWrappingAround
     ) {
       this.goToSlide(nextProps.slideIndex);
     }
@@ -462,13 +466,22 @@ export default class extends React.Component {
         this.props.beforeSlide(this.state.currentSlide, 0);
         this.setState(
           {
-            currentSlide: 0
+            currentSlide: 0,
+            isWrappingAround: true,
+            wrapToIndex: index
           },
-          () => {
-            this.props.afterSlide(0);
-            this.resetAutoplay();
-            this.setExternalData();
-          }
+          () =>
+            setTimeout(() => {
+              this.setState(
+                { isWrappingAround: false, resetWrapAroundPosition: true },
+                () => {
+                  this.setState({ resetWrapAroundPosition: false });
+                  this.props.afterSlide(0);
+                  this.resetAutoplay();
+                  this.setExternalData();
+                }
+              );
+            }, this.props.speed)
         );
         return;
       } else {
@@ -477,13 +490,21 @@ export default class extends React.Component {
         this.props.beforeSlide(this.state.currentSlide, endSlide);
         this.setState(
           {
-            currentSlide: endSlide
+            currentSlide: endSlide,
+            isWrappingAround: true,
+            wrapToIndex: index
           },
           () =>
             setTimeout(() => {
-              this.props.afterSlide(endSlide);
-              this.resetAutoplay();
-              this.setExternalData();
+              this.setState(
+                { isWrappingAround: false, resetWrapAroundPosition: true },
+                () => {
+                  this.setState({ resetWrapAroundPosition: false });
+                  this.props.afterSlide(endSlide);
+                  this.resetAutoplay();
+                  this.setExternalData();
+                }
+              );
             }, this.props.speed)
         );
         return;
@@ -941,9 +962,16 @@ export default class extends React.Component {
   };
 
   getOffsetDeltas = () => {
-    const offset = this.getTargetLeft(
-      this.touchObject.length * this.touchObject.direction
-    );
+    let offset = 0;
+
+    if (this.state.isWrappingAround) {
+      offset = this.getTargetLeft(null, this.state.wrapToIndex);
+    } else {
+      offset = this.getTargetLeft(
+        this.touchObject.length * this.touchObject.direction
+      );
+    }
+
     return {
       tx: [this.props.vertical ? 0 : offset],
       ty: [this.props.vertical ? offset : 0]
@@ -967,7 +995,10 @@ export default class extends React.Component {
           update={{
             ...this.getOffsetDeltas(),
             timing: {
-              duration: this.state.dragging ? 0.1 : this.props.speed,
+              duration:
+                this.state.dragging || this.state.resetWrapAroundPosition
+                  ? 0
+                  : this.props.speed,
               ease: this.state.easing
             }
           }}
