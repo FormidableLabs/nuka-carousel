@@ -65,17 +65,14 @@
     "react-dom": "^0.14.9 || ^15.3.0 || ^16.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp test",
+    "dist": "webpack --config webpack.dist.config.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/kenwheeler/nuka-carousel.git"
   },
-  "keywords": [
-    "react",
-    "carousel",
-    "nuka"
-  ],
+  "keywords": ["react", "carousel", "nuka"],
   "author": "Ken Wheeler",
   "license": "MIT",
   "bugs": {

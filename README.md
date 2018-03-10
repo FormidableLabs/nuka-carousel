@@ -150,6 +150,19 @@ Initial height of the slides in pixels.
 
 Initial width of the slides in pixels.
 
+#### heightMode
+`React.PropTypes.oneOf('first', 'max', 'current')`
+
+How the carousel should calculate its height.
+  `first` - Take the height of the first slide (default)
+  `max` - find the max height of a slide in the carousel and apply that
+  `current` - use the height of the current active slide
+
+#### shouldRecalculateHeight
+`React.PropTypes.bool`
+
+Whether or not carousel should recalculate its height when updating. Default is `false`
+
 #### slideIndex
 `React.PropTypes.number`
 

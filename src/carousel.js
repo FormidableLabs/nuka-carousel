@@ -70,8 +70,10 @@ const Carousel = createReactClass({
     edgeEasing: PropTypes.string,
     framePadding: PropTypes.string,
     frameOverflow: PropTypes.string,
+    heightMode: PropTypes.oneOf(['first', 'max', 'current']),
     initialSlideHeight: PropTypes.number,
     initialSlideWidth: PropTypes.number,
+    shouldRecalculateHeight: PropTypes.bool,
     slideIndex: PropTypes.number,
     slidesToShow: PropTypes.number,
     slidesToScroll: PropTypes.oneOfType([
@@ -88,19 +90,21 @@ const Carousel = createReactClass({
 
   getDefaultProps() {
     return {
-      afterSlide: function() {},
+      afterSlide: function() { },
       autoplay: false,
       autoplayInterval: 3000,
-      beforeSlide: function() {},
+      beforeSlide: function() { },
       cellAlign: 'left',
       cellSpacing: 0,
-      data: function() {},
+      data: function() { },
       decorators: decorators,
       dragging: true,
       easing: 'easeOutCirc',
       edgeEasing: 'easeOutElastic',
       framePadding: '0px',
       frameOverflow: 'hidden',
+      heightMode: 'first',
+      shouldRecalculateHeight: false,
       slideIndex: 0,
       slidesToScroll: 1,
       slidesToShow: 1,
@@ -140,6 +144,26 @@ const Carousel = createReactClass({
       this.startAutoplay();
     }
   },
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.shouldRecalculateHeight) {
+      var height = this.state.slideHeight;
+      var childNodes = this.refs.frame.childNodes[0].childNodes;
+      if (nextProps.heightMode === 'max') {
+        height = this.findMaxHeightSlide(childNodes);
+      }
+      if (nextProps.heightMode === 'current') {
+        height = childNodes[this.state.currentSlide].offsetHeight;
+      }
+      if (nextProps.heightMode === 'first') {
+        height = childNodes[0].offsetHeight;
+      }
+      if (this.state.slideHeight !== height) {
+        this.setDimensions(nextProps);
+      }
+    }
+  },
+
 
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -435,9 +459,7 @@ const Carousel = createReactClass({
     if (this.touchObject.length > this.state.slideWidth / slidesToShow / 5) {
       if (this.touchObject.direction === 1) {
         if (
-          this.state.currentSlide >=
-            React.Children.count(this.props.children) - slidesToShow &&
-          !this.props.wrapAround
+          this.state.currentSlide >= React.Children.count(this.props.children) - slidesToShow && !this.props.wrapAround
         ) {
           this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
         } else {
@@ -589,6 +611,7 @@ const Carousel = createReactClass({
         self.animateSlide();
         self.resetAutoplay();
         self.setExternalData();
+        self.setDimensions(this.props);
       }
     );
   },
@@ -766,6 +789,16 @@ const Carousel = createReactClass({
     );
   },
 
+  findMaxHeightSlide(slides) {
+    let maxHeight = 0;
+    for (var i = 0; i < slides.length; i++) {
+      if (slides[i].offsetHeight > maxHeight) {
+        maxHeight = slides[i].offsetHeight;
+      }
+    }
+    return maxHeight;
+  },
+
   setDimensions(props) {
     props = props || this.props;
 
@@ -776,18 +809,27 @@ const Carousel = createReactClass({
       frame,
       frameWidth,
       frameHeight,
-      slideHeight;
+      slideHeight,
+      childNodes;
 
     slidesToScroll = props.slidesToScroll;
     frame = this.refs.frame;
-    firstSlide = frame.childNodes[0].childNodes[0];
+    childNodes = frame.childNodes[0].childNodes;
+    firstSlide = childNodes[0];
     if (firstSlide) {
       firstSlide.style.height = 'auto';
       slideHeight = this.props.vertical
         ? firstSlide.offsetHeight * props.slidesToShow
         : firstSlide.offsetHeight;
+      if (props.heightMode === 'max') {
+        slideHeight = this.findMaxHeightSlide(childNodes);
+      }
     } else {
       slideHeight = 100;
+    }
+
+    if (props.heightMode === 'current') {
+      slideHeight = childNodes[this.state.currentSlide].offsetHeight;
     }
 
     if (typeof props.slideWidth !== 'number') {
@@ -942,7 +984,7 @@ const Carousel = createReactClass({
       if (this.state.slideWidth !== 1) {
         slidesAfter = Math.ceil(
           (Math.abs(positionValue) - this.state.slideWidth) /
-            this.state.slideWidth
+          this.state.slideWidth
         );
       }
 
