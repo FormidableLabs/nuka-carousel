@@ -80,12 +80,6 @@ When displaying more than one slide, sets which position to anchor the current s
 
 Space between slides, as an integer, but reflected as `px`
 
-#### data
-
-`React.PropTypes.func`
-
-Used with the ControllerMixin to add carousel data to parent state.
-
 #### decorators
 
 `React.PropTypes.array`
