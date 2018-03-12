@@ -39,7 +39,6 @@ export default class extends React.Component {
     beforeSlide: PropTypes.func,
     cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
     cellSpacing: PropTypes.number,
-    data: PropTypes.func,
     decorators: PropTypes.arrayOf(
       PropTypes.shape({
         component: PropTypes.func,
@@ -85,7 +84,6 @@ export default class extends React.Component {
     beforeSlide() {},
     cellAlign: 'left',
     cellSpacing: 0,
-    data() {},
     decorators,
     dragging: true,
     easing: 'easeCircleOut',
@@ -129,7 +127,6 @@ export default class extends React.Component {
     this.mounted = true;
     this.setDimensions();
     this.bindEvents();
-    this.setExternalData();
     if (this.props.autoplay) {
       this.startAutoplay();
     }
@@ -478,7 +475,6 @@ export default class extends React.Component {
                   this.setState({ resetWrapAroundPosition: false });
                   this.props.afterSlide(0);
                   this.resetAutoplay();
-                  this.setExternalData();
                 }
               );
             }, this.props.speed)
@@ -508,7 +504,6 @@ export default class extends React.Component {
                   this.setState({ resetWrapAroundPosition: false });
                   this.props.afterSlide(endSlide);
                   this.resetAutoplay();
-                  this.setExternalData();
                 }
               );
             }, this.props.speed)
@@ -528,7 +523,6 @@ export default class extends React.Component {
       },
       () => {
         this.resetAutoplay();
-        this.setExternalData();
       }
     );
   };
@@ -679,7 +673,6 @@ export default class extends React.Component {
       },
       () => {
         this.setLeft();
-        this.setExternalData();
       }
     );
   };
@@ -748,14 +741,6 @@ export default class extends React.Component {
       left: this.props.vertical ? 0 : this.getTargetLeft(),
       top: this.props.vertical ? this.getTargetLeft() : 0
     });
-  };
-
-  // Data
-
-  setExternalData = () => {
-    if (this.props.data) {
-      this.props.data();
-    }
   };
 
   // Styles
