@@ -68,7 +68,11 @@
     "build-lib":
       "builder run --env \"{\\\"BABEL_ENV\\\":\\\"commonjs\\\"}\" build-babel -- -d lib",
     "build-dist": "webpack --config webpack.dist.config.js --mode production",
-    "test": "jest test"
+    "build": "builder concurrent --buffer build-lib build-es",
+    "build-watch": "builder concurrent build-lib build-es -- --watch",
+    "lint": "eslint .",
+    "test": "jest test",
+    "check": "npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
