@@ -1,5 +1,5 @@
 {
-  "extends": ["formidable/configurations/es6-react", "prettier"],
+  "extends": ["formidable/configurations/es6-react", "prettier", "jest-enzyme"],
   "env": {
     "node": true,
     "browser": true,

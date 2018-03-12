@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import tweenState from 'react-tween-state';
 import decorators from './decorators';
-import assign from 'object-assign';
 import ExecutionEnvironment from 'exenv';
-import createReactClass from 'create-react-class';
+import Animate from 'react-move/Animate';
+import * as easing from 'd3-ease';
 
 const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
@@ -32,10 +31,8 @@ const removeEvent = function(elem, type, eventHandle) {
   }
 };
 
-const Carousel = createReactClass({
-  displayName: 'Carousel',
-
-  propTypes: {
+export default class extends React.Component {
+  static propTypes = {
     afterSlide: PropTypes.func,
     autoplay: PropTypes.bool,
     autoplayInterval: PropTypes.number,
@@ -79,53 +76,53 @@ const Carousel = createReactClass({
     vertical: PropTypes.bool,
     width: PropTypes.string,
     wrapAround: PropTypes.bool
-  },
+  };
 
-  mixins: [tweenState.Mixin],
+  static defaultProps = {
+    afterSlide() {},
+    autoplay: false,
+    autoplayInterval: 3000,
+    beforeSlide() {},
+    cellAlign: 'left',
+    cellSpacing: 0,
+    data() {},
+    decorators,
+    dragging: true,
+    easing: 'easeCircleOut',
+    edgeEasing: 'easeElasticOut',
+    framePadding: '0px',
+    frameOverflow: 'hidden',
+    slideIndex: 0,
+    slidesToScroll: 1,
+    slidesToShow: 1,
+    slideWidth: 1,
+    speed: 500,
+    swiping: true,
+    vertical: false,
+    width: '100%',
+    wrapAround: false
+  };
 
-  getDefaultProps() {
-    return {
-      afterSlide() {},
-      autoplay: false,
-      autoplayInterval: 3000,
-      beforeSlide() {},
-      cellAlign: 'left',
-      cellSpacing: 0,
-      data() {},
-      decorators,
-      dragging: true,
-      easing: 'easeOutCirc',
-      edgeEasing: 'easeOutElastic',
-      framePadding: '0px',
-      frameOverflow: 'hidden',
-      slideIndex: 0,
-      slidesToScroll: 1,
-      slidesToShow: 1,
-      slideWidth: 1,
-      speed: 500,
-      swiping: true,
-      vertical: false,
-      width: '100%',
-      wrapAround: false
-    };
-  },
+  displayName = 'Carousel';
 
-  getInitialState() {
-    return {
-      currentSlide: this.props.slideIndex,
-      dragging: false,
-      frameWidth: 0,
-      left: 0,
-      slideCount: 0,
-      slidesToScroll: this.props.slidesToScroll,
-      slideWidth: 0,
-      top: 0
-    };
-  },
+  state = {
+    currentSlide: this.props.slideIndex,
+    dragging: false,
+    frameWidth: 0,
+    left: 0,
+    slideCount: 0,
+    slidesToScroll: this.props.slidesToScroll,
+    slideWidth: 0,
+    top: 0,
+    easing: easing.easeCircleOut,
+    isWrappingAround: false,
+    wrapToIndex: null,
+    resetWrapAroundPosition: false
+  };
 
   componentWillMount() {
     this.setInitialDimensions();
-  },
+  }
 
   componentDidMount() {
     // see https://github.com/facebook/react/issues/3417#issuecomment-121649937
@@ -136,7 +133,7 @@ const Carousel = createReactClass({
     if (this.props.autoplay) {
       this.startAutoplay();
     }
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -145,7 +142,8 @@ const Carousel = createReactClass({
     this.setDimensions(nextProps);
     if (
       this.props.slideIndex !== nextProps.slideIndex &&
-      nextProps.slideIndex !== this.state.currentSlide
+      nextProps.slideIndex !== this.state.currentSlide &&
+      !this.state.isWrappingAround
     ) {
       this.goToSlide(nextProps.slideIndex);
     }
@@ -156,20 +154,20 @@ const Carousel = createReactClass({
         this.stopAutoplay();
       }
     }
-  },
+  }
 
   componentWillUnmount() {
     this.unbindEvents();
     this.stopAutoplay();
     // see https://github.com/facebook/react/issues/3417#issuecomment-121649937
     this.mounted = false;
-  },
+  }
 
   // Touch Events
 
-  touchObject: {},
+  touchObject = {};
 
-  getTouchEvents() {
+  getTouchEvents = () => {
     if (this.props.swiping === false) {
       return null;
     }
@@ -236,11 +234,11 @@ const Carousel = createReactClass({
         this.handleSwipe(e);
       }
     };
-  },
+  };
 
-  clickSafe: true,
+  clickSafe = true;
 
-  getMouseEvents() {
+  getMouseEvents = () => {
     if (this.props.dragging === false) {
       return null;
     }
@@ -321,23 +319,23 @@ const Carousel = createReactClass({
         this.handleSwipe(e);
       }
     };
-  },
+  };
 
-  handleMouseOver() {
+  handleMouseOver = () => {
     if (this.props.autoplay) {
       this.autoplayPaused = true;
       this.stopAutoplay();
     }
-  },
+  };
 
-  handleMouseOut() {
+  handleMouseOut = () => {
     if (this.props.autoplay && this.autoplayPaused) {
       this.startAutoplay();
       this.autoplayPaused = null;
     }
-  },
+  };
 
-  handleClick(e) {
+  handleClick = e => {
     if (this.clickSafe === true) {
       e.preventDefault();
       e.stopPropagation();
@@ -346,9 +344,9 @@ const Carousel = createReactClass({
         e.nativeEvent.stopPropagation();
       }
     }
-  },
+  };
 
-  handleSwipe() {
+  handleSwipe = () => {
     if (
       typeof this.touchObject.length !== 'undefined' &&
       this.touchObject.length > 44
@@ -370,13 +368,13 @@ const Carousel = createReactClass({
             React.Children.count(this.props.children) - slidesToShow &&
           !this.props.wrapAround
         ) {
-          this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
+          this.setState({ easing: easing[this.props.edgeEasing] });
         } else {
           this.nextSlide();
         }
       } else if (this.touchObject.direction === -1) {
         if (this.state.currentSlide <= 0 && !this.props.wrapAround) {
-          this.animateSlide(tweenState.easingTypes[this.props.edgeEasing]);
+          this.setState({ easing: easing[this.props.edgeEasing] });
         } else {
           this.previousSlide();
         }
@@ -390,9 +388,9 @@ const Carousel = createReactClass({
     this.setState({
       dragging: false
     });
-  },
+  };
 
-  swipeDirection(x1, x2, y1, y2) {
+  swipeDirection = (x1, x2, y1, y2) => {
     const xDist = x1 - x2;
     const yDist = y1 - y2;
     const r = Math.atan2(yDist, xDist);
@@ -418,9 +416,9 @@ const Carousel = createReactClass({
       }
     }
     return 0;
-  },
+  };
 
-  autoplayIterator() {
+  autoplayIterator = () => {
     if (this.props.wrapAround) {
       this.nextSlide();
       return;
@@ -433,31 +431,33 @@ const Carousel = createReactClass({
     } else {
       this.stopAutoplay();
     }
-  },
+  };
 
-  startAutoplay() {
+  startAutoplay = () => {
     this.autoplayID = setInterval(
       this.autoplayIterator,
       this.props.autoplayInterval
     );
-  },
+  };
 
-  resetAutoplay() {
+  resetAutoplay = () => {
     if (this.props.autoplay && !this.autoplayPaused) {
       this.stopAutoplay();
       this.startAutoplay();
     }
-  },
+  };
 
-  stopAutoplay() {
+  stopAutoplay = () => {
     if (this.autoplayID) {
       clearInterval(this.autoplayID);
     }
-  },
+  };
 
   // Action Methods
 
-  goToSlide(index) {
+  goToSlide = index => {
+    this.setState({ easing: easing[this.props.easing] });
+
     if (index >= React.Children.count(this.props.children) || index < 0) {
       if (!this.props.wrapAround) {
         return;
@@ -466,21 +466,22 @@ const Carousel = createReactClass({
         this.props.beforeSlide(this.state.currentSlide, 0);
         this.setState(
           {
-            currentSlide: 0
+            currentSlide: 0,
+            isWrappingAround: true,
+            wrapToIndex: index
           },
-          () => {
-            this.animateSlide(
-              null,
-              null,
-              this.getTargetLeft(null, index),
-              () => {
-                this.animateSlide(null, 0.01);
-                this.props.afterSlide(0);
-                this.resetAutoplay();
-                this.setExternalData();
-              }
-            );
-          }
+          () =>
+            setTimeout(() => {
+              this.setState(
+                { isWrappingAround: false, resetWrapAroundPosition: true },
+                () => {
+                  this.setState({ resetWrapAroundPosition: false });
+                  this.props.afterSlide(0);
+                  this.resetAutoplay();
+                  this.setExternalData();
+                }
+              );
+            }, this.props.speed)
         );
         return;
       } else {
@@ -488,22 +489,29 @@ const Carousel = createReactClass({
           React.Children.count(this.props.children) - this.state.slidesToScroll;
         this.props.beforeSlide(this.state.currentSlide, endSlide);
         this.setState(
-          {
-            currentSlide: endSlide
-          },
-          () => {
-            this.animateSlide(
-              null,
-              null,
-              this.getTargetLeft(null, index),
-              () => {
-                this.animateSlide(null, 0.01);
-                this.props.afterSlide(endSlide);
-                this.resetAutoplay();
-                this.setExternalData();
-              }
-            );
-          }
+          prevState => ({
+            left: this.props.vertical
+              ? 0
+              : this.getTargetLeft(-1, prevState.currentSlide),
+            top: this.props.vertical
+              ? this.getTargetLeft(-1, prevState.currentSlide)
+              : 0,
+            currentSlide: endSlide,
+            isWrappingAround: true,
+            wrapToIndex: index
+          }),
+          () =>
+            setTimeout(() => {
+              this.setState(
+                { isWrappingAround: false, resetWrapAroundPosition: true },
+                () => {
+                  this.setState({ resetWrapAroundPosition: false });
+                  this.props.afterSlide(endSlide);
+                  this.resetAutoplay();
+                  this.setExternalData();
+                }
+              );
+            }, this.props.speed)
         );
         return;
       }
@@ -519,14 +527,13 @@ const Carousel = createReactClass({
         currentSlide: index
       },
       () => {
-        this.animateSlide();
         this.resetAutoplay();
         this.setExternalData();
       }
     );
-  },
+  };
 
-  nextSlide() {
+  nextSlide = () => {
     const childrenCount = React.Children.count(this.props.children);
     let slidesToShow = this.props.slidesToShow;
     if (this.props.slidesToScroll === 'auto') {
@@ -553,9 +560,9 @@ const Carousel = createReactClass({
         )
       );
     }
-  },
+  };
 
-  previousSlide() {
+  previousSlide = () => {
     if (this.state.currentSlide <= 0 && !this.props.wrapAround) {
       return;
     }
@@ -567,20 +574,11 @@ const Carousel = createReactClass({
         Math.max(0, this.state.currentSlide - this.state.slidesToScroll)
       );
     }
-  },
+  };
 
   // Animation
 
-  animateSlide(easing, duration, endValue, callback) {
-    this.tweenState(this.props.vertical ? 'top' : 'left', {
-      easing: easing || tweenState.easingTypes[this.props.easing],
-      duration: duration || this.props.speed,
-      endValue: endValue || this.getTargetLeft(),
-      onEnd: callback || null
-    });
-  },
-
-  getTargetLeft(touchOffset, slide) {
+  getTargetLeft = (touchOffset, slide) => {
     let offset;
     const target = slide || this.state.currentSlide;
     switch (this.props.cellAlign) {
@@ -622,36 +620,32 @@ const Carousel = createReactClass({
     offset -= touchOffset || 0;
 
     return (left - offset) * -1;
-  },
+  };
 
   // Bootstrapping
 
-  bindEvents() {
+  bindEvents = () => {
     if (ExecutionEnvironment.canUseDOM) {
       addEvent(window, 'resize', this.onResize);
       addEvent(document, 'readystatechange', this.onReadyStateChange);
     }
-  },
+  };
 
-  onResize() {
-    this.setDimensions();
-  },
+  onResize = () => this.setDimensions();
 
-  onReadyStateChange() {
-    this.setDimensions();
-  },
+  onReadyStateChange = () => this.setDimensions();
 
-  unbindEvents() {
+  unbindEvents = () => {
     if (ExecutionEnvironment.canUseDOM) {
       removeEvent(window, 'resize', this.onResize);
       removeEvent(document, 'readystatechange', this.onReadyStateChange);
     }
-  },
+  };
 
-  formatChildren(children) {
+  formatChildren = children => {
     const positionValue = this.props.vertical
-      ? this.getTweeningValue('top')
-      : this.getTweeningValue('left');
+      ? this.state.top
+      : this.state.left;
     return React.Children.map(children, (child, index) => {
       return (
         <li
@@ -663,9 +657,9 @@ const Carousel = createReactClass({
         </li>
       );
     });
-  },
+  };
 
-  setInitialDimensions() {
+  setInitialDimensions = () => {
     const slideWidth = this.props.vertical
       ? this.props.initialSlideHeight || 0
       : this.props.initialSlideWidth || 0;
@@ -688,9 +682,9 @@ const Carousel = createReactClass({
         this.setExternalData();
       }
     );
-  },
+  };
 
-  setDimensions(props) {
+  setDimensions = props => {
     props = props || this.props;
 
     let slideWidth;
@@ -747,39 +741,35 @@ const Carousel = createReactClass({
         this.setLeft();
       }
     );
-  },
+  };
 
-  setLeft() {
+  setLeft = () => {
     this.setState({
       left: this.props.vertical ? 0 : this.getTargetLeft(),
       top: this.props.vertical ? this.getTargetLeft() : 0
     });
-  },
+  };
 
   // Data
 
-  setExternalData() {
+  setExternalData = () => {
     if (this.props.data) {
       this.props.data();
     }
-  },
+  };
 
   // Styles
 
-  getListStyles() {
+  getListStyles = ({ tx, ty }) => {
     const listWidth =
       this.state.slideWidth * React.Children.count(this.props.children);
     const spacingOffset =
       this.props.cellSpacing * React.Children.count(this.props.children);
-    const transform = `translate3d(${this.getTweeningValue(
-      'left'
-    )}px, ${this.getTweeningValue('top')}px, 0)`;
+    const transform = `translate3d(${tx}px, ${ty}px, 0)`;
     return {
       transform,
       WebkitTransform: transform,
-      msTransform: `translate(${this.getTweeningValue(
-        'left'
-      )}px, ${this.getTweeningValue('top')}px)`,
+      msTransform: `translate(${tx}px, ${ty}px)`,
       position: 'relative',
       display: 'block',
       margin: this.props.vertical
@@ -794,9 +784,9 @@ const Carousel = createReactClass({
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box'
     };
-  },
+  };
 
-  getFrameStyles() {
+  getFrameStyles = () => {
     return {
       position: 'relative',
       display: 'block',
@@ -810,9 +800,9 @@ const Carousel = createReactClass({
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box'
     };
-  },
+  };
 
-  getSlideStyles(index, positionValue) {
+  getSlideStyles = (index, positionValue) => {
     const targetPosition = this.getSlideTargetPosition(index, positionValue);
     return {
       position: 'absolute',
@@ -830,9 +820,9 @@ const Carousel = createReactClass({
       marginTop: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
       marginBottom: this.props.vertical ? this.props.cellSpacing / 2 : 'auto'
     };
-  },
+  };
 
-  getSlideTargetPosition(index, positionValue) {
+  getSlideTargetPosition = (index, positionValue) => {
     const slidesToShow = this.state.frameWidth / this.state.slideWidth;
     const targetPosition =
       (this.state.slideWidth + this.props.cellSpacing) * index;
@@ -869,9 +859,9 @@ const Carousel = createReactClass({
     }
 
     return targetPosition;
-  },
+  };
 
-  getSliderStyles() {
+  getSliderStyles = () => {
     return {
       position: 'relative',
       display: 'block',
@@ -881,13 +871,13 @@ const Carousel = createReactClass({
       MozBoxSizing: 'border-box',
       visibility: this.state.slideWidth ? 'visible' : 'hidden'
     };
-  },
+  };
 
-  getStyleTagStyles() {
+  getStyleTagStyles = () => {
     return '.slider-slide > img {width: 100%; display: block;}';
-  },
+  };
 
-  getDecoratorStyles(position) {
+  getDecoratorStyles = position => {
     switch (position) {
       case 'TopLeft': {
         return {
@@ -975,38 +965,76 @@ const Carousel = createReactClass({
         };
       }
     }
-  },
+  };
+
+  getOffsetDeltas = () => {
+    let offset = 0;
+
+    if (this.state.isWrappingAround) {
+      offset = this.getTargetLeft(null, this.state.wrapToIndex);
+    } else {
+      offset = this.getTargetLeft(
+        this.touchObject.length * this.touchObject.direction
+      );
+    }
+
+    return {
+      tx: [this.props.vertical ? 0 : offset],
+      ty: [this.props.vertical ? offset : 0]
+    };
+  };
 
   render() {
     const children =
       React.Children.count(this.props.children) > 1
         ? this.formatChildren(this.props.children)
         : this.props.children;
+
     return (
       <div
         className={['slider', this.props.className || ''].join(' ')}
-        style={assign(this.getSliderStyles(), this.props.style || {})}
+        style={{ ...this.getSliderStyles(), ...(this.props.style || {}) }}
       >
-        <div
-          className="slider-frame"
-          ref={frame => (this.frame = frame)}
-          style={this.getFrameStyles()}
-          {...this.getTouchEvents()}
-          {...this.getMouseEvents()}
-          onClick={this.handleClick}
-        >
-          <ul className="slider-list" style={this.getListStyles()}>
-            {children}
-          </ul>
-        </div>
+        <Animate
+          show
+          start={{ tx: 0, ty: 0 }}
+          update={{
+            ...this.getOffsetDeltas(),
+            timing: {
+              duration:
+                this.state.dragging || this.state.resetWrapAroundPosition
+                  ? 0
+                  : this.props.speed,
+              ease: this.state.easing
+            }
+          }}
+          children={({ tx, ty }) => (
+            <div
+              className="slider-frame"
+              ref={frame => (this.frame = frame)}
+              style={this.getFrameStyles()}
+              {...this.getTouchEvents()}
+              {...this.getMouseEvents()}
+              onClick={this.handleClick}
+            >
+              <ul
+                className="slider-list"
+                style={this.getListStyles({ tx, ty })}
+              >
+                {children}
+              </ul>
+            </div>
+          )}
+        />
+
         {this.props.decorators
           ? this.props.decorators.map((Decorator, index) => {
               return (
                 <div
-                  style={assign(
-                    this.getDecoratorStyles(Decorator.position),
-                    Decorator.style || {}
-                  )}
+                  style={{
+                    ...this.getDecoratorStyles(Decorator.position),
+                    ...(Decorator.style || {})
+                  }}
                   className={`slider-decorator-${index}`}
                   key={index}
                 >
@@ -1034,21 +1062,4 @@ const Carousel = createReactClass({
       </div>
     );
   }
-});
-
-Carousel.ControllerMixin = {
-  getInitialState() {
-    return {
-      carousels: {}
-    };
-  },
-  setCarouselData(carousel) {
-    const data = this.state.carousels;
-    data[carousel] = this.refs[carousel];
-    this.setState({
-      carousels: data
-    });
-  }
-};
-
-export default Carousel;
+}

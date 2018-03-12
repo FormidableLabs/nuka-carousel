@@ -1,5 +1,3 @@
-import React from 'react';
-import { mount } from 'enzyme';
 import Carousel from '../../src';
 
 describe('<Carousel />', () => {
@@ -169,9 +167,9 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
         </Carousel>
       );
-      expect(wrapper.state().currentSlide).toEqual(0);
+      expect(wrapper).toHaveState({ currentSlide: 0 });
       wrapper.instance().previousSlide();
-      expect(wrapper.state().currentSlide).toEqual(0);
+      expect(wrapper).toHaveState({ currentSlide: 0 });
     });
 
     it('should go back to the previous slide when `previousSlide` is called.', () => {
@@ -200,6 +198,35 @@ describe('<Carousel />', () => {
       expect(wrapper).toHaveState({ currentSlide: 0 });
       wrapper.instance().goToSlide(2);
       expect(wrapper).toHaveState({ currentSlide: 2 });
+    });
+
+    it('should go to the last slide from the first when wrapAround is true`.', () => {
+      const wrapper = mount(
+        <Carousel wrapAround>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const previousButton = wrapper.find('.slider-decorator-0 button');
+      expect(wrapper).toHaveState({ currentSlide: 0 });
+      previousButton.simulate('click');
+      expect(wrapper).toHaveState({ currentSlide: 2 });
+    });
+
+    it('should go to the first slide from the last when wrapAround is true`.', () => {
+      const wrapper = mount(
+        <Carousel wrapAround>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      wrapper.setState({ currentSlide: 2 });
+      const nextButton = wrapper.find('.slider-decorator-1 button');
+      expect(wrapper).toHaveState({ currentSlide: 2 });
+      nextButton.simulate('click');
+      expect(wrapper).toHaveState({ currentSlide: 0 });
     });
   });
 });
