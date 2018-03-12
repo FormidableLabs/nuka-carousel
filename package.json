@@ -62,6 +62,8 @@
     "react-dom": "^0.14.9 || ^15.3.0 || ^16.0.0"
   },
   "scripts": {
+    "preversion": "npm run check",
+    "version": "npm run build",
     "start": "webpack-dev-server --mode development",
     "build-babel": "babel src",
     "build-es": "builder run build-babel -- -d es",
