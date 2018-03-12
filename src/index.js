@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import decorators from './decorators';
 import ExecutionEnvironment from 'exenv';
 import Animate from 'react-move/Animate';
 import * as easing from 'd3-ease';
+import { PagingDots, PreviousButton, NextButton } from './default-controls';
 
 const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
@@ -39,23 +39,6 @@ export default class extends React.Component {
     beforeSlide: PropTypes.func,
     cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
     cellSpacing: PropTypes.number,
-    decorators: PropTypes.arrayOf(
-      PropTypes.shape({
-        component: PropTypes.func,
-        position: PropTypes.oneOf([
-          'TopLeft',
-          'TopCenter',
-          'TopRight',
-          'CenterLeft',
-          'CenterCenter',
-          'CenterRight',
-          'BottomLeft',
-          'BottomCenter',
-          'BottomRight'
-        ]),
-        style: PropTypes.object
-      })
-    ),
     dragging: PropTypes.bool,
     easing: PropTypes.string,
     edgeEasing: PropTypes.string,
@@ -63,6 +46,15 @@ export default class extends React.Component {
     framePadding: PropTypes.string,
     initialSlideHeight: PropTypes.number,
     initialSlideWidth: PropTypes.number,
+    renderTopLeftControls: PropTypes.func,
+    renderTopCenterControls: PropTypes.func,
+    renderTopRightControls: PropTypes.func,
+    renderCenterLeftControls: PropTypes.func,
+    renderCenterCenterControls: PropTypes.func,
+    renderCenterRightControls: PropTypes.func,
+    renderBottomLeftControls: PropTypes.func,
+    renderBottomCenterControls: PropTypes.func,
+    renderBottomRightControls: PropTypes.func,
     slideIndex: PropTypes.number,
     slidesToScroll: PropTypes.oneOfType([
       PropTypes.number,
@@ -84,7 +76,6 @@ export default class extends React.Component {
     beforeSlide() {},
     cellAlign: 'left',
     cellSpacing: 0,
-    decorators,
     dragging: true,
     easing: 'easeCircleOut',
     edgeEasing: 'easeElasticOut',
@@ -93,6 +84,9 @@ export default class extends React.Component {
     slideIndex: 0,
     slidesToScroll: 1,
     slidesToShow: 1,
+    renderCenterLeftControls: props => <PreviousButton {...props} />,
+    renderCenterRightControls: props => <NextButton {...props} />,
+    renderBottomCenterControls: props => <PagingDots {...props} />,
     slideWidth: 1,
     speed: 500,
     swiping: true,
@@ -159,6 +153,18 @@ export default class extends React.Component {
     // see https://github.com/facebook/react/issues/3417#issuecomment-121649937
     this.mounted = false;
   }
+
+  controlsMap = [
+    { func: this.props.renderTopLeftControls, key: 'TopLeft' },
+    { func: this.props.renderTopCenterControls, key: 'TopCenter' },
+    { func: this.props.renderTopRightControls, key: 'TopRight' },
+    { func: this.props.renderCenterLeftControls, key: 'CenterLeft' },
+    { func: this.props.renderCenterCenterControls, key: 'CenterCenter' },
+    { func: this.props.renderCenterRightControls, key: 'CenterRight' },
+    { func: this.props.renderBottomLeftControls, key: 'BottomLeft' },
+    { func: this.props.renderBottomCenterControls, key: 'BottomCenter' },
+    { func: this.props.renderBottomRightControls, key: 'BottomRight' }
+  ];
 
   // Touch Events
 
@@ -969,6 +975,36 @@ export default class extends React.Component {
     };
   };
 
+  renderControls = () => (
+    <>
+      {this.controlsMap.map(
+        ({ func, key }) =>
+          func &&
+          typeof func === 'function' && (
+            <div
+              className={`slider-control-${key.toLowerCase()}`}
+              style={this.getDecoratorStyles(key)}
+              key={key}
+            >
+              {func({
+                currentSlide: this.state.currentSlide,
+                slideCount: this.state.slideCount,
+                frameWidth: this.state.frameWidth,
+                slideWidth: this.state.slideWidth,
+                slidesToScroll: this.state.slidesToScroll,
+                cellSpacing: this.props.cellSpacing,
+                slidesToShow: this.props.slidesToShow,
+                wrapAround: this.props.wrapAround,
+                nextSlide: () => this.nextSlide(),
+                previousSlide: () => this.previousSlide(),
+                goToSlide: index => this.goToSlide(index)
+              })}
+            </div>
+          )
+      )}
+    </>
+  );
+
   render() {
     const children =
       React.Children.count(this.props.children) > 1
@@ -1012,34 +1048,8 @@ export default class extends React.Component {
           )}
         />
 
-        {this.props.decorators
-          ? this.props.decorators.map((Decorator, index) => {
-              return (
-                <div
-                  style={{
-                    ...this.getDecoratorStyles(Decorator.position),
-                    ...(Decorator.style || {})
-                  }}
-                  className={`slider-decorator-${index}`}
-                  key={index}
-                >
-                  <Decorator.component
-                    currentSlide={this.state.currentSlide}
-                    slideCount={this.state.slideCount}
-                    frameWidth={this.state.frameWidth}
-                    slideWidth={this.state.slideWidth}
-                    slidesToScroll={this.state.slidesToScroll}
-                    cellSpacing={this.props.cellSpacing}
-                    slidesToShow={this.props.slidesToShow}
-                    wrapAround={this.props.wrapAround}
-                    nextSlide={this.nextSlide}
-                    previousSlide={this.previousSlide}
-                    goToSlide={this.goToSlide}
-                  />
-                </div>
-              );
-            })
-          : null}
+        {this.renderControls()}
+
         <style
           type="text/css"
           dangerouslySetInnerHTML={{ __html: this.getStyleTagStyles() }}
@@ -1048,3 +1058,5 @@ export default class extends React.Component {
     );
   }
 }
+
+export { NextButton, PreviousButton, PagingDots };

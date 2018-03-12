@@ -80,31 +80,6 @@ When displaying more than one slide, sets which position to anchor the current s
 
 Space between slides, as an integer, but reflected as `px`
 
-#### decorators
-
-`React.PropTypes.array`
-
-An array of objects that supply internal carousel controls.
-Decorator objects have `component`, `position` & `style` properties. `component` takes a React component, `position` takes a predefined position string and `style` takes an object of styles to be applied to the decorator. See an example below:
-
-```jsx
-const decorators = [
-  {
-    component: ({ previousSlide }) => (
-      <button onClick={previousSlide}>Previous Slide</button>
-    ),
-    position: 'CenterLeft',
-    style: {
-      padding: 20
-    }
-  }
-];
-```
-
-* The component has props for `goToSlide`, `nextSlide` and `previousSlide` functions in addition to `slideCount` and `currentSlide` values.
-
-* Valid position properties are `TopLeft`, `TopCenter`, `TopRight`, `CenterLeft`, `CenterCenter`, `CenterRight`, `BottomLeft`, `BottomCenter`, and `BottomRight`.
-
 #### dragging
 
 `React.PropTypes.bool`
@@ -146,6 +121,32 @@ Initial height of the slides in pixels.
 `React.PropTypes.number`
 
 Initial width of the slides in pixels.
+
+#### render\*Controls
+
+`React.PropTypes.func`
+
+A set of eight render props for rendering controls in different positions around the carousel.
+
+* Valid render props for the eight positions are `renderTopLeftControls`, `renderTopCenterControls`, `renderTopRightControls`, `renderCenterLeftControls`, `renderCenterCenterControls`, `renderCenterRightControls`, `renderBottomLeftControls`, `renderBottomCenterControls`, and `renderBottomRightControls`.
+
+```jsx
+<Carousel
+  renderTopCenterControls={({ currentSlide }) => (
+    <div>Slide: {currentSlide}</div>
+  )}
+  renderCenterLeftControls={({ previousSlide }) => (
+    <button onClick={previousSlide}>Previous</button>
+  )}
+  renderCenterRightControls={({ nextSlide }) => (
+    <button onClick={nextSlide}>Next</button>
+  )}
+>
+  {/* Carousel Content */}
+</Carousel>
+```
+
+* The function returns the props for `goToSlide`, `nextSlide` and `previousSlide` functions in addition to `slideCount` and `currentSlide` values.
 
 #### slideIndex
 

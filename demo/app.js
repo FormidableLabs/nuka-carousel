@@ -11,11 +11,13 @@ class App extends React.Component {
     return (
       <div style={{ width: '50%', margin: 'auto' }}>
         <Carousel
-          wrapAround
           slideIndex={this.state.slideIndex}
           afterSlide={newSlideIndex =>
             this.setState({ slideIndex: newSlideIndex })
           }
+          renderTopCenterControls={({ currentSlide }) => (
+            <div>Nuka Carosel: Slide {currentSlide + 1}</div>
+          )}
         >
           <img src="http://placehold.it/1000x400&text=slide1" />
           <img src="http://placehold.it/1000x400&text=slide2" />
