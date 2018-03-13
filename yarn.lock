@@ -203,14 +203,7 @@
     "@babel/helper-remap-async-to-generator" "7.0.0-beta.40"
     "@babel/plugin-syntax-async-generators" "7.0.0-beta.40"
 
-"@babel/plugin-proposal-class-properties@^7.0.0-beta.40":
-  version "7.0.0-beta.40"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-class-properties/-/plugin-proposal-class-properties-7.0.0-beta.40.tgz#ee0549729e9f44603efa17523b459ea3021458dc"
-  dependencies:
-    "@babel/helper-function-name" "7.0.0-beta.40"
-    "@babel/plugin-syntax-class-properties" "7.0.0-beta.40"
-
-"@babel/plugin-proposal-object-rest-spread@7.0.0-beta.40", "@babel/plugin-proposal-object-rest-spread@^7.0.0-beta.40":
+"@babel/plugin-proposal-object-rest-spread@7.0.0-beta.40":
   version "7.0.0-beta.40"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-object-rest-spread/-/plugin-proposal-object-rest-spread-7.0.0-beta.40.tgz#ce35d2240908e52706a612eb26d67db667cd700f"
   dependencies:
@@ -221,12 +214,6 @@
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-optional-catch-binding/-/plugin-proposal-optional-catch-binding-7.0.0-beta.40.tgz#e76ddcb21880eea0225f1dcde20a5e97ca85fd39"
   dependencies:
     "@babel/plugin-syntax-optional-catch-binding" "7.0.0-beta.40"
-
-"@babel/plugin-proposal-optional-chaining@^7.0.0-beta.40":
-  version "7.0.0-beta.40"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-optional-chaining/-/plugin-proposal-optional-chaining-7.0.0-beta.40.tgz#2fe8e8e0f17fa0fe0a9bdd3e7d72594ba773cc80"
-  dependencies:
-    "@babel/plugin-syntax-optional-chaining" "7.0.0-beta.40"
 
 "@babel/plugin-proposal-unicode-property-regex@7.0.0-beta.40":
   version "7.0.0-beta.40"
@@ -239,10 +226,6 @@
   version "7.0.0-beta.40"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-async-generators/-/plugin-syntax-async-generators-7.0.0-beta.40.tgz#6c45889569add3b3721cc9a481ae99906f240874"
 
-"@babel/plugin-syntax-class-properties@7.0.0-beta.40":
-  version "7.0.0-beta.40"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-class-properties/-/plugin-syntax-class-properties-7.0.0-beta.40.tgz#ff82c04c6d97cdb947dc64e3f3d4bc791e85a16f"
-
 "@babel/plugin-syntax-jsx@7.0.0-beta.40":
   version "7.0.0-beta.40"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-jsx/-/plugin-syntax-jsx-7.0.0-beta.40.tgz#db44d52ff06f784be22f2659e694cc2cf97f99f9"
@@ -254,10 +237,6 @@
 "@babel/plugin-syntax-optional-catch-binding@7.0.0-beta.40":
   version "7.0.0-beta.40"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-optional-catch-binding/-/plugin-syntax-optional-catch-binding-7.0.0-beta.40.tgz#2e3de0919d05136bb658172ef9ba9ef7e84bce9e"
-
-"@babel/plugin-syntax-optional-chaining@7.0.0-beta.40":
-  version "7.0.0-beta.40"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-optional-chaining/-/plugin-syntax-optional-chaining-7.0.0-beta.40.tgz#0a2628511e8f7f35666f5977fb07e1a8d1d363eb"
 
 "@babel/plugin-transform-arrow-functions@7.0.0-beta.40":
   version "7.0.0-beta.40"
@@ -336,7 +315,7 @@
   dependencies:
     "@babel/helper-module-transforms" "7.0.0-beta.40"
 
-"@babel/plugin-transform-modules-commonjs@7.0.0-beta.40", "@babel/plugin-transform-modules-commonjs@^7.0.0-beta.40":
+"@babel/plugin-transform-modules-commonjs@7.0.0-beta.40":
   version "7.0.0-beta.40"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-modules-commonjs/-/plugin-transform-modules-commonjs-7.0.0-beta.40.tgz#a85f8c311f498a94a45531cc4ed5ff98b338a70a"
   dependencies:
@@ -2317,13 +2296,6 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-cross-env@^5.1.3:
-  version "5.1.3"
-  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.1.3.tgz#f8ae18faac87692b0a8b4d2f7000d4ec3a85dfd7"
-  dependencies:
-    cross-spawn "^5.1.0"
-    is-windows "^1.0.0"
-
 cross-spawn@^5.0.1, cross-spawn@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
@@ -2862,46 +2834,6 @@ entities@^1.1.1, entities@~1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.1.tgz#6e5c2d0a5621b5dadaecef80b90edfb5cd7772f0"
 
-enzyme-adapter-react-13@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/enzyme-adapter-react-13/-/enzyme-adapter-react-13-1.0.3.tgz#e253387ebb0172e22664819dfeb4433a99f3f245"
-  dependencies:
-    enzyme-adapter-utils "^1.1.0"
-    lodash "^4.17.4"
-    object.assign "^4.0.4"
-    object.values "^1.0.4"
-    prop-types "^15.5.10"
-
-enzyme-adapter-react-14@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/enzyme-adapter-react-14/-/enzyme-adapter-react-14-1.0.5.tgz#b444439a42e10727b1747c8e08d3d508e43a7d96"
-  dependencies:
-    enzyme-adapter-utils "^1.1.0"
-    lodash "^4.17.4"
-    object.assign "^4.0.4"
-    object.values "^1.0.4"
-    prop-types "^15.5.10"
-
-enzyme-adapter-react-15.4@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/enzyme-adapter-react-15.4/-/enzyme-adapter-react-15.4-1.0.5.tgz#9a0adc500e6aaf652d27b3599a50e660662f2806"
-  dependencies:
-    enzyme-adapter-utils "^1.1.0"
-    lodash "^4.17.4"
-    object.assign "^4.0.4"
-    object.values "^1.0.4"
-    prop-types "^15.5.10"
-
-enzyme-adapter-react-15@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/enzyme-adapter-react-15/-/enzyme-adapter-react-15-1.0.5.tgz#99f9a03ff2c2303e517342935798a6bdfbb75fac"
-  dependencies:
-    enzyme-adapter-utils "^1.1.0"
-    lodash "^4.17.4"
-    object.assign "^4.0.4"
-    object.values "^1.0.4"
-    prop-types "^15.5.10"
-
 enzyme-adapter-react-16@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.1.tgz#a8f4278b47e082fbca14f5bfb1ee50ee650717b4"
@@ -2914,7 +2846,7 @@ enzyme-adapter-react-16@^1.1.1:
     react-reconciler "^0.7.0"
     react-test-renderer "^16.0.0-0"
 
-enzyme-adapter-utils@^1.1.0, enzyme-adapter-utils@^1.3.0:
+enzyme-adapter-utils@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/enzyme-adapter-utils/-/enzyme-adapter-utils-1.3.0.tgz#d6c85756826c257a8544d362cc7a67e97ea698c7"
   dependencies:
@@ -2922,9 +2854,9 @@ enzyme-adapter-utils@^1.1.0, enzyme-adapter-utils@^1.3.0:
     object.assign "^4.0.4"
     prop-types "^15.6.0"
 
-enzyme-matchers@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/enzyme-matchers/-/enzyme-matchers-5.0.2.tgz#3f2d93ccd68049c7c988cbfca4dbc8724dcbd378"
+enzyme-matchers@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/enzyme-matchers/-/enzyme-matchers-6.0.0.tgz#b88a28abad42ec69dc1bac7c67152dba2e157950"
   dependencies:
     circular-json-es6 "^2.0.1"
     deep-equal-ident "^1.1.1"
@@ -2935,7 +2867,7 @@ enzyme-to-json@^3.3.0:
   dependencies:
     lodash "^4.17.4"
 
-enzyme@^3.0.0, enzyme@^3.3.0:
+enzyme@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/enzyme/-/enzyme-3.3.0.tgz#0971abd167f2d4bf3f5bd508229e1c4b6dc50479"
   dependencies:
@@ -3016,9 +2948,9 @@ eslint-config-formidable@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/eslint-config-formidable/-/eslint-config-formidable-3.0.0.tgz#99126c5348c7f97fa50e3265ad2fe7cb74d2e5d8"
 
-eslint-config-jest-enzyme@^5.0.3:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/eslint-config-jest-enzyme/-/eslint-config-jest-enzyme-5.0.3.tgz#f69df1f9c511d96608dd63ae3542498d120cfcf9"
+eslint-config-jest-enzyme@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-jest-enzyme/-/eslint-config-jest-enzyme-6.0.0.tgz#2424c3d613348a3d8492c6b960bfc968d5e326f3"
 
 eslint-config-prettier@^2.9.0:
   version "2.9.0"
@@ -4584,7 +4516,7 @@ is-utf8@^0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/is-utf8/-/is-utf8-0.2.1.tgz#4b0da1442104d1b336340e80797e865cf39f7d72"
 
-is-windows@^1.0.0, is-windows@^1.0.1, is-windows@^1.0.2:
+is-windows@^1.0.1, is-windows@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/is-windows/-/is-windows-1.0.2.tgz#d1850eb9791ecd18e6182ce12a30f396634bb19d"
 
@@ -4783,16 +4715,10 @@ jest-docblock@^22.4.0:
   dependencies:
     detect-newline "^2.1.0"
 
-jest-environment-enzyme@^5.0.1, jest-environment-enzyme@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/jest-environment-enzyme/-/jest-environment-enzyme-5.0.2.tgz#53338a39e3e0051d479d622ac9ad57e5d805aabd"
+jest-environment-enzyme@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/jest-environment-enzyme/-/jest-environment-enzyme-6.0.0.tgz#469ceaa0a21579af86cb01255f0591a3a5d95f40"
   dependencies:
-    enzyme "^3.0.0"
-    enzyme-adapter-react-13 "^1.0.3"
-    enzyme-adapter-react-14 "^1.0.5"
-    enzyme-adapter-react-15 "^1.0.5"
-    enzyme-adapter-react-15.4 "^1.0.5"
-    enzyme-adapter-react-16 "^1.1.1"
     jest-environment-jsdom "^22.4.1"
 
 jest-environment-jsdom@^22.4.1:
@@ -4810,13 +4736,13 @@ jest-environment-node@^22.4.1:
     jest-mock "^22.2.0"
     jest-util "^22.4.1"
 
-jest-enzyme@^5.0.1:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/jest-enzyme/-/jest-enzyme-5.0.2.tgz#e90bbdf3e61deaea8ad0f438d07ab1d07c51853f"
+jest-enzyme@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/jest-enzyme/-/jest-enzyme-6.0.0.tgz#518d4ecc5e32c8c1564b41b7bc83ea38667e8661"
   dependencies:
-    enzyme-matchers "^5.0.2"
+    enzyme-matchers "^6.0.0"
     enzyme-to-json "^3.3.0"
-    jest-environment-enzyme "^5.0.2"
+    jest-environment-enzyme "^6.0.0"
 
 jest-get-type@^22.1.0:
   version "22.1.0"
@@ -6687,7 +6613,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.6.0:
+prop-types@^15.6.0:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
   dependencies:
