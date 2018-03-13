@@ -3,9 +3,10 @@ import React from 'react';
 import ReactDom from 'react-dom';
 
 class App extends React.Component {
-  state = {
-    slideIndex: 0
-  };
+  constructor() {
+    super(...arguments);
+    this.state = { slideIndex: 0 };
+  }
 
   render() {
     return (

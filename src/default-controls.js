@@ -11,10 +11,14 @@ const defaultButtonStyles = disabled => ({
 });
 
 export class PreviousButton extends React.Component {
-  handleClick = e => {
-    e.preventDefault();
+  constructor() {
+    super(...arguments);
+    this.handleClick = this.handleClick.bind(this);
+  }
+  handleClick(event) {
+    event.preventDefault();
     this.props.previousSlide();
-  };
+  }
   render() {
     return (
       <button
@@ -30,10 +34,14 @@ export class PreviousButton extends React.Component {
 }
 
 export class NextButton extends React.Component {
-  handleClick = e => {
-    e.preventDefault();
+  constructor() {
+    super(...arguments);
+    this.handleClick = this.handleClick.bind(this);
+  }
+  handleClick(event) {
+    event.preventDefault();
     this.props.nextSlide();
-  };
+  }
   render() {
     return (
       <button
@@ -50,36 +58,42 @@ export class NextButton extends React.Component {
 }
 
 export class PagingDots extends React.Component {
-  getIndexes = (count, inc) => {
+  getIndexes(count, inc) {
     const arr = [];
     for (let i = 0; i < count; i += inc) {
       arr.push(i);
     }
     return arr;
-  };
+  }
 
-  getListStyles = () => ({
-    position: 'relative',
-    margin: 0,
-    top: -10,
-    padding: 0
-  });
+  getListStyles() {
+    return {
+      position: 'relative',
+      margin: 0,
+      top: -10,
+      padding: 0
+    };
+  }
 
-  getListItemStyles = () => ({
-    listStyleType: 'none',
-    display: 'inline-block'
-  });
+  getListItemStyles() {
+    return {
+      listStyleType: 'none',
+      display: 'inline-block'
+    };
+  }
 
-  getButtonStyles = active => ({
-    border: 0,
-    background: 'transparent',
-    color: 'black',
-    cursor: 'pointer',
-    padding: 10,
-    outline: 0,
-    fontSize: 24,
-    opacity: active ? 1 : 0.5
-  });
+  getButtonStyles(active) {
+    return {
+      border: 0,
+      background: 'transparent',
+      color: 'black',
+      cursor: 'pointer',
+      padding: 10,
+      outline: 0,
+      fontSize: 24,
+      opacity: active ? 1 : 0.5
+    };
+  }
 
   render() {
     const indexes = this.getIndexes(

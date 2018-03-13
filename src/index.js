@@ -31,86 +31,67 @@ const removeEvent = function(elem, type, eventHandle) {
   }
 };
 
-export default class extends React.Component {
-  static propTypes = {
-    afterSlide: PropTypes.func,
-    autoplay: PropTypes.bool,
-    autoplayInterval: PropTypes.number,
-    beforeSlide: PropTypes.func,
-    cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
-    cellSpacing: PropTypes.number,
-    dragging: PropTypes.bool,
-    easing: PropTypes.string,
-    edgeEasing: PropTypes.string,
-    frameOverflow: PropTypes.string,
-    framePadding: PropTypes.string,
-    initialSlideHeight: PropTypes.number,
-    initialSlideWidth: PropTypes.number,
-    renderTopLeftControls: PropTypes.func,
-    renderTopCenterControls: PropTypes.func,
-    renderTopRightControls: PropTypes.func,
-    renderCenterLeftControls: PropTypes.func,
-    renderCenterCenterControls: PropTypes.func,
-    renderCenterRightControls: PropTypes.func,
-    renderBottomLeftControls: PropTypes.func,
-    renderBottomCenterControls: PropTypes.func,
-    renderBottomRightControls: PropTypes.func,
-    slideIndex: PropTypes.number,
-    slidesToScroll: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.oneOf(['auto'])
-    ]),
-    slidesToShow: PropTypes.number,
-    slideWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    speed: PropTypes.number,
-    swiping: PropTypes.bool,
-    vertical: PropTypes.bool,
-    width: PropTypes.string,
-    wrapAround: PropTypes.bool
-  };
+export default class Carousel extends React.Component {
+  constructor() {
+    super(...arguments);
 
-  static defaultProps = {
-    afterSlide() {},
-    autoplay: false,
-    autoplayInterval: 3000,
-    beforeSlide() {},
-    cellAlign: 'left',
-    cellSpacing: 0,
-    dragging: true,
-    easing: 'easeCircleOut',
-    edgeEasing: 'easeElasticOut',
-    framePadding: '0px',
-    frameOverflow: 'hidden',
-    slideIndex: 0,
-    slidesToScroll: 1,
-    slidesToShow: 1,
-    renderCenterLeftControls: props => <PreviousButton {...props} />,
-    renderCenterRightControls: props => <NextButton {...props} />,
-    renderBottomCenterControls: props => <PagingDots {...props} />,
-    slideWidth: 1,
-    speed: 500,
-    swiping: true,
-    vertical: false,
-    width: '100%',
-    wrapAround: false
-  };
+    this.displayName = 'Carousel';
+    this.clickSafe = true;
+    this.controlsMap = [
+      { func: this.props.renderTopLeftControls, key: 'TopLeft' },
+      { func: this.props.renderTopCenterControls, key: 'TopCenter' },
+      { func: this.props.renderTopRightControls, key: 'TopRight' },
+      { func: this.props.renderCenterLeftControls, key: 'CenterLeft' },
+      { func: this.props.renderCenterCenterControls, key: 'CenterCenter' },
+      { func: this.props.renderCenterRightControls, key: 'CenterRight' },
+      { func: this.props.renderBottomLeftControls, key: 'BottomLeft' },
+      { func: this.props.renderBottomCenterControls, key: 'BottomCenter' },
+      { func: this.props.renderBottomRightControls, key: 'BottomRight' }
+    ];
+    this.touchObject = {};
+    this.state = {
+      currentSlide: this.props.slideIndex,
+      dragging: false,
+      frameWidth: 0,
+      left: 0,
+      slideCount: 0,
+      slidesToScroll: this.props.slidesToScroll,
+      slideWidth: 0,
+      top: 0,
+      easing: easing.easeCircleOut,
+      isWrappingAround: false,
+      wrapToIndex: null,
+      resetWrapAroundPosition: false
+    };
 
-  displayName = 'Carousel';
-
-  state = {
-    currentSlide: this.props.slideIndex,
-    dragging: false,
-    frameWidth: 0,
-    left: 0,
-    slideCount: 0,
-    slidesToScroll: this.props.slidesToScroll,
-    slideWidth: 0,
-    top: 0,
-    easing: easing.easeCircleOut,
-    isWrappingAround: false,
-    wrapToIndex: null,
-    resetWrapAroundPosition: false
-  };
+    this.getTouchEvents = this.getTouchEvents.bind(this);
+    this.getMouseEvents = this.getMouseEvents.bind(this);
+    this.handleMouseOver = this.handleMouseOver.bind(this);
+    this.handleMouseOut = this.handleMouseOut.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleSwipe = this.handleSwipe.bind(this);
+    this.swipeDirection = this.swipeDirection.bind(this);
+    this.autoplayIterator = this.autoplayIterator.bind(this);
+    this.startAutoplay = this.startAutoplay.bind(this);
+    this.stopAutoplay = this.stopAutoplay.bind(this);
+    this.resetAutoplay = this.resetAutoplay.bind(this);
+    this.goToSlide = this.goToSlide.bind(this);
+    this.nextSlide = this.nextSlide.bind(this);
+    this.previousSlide = this.previousSlide.bind(this);
+    this.getTargetLeft = this.getTargetLeft.bind(this);
+    this.onResize = this.onResize.bind(this);
+    this.onReadyStateChange = this.onReadyStateChange.bind(this);
+    this.setInitialDimensions = this.setInitialDimensions.bind(this);
+    this.setDimensions = this.setDimensions.bind(this);
+    this.setLeft = this.setLeft.bind(this);
+    this.getListStyles = this.getListStyles.bind(this);
+    this.getFrameStyles = this.getFrameStyles.bind(this);
+    this.getSlideStyles = this.getSlideStyles.bind(this);
+    this.getSlideTargetPosition = this.getSlideTargetPosition.bind(this);
+    this.getSliderStyles = this.getSliderStyles.bind(this);
+    this.getOffsetDeltas = this.getOffsetDeltas.bind(this);
+    this.formatChildren = this.formatChildren.bind(this);
+  }
 
   componentWillMount() {
     this.setInitialDimensions();
@@ -154,23 +135,7 @@ export default class extends React.Component {
     this.mounted = false;
   }
 
-  controlsMap = [
-    { func: this.props.renderTopLeftControls, key: 'TopLeft' },
-    { func: this.props.renderTopCenterControls, key: 'TopCenter' },
-    { func: this.props.renderTopRightControls, key: 'TopRight' },
-    { func: this.props.renderCenterLeftControls, key: 'CenterLeft' },
-    { func: this.props.renderCenterCenterControls, key: 'CenterCenter' },
-    { func: this.props.renderCenterRightControls, key: 'CenterRight' },
-    { func: this.props.renderBottomLeftControls, key: 'BottomLeft' },
-    { func: this.props.renderBottomCenterControls, key: 'BottomCenter' },
-    { func: this.props.renderBottomRightControls, key: 'BottomRight' }
-  ];
-
-  // Touch Events
-
-  touchObject = {};
-
-  getTouchEvents = () => {
+  getTouchEvents() {
     if (this.props.swiping === false) {
       return null;
     }
@@ -237,11 +202,9 @@ export default class extends React.Component {
         this.handleSwipe(e);
       }
     };
-  };
+  }
 
-  clickSafe = true;
-
-  getMouseEvents = () => {
+  getMouseEvents() {
     if (this.props.dragging === false) {
       return null;
     }
@@ -322,34 +285,34 @@ export default class extends React.Component {
         this.handleSwipe(e);
       }
     };
-  };
+  }
 
-  handleMouseOver = () => {
+  handleMouseOver() {
     if (this.props.autoplay) {
       this.autoplayPaused = true;
       this.stopAutoplay();
     }
-  };
+  }
 
-  handleMouseOut = () => {
+  handleMouseOut() {
     if (this.props.autoplay && this.autoplayPaused) {
       this.startAutoplay();
       this.autoplayPaused = null;
     }
-  };
+  }
 
-  handleClick = e => {
+  handleClick(event) {
     if (this.clickSafe === true) {
-      e.preventDefault();
-      e.stopPropagation();
+      event.preventDefault();
+      event.stopPropagation();
 
-      if (e.nativeEvent) {
-        e.nativeEvent.stopPropagation();
+      if (event.nativeEvent) {
+        event.nativeEvent.stopPropagation();
       }
     }
-  };
+  }
 
-  handleSwipe = () => {
+  handleSwipe() {
     if (
       typeof this.touchObject.length !== 'undefined' &&
       this.touchObject.length > 44
@@ -391,9 +354,9 @@ export default class extends React.Component {
     this.setState({
       dragging: false
     });
-  };
+  }
 
-  swipeDirection = (x1, x2, y1, y2) => {
+  swipeDirection(x1, x2, y1, y2) {
     const xDist = x1 - x2;
     const yDist = y1 - y2;
     const r = Math.atan2(yDist, xDist);
@@ -419,9 +382,9 @@ export default class extends React.Component {
       }
     }
     return 0;
-  };
+  }
 
-  autoplayIterator = () => {
+  autoplayIterator() {
     if (this.props.wrapAround) {
       this.nextSlide();
       return;
@@ -434,31 +397,31 @@ export default class extends React.Component {
     } else {
       this.stopAutoplay();
     }
-  };
+  }
 
-  startAutoplay = () => {
+  startAutoplay() {
     this.autoplayID = setInterval(
       this.autoplayIterator,
       this.props.autoplayInterval
     );
-  };
+  }
 
-  resetAutoplay = () => {
+  resetAutoplay() {
     if (this.props.autoplay && !this.autoplayPaused) {
       this.stopAutoplay();
       this.startAutoplay();
     }
-  };
+  }
 
-  stopAutoplay = () => {
+  stopAutoplay() {
     if (this.autoplayID) {
       clearInterval(this.autoplayID);
     }
-  };
+  }
 
   // Action Methods
 
-  goToSlide = index => {
+  goToSlide(index) {
     this.setState({ easing: easing[this.props.easing] });
 
     if (index >= React.Children.count(this.props.children) || index < 0) {
@@ -531,9 +494,9 @@ export default class extends React.Component {
         this.resetAutoplay();
       }
     );
-  };
+  }
 
-  nextSlide = () => {
+  nextSlide() {
     const childrenCount = React.Children.count(this.props.children);
     let slidesToShow = this.props.slidesToShow;
     if (this.props.slidesToScroll === 'auto') {
@@ -560,9 +523,9 @@ export default class extends React.Component {
         )
       );
     }
-  };
+  }
 
-  previousSlide = () => {
+  previousSlide() {
     if (this.state.currentSlide <= 0 && !this.props.wrapAround) {
       return;
     }
@@ -574,11 +537,11 @@ export default class extends React.Component {
         Math.max(0, this.state.currentSlide - this.state.slidesToScroll)
       );
     }
-  };
+  }
 
   // Animation
 
-  getTargetLeft = (touchOffset, slide) => {
+  getTargetLeft(touchOffset, slide) {
     let offset;
     const target = slide || this.state.currentSlide;
     switch (this.props.cellAlign) {
@@ -620,29 +583,33 @@ export default class extends React.Component {
     offset -= touchOffset || 0;
 
     return (left - offset) * -1;
-  };
+  }
 
   // Bootstrapping
 
-  bindEvents = () => {
+  bindEvents() {
     if (ExecutionEnvironment.canUseDOM) {
       addEvent(window, 'resize', this.onResize);
       addEvent(document, 'readystatechange', this.onReadyStateChange);
     }
-  };
+  }
 
-  onResize = () => this.setDimensions();
+  onResize() {
+    this.setDimensions();
+  }
 
-  onReadyStateChange = () => this.setDimensions();
+  onReadyStateChange() {
+    this.setDimensions();
+  }
 
-  unbindEvents = () => {
+  unbindEvents() {
     if (ExecutionEnvironment.canUseDOM) {
       removeEvent(window, 'resize', this.onResize);
       removeEvent(document, 'readystatechange', this.onReadyStateChange);
     }
-  };
+  }
 
-  formatChildren = children => {
+  formatChildren(children) {
     const positionValue = this.props.vertical
       ? this.state.top
       : this.state.left;
@@ -657,9 +624,9 @@ export default class extends React.Component {
         </li>
       );
     });
-  };
+  }
 
-  setInitialDimensions = () => {
+  setInitialDimensions() {
     const slideWidth = this.props.vertical
       ? this.props.initialSlideHeight || 0
       : this.props.initialSlideWidth || 0;
@@ -681,9 +648,9 @@ export default class extends React.Component {
         this.setLeft();
       }
     );
-  };
+  }
 
-  setDimensions = props => {
+  setDimensions(props) {
     props = props || this.props;
 
     let slideWidth;
@@ -740,18 +707,19 @@ export default class extends React.Component {
         this.setLeft();
       }
     );
-  };
+  }
 
-  setLeft = () => {
+  setLeft() {
     this.setState({
       left: this.props.vertical ? 0 : this.getTargetLeft(),
       top: this.props.vertical ? this.getTargetLeft() : 0
     });
-  };
+  }
 
   // Styles
 
-  getListStyles = ({ tx, ty }) => {
+  getListStyles(styles) {
+    const { tx, ty } = styles;
     const listWidth =
       this.state.slideWidth * React.Children.count(this.props.children);
     const spacingOffset =
@@ -775,9 +743,9 @@ export default class extends React.Component {
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box'
     };
-  };
+  }
 
-  getFrameStyles = () => {
+  getFrameStyles() {
     return {
       position: 'relative',
       display: 'block',
@@ -791,9 +759,9 @@ export default class extends React.Component {
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box'
     };
-  };
+  }
 
-  getSlideStyles = (index, positionValue) => {
+  getSlideStyles(index, positionValue) {
     const targetPosition = this.getSlideTargetPosition(index, positionValue);
     return {
       position: 'absolute',
@@ -811,9 +779,9 @@ export default class extends React.Component {
       marginTop: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
       marginBottom: this.props.vertical ? this.props.cellSpacing / 2 : 'auto'
     };
-  };
+  }
 
-  getSlideTargetPosition = (index, positionValue) => {
+  getSlideTargetPosition(index, positionValue) {
     const slidesToShow = this.state.frameWidth / this.state.slideWidth;
     const targetPosition =
       (this.state.slideWidth + this.props.cellSpacing) * index;
@@ -850,9 +818,9 @@ export default class extends React.Component {
     }
 
     return targetPosition;
-  };
+  }
 
-  getSliderStyles = () => {
+  getSliderStyles() {
     return {
       position: 'relative',
       display: 'block',
@@ -862,13 +830,13 @@ export default class extends React.Component {
       MozBoxSizing: 'border-box',
       visibility: this.state.slideWidth ? 'visible' : 'hidden'
     };
-  };
+  }
 
-  getStyleTagStyles = () => {
+  getStyleTagStyles() {
     return '.slider-slide > img {width: 100%; display: block;}';
-  };
+  }
 
-  getDecoratorStyles = position => {
+  getDecoratorStyles(position) {
     switch (position) {
       case 'TopLeft': {
         return {
@@ -956,9 +924,9 @@ export default class extends React.Component {
         };
       }
     }
-  };
+  }
 
-  getOffsetDeltas = () => {
+  getOffsetDeltas() {
     let offset = 0;
 
     if (this.state.isWrappingAround) {
@@ -973,62 +941,60 @@ export default class extends React.Component {
       tx: [this.props.vertical ? 0 : offset],
       ty: [this.props.vertical ? offset : 0]
     };
-  };
+  }
 
-  renderControls = () => (
-    <>
-      {this.controlsMap.map(
-        ({ func, key }) =>
-          func &&
-          typeof func === 'function' && (
-            <div
-              className={`slider-control-${key.toLowerCase()}`}
-              style={this.getDecoratorStyles(key)}
-              key={key}
-            >
-              {func({
-                currentSlide: this.state.currentSlide,
-                slideCount: this.state.slideCount,
-                frameWidth: this.state.frameWidth,
-                slideWidth: this.state.slideWidth,
-                slidesToScroll: this.state.slidesToScroll,
-                cellSpacing: this.props.cellSpacing,
-                slidesToShow: this.props.slidesToShow,
-                wrapAround: this.props.wrapAround,
-                nextSlide: () => this.nextSlide(),
-                previousSlide: () => this.previousSlide(),
-                goToSlide: index => this.goToSlide(index)
-              })}
-            </div>
-          )
-      )}
-    </>
-  );
+  renderControls() {
+    return this.controlsMap.map(
+      ({ func, key }) =>
+        func &&
+        typeof func === 'function' && (
+          <div
+            className={`slider-control-${key.toLowerCase()}`}
+            style={this.getDecoratorStyles(key)}
+            key={key}
+          >
+            {func({
+              currentSlide: this.state.currentSlide,
+              slideCount: this.state.slideCount,
+              frameWidth: this.state.frameWidth,
+              slideWidth: this.state.slideWidth,
+              slidesToScroll: this.state.slidesToScroll,
+              cellSpacing: this.props.cellSpacing,
+              slidesToShow: this.props.slidesToShow,
+              wrapAround: this.props.wrapAround,
+              nextSlide: () => this.nextSlide(),
+              previousSlide: () => this.previousSlide(),
+              goToSlide: index => this.goToSlide(index)
+            })}
+          </div>
+        )
+    );
+  }
 
   render() {
     const children =
       React.Children.count(this.props.children) > 1
         ? this.formatChildren(this.props.children)
         : this.props.children;
+    const duration =
+      this.state.dragging || this.state.resetWrapAroundPosition
+        ? 0
+        : this.props.speed;
 
     return (
       <div
         className={['slider', this.props.className || ''].join(' ')}
-        style={{ ...this.getSliderStyles(), ...(this.props.style || {}) }}
+        style={Object.assign({}, this.getSliderStyles(), this.props.style)}
       >
         <Animate
           show
           start={{ tx: 0, ty: 0 }}
-          update={{
-            ...this.getOffsetDeltas(),
+          update={Object.assign({}, this.getOffsetDeltas(), {
             timing: {
-              duration:
-                this.state.dragging || this.state.resetWrapAroundPosition
-                  ? 0
-                  : this.props.speed,
+              duration,
               ease: this.state.easing
             }
-          }}
+          })}
           children={({ tx, ty }) => (
             <div
               className="slider-frame"
@@ -1058,5 +1024,69 @@ export default class extends React.Component {
     );
   }
 }
+
+Carousel.propTypes = {
+  afterSlide: PropTypes.func,
+  autoplay: PropTypes.bool,
+  autoplayInterval: PropTypes.number,
+  beforeSlide: PropTypes.func,
+  cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
+  cellSpacing: PropTypes.number,
+  dragging: PropTypes.bool,
+  easing: PropTypes.string,
+  edgeEasing: PropTypes.string,
+  frameOverflow: PropTypes.string,
+  framePadding: PropTypes.string,
+  initialSlideHeight: PropTypes.number,
+  initialSlideWidth: PropTypes.number,
+  renderTopLeftControls: PropTypes.func,
+  renderTopCenterControls: PropTypes.func,
+  renderTopRightControls: PropTypes.func,
+  renderCenterLeftControls: PropTypes.func,
+  renderCenterCenterControls: PropTypes.func,
+  renderCenterRightControls: PropTypes.func,
+  renderBottomLeftControls: PropTypes.func,
+  renderBottomCenterControls: PropTypes.func,
+  renderBottomRightControls: PropTypes.func,
+  slideIndex: PropTypes.number,
+  slidesToScroll: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.oneOf(['auto'])
+  ]),
+  slidesToShow: PropTypes.number,
+  slideWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  speed: PropTypes.number,
+  swiping: PropTypes.bool,
+  vertical: PropTypes.bool,
+  width: PropTypes.string,
+  wrapAround: PropTypes.bool
+};
+
+Carousel.defaultProps = {
+  afterSlide() {},
+  autoplay: false,
+  autoplayInterval: 3000,
+  beforeSlide() {},
+  cellAlign: 'left',
+  cellSpacing: 0,
+  dragging: true,
+  easing: 'easeCircleOut',
+  edgeEasing: 'easeElasticOut',
+  framePadding: '0px',
+  frameOverflow: 'hidden',
+  slideIndex: 0,
+  slidesToScroll: 1,
+  slidesToShow: 1,
+  style: {},
+  renderCenterLeftControls: props => <PreviousButton {...props} />,
+  renderCenterRightControls: props => <NextButton {...props} />,
+  renderBottomCenterControls: props => <PagingDots {...props} />,
+  slideWidth: 1,
+  speed: 500,
+  swiping: true,
+  vertical: false,
+  width: '100%',
+  wrapAround: false
+};
 
 export { NextButton, PreviousButton, PagingDots };
