@@ -1,19 +1,11 @@
 {
-  "presets": [
-    ["@babel/preset-env", { "modules": false }],
-    "@babel/preset-react"
-  ],
-  "plugins": [
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-proposal-object-rest-spread",
-    "@babel/plugin-proposal-optional-chaining"
-  ],
+  "presets": ["@babel/preset-env", "@babel/preset-react"],
   "env": {
-    "commonjs": {
-      "presets": ["@babel/preset-env", "@babel/preset-react"]
-    },
-    "test": {
-      "plugins": ["@babel/plugin-transform-modules-commonjs"]
+    "esm": {
+      "presets": [
+        ["@babel/preset-env", { "modules": false }],
+        "@babel/preset-react"
+      ]
     }
   }
 }

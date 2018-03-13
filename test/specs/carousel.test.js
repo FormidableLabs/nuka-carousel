@@ -62,7 +62,7 @@ describe('<Carousel />', () => {
       expect(children).toHaveLength(3);
     });
 
-    it('should render decorators by default.', () => {
+    it('should render controls by default.', () => {
       const wrapper = mount(
         <Carousel>
           <p>Slide 1</p>
@@ -70,9 +70,9 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
         </Carousel>
       );
-      const decorator1 = wrapper.find('.slider-decorator-0');
-      const decorator2 = wrapper.find('.slider-decorator-0');
-      const decorator3 = wrapper.find('.slider-decorator-0');
+      const decorator1 = wrapper.find('.slider-control-centerleft');
+      const decorator2 = wrapper.find('.slider-control-centerright');
+      const decorator3 = wrapper.find('.slider-control-bottomcenter');
       expect(decorator1).toHaveLength(1);
       expect(decorator2).toHaveLength(1);
       expect(decorator3).toHaveLength(1);
@@ -208,7 +208,7 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
         </Carousel>
       );
-      const previousButton = wrapper.find('.slider-decorator-0 button');
+      const previousButton = wrapper.find('.slider-control-centerleft button');
       expect(wrapper).toHaveState({ currentSlide: 0 });
       previousButton.simulate('click');
       expect(wrapper).toHaveState({ currentSlide: 2 });
@@ -223,10 +223,199 @@ describe('<Carousel />', () => {
         </Carousel>
       );
       wrapper.setState({ currentSlide: 2 });
-      const nextButton = wrapper.find('.slider-decorator-1 button');
+      const nextButton = wrapper.find('.slider-control-centerright button');
       expect(wrapper).toHaveState({ currentSlide: 2 });
       nextButton.simulate('click');
       expect(wrapper).toHaveState({ currentSlide: 0 });
+    });
+  });
+
+  describe('Controls', () => {
+    it('should render a custom top left control.', () => {
+      const wrapper = mount(
+        <Carousel renderTopLeftControls={() => <div>Top Left</div>}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      expect(wrapper).toContainReact(<div>Top Left</div>);
+    });
+
+    it('should render a custom top center control.', () => {
+      const wrapper = mount(
+        <Carousel renderTopCenterControls={() => <div>Top Center</div>}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      expect(wrapper).toContainReact(<div>Top Center</div>);
+    });
+
+    it('should render a custom top right control.', () => {
+      const wrapper = mount(
+        <Carousel renderTopRightControls={() => <div>Top Right</div>}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      expect(wrapper).toContainReact(<div>Top Right</div>);
+    });
+
+    it('should render a custom center left control.', () => {
+      const wrapper = mount(
+        <Carousel renderCenterLeftControls={() => <div>Center Left</div>}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      expect(wrapper).toContainReact(<div>Center Left</div>);
+    });
+
+    it('should render a custom center center control.', () => {
+      const wrapper = mount(
+        <Carousel renderCenterCenterControls={() => <div>Center Center</div>}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      expect(wrapper).toContainReact(<div>Center Center</div>);
+    });
+
+    it('should render a custom center right control.', () => {
+      const wrapper = mount(
+        <Carousel renderCenterRightControls={() => <div>Center Right</div>}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      expect(wrapper).toContainReact(<div>Center Right</div>);
+    });
+
+    it('should render a custom bottom left control.', () => {
+      const wrapper = mount(
+        <Carousel renderBottomLeftControls={() => <div>Bottom Left</div>}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      expect(wrapper).toContainReact(<div>Bottom Left</div>);
+    });
+
+    it('should render a custom bottom center control.', () => {
+      const wrapper = mount(
+        <Carousel renderBottomCenterControls={() => <div>Bottom Center</div>}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      expect(wrapper).toContainReact(<div>Bottom Center</div>);
+    });
+
+    it('should render a custom bottom right control.', () => {
+      const wrapper = mount(
+        <Carousel renderBottomRightControls={() => <div>Bottom Right</div>}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      expect(wrapper).toContainReact(<div>Bottom Right</div>);
+    });
+
+    it('should render controls with control props.', () => {
+      const CustomControls = () => <div>Custom Controls</div>;
+      const wrapper = mount(
+        <Carousel
+          wrapAround
+          renderCenterCenterControls={props => <CustomControls {...props} />}
+        >
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const controls = wrapper.find('CustomControls');
+      expect(controls).toHaveProp('currentSlide', 0);
+      expect(controls).toHaveProp('slideCount', 3);
+      expect(controls).toHaveProp('wrapAround', true);
+      expect(controls).toHaveProp('nextSlide');
+      expect(controls).toHaveProp('previousSlide');
+      expect(controls).toHaveProp('goToSlide');
+    });
+
+    it('should call the internal nextSlide func from a control using the nextSlide prop.', () => {
+      const wrapper = mount(
+        <Carousel
+          renderCenterCenterControls={({ nextSlide }) => (
+            <button id="custom-next-btn" onClick={nextSlide}>
+              Next
+            </button>
+          )}
+        >
+          >
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const spy = jest.spyOn(wrapper.instance(), 'nextSlide');
+      wrapper.update();
+      const button = wrapper.find('#custom-next-btn');
+      button.simulate('click');
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should call the internal previousSlide func from a control using the previousSlide prop.', () => {
+      const wrapper = mount(
+        <Carousel
+          slideIndex={1}
+          renderCenterCenterControls={({ previousSlide }) => (
+            <button id="custom-prev-btn" onClick={previousSlide}>
+              Next
+            </button>
+          )}
+        >
+          >
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const spy = jest.spyOn(wrapper.instance(), 'previousSlide');
+      wrapper.update();
+      const button = wrapper.find('#custom-prev-btn');
+      button.simulate('click');
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should call the internal goToSlide func from a control using the goToSlide prop.', () => {
+      const wrapper = mount(
+        <Carousel
+          renderCenterCenterControls={({ goToSlide }) => (
+            <button id="custom-goto-btn" onClick={() => goToSlide(2)}>
+              Go to Slide 3
+            </button>
+          )}
+        >
+          >
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const spy = jest.spyOn(wrapper.instance(), 'goToSlide');
+      wrapper.update();
+      const button = wrapper.find('#custom-goto-btn');
+      button.simulate('click');
+      expect(spy).toHaveBeenCalledWith(2);
     });
   });
 });
