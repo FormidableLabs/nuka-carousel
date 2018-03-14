@@ -2,10 +2,12 @@ import Carousel from '../src/index';
 import React from 'react';
 import ReactDom from 'react-dom';
 
+const colors = ['7732bb', '047cc0', '00884b', 'e3bc13', 'db7c00', 'aa231f'];
+
 class App extends React.Component {
   constructor() {
     super(...arguments);
-    this.state = { slideIndex: 0 };
+    this.state = { slideIndex: 0, length: 6 };
   }
 
   render() {
@@ -13,19 +15,21 @@ class App extends React.Component {
       <div style={{ width: '50%', margin: 'auto' }}>
         <Carousel
           slideIndex={this.state.slideIndex}
-          afterSlide={newSlideIndex =>
-            this.setState({ slideIndex: newSlideIndex })
-          }
+          afterSlide={slideIndex => this.setState({ slideIndex })}
           renderTopCenterControls={({ currentSlide }) => (
-            <div>Nuka Carosel: Slide {currentSlide + 1}</div>
+            <div style={{ fontFamily: 'Helvetica', color: '#fff' }}>
+              Nuka Carousel: Slide {currentSlide + 1}
+            </div>
           )}
         >
-          <img src="http://placehold.it/1000x400&text=slide1" />
-          <img src="http://placehold.it/1000x400&text=slide2" />
-          <img src="http://placehold.it/1000x400&text=slide3" />
-          <img src="http://placehold.it/1000x400&text=slide4" />
-          <img src="http://placehold.it/1000x400&text=slide5" />
-          <img src="http://placehold.it/1000x400&text=slide6" />
+          {[...Array(this.state.length).keys()].map(key => (
+            <img
+              src={`http://placehold.it/1000x400/${
+                colors[key]
+              }/ffffff/&text=slide${key + 1}`}
+              key={key}
+            />
+          ))}
         </Carousel>
         <button onClick={() => this.setState({ slideIndex: 0 })}>1</button>
         <button onClick={() => this.setState({ slideIndex: 1 })}>2</button>
@@ -33,6 +37,8 @@ class App extends React.Component {
         <button onClick={() => this.setState({ slideIndex: 3 })}>4</button>
         <button onClick={() => this.setState({ slideIndex: 4 })}>5</button>
         <button onClick={() => this.setState({ slideIndex: 5 })}>6</button>
+        <button onClick={() => this.setState({ length: 0 })}>0</button>
+        <button onClick={() => this.setState({ length: 6 })}>6 A</button>
       </div>
     );
   }
