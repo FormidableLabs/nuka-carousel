@@ -37,8 +37,6 @@ class App extends React.Component {
         <button onClick={() => this.setState({ slideIndex: 3 })}>4</button>
         <button onClick={() => this.setState({ slideIndex: 4 })}>5</button>
         <button onClick={() => this.setState({ slideIndex: 5 })}>6</button>
-        <button onClick={() => this.setState({ length: 0 })}>0</button>
-        <button onClick={() => this.setState({ length: 6 })}>6 A</button>
       </div>
     );
   }
