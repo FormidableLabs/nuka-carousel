@@ -7,7 +7,7 @@ const defaultButtonStyles = disabled => ({
   padding: 10,
   outline: 0,
   opacity: disabled ? 0.3 : 1,
-  cursor: 'pointer'
+  cursor: disabled ? 'not-allowed' : 'pointer'
 });
 
 export class PreviousButton extends React.Component {
@@ -20,11 +20,13 @@ export class PreviousButton extends React.Component {
     this.props.previousSlide();
   }
   render() {
+    const disabled =
+      (this.props.currentSlide === 0 && !this.props.wrapAround) ||
+      this.props.slideCount === 0;
     return (
       <button
-        style={defaultButtonStyles(
-          this.props.currentSlide === 0 && !this.props.wrapAround
-        )}
+        style={defaultButtonStyles(disabled)}
+        disabled={disabled}
         onClick={this.handleClick}
       >
         PREV
@@ -43,12 +45,13 @@ export class NextButton extends React.Component {
     this.props.nextSlide();
   }
   render() {
+    const disabled =
+      this.props.currentSlide + this.props.slidesToScroll >=
+        this.props.slideCount && !this.props.wrapAround;
     return (
       <button
-        style={defaultButtonStyles(
-          this.props.currentSlide + this.props.slidesToScroll >=
-            this.props.slideCount && !this.props.wrapAround
-        )}
+        style={defaultButtonStyles(disabled)}
+        disabled={disabled}
         onClick={this.handleClick}
       >
         NEXT

@@ -128,6 +128,39 @@ describe('<Carousel />', () => {
       const slider = wrapper.find('.slider-list');
       expect(slider).toHaveStyle('transform', 'translate3d(0px, 0px, 0)');
     });
+
+    it('should adjust the slide index when children count change.', () => {
+      const wrapper = mount(
+        <Carousel slideIndex={2}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      expect(wrapper).toHaveState('currentSlide', 2);
+      wrapper.setProps({
+        children: [<p key={1}>Slide 1</p>, <p key={2}>Slide 2</p>]
+      });
+      expect(wrapper).toHaveState('currentSlide', 1);
+    });
+
+    it('should disable controls when children are updated to have a length of 0.', () => {
+      const wrapper = mount(
+        <Carousel slideIndex={2}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      expect(wrapper).toHaveState('currentSlide', 2);
+      wrapper.setProps({ children: [] });
+      expect(wrapper).toHaveState('currentSlide', 0);
+
+      const previousButton = wrapper.find('.slider-control-centerleft button');
+      const nextButton = wrapper.find('.slider-control-centerright button');
+      expect(previousButton).toHaveProp('disabled', true);
+      expect(nextButton).toHaveProp('disabled', true);
+    });
   });
 
   describe('methods', () => {
