@@ -109,32 +109,25 @@ export default class Carousel extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const slideCount = nextProps.children.length;
-    this.setState(
-      prevState => ({
-        slideCount,
-        currentSlide:
-          slideCount <= prevState.currentSlide
-            ? Math.max(slideCount - 1, 0)
-            : prevState.currentSlide
-      }),
-      () => {
-        this.setDimensions(nextProps);
-        if (
-          this.props.slideIndex !== nextProps.slideIndex &&
-          nextProps.slideIndex !== this.state.currentSlide &&
-          !this.state.isWrappingAround
-        ) {
-          this.goToSlide(nextProps.slideIndex);
-        }
-        if (this.props.autoplay !== nextProps.autoplay) {
-          if (nextProps.autoplay) {
-            this.startAutoplay();
-          } else {
-            this.stopAutoplay();
-          }
-        }
+    this.setState({ slideCount });
+    if (slideCount <= this.state.currentSlide) {
+      this.goToSlide(Math.max(slideCount - 1, 0));
+    }
+    this.setDimensions(nextProps);
+    if (
+      this.props.slideIndex !== nextProps.slideIndex &&
+      nextProps.slideIndex !== this.state.currentSlide &&
+      !this.state.isWrappingAround
+    ) {
+      this.goToSlide(nextProps.slideIndex);
+    }
+    if (this.props.autoplay !== nextProps.autoplay) {
+      if (nextProps.autoplay) {
+        this.startAutoplay();
+      } else {
+        this.stopAutoplay();
       }
-    );
+    }
   }
 
   componentWillUnmount() {
