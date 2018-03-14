@@ -141,14 +141,14 @@ export default class Carousel extends React.Component {
     }
 
     return {
-      onTouchStart(e) {
+      onTouchStart: e => {
         this.touchObject = {
           startX: e.touches[0].pageX,
           startY: e.touches[0].pageY
         };
         this.handleMouseOver();
       },
-      onTouchMove(e) {
+      onTouchMove: e => {
         const direction = this.swipeDirection(
           this.touchObject.startX,
           e.touches[0].pageX,
@@ -194,11 +194,11 @@ export default class Carousel extends React.Component {
             : 0
         });
       },
-      onTouchEnd(e) {
+      onTouchEnd: e => {
         this.handleSwipe(e);
         this.handleMouseOut();
       },
-      onTouchCancel(e) {
+      onTouchCancel: e => {
         this.handleSwipe(e);
       }
     };
