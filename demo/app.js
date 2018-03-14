@@ -22,12 +22,11 @@ class App extends React.Component {
             </div>
           )}
         >
-          {[...Array(this.state.length).keys()].map(key => (
+          {colors.map((color, index) => (
             <img
-              src={`http://placehold.it/1000x400/${
-                colors[key]
-              }/ffffff/&text=slide${key + 1}`}
-              key={key}
+              src={`http://placehold.it/1000x400/${color}/ffffff/&text=slide${index +
+                1}`}
+              key={color}
             />
           ))}
         </Carousel>
