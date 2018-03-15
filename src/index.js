@@ -91,6 +91,9 @@ export default class Carousel extends React.Component {
     this.getSliderStyles = this.getSliderStyles.bind(this);
     this.getOffsetDeltas = this.getOffsetDeltas.bind(this);
     this.formatChildren = this.formatChildren.bind(this);
+    this.getChildNodes = this.getChildNodes.bind(this);
+    this.getSlideHeight = this.getSlideHeight.bind(this);
+    this.findMaxHeightSlide = this.findMaxHeightSlide.bind(this);
   }
 
   componentWillMount() {
@@ -652,25 +655,49 @@ export default class Carousel extends React.Component {
     );
   }
 
+  findMaxHeightSlide(slides) {
+    let maxHeight = 0;
+    for (let i = 0; i < slides.length; i++) {
+      if (slides[i].offsetHeight > maxHeight) {
+        maxHeight = slides[i].offsetHeight;
+      }
+    }
+    return maxHeight;
+  }
+
+  getSlideHeight(props, childNodes = []) {
+    const { heightMode, vertical } = props;
+    const firstSlide = childNodes[0];
+    if (firstSlide && heightMode === 'first') {
+      return vertical
+        ? firstSlide.offsetHeight * props.slidesToShow
+        : firstSlide.offsetHeight;
+    }
+    if (heightMode === 'max') {
+      return this.findMaxHeightSlide(childNodes);
+    }
+    if (props.heightMode === 'current') {
+      return childNodes[this.state.currentSlide].offsetHeight;
+    }
+
+    return 100;
+  }
+
   setDimensions(props) {
     props = props || this.props;
 
     let slideWidth;
     let slidesToScroll;
-    let slideHeight;
 
     const frame = this.frame;
-    const firstSlide = frame.childNodes[0].childNodes[0];
+    const childNodes = this.getChildNodes();
+    const firstSlide = childNodes[0];
+    const slideHeight = this.getSlideHeight(props, childNodes);
 
     slidesToScroll = props.slidesToScroll;
 
     if (firstSlide) {
       firstSlide.style.height = 'auto';
-      slideHeight = this.props.vertical
-        ? firstSlide.offsetHeight * props.slidesToShow
-        : firstSlide.offsetHeight;
-    } else {
-      slideHeight = 100;
     }
 
     if (typeof props.slideWidth !== 'number') {
@@ -709,6 +736,10 @@ export default class Carousel extends React.Component {
         this.setLeft();
       }
     );
+  }
+
+  getChildNodes() {
+    return this.frame.childNodes[0].childNodes;
   }
 
   setLeft() {
@@ -1039,6 +1070,7 @@ Carousel.propTypes = {
   edgeEasing: PropTypes.string,
   frameOverflow: PropTypes.string,
   framePadding: PropTypes.string,
+  heightMode: PropTypes.oneOf(['first', 'current', 'max']),
   initialSlideHeight: PropTypes.number,
   initialSlideWidth: PropTypes.number,
   renderTopLeftControls: PropTypes.func,
@@ -1076,6 +1108,7 @@ Carousel.defaultProps = {
   edgeEasing: 'easeElasticOut',
   framePadding: '0px',
   frameOverflow: 'hidden',
+  heightMode: 'first',
   slideIndex: 0,
   slidesToScroll: 1,
   slidesToShow: 1,

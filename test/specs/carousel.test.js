@@ -161,6 +161,63 @@ describe('<Carousel />', () => {
       expect(previousButton).toHaveProp('disabled', true);
       expect(nextButton).toHaveProp('disabled', true);
     });
+
+    it('should set slideHeight to max value when `heightMode` is `max`', () => {
+      jest
+        .spyOn(Carousel.prototype, 'getChildNodes')
+        .mockReturnValue([
+          { offsetHeight: 100, style: {} },
+          { offsetHeight: 200, style: {} },
+          { offsetHeight: 300, style: {} }
+        ]);
+      const wrapper = mount(
+        <Carousel heightMode="max">
+          <div style={{ height: '100px' }}>Slide 1</div>
+          <div style={{ height: '200px' }}>Slide 1</div>
+          <div style={{ height: '300px' }}>Slide 1</div>
+        </Carousel>
+      );
+      Carousel.prototype.getChildNodes.mockRestore();
+      expect(wrapper).toHaveState({ slideHeight: 300 });
+    });
+
+    it("should set slideHeight to first slide's height when `heightMode` is `first`", () => {
+      jest
+        .spyOn(Carousel.prototype, 'getChildNodes')
+        .mockReturnValue([
+          { offsetHeight: 100, style: {} },
+          { offsetHeight: 200, style: {} },
+          { offsetHeight: 300, style: {} }
+        ]);
+      const wrapper = mount(
+        <Carousel heightMode="first">
+          <div style={{ height: '100px' }}>Slide 1</div>
+          <div style={{ height: '200px' }}>Slide 1</div>
+          <div style={{ height: '300px' }}>Slide 1</div>
+        </Carousel>
+      );
+      Carousel.prototype.getChildNodes.mockRestore();
+      expect(wrapper).toHaveState({ slideHeight: 100 });
+    });
+
+    it('should set height to current slide height when `heightMode` is `current`', () => {
+      jest
+        .spyOn(Carousel.prototype, 'getChildNodes')
+        .mockReturnValue([
+          { offsetHeight: 100, style: {} },
+          { offsetHeight: 200, style: {} },
+          { offsetHeight: 300, style: {} }
+        ]);
+      const wrapper = mount(
+        <Carousel heightMode="current" slideIndex={1}>
+          <div style={{ height: '100px' }}>Slide 1</div>
+          <div style={{ height: '200px' }}>Slide 1</div>
+          <div style={{ height: '300px' }}>Slide 1</div>
+        </Carousel>
+      );
+      Carousel.prototype.getChildNodes.mockRestore();
+      expect(wrapper).toHaveState({ slideHeight: 200 });
+    });
   });
 
   describe('methods', () => {
