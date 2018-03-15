@@ -1,6 +1,6 @@
 {
   "name": "nuka-carousel",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "description": "Pure React Carousel",
   "main": "index.js",
   "module": "es/index.js",
@@ -60,8 +60,7 @@
     "version": "npm run build",
     "start": "webpack-dev-server --mode development",
     "build-babel": "babel src",
-    "build-es":
-      "builder run  --env \"{\\\"BABEL_ENV\\\":\\\"esm\\\"}\" build-babel -- -d es",
+    "build-es": "builder run  --env \"{\\\"BABEL_ENV\\\":\\\"esm\\\"}\" build-babel -- -d es",
     "build-lib": "builder run build-babel -- -d lib",
     "build-dist": "webpack --config webpack.dist.config.js --mode production",
     "build": "builder concurrent --buffer build-lib build-es",
@@ -74,7 +73,11 @@
     "type": "git",
     "url": "https://github.com/kenwheeler/nuka-carousel.git"
   },
-  "keywords": ["react", "carousel", "nuka"],
+  "keywords": [
+    "react",
+    "carousel",
+    "nuka"
+  ],
   "author": "Ken Wheeler",
   "license": "MIT",
   "bugs": {
