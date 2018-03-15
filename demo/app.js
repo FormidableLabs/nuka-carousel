@@ -7,13 +7,14 @@ const colors = ['7732bb', '047cc0', '00884b', 'e3bc13', 'db7c00', 'aa231f'];
 class App extends React.Component {
   constructor() {
     super(...arguments);
-    this.state = { slideIndex: 0, length: 6 };
+    this.state = { slideIndex: 0, length: 6, wrapAround: false };
   }
 
   render() {
     return (
       <div style={{ width: '50%', margin: 'auto' }}>
         <Carousel
+          wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
           afterSlide={slideIndex => this.setState({ slideIndex })}
           renderTopCenterControls={({ currentSlide }) => (
@@ -30,12 +31,25 @@ class App extends React.Component {
             />
           ))}
         </Carousel>
-        <button onClick={() => this.setState({ slideIndex: 0 })}>1</button>
-        <button onClick={() => this.setState({ slideIndex: 1 })}>2</button>
-        <button onClick={() => this.setState({ slideIndex: 2 })}>3</button>
-        <button onClick={() => this.setState({ slideIndex: 3 })}>4</button>
-        <button onClick={() => this.setState({ slideIndex: 4 })}>5</button>
-        <button onClick={() => this.setState({ slideIndex: 5 })}>6</button>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div>
+            <button onClick={() => this.setState({ slideIndex: 0 })}>1</button>
+            <button onClick={() => this.setState({ slideIndex: 1 })}>2</button>
+            <button onClick={() => this.setState({ slideIndex: 2 })}>3</button>
+            <button onClick={() => this.setState({ slideIndex: 3 })}>4</button>
+            <button onClick={() => this.setState({ slideIndex: 4 })}>5</button>
+            <button onClick={() => this.setState({ slideIndex: 5 })}>6</button>
+          </div>
+          <button
+            onClick={() =>
+              this.setState(prevState => ({
+                wrapAround: !prevState.wrapAround
+              }))
+            }
+          >
+            Toggle Wrap Around
+          </button>
+        </div>
       </div>
     );
   }

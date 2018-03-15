@@ -5,6 +5,9 @@
     "browser": true,
     "jest": true
   },
+  "globals": {
+    "page": true
+  },
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 7,
