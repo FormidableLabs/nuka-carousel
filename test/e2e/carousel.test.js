@@ -68,9 +68,9 @@ describe('Nuka Carousel', () => {
       await page.mouse.down();
       await page.mouse.move(startX - metrics.width / 3.0, startY);
       await page.mouse.up();
+      await expect(page).toMatch('Nuka Carousel: Slide 2');
       await page.mouse.move(startX, startY);
       await page.mouse.down();
-      await expect(page).toMatch('Nuka Carousel: Slide 2');
       await page.mouse.move(startX + metrics.width / 3.0, startY);
       await page.mouse.up();
       await expect(page).toMatch('Nuka Carousel: Slide 1');
