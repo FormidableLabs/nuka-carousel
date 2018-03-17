@@ -29,6 +29,8 @@ $ yarn start
 
 ## Tests
 
+Basics:
+
 ```sh
 # Everything
 $ yarn run check
@@ -36,6 +38,12 @@ $ yarn run check
 # ... which really runs
 $ yarn run lint
 $ yarn run test
+```
+
+And E2E tests (you _must_ be on `node@8+`):
+
+```sh
+$ yarn run test-e2e
 ```
 
 ## Release

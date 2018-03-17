@@ -72,7 +72,7 @@
     "lint": "eslint .",
     "test": "jest test --config jest.unit.config.js",
     "test-e2e": "jest test --config jest.e2e.config.js",
-    "check": "npm run lint && npm run test && npm run test-e2e"
+    "check": "npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
