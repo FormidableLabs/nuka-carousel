@@ -691,14 +691,9 @@ export default class Carousel extends React.Component {
 
     const frame = this.frame;
     const childNodes = this.getChildNodes();
-    const firstSlide = childNodes[0];
     const slideHeight = this.getSlideHeight(props, childNodes);
 
     slidesToScroll = props.slidesToScroll;
-
-    if (firstSlide) {
-      firstSlide.style.height = 'auto';
-    }
 
     if (typeof props.slideWidth !== 'number') {
       slideWidth = parseInt(props.slideWidth);
