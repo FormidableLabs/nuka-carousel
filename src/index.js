@@ -436,11 +436,23 @@ export default class Carousel extends React.Component {
       if (index >= React.Children.count(this.props.children)) {
         this.props.beforeSlide(this.state.currentSlide, 0);
         this.setState(
-          {
+          prevState => ({
+            left: this.props.vertical
+              ? 0
+              : this.getTargetLeft(
+                  this.state.slideWidth,
+                  prevState.currentSlide
+                ),
+            top: this.props.vertical
+              ? this.getTargetLeft(
+                  this.state.slideWidth,
+                  prevState.currentSlide
+                )
+              : 0,
             currentSlide: 0,
             isWrappingAround: true,
             wrapToIndex: index
-          },
+          }),
           () =>
             setTimeout(() => {
               this.setState(
