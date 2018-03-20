@@ -509,7 +509,8 @@ export default class Carousel extends React.Component {
     }
     if (
       this.state.currentSlide >= childrenCount - slidesToShow &&
-      !this.props.wrapAround
+      !this.props.wrapAround &&
+      this.props.cellAlign === 'left'
     ) {
       return;
     }
@@ -521,12 +522,12 @@ export default class Carousel extends React.Component {
         this.goToSlide(this.state.currentSlide + this.state.slidesToScroll);
         return;
       }
-      this.goToSlide(
-        Math.min(
-          this.state.currentSlide + this.state.slidesToScroll,
-          childrenCount - slidesToShow
-        )
-      );
+      const offset = this.state.currentSlide + this.state.slidesToScroll;
+      const nextSlideIndex =
+        this.props.cellAlign !== 'left'
+          ? offset
+          : Math.min(offset, childrenCount - slidesToShow);
+      this.goToSlide(nextSlideIndex);
     }
   }
 
