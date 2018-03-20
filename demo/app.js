@@ -23,13 +23,15 @@ class App extends React.Component {
             </div>
           )}
         >
-          {colors.map((color, index) => (
-            <img
-              src={`http://placehold.it/1000x400/${color}/ffffff/&text=slide${index +
-                1}`}
-              key={color}
-            />
-          ))}
+          {colors
+            .slice(0, this.state.length)
+            .map((color, index) => (
+              <img
+                src={`http://placehold.it/1000x400/${color}/ffffff/&text=slide${index +
+                  1}`}
+                key={color}
+              />
+            ))}
         </Carousel>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
@@ -40,15 +42,26 @@ class App extends React.Component {
             <button onClick={() => this.setState({ slideIndex: 4 })}>5</button>
             <button onClick={() => this.setState({ slideIndex: 5 })}>6</button>
           </div>
-          <button
-            onClick={() =>
-              this.setState(prevState => ({
-                wrapAround: !prevState.wrapAround
-              }))
-            }
-          >
-            Toggle Wrap Around
-          </button>
+          <div>
+            <button
+              onClick={() =>
+                this.setState({
+                  length: 2
+                })
+              }
+            >
+              2 Slides Only
+            </button>
+            <button
+              onClick={() =>
+                this.setState(prevState => ({
+                  wrapAround: !prevState.wrapAround
+                }))
+              }
+            >
+              Toggle Wrap Around
+            </button>
+          </div>
         </div>
       </div>
     );
