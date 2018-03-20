@@ -129,6 +129,46 @@ describe('<Carousel />', () => {
       expect(slider).toHaveStyle('transform', 'translate3d(0px, 0px, 0)');
     });
 
+    it('should allow navigation to the last slide for center align and > 1 slidesToShow.', () => {
+      const wrapper = mount(
+        <Carousel cellAlign="center" slidesToShow={3}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+          <p>Slide 4</p>
+          <p>Slide 5</p>
+          <p>Slide 6</p>
+        </Carousel>
+      );
+      const nextButton = wrapper.find('.slider-control-centerright button');
+      nextButton.simulate('click');
+      nextButton.simulate('click');
+      nextButton.simulate('click');
+      nextButton.simulate('click');
+      nextButton.simulate('click');
+      expect(wrapper).toHaveState({ currentSlide: 5 });
+    });
+
+    it('should allow navigation to the last slide for right align and > 1 slidesToShow.', () => {
+      const wrapper = mount(
+        <Carousel cellAlign="right" slidesToShow={2}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+          <p>Slide 4</p>
+          <p>Slide 5</p>
+          <p>Slide 6</p>
+        </Carousel>
+      );
+      const nextButton = wrapper.find('.slider-control-centerright button');
+      nextButton.simulate('click');
+      nextButton.simulate('click');
+      nextButton.simulate('click');
+      nextButton.simulate('click');
+      nextButton.simulate('click');
+      expect(wrapper).toHaveState({ currentSlide: 5 });
+    });
+
     it('should adjust the slide index when children count change.', () => {
       const wrapper = mount(
         <Carousel slideIndex={2}>
