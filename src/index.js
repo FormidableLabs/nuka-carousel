@@ -829,7 +829,10 @@ export default class Carousel extends React.Component {
     const end =
       (this.state.slideWidth + this.props.cellSpacing) * slidesToShow * -1;
 
-    if (this.props.wrapAround) {
+    if (
+      this.props.wrapAround &&
+      (this.state.isWrappingAround || this.state.dragging)
+    ) {
       const slidesBefore = Math.ceil(positionValue / this.state.slideWidth);
       if (this.state.slideCount - slidesBefore <= index) {
         return (
