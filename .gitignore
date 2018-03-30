@@ -34,5 +34,5 @@ bower_components/
 .tmp
 dist
 es
-lib
+#lib
 yarn-error.log*
