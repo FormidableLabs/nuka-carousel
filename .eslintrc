@@ -17,6 +17,7 @@
   },
   "plugins": ["prettier"],
   "rules": {
+    "prettier/prettier": "error",
     "react/no-multi-comp": 0,
     "max-params": 0,
     "no-magic-numbers": 0,
