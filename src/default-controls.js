@@ -22,7 +22,7 @@ export class PreviousButton extends React.Component {
   render() {
     const disabled =
       (this.props.currentSlide === 0 && !this.props.wrapAround) ||
-      this.props.slideCount === 0;
+      this.props.slideCount === 0 || this.props.slideCount === 1;
     return (
       <button
         style={defaultButtonStyles(disabled)}
@@ -46,8 +46,8 @@ export class NextButton extends React.Component {
   }
   render() {
     const disabled =
-      this.props.currentSlide + this.props.slidesToScroll >=
-        this.props.slideCount && !this.props.wrapAround;
+      (this.props.currentSlide + this.props.slidesToScroll >=
+        this.props.slideCount && !this.props.wrapAround) || this.props.slideCount === 1;
     return (
       <button
         style={defaultButtonStyles(disabled)}
