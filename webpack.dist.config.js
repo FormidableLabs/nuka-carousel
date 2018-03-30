@@ -1,57 +1,44 @@
-'use strict';
-
-var webpack = require('webpack');
-var path = require('path');
+const path = require('path');
 
 module.exports = {
-
   output: {
-    path: __dirname + '/dist/',
-    filename: 'nuka-carousel.js',
-    libraryTarget: 'umd'
+    path: path.join(__dirname, 'dist'),
+    filename: 'nuka-carousel.min.js',
+    library: 'Nuka',
+    libraryTarget: 'umd',
+    libraryExport: 'default'
   },
 
-  debug: false,
-  devtool: false,
-  entry: './index.js',
-
-  stats: {
-    colors: true,
-    reasons: false
-  },
-
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin()
-  ],
+  entry: path.join(__dirname, 'src/index.js'),
 
   resolve: {
-    extensions: ['', '.js']
+    extensions: ['.js'],
+    modules: [path.join(__dirname, 'node_modules')]
   },
 
   module: {
-    loaders: [{
-      test: /\.js$/,
-      exclude: [/node_modules/],
-      loader: 'babel-loader',
-      query: {
-        presets: ['es2015', 'stage-0', 'react']
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: [/node_modules/],
+        use: 'babel-loader'
       }
-    }]
+    ]
   },
   externals: [
     {
-      "react": {
-        root: "React",
-        commonjs2: "react",
-        commonjs: "react",
-        amd: "react"
+      react: {
+        root: 'React',
+        commonjs2: 'react',
+        commonjs: 'react',
+        amd: 'react'
       },
-      "react-dom": {
-        root: "ReactDom",
-        commonjs2: "react-dom",
-        commonjs: "react-dom",
-        amd: "react-dom"
+      'react-dom': {
+        root: 'ReactDom',
+        commonjs2: 'react-dom',
+        commonjs: 'react-dom',
+        amd: 'react-dom'
       }
     }
-  ],
+  ]
 };

@@ -31,4 +31,6 @@ node_modules/
 bower_components/
 .tmp
 dist
-/src/scripts/main.js
+es
+lib
+yarn-error.log*

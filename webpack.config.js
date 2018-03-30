@@ -1,56 +1,41 @@
-'use strict';
-
-var webpack = require('webpack');
-var path = require('path');
+const path = require('path');
 
 module.exports = {
-
   output: {
     path: __dirname,
+    sourceMapFilename: '[name].map',
     filename: 'main.js',
     publicPath: '/assets/'
   },
 
-  cache: true,
-  debug: false,
-  devtool: false,
-  entry: [
-    './demo/app.js'
-  ],
-
-  stats: {
-    colors: true,
-    reasons: true
-  },
+  entry: ['./demo/app.js'],
 
   resolve: {
-    extensions: ['', '.js']
+    extensions: ['.js'],
+    modules: [path.join(__dirname, 'node_modules')]
   },
+
+  devServer: {
+    contentBase: './demo',
+    historyApiFallback: true,
+    hot: false
+  },
+
   module: {
-    preLoaders: [{
-      test: /\.js$/,
-      exclude: [/node_modules/,/dist/],
-      loader: 'eslint-loader'
-    }],
-    loaders: [{
-      test: /\.js$/,
-      exclude: [/node_modules/],
-      loader: 'babel-loader',
-      query: {
-        presets: ['es2015', 'stage-0', 'react']
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: [/node_modules/],
+        use: 'babel-loader'
+      },
+      {
+        test: /\.css$/,
+        use: 'style-loader!css-loader'
+      },
+      {
+        test: /\.(png|jpg)$/,
+        use: 'url-loader?limit=8192'
       }
-    }, {
-      test: /\.css$/,
-      loader: 'style-loader!css-loader'
-    }, {
-      test: /\.(png|jpg)$/,
-      loader: 'url-loader?limit=8192'
-    }]
-  },
-
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
-  ]
-
+    ]
+  }
 };

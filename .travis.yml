@@ -1,0 +1,22 @@
+language: node_js
+
+node_js:
+  - "6"
+  - "8"
+
+sudo: false
+
+branches:
+  only:
+    - master
+
+before_install:
+  # GUI for real browsers.
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+script:
+  - yarn run build
+  - yarn run build-dist
+  - yarn run check
+  - 'if [[ "$TRAVIS_NODE_VERSION" != "6" ]]; then yarn run test-e2e; fi'

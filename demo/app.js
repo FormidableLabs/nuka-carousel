@@ -1,54 +1,71 @@
-import ReactDom from 'react-dom';
+import Carousel from '../src/index';
 import React from 'react';
-import Carousel from '../src/carousel';
-import Decorators from '../src/decorators'
+import ReactDom from 'react-dom';
+
+const colors = ['7732bb', '047cc0', '00884b', 'e3bc13', 'db7c00', 'aa231f'];
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      slideIndex: 0,
-      carousels: {}
-    }
-  }
-
-  setCarouselData = () => {
-    this.setState({
-      carousels: {
-        carousel: this.carouselComponent
-      }
-    })
+  constructor() {
+    super(...arguments);
+    this.state = { slideIndex: 0, length: 6, wrapAround: false };
   }
 
   render() {
     return (
-      <div style={{width: '50%', margin: 'auto'}}>
+      <div style={{ width: '50%', margin: 'auto' }}>
         <Carousel
-          ref={ref => { this.carouselComponent = ref }}
-          wrapAround
-          data={this.setCarouselData}
+          wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
-          afterSlide={newSlideIndex => this.setState({ slideIndex: newSlideIndex })}
-          decorators={Decorators}
+          afterSlide={slideIndex => this.setState({ slideIndex })}
+          renderTopCenterControls={({ currentSlide }) => (
+            <div style={{ fontFamily: 'Helvetica', color: '#fff' }}>
+              Nuka Carousel: Slide {currentSlide + 1}
+            </div>
+          )}
         >
-          <img src="http://placehold.it/1000x400&text=slide1"/>
-          <img src="http://placehold.it/1000x400&text=slide2"/>
-          <img src="http://placehold.it/1000x400&text=slide3"/>
-          <img src="http://placehold.it/1000x400&text=slide4"/>
-          <img src="http://placehold.it/1000x400&text=slide5"/>
-          <img src="http://placehold.it/1000x400&text=slide6"/>
+          {colors
+            .slice(0, this.state.length)
+            .map((color, index) => (
+              <img
+                src={`http://placehold.it/1000x400/${color}/ffffff/&text=slide${index +
+                  1}`}
+                key={color}
+              />
+            ))}
         </Carousel>
-        <button onClick={() => this.carouselComponent.goToSlide(0)}>1</button>
-        <button onClick={() => this.carouselComponent.goToSlide(1)}>2</button>
-        <button onClick={() => this.carouselComponent.goToSlide(2)}>3</button>
-        <button onClick={() => this.carouselComponent.goToSlide(3)}>4</button>
-        <button onClick={() => this.carouselComponent.goToSlide(4)}>5</button>
-        <button onClick={() => this.carouselComponent.goToSlide(5)}>6</button>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div>
+            <button onClick={() => this.setState({ slideIndex: 0 })}>1</button>
+            <button onClick={() => this.setState({ slideIndex: 1 })}>2</button>
+            <button onClick={() => this.setState({ slideIndex: 2 })}>3</button>
+            <button onClick={() => this.setState({ slideIndex: 3 })}>4</button>
+            <button onClick={() => this.setState({ slideIndex: 4 })}>5</button>
+            <button onClick={() => this.setState({ slideIndex: 5 })}>6</button>
+          </div>
+          <div>
+            <button
+              onClick={() =>
+                this.setState({
+                  length: 2
+                })
+              }
+            >
+              2 Slides Only
+            </button>
+            <button
+              onClick={() =>
+                this.setState(prevState => ({
+                  wrapAround: !prevState.wrapAround
+                }))
+              }
+            >
+              Toggle Wrap Around
+            </button>
+          </div>
+        </div>
       </div>
-    )
+    );
   }
 }
 
-const content = document.getElementById('content');
-
-ReactDom.render(<App/>, content)
+ReactDom.render(<App />, document.getElementById('content'));
