@@ -1025,9 +1025,9 @@ export default class Carousel extends React.Component {
         ? 0
         : this.props.speed;
 
-    const frameStyles = this.getFrameStyles()
-    const touchEvents = this.getTouchEvents()
-    const mouseEvents = this.getMouseEvents()
+    const frameStyles = this.getFrameStyles();
+    const touchEvents = this.getTouchEvents();
+    const mouseEvents = this.getMouseEvents();
 
     return (
       <div
