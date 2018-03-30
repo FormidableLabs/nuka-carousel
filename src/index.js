@@ -1025,6 +1025,10 @@ export default class Carousel extends React.Component {
         ? 0
         : this.props.speed;
 
+    const frameStyles = this.getFrameStyles()
+    const touchEvents = this.getTouchEvents()
+    const mouseEvents = this.getMouseEvents()
+
     return (
       <div
         className={['slider', this.props.className || ''].join(' ')}
@@ -1043,9 +1047,9 @@ export default class Carousel extends React.Component {
             <div
               className="slider-frame"
               ref={frame => (this.frame = frame)}
-              style={this.getFrameStyles()}
-              {...this.getTouchEvents()}
-              {...this.getMouseEvents()}
+              style={frameStyles}
+              {...touchEvents}
+              {...mouseEvents}
               onClick={this.handleClick}
             >
               <ul
