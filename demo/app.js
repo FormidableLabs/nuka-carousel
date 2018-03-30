@@ -10,13 +10,15 @@ class App extends React.Component {
     this.state = { slideIndex: 0, length: 6, wrapAround: false };
   }
 
+  _updateSlideIndex = slideIndex => this.setState({ slideIndex })
+
   render() {
     return (
       <div style={{ width: '50%', margin: 'auto' }}>
         <Carousel
           wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
-          afterSlide={slideIndex => this.setState({ slideIndex })}
+          afterSlide={this._updateSlideIndex}
           renderTopCenterControls={({ currentSlide }) => (
             <div style={{ fontFamily: 'Helvetica', color: '#fff' }}>
               Nuka Carousel: Slide {currentSlide + 1}

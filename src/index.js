@@ -335,8 +335,7 @@ export default class Carousel extends React.Component {
     if (this.touchObject.length > this.state.slideWidth / slidesToShow / 5) {
       if (this.touchObject.direction === 1) {
         if (
-          this.state.currentSlide >=
-            React.Children.count(this.props.children) - slidesToShow &&
+          this.state.currentSlide >= this.totalSlides() - slidesToShow &&
           !this.props.wrapAround
         ) {
           this.setState({ easing: easing[this.props.edgeEasing] });
@@ -429,11 +428,11 @@ export default class Carousel extends React.Component {
   goToSlide(index) {
     this.setState({ easing: easing[this.props.easing] });
 
-    if (index >= React.Children.count(this.props.children) || index < 0) {
+    if ((index >= this.totalSlides() || index < 0)) {
       if (!this.props.wrapAround) {
         return;
       }
-      if (index >= React.Children.count(this.props.children)) {
+      if (index >= this.totalSlides()) {
         this.props.beforeSlide(this.state.currentSlide, 0);
         this.setState(
           prevState => ({
@@ -468,7 +467,7 @@ export default class Carousel extends React.Component {
         return;
       } else {
         const endSlide =
-          React.Children.count(this.props.children) - this.state.slidesToScroll;
+          this.totalSlides() - this.state.slidesToScroll;
         this.props.beforeSlide(this.state.currentSlide, endSlide);
         this.setState(
           prevState => ({
@@ -505,16 +504,16 @@ export default class Carousel extends React.Component {
     }
     this.setState(
       {
-        currentSlide: index
+      currentSlide: index
       },
       () => {
-        this.resetAutoplay();
+      this.resetAutoplay();
       }
     );
   }
 
   nextSlide() {
-    const childrenCount = React.Children.count(this.props.children);
+    const childrenCount = this.totalSlides();
     let slidesToShow = this.props.slidesToShow;
     if (this.props.slidesToScroll === 'auto') {
       slidesToShow = this.state.slidesToScroll;
@@ -627,22 +626,72 @@ export default class Carousel extends React.Component {
     }
   }
 
-  formatChildren(children) {
-    const positionValue = this.props.vertical
+  shouldRenderSlide = (index) => {
+    const { Placeholder, placeholderMode, preloadedChildrenLevel, wrapAround } = this.props
+
+    if (!placeholderMode || !Placeholder) {
+      return true
+    }
+
+    const currentSlide = this.state.currentSlide
+    const totalPreloadedSlides = 2 * preloadedChildrenLevel + 1
+    const totalSlides = this.totalSlides()
+
+    if (wrapAround) {
+      if (totalPreloadedSlides >= totalSlides) {
+        // should render all slides
+        return true
+      }
+
+      if (currentSlide + preloadedChildrenLevel > totalSlides - 1) {
+        // if last index of preloaded children goes out of bounds, split the preloaded children set into 2 sets
+        return (index >= 0 && index <= (currentSlide + preloadedChildrenLevel - totalSlides)) ||
+          (index >= (currentSlide - preloadedChildrenLevel) && index <= totalSlides - 1)
+      }
+
+      if (currentSlide - preloadedChildrenLevel < 0) {
+        // if first index of preloaded children goes out of bounds, split the preloaded children set into 2 sets
+        return (index >= 0 && index <= currentSlide + preloadedChildrenLevel) ||
+          (index >= (currentSlide - preloadedChildrenLevel + totalSlides) && index <= totalSlides - 1)
+      }
+
+      return (index >= currentSlide - preloadedChildrenLevel) &&
+        (index <= currentSlide + preloadedChildrenLevel)
+    } else {
+      return index >= 0 &&
+        index <= totalSlides - 1 &&
+        index >= currentSlide - preloadedChildrenLevel &&
+        index <= currentSlide + preloadedChildrenLevel
+    }
+  }
+
+  formatChildren() {
+    const { children, vertical, Slide, Placeholder } = this.props
+    if (!children) {
+      return null
+    }
+
+    const positionValue = vertical
       ? this.state.top
       : this.state.left;
-    return React.Children.map(children, (child, index) => {
+    return children.map((slide, index) => {
       return (
         <li
           className="slider-slide"
           style={this.getSlideStyles(index, positionValue)}
           key={index}
         >
-          {child}
+          {
+            this.shouldRenderSlide(index)
+              ? Slide && <Slide {...slide} />
+              : <Placeholder {...slide} />
+          }
         </li>
       );
     });
   }
+
+  totalSlides = () => this.props.children ? this.props.children.length : 0
 
   setInitialDimensions() {
     const slideWidth = this.props.vertical
@@ -659,14 +708,14 @@ export default class Carousel extends React.Component {
       {
         slideHeight,
         frameWidth: this.props.vertical ? frameHeight : '100%',
-        slideCount: React.Children.count(this.props.children),
+        slideCount: this.totalSlides(),
         slideWidth
       },
       () => {
         this.setLeft();
       }
     );
-  }
+    }
 
   findMaxHeightSlide(slides) {
     let maxHeight = 0;
@@ -761,10 +810,8 @@ export default class Carousel extends React.Component {
 
   getListStyles(styles) {
     const { tx, ty } = styles;
-    const listWidth =
-      this.state.slideWidth * React.Children.count(this.props.children);
-    const spacingOffset =
-      this.props.cellSpacing * React.Children.count(this.props.children);
+    const listWidth = this.state.slideWidth * this.totalSlides();
+    const spacingOffset = this.props.cellSpacing * this.totalSlides();
     const transform = `translate3d(${tx}px, ${ty}px, 0)`;
     return {
       transform,
@@ -792,8 +839,8 @@ export default class Carousel extends React.Component {
       display: 'block',
       overflow: this.props.frameOverflow,
       height: this.props.vertical ? this.state.frameWidth || 'initial' : 'auto',
-      margin: this.props.framePadding,
-      padding: 0,
+      padding: this.props.framePadding,
+      margin: 0,
       transform: 'translate3d(0, 0, 0)',
       WebkitTransform: 'translate3d(0, 0, 0)',
       msTransform: 'translate(0, 0)',
@@ -823,14 +870,13 @@ export default class Carousel extends React.Component {
   }
 
   getSlideTargetPosition(index, positionValue) {
+    const fullSlideWidth = this.state.slideWidth + this.props.cellSpacing
     const slidesToShow = this.state.frameWidth / this.state.slideWidth;
-    const targetPosition =
-      (this.state.slideWidth + this.props.cellSpacing) * index;
-    const end =
-      (this.state.slideWidth + this.props.cellSpacing) * slidesToShow * -1;
+    const targetPosition = fullSlideWidth * index;
+    const end = fullSlideWidth * slidesToShow * -1;
 
     if (this.props.wrapAround) {
-      const slidesBefore = Math.ceil(positionValue / this.state.slideWidth);
+      const slidesBefore = Math.ceil(positionValue / fullSlideWidth); // TODO check (original: slideWidth)
       if (this.state.slideCount - slidesBefore <= index) {
         return (
           (this.state.slideWidth + this.props.cellSpacing) *
@@ -839,22 +885,12 @@ export default class Carousel extends React.Component {
         );
       }
 
-      let slidesAfter = Math.ceil(
-        (Math.abs(positionValue) - Math.abs(end)) / this.state.slideWidth
-      );
-
-      if (this.state.slideWidth !== 1) {
-        slidesAfter = Math.ceil(
-          (Math.abs(positionValue) - this.state.slideWidth) /
-            this.state.slideWidth
-        );
-      }
+      const slidesAfter = this.state.slideWidth !== 1
+        ? Math.ceil((Math.abs(positionValue) - fullSlideWidth) / fullSlideWidth) // TODO check (original: slideWidth, slideWidth)
+        : Math.ceil((Math.abs(positionValue) - Math.abs(end)) / fullSlideWidth) // TODO check (original: slideWidth)
 
       if (index <= slidesAfter - 1) {
-        return (
-          (this.state.slideWidth + this.props.cellSpacing) *
-          (this.state.slideCount + index)
-        );
+        return fullSlideWidth * (this.state.slideCount + index) // TODO check (original: slideWidth)
       }
     }
 
@@ -885,7 +921,7 @@ export default class Carousel extends React.Component {
           top: 0,
           left: 0
         };
-      }
+        }
       case 'TopCenter': {
         return {
           position: 'absolute',
@@ -895,14 +931,14 @@ export default class Carousel extends React.Component {
           WebkitTransform: 'translateX(-50%)',
           msTransform: 'translateX(-50%)'
         };
-      }
+        }
       case 'TopRight': {
         return {
           position: 'absolute',
           top: 0,
           right: 0
         };
-      }
+        }
       case 'CenterLeft': {
         return {
           position: 'absolute',
@@ -912,7 +948,7 @@ export default class Carousel extends React.Component {
           WebkitTransform: 'translateY(-50%)',
           msTransform: 'translateY(-50%)'
         };
-      }
+        }
       case 'CenterCenter': {
         return {
           position: 'absolute',
@@ -922,7 +958,7 @@ export default class Carousel extends React.Component {
           WebkitTransform: 'translate(-50%, -50%)',
           msTransform: 'translate(-50%, -50%)'
         };
-      }
+        }
       case 'CenterRight': {
         return {
           position: 'absolute',
@@ -932,14 +968,14 @@ export default class Carousel extends React.Component {
           WebkitTransform: 'translateY(-50%)',
           msTransform: 'translateY(-50%)'
         };
-      }
+        }
       case 'BottomLeft': {
         return {
           position: 'absolute',
           bottom: 0,
           left: 0
         };
-      }
+        }
       case 'BottomCenter': {
         return {
           position: 'absolute',
@@ -949,23 +985,23 @@ export default class Carousel extends React.Component {
           WebkitTransform: 'translateX(-50%)',
           msTransform: 'translateX(-50%)'
         };
-      }
+        }
       case 'BottomRight': {
         return {
           position: 'absolute',
           bottom: 0,
           right: 0
         };
-      }
+        }
       default: {
         return {
           position: 'absolute',
           top: 0,
           left: 0
         };
+        }
       }
     }
-  }
 
   getOffsetDeltas() {
     let offset = 0;
@@ -1013,10 +1049,7 @@ export default class Carousel extends React.Component {
   }
 
   render() {
-    const children =
-      React.Children.count(this.props.children) > 1
-        ? this.formatChildren(this.props.children)
-        : this.props.children;
+    const children = this.formatChildren(this.props.children)
     const duration =
       this.state.dragging || this.state.resetWrapAroundPosition
         ? 0
@@ -1047,7 +1080,7 @@ export default class Carousel extends React.Component {
             >
               <ul
                 className="slider-list"
-                style={this.getListStyles({ tx, ty })}
+                    style={this.getListStyles({ tx, ty })}
               >
                 {children}
               </ul>
@@ -1059,7 +1092,7 @@ export default class Carousel extends React.Component {
 
         <style
           type="text/css"
-          dangerouslySetInnerHTML={{ __html: this.getStyleTagStyles() }}
+          dangerouslySetInnerHTML={{__html: this.getStyleTagStyles()}}
         />
       </div>
     );
@@ -1081,6 +1114,9 @@ Carousel.propTypes = {
   heightMode: PropTypes.oneOf(['first', 'current', 'max']),
   initialSlideHeight: PropTypes.number,
   initialSlideWidth: PropTypes.number,
+  Placeholder: PropTypes.func,
+  placeholderMode: PropTypes.bool,
+  preloadedChildrenLevel: PropTypes.number,
   renderTopLeftControls: PropTypes.func,
   renderTopCenterControls: PropTypes.func,
   renderTopRightControls: PropTypes.func,
@@ -1090,6 +1126,7 @@ Carousel.propTypes = {
   renderBottomLeftControls: PropTypes.func,
   renderBottomCenterControls: PropTypes.func,
   renderBottomRightControls: PropTypes.func,
+  Slide: PropTypes.func.isRequired,
   slideIndex: PropTypes.number,
   slidesToScroll: PropTypes.oneOfType([
     PropTypes.number,
@@ -1117,6 +1154,8 @@ Carousel.defaultProps = {
   framePadding: '0px',
   frameOverflow: 'hidden',
   heightMode: 'first',
+  placeholderMode: false,
+  preloadedChildrenLevel: 1,
   slideIndex: 0,
   slidesToScroll: 1,
   slidesToShow: 1,
