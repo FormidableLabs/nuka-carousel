@@ -38,6 +38,8 @@ export default class Carousel extends React.Component {
     this.displayName = 'Carousel';
     this.clickSafe = true;
     this.controlsMap = [
+      { func: this.props.renderCustomLeftControls, key: 'CustomLeft' },
+      { func: this.props.renderCustomRightControls, key: 'CustomRight' },
       { func: this.props.renderTopLeftControls, key: 'TopLeft' },
       { func: this.props.renderTopCenterControls, key: 'TopCenter' },
       { func: this.props.renderTopRightControls, key: 'TopRight' },
@@ -1032,6 +1034,10 @@ export default class Carousel extends React.Component {
           right: 0
         };
         }
+      case 'CustomLeft':
+      case 'CustomRight': {
+        return null
+      }
       default: {
         return {
           position: 'absolute',
@@ -1156,6 +1162,8 @@ Carousel.propTypes = {
   Placeholder: PropTypes.func,
   placeholderMode: PropTypes.bool,
   preloadedChildrenLevel: PropTypes.number,
+  renderCustomLeftControls: PropTypes.func,
+  renderCustomRightControls: PropTypes.func,
   renderTopLeftControls: PropTypes.func,
   renderTopCenterControls: PropTypes.func,
   renderTopRightControls: PropTypes.func,
