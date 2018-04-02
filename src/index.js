@@ -576,17 +576,17 @@ export default class Carousel extends React.Component {
     let offset;
     const target = slide || this.state.currentSlide;
     switch (this.props.cellAlign) {
-      case 'left': {
+      case 'left':{
         offset = 0;
         offset -= this.props.cellSpacing * target;
         break;
       }
-      case 'center': {
+      case 'center':{
         offset = (this.state.frameWidth - this.state.slideWidth) / 2;
         offset -= this.props.cellSpacing * target;
         break;
       }
-      case 'right': {
+      case 'right':{
         offset = this.state.frameWidth - this.state.slideWidth;
         offset -= this.props.cellSpacing * target;
         break;
@@ -913,6 +913,7 @@ export default class Carousel extends React.Component {
   }
 
   getSlideTargetPosition(index, positionValue) {
+    // TODO fix!
     const fullSlideWidth = this.state.slideWidth + this.props.cellSpacing
     const slidesToShow = this.state.frameWidth / this.state.slideWidth;
     const targetPosition = fullSlideWidth * index;
