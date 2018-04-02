@@ -916,8 +916,11 @@ export default class Carousel extends React.Component {
     const targetPosition = fullSlideWidth * index;
     const end = fullSlideWidth * slidesToShow * -1;
 
-    if (this.props.wrapAround) {
-      const slidesBefore = Math.ceil(positionValue / fullSlideWidth); // TODO check (original: slideWidth)
+    if (
+      this.props.wrapAround &&
+      (this.state.isWrappingAround || this.state.dragging)
+    ) {
+      const slidesBefore = Math.ceil(positionValue / fullSlideWidth);
       if (this.state.slideCount - slidesBefore <= index) {
         return (
           (this.state.slideWidth + this.props.cellSpacing) *
@@ -926,12 +929,18 @@ export default class Carousel extends React.Component {
         );
       }
 
-      const slidesAfter = this.state.slideWidth !== 1
-        ? Math.ceil((Math.abs(positionValue) - fullSlideWidth) / fullSlideWidth) // TODO check (original: slideWidth, slideWidth)
-        : Math.ceil((Math.abs(positionValue) - Math.abs(end)) / fullSlideWidth) // TODO check (original: slideWidth)
+      let slidesAfter = Math.ceil(
+        (Math.abs(positionValue) - Math.abs(end)) / fullSlideWidth
+      );
+
+      if (this.state.slideWidth !== 1) {
+        slidesAfter = Math.ceil(
+          (Math.abs(positionValue) - fullSlideWidth) / fullSlideWidth
+        );
+      }
 
       if (index <= slidesAfter - 1) {
-        return fullSlideWidth * (this.state.slideCount + index) // TODO check (original: slideWidth)
+        return fullSlideWidth * (this.state.slideCount + index);
       }
     }
 
