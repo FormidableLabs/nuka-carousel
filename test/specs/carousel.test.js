@@ -4,6 +4,7 @@ const createSlidesData = (numberOfSlides = 3) => Array.from({ length: numberOfSl
 
 const data = createSlidesData(3)
 const Slide = ({ text }) => <p>{text}</p>
+const Placeholder = ({ text }) => <p>{`Placeholder for ${text}`}</p>
 
 describe('<Carousel />', () => {
   describe('Rendering and Mounting', () => {
@@ -354,6 +355,24 @@ describe('<Carousel />', () => {
   });
 
   describe('Controls', () => {
+    it('should render a custom left control.', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} renderCustomLeftControls={() => <div>Custom Left</div>}>
+          {data}
+        </Carousel>
+      );
+      expect(wrapper).toContainReact(<div>Custom Left</div>);
+    });
+
+    it('should render a custom right control.', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} renderCustomRightControls={() => <div>Custom Right</div>}>
+          {data}
+        </Carousel>
+      );
+      expect(wrapper).toContainReact(<div>Custom Right</div>);
+    });
+
     it('should render a custom top left control.', () => {
       const wrapper = mount(
         <Carousel Slide={Slide} renderTopLeftControls={() => <div>Top Left</div>}>
@@ -514,6 +533,192 @@ describe('<Carousel />', () => {
       const button = wrapper.find('#custom-goto-btn');
       button.simulate('click');
       expect(spy).toHaveBeenCalledWith(2);
+    });
+
+    it('should render all Slides', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide}>
+          {createSlidesData(6)}
+        </Carousel>
+      );
+
+      expect(wrapper.instance().shouldRenderSlide(0)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(1)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(2)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(3)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(4)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(5)).toEqual(true);
+    });
+
+    it('should render all Slides when placeholderMode is not activated', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} Placeholder={Placeholder}>
+          {createSlidesData(6)}
+        </Carousel>
+      );
+
+      expect(wrapper.instance().shouldRenderSlide(0)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(1)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(2)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(3)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(4)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(5)).toEqual(true);
+    });
+
+    it('should render Slides and Placeholders when placeholderMode is activated (preloadedChildrenLevel is taken in consideration)', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode>
+          {createSlidesData(6)}
+        </Carousel>
+      );
+
+      expect(wrapper.instance().shouldRenderSlide(0)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(1)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(2)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(3)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(4)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(5)).toEqual(false);
+    });
+
+    it('should render Slides and Placeholders when placeholderMode is activated and wrapAround is set (preloadedChildrenLevel is taken in consideration)', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode wrapAround>
+          {createSlidesData(6)}
+        </Carousel>
+      );
+
+      expect(wrapper.instance().shouldRenderSlide(0)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(1)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(2)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(3)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(4)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(5)).toEqual(true);
+    });
+
+    it('should render Slides and Placeholders when placeholderMode is activated and preloadedChildrenLevel is set', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode preloadedChildrenLevel={2}>
+          {createSlidesData(6)}
+        </Carousel>
+      );
+
+      expect(wrapper.instance().shouldRenderSlide(0)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(1)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(2)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(3)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(4)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(5)).toEqual(false);
+    });
+
+    it('should render Slides and Placeholders when placeholderMode is activated and wrapAround and preloadedChildrenLevel are set', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode preloadedChildrenLevel={2} wrapAround>
+          {createSlidesData(6)}
+        </Carousel>
+      );
+
+      expect(wrapper.instance().shouldRenderSlide(0)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(1)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(2)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(3)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(4)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(5)).toEqual(true);
+    });
+
+    it('should render all Slides when placeholderMode is activated and preloadedChildrenLevel is set (preloadedChildrenLevel covers all slides)', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode preloadedChildrenLevel={5}>
+          {createSlidesData(6)}
+        </Carousel>
+      );
+
+      expect(wrapper.instance().shouldRenderSlide(0)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(1)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(2)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(3)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(4)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(5)).toEqual(true);
+    });
+
+    it('should render all Slides when placeholderMode is activated and wrapAround and preloadedChildrenLevel are set (preloadedChildrenLevel covers all slides)', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode preloadedChildrenLevel={3} wrapAround>
+          {createSlidesData(6)}
+        </Carousel>
+      );
+
+      expect(wrapper.instance().shouldRenderSlide(0)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(1)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(2)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(3)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(4)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(5)).toEqual(true);
+    });
+
+    it('should render Slide when placeholderMode is activated and there is only one slide', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode>
+          {createSlidesData(1)}
+        </Carousel>
+      );
+
+      expect(wrapper.instance().shouldRenderSlide(0)).toEqual(true);
+    });
+
+    it('should render all Slide when placeholderMode is activated and there are 2 slides', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode>
+          {createSlidesData(2)}
+        </Carousel>
+      );
+
+      expect(wrapper.instance().shouldRenderSlide(0)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(1)).toEqual(true);
+    });
+
+    it('should render Slides and Placeholders when placeholderMode is activated and preloadedChildrenLevel is 0', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode preloadedChildrenLevel={0}>
+          {createSlidesData(6)}
+        </Carousel>
+      );
+
+      expect(wrapper.instance().shouldRenderSlide(0)).toEqual(true);
+      expect(wrapper.instance().shouldRenderSlide(1)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(2)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(3)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(4)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(5)).toEqual(false);
+    });
+
+    it('should render Placeholders when placeholderMode is activated and preloadedChildrenLevel is -1', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode preloadedChildrenLevel={-1}>
+          {createSlidesData(6)}
+        </Carousel>
+      );
+
+      expect(wrapper.instance().shouldRenderSlide(0)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(1)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(2)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(3)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(4)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(5)).toEqual(false);
+    });
+
+    it('should render Placeholders when placeholderMode is activated and wrapAround is set and preloadedChildrenLevel is -2', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode preloadedChildrenLevel={-2} wrapAround>
+          {createSlidesData(6)}
+        </Carousel>
+      );
+
+      expect(wrapper.instance().shouldRenderSlide(0)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(1)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(2)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(3)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(4)).toEqual(false);
+      expect(wrapper.instance().shouldRenderSlide(5)).toEqual(false);
     });
   });
 });
