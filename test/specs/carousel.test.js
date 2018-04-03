@@ -373,6 +373,15 @@ describe('<Carousel />', () => {
       expect(wrapper).toContainReact(<div>Custom Right</div>);
     });
 
+    it('should render a custom bottom control.', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide} renderCustomBottomControls={() => <div>Custom Bottom</div>}>
+          {data}
+        </Carousel>
+      );
+      expect(wrapper).toContainReact(<div>Custom Bottom</div>);
+    });
+
     it('should render a custom top left control.', () => {
       const wrapper = mount(
         <Carousel Slide={Slide} renderTopLeftControls={() => <div>Top Left</div>}>

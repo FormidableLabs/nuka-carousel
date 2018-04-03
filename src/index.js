@@ -34,6 +34,7 @@ const removeEvent = function(elem, type, eventHandle) {
 const controlsMap = [
   { funcName: 'renderCustomLeftControls', key: 'CustomLeft' },
   { funcName: 'renderCustomRightControls', key: 'CustomRight' },
+  { funcName: 'renderCustomBottomControls', key: 'CustomBottom' },
   { funcName: 'renderTopLeftControls', key: 'TopLeft' },
   { funcName: 'renderTopCenterControls', key: 'TopCenter' },
   { funcName: 'renderTopRightControls', key: 'TopRight' },
@@ -1058,7 +1059,8 @@ export default class Carousel extends React.Component {
         };
         }
       case 'CustomLeft':
-      case 'CustomRight': {
+      case 'CustomRight':
+      case 'CustomBottom': {
         return null
       }
       default: {
@@ -1188,6 +1190,8 @@ Carousel.propTypes = {
   preloadedChildrenLevel: PropTypes.number,
   renderCustomLeftControls: PropTypes.func,
   renderCustomRightControls: PropTypes.func,
+  renderCustomBottomControls: PropTypes.func,
+  renderCustomBottomControls: PropTypes.func,
   renderTopLeftControls: PropTypes.func,
   renderTopCenterControls: PropTypes.func,
   renderTopRightControls: PropTypes.func,
