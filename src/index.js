@@ -86,6 +86,7 @@ export default class Carousel extends React.Component {
     this.onResize = this.onResize.bind(this);
     this.onReadyStateChange = this.onReadyStateChange.bind(this);
     this.setInitialDimensions = this.setInitialDimensions.bind(this);
+    this.totalSlides = this.totalSlides.bind(this);
     this.setDimensions = this.setDimensions.bind(this);
     this.updateDimensions = this.updateDimensions.bind(this);
     this.dimensionsChanged = this.dimensionsChanged.bind(this);
@@ -706,7 +707,9 @@ export default class Carousel extends React.Component {
     });
   }
 
-  totalSlides = () => this.props.children ? this.props.children.length : 0
+  totalSlides() {
+    return this.props.children ? this.props.children.length : 0
+  }
 
   setInitialDimensions() {
     const slideWidth = this.props.vertical
