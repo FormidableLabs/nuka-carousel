@@ -913,8 +913,7 @@ export default class Carousel extends React.Component {
   }
 
   getSlideTargetPosition(index, positionValue) {
-    // TODO fix!
-    const fullSlideWidth = this.state.slideWidth + this.props.cellSpacing
+    const fullSlideWidth = this.state.slideWidth + this.props.cellSpacing;
     const slidesToShow = this.state.frameWidth / this.state.slideWidth;
     const targetPosition = fullSlideWidth * index;
     const end = fullSlideWidth * slidesToShow * -1;
@@ -925,11 +924,7 @@ export default class Carousel extends React.Component {
     ) {
       const slidesBefore = Math.ceil(positionValue / fullSlideWidth);
       if (this.state.slideCount - slidesBefore <= index) {
-        return (
-          (this.state.slideWidth + this.props.cellSpacing) *
-          (this.state.slideCount - index) *
-          -1
-        );
+        return fullSlideWidth * (this.state.slideCount - index) * -1;
       }
 
       let slidesAfter = Math.ceil(
@@ -944,6 +939,22 @@ export default class Carousel extends React.Component {
 
       if (index <= slidesAfter - 1) {
         return fullSlideWidth * (this.state.slideCount + index);
+      }
+
+      return targetPosition;
+    }
+
+    if (this.props.wrapAround && this.state.slideCount > 1) {
+      if (index === 0) {
+        if (this.state.currentSlide === this.state.slideCount - 1) { // last slide is active
+          return (fullSlideWidth * (this.state.slideCount + index));
+        }
+      }
+
+      if (index === this.state.slideCount - 1) {
+        if (this.state.currentSlide === 0) { // first slide is active
+          return fullSlideWidth * (this.state.slideCount - index) * -1;
+        }
       }
     }
 
