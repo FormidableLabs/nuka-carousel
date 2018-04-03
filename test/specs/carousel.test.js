@@ -1,13 +1,16 @@
 import Carousel from '../../src';
 
+const createSlidesData = (numberOfSlides = 3) => Array.from({ length: numberOfSlides }, (v, k) => `Slide ${k + 1}`);
+
+const data = createSlidesData(3)
+const Slide = ({ text }) => <p>{text}</p>
+
 describe('<Carousel />', () => {
   describe('Rendering and Mounting', () => {
     it('should correctly mount with children.', () => {
       const wrapper = mount(
-        <Carousel>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide}>
+          {data}
         </Carousel>
       );
       const children = wrapper.find('p');
@@ -16,10 +19,8 @@ describe('<Carousel />', () => {
 
     it('should render a div with the class `slider`.', () => {
       const wrapper = mount(
-        <Carousel>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide}>
+          {data}
         </Carousel>
       );
       const sliderDiv = wrapper.find('div.slider');
@@ -28,10 +29,8 @@ describe('<Carousel />', () => {
 
     it('should render a div with the class `slider-frame`.', () => {
       const wrapper = mount(
-        <Carousel>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide}>
+          {data}
         </Carousel>
       );
       const sliderFrameDiv = wrapper.find('div.slider-frame');
@@ -40,10 +39,8 @@ describe('<Carousel />', () => {
 
     it('should render an ul with the class `slider-list`.', () => {
       const wrapper = mount(
-        <Carousel>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide}>
+          {data}
         </Carousel>
       );
       const sliderListUl = wrapper.find('ul.slider-list');
@@ -52,10 +49,8 @@ describe('<Carousel />', () => {
 
     it('should render children with the `slider-slide` class.', () => {
       const wrapper = mount(
-        <Carousel>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide}>
+          {data}
         </Carousel>
       );
       const children = wrapper.find('.slider-slide');
@@ -64,10 +59,8 @@ describe('<Carousel />', () => {
 
     it('should render controls by default.', () => {
       const wrapper = mount(
-        <Carousel>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide}>
+          {data}
         </Carousel>
       );
       const decorator1 = wrapper.find('.slider-control-centerleft');
@@ -82,10 +75,8 @@ describe('<Carousel />', () => {
   describe('Props', () => {
     it('should render with the class `slider` when no props are supplied.', () => {
       const wrapper = mount(
-        <Carousel>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide}>
+          {data}
         </Carousel>
       );
       const slider = wrapper.find('div.slider');
@@ -94,10 +85,8 @@ describe('<Carousel />', () => {
 
     it('should render with the class `test` with className supplied.', () => {
       const wrapper = mount(
-        <Carousel className="test">
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} className="test">
+          {data}
         </Carousel>
       );
       const slider = wrapper.find('div.test');
@@ -106,10 +95,8 @@ describe('<Carousel />', () => {
 
     it('should merge provided styles with default styles.', () => {
       const wrapper = mount(
-        <Carousel style={{ backgroundColor: 'black' }}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} style={{ backgroundColor: 'black' }}>
+          {data}
         </Carousel>
       );
       const slider = wrapper.find('div.slider');
@@ -119,10 +106,8 @@ describe('<Carousel />', () => {
 
     it('should align to 0 when `cellAlign` is `left`.', () => {
       const wrapper = mount(
-        <Carousel cellAlign="left">
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} cellAlign="left">
+          {data}
         </Carousel>
       );
       const slider = wrapper.find('.slider-list');
@@ -131,13 +116,8 @@ describe('<Carousel />', () => {
 
     it('should allow navigation to the last slide for center align and > 1 slidesToShow.', () => {
       const wrapper = mount(
-        <Carousel cellAlign="center" slidesToShow={3}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
-          <p>Slide 4</p>
-          <p>Slide 5</p>
-          <p>Slide 6</p>
+        <Carousel Slide={Slide} cellAlign="center" slidesToShow={3}>
+          {createSlidesData(6)}
         </Carousel>
       );
       const nextButton = wrapper.find('.slider-control-centerright button');
@@ -151,13 +131,8 @@ describe('<Carousel />', () => {
 
     it('should allow navigation to the last slide for right align and > 1 slidesToShow.', () => {
       const wrapper = mount(
-        <Carousel cellAlign="right" slidesToShow={2}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
-          <p>Slide 4</p>
-          <p>Slide 5</p>
-          <p>Slide 6</p>
+        <Carousel Slide={Slide} cellAlign="right" slidesToShow={2}>
+          {createSlidesData(6)}
         </Carousel>
       );
       const nextButton = wrapper.find('.slider-control-centerright button');
@@ -171,10 +146,8 @@ describe('<Carousel />', () => {
 
     it('should adjust the slide index when children count change.', () => {
       const wrapper = mount(
-        <Carousel slideIndex={2}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} slideIndex={2}>
+          {data}
         </Carousel>
       );
       expect(wrapper).toHaveState('currentSlide', 2);
@@ -186,10 +159,8 @@ describe('<Carousel />', () => {
 
     it('should disable controls when children are updated to have a length of 0.', () => {
       const wrapper = mount(
-        <Carousel slideIndex={2}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} slideIndex={2}>
+          {data}
         </Carousel>
       );
       expect(wrapper).toHaveState('currentSlide', 2);
@@ -210,11 +181,23 @@ describe('<Carousel />', () => {
           { offsetHeight: 200, style: {} },
           { offsetHeight: 300, style: {} }
         ]);
+      const CustomSlide = ({ text, height }) =>  <div style={{ height }}>{text}</div>
       const wrapper = mount(
-        <Carousel heightMode="max">
-          <div style={{ height: '100px' }}>Slide 1</div>
-          <div style={{ height: '200px' }}>Slide 1</div>
-          <div style={{ height: '300px' }}>Slide 1</div>
+        <Carousel Slide={CustomSlide} heightMode="max">
+          {[
+            {
+              text: 'Slide 1',
+              height: '100px'
+            },
+            {
+              text: 'Slide 2',
+              height: '200px'
+            },
+            {
+              text: 'Slide 3',
+              height: '300px'
+            }
+          ]}
         </Carousel>
       );
       Carousel.prototype.getChildNodes.mockRestore();
@@ -229,11 +212,23 @@ describe('<Carousel />', () => {
           { offsetHeight: 200, style: {} },
           { offsetHeight: 300, style: {} }
         ]);
+      const CustomSlide = ({ text, height }) =>  <div style={{ height }}>{text}</div>
       const wrapper = mount(
-        <Carousel heightMode="first">
-          <div style={{ height: '100px' }}>Slide 1</div>
-          <div style={{ height: '200px' }}>Slide 1</div>
-          <div style={{ height: '300px' }}>Slide 1</div>
+        <Carousel Slide={CustomSlide} heightMode="first">
+          {[
+            {
+              text: 'Slide 1',
+              height: '100px'
+            },
+            {
+              text: 'Slide 2',
+              height: '200px'
+            },
+            {
+              text: 'Slide 3',
+              height: '300px'
+            }
+          ]}
         </Carousel>
       );
       Carousel.prototype.getChildNodes.mockRestore();
@@ -248,11 +243,23 @@ describe('<Carousel />', () => {
           { offsetHeight: 200, style: {} },
           { offsetHeight: 300, style: {} }
         ]);
+      const CustomSlide = ({ text, height }) =>  <div style={{ height }}>{text}</div>
       const wrapper = mount(
-        <Carousel heightMode="current" slideIndex={1}>
-          <div style={{ height: '100px' }}>Slide 1</div>
-          <div style={{ height: '200px' }}>Slide 1</div>
-          <div style={{ height: '300px' }}>Slide 1</div>
+        <Carousel Slide={CustomSlide} heightMode="current" slideIndex={1}>
+          {[
+            {
+              text: 'Slide 1',
+              height: '100px'
+            },
+            {
+              text: 'Slide 2',
+              height: '200px'
+            },
+            {
+              text: 'Slide 3',
+              height: '300px'
+            }
+          ]}
         </Carousel>
       );
       Carousel.prototype.getChildNodes.mockRestore();
@@ -263,10 +270,8 @@ describe('<Carousel />', () => {
   describe('methods', () => {
     it('should advance if nextSlide() is called.', () => {
       const wrapper = mount(
-        <Carousel cellAlign="left">
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} cellAlign="left">
+          {data}
         </Carousel>
       );
       expect(wrapper).toHaveState({ currentSlide: 0 });
@@ -276,10 +281,8 @@ describe('<Carousel />', () => {
 
     it('should not advance past the last slide.', () => {
       const wrapper = mount(
-        <Carousel cellAlign="left">
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} cellAlign="left">
+          {data}
         </Carousel>
       );
       wrapper.instance().nextSlide();
@@ -291,10 +294,8 @@ describe('<Carousel />', () => {
 
     it('should not go back to the previous slide when index is 0.', () => {
       const wrapper = mount(
-        <Carousel cellAlign="left">
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} cellAlign="left">
+          {data}
         </Carousel>
       );
       expect(wrapper).toHaveState({ currentSlide: 0 });
@@ -304,10 +305,8 @@ describe('<Carousel />', () => {
 
     it('should go back to the previous slide when `previousSlide` is called.', () => {
       const wrapper = mount(
-        <Carousel cellAlign="left">
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} cellAlign="left">
+          {data}
         </Carousel>
       );
       expect(wrapper).toHaveState({ currentSlide: 0 });
@@ -319,10 +318,8 @@ describe('<Carousel />', () => {
 
     it('should go to correct slide when `goToSlide` is called.', () => {
       const wrapper = mount(
-        <Carousel cellAlign="left">
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} cellAlign="left">
+          {data}
         </Carousel>
       );
       expect(wrapper).toHaveState({ currentSlide: 0 });
@@ -332,10 +329,8 @@ describe('<Carousel />', () => {
 
     it('should go to the last slide from the first when wrapAround is true`.', () => {
       const wrapper = mount(
-        <Carousel wrapAround>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} wrapAround>
+          {data}
         </Carousel>
       );
       const previousButton = wrapper.find('.slider-control-centerleft button');
@@ -346,10 +341,8 @@ describe('<Carousel />', () => {
 
     it('should go to the first slide from the last when wrapAround is true`.', () => {
       const wrapper = mount(
-        <Carousel wrapAround>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} wrapAround>
+          {data}
         </Carousel>
       );
       wrapper.setState({ currentSlide: 2 });
@@ -363,10 +356,8 @@ describe('<Carousel />', () => {
   describe('Controls', () => {
     it('should render a custom top left control.', () => {
       const wrapper = mount(
-        <Carousel renderTopLeftControls={() => <div>Top Left</div>}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} renderTopLeftControls={() => <div>Top Left</div>}>
+          {data}
         </Carousel>
       );
       expect(wrapper).toContainReact(<div>Top Left</div>);
@@ -374,10 +365,8 @@ describe('<Carousel />', () => {
 
     it('should render a custom top center control.', () => {
       const wrapper = mount(
-        <Carousel renderTopCenterControls={() => <div>Top Center</div>}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} renderTopCenterControls={() => <div>Top Center</div>}>
+          {data}
         </Carousel>
       );
       expect(wrapper).toContainReact(<div>Top Center</div>);
@@ -385,10 +374,8 @@ describe('<Carousel />', () => {
 
     it('should render a custom top right control.', () => {
       const wrapper = mount(
-        <Carousel renderTopRightControls={() => <div>Top Right</div>}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} renderTopRightControls={() => <div>Top Right</div>}>
+          {data}
         </Carousel>
       );
       expect(wrapper).toContainReact(<div>Top Right</div>);
@@ -396,10 +383,8 @@ describe('<Carousel />', () => {
 
     it('should render a custom center left control.', () => {
       const wrapper = mount(
-        <Carousel renderCenterLeftControls={() => <div>Center Left</div>}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} renderCenterLeftControls={() => <div>Center Left</div>}>
+          {data}
         </Carousel>
       );
       expect(wrapper).toContainReact(<div>Center Left</div>);
@@ -407,10 +392,8 @@ describe('<Carousel />', () => {
 
     it('should render a custom center center control.', () => {
       const wrapper = mount(
-        <Carousel renderCenterCenterControls={() => <div>Center Center</div>}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} renderCenterCenterControls={() => <div>Center Center</div>}>
+          {data}
         </Carousel>
       );
       expect(wrapper).toContainReact(<div>Center Center</div>);
@@ -418,10 +401,8 @@ describe('<Carousel />', () => {
 
     it('should render a custom center right control.', () => {
       const wrapper = mount(
-        <Carousel renderCenterRightControls={() => <div>Center Right</div>}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} renderCenterRightControls={() => <div>Center Right</div>}>
+          {data}
         </Carousel>
       );
       expect(wrapper).toContainReact(<div>Center Right</div>);
@@ -429,10 +410,8 @@ describe('<Carousel />', () => {
 
     it('should render a custom bottom left control.', () => {
       const wrapper = mount(
-        <Carousel renderBottomLeftControls={() => <div>Bottom Left</div>}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} renderBottomLeftControls={() => <div>Bottom Left</div>}>
+          {data}
         </Carousel>
       );
       expect(wrapper).toContainReact(<div>Bottom Left</div>);
@@ -440,10 +419,8 @@ describe('<Carousel />', () => {
 
     it('should render a custom bottom center control.', () => {
       const wrapper = mount(
-        <Carousel renderBottomCenterControls={() => <div>Bottom Center</div>}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} renderBottomCenterControls={() => <div>Bottom Center</div>}>
+          {data}
         </Carousel>
       );
       expect(wrapper).toContainReact(<div>Bottom Center</div>);
@@ -451,10 +428,8 @@ describe('<Carousel />', () => {
 
     it('should render a custom bottom right control.', () => {
       const wrapper = mount(
-        <Carousel renderBottomRightControls={() => <div>Bottom Right</div>}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+        <Carousel Slide={Slide} renderBottomRightControls={() => <div>Bottom Right</div>}>
+          {data}
         </Carousel>
       );
       expect(wrapper).toContainReact(<div>Bottom Right</div>);
@@ -464,12 +439,11 @@ describe('<Carousel />', () => {
       const CustomControls = () => <div>Custom Controls</div>;
       const wrapper = mount(
         <Carousel
+          Slide={Slide}
           wrapAround
           renderCenterCenterControls={props => <CustomControls {...props} />}
         >
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+          {data}
         </Carousel>
       );
       const controls = wrapper.find('CustomControls');
@@ -484,16 +458,14 @@ describe('<Carousel />', () => {
     it('should call the internal nextSlide func from a control using the nextSlide prop.', () => {
       const wrapper = mount(
         <Carousel
+          Slide={Slide}
           renderCenterCenterControls={({ nextSlide }) => (
             <button id="custom-next-btn" onClick={nextSlide}>
               Next
             </button>
           )}
         >
-          >
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+          {data}
         </Carousel>
       );
       const spy = jest.spyOn(wrapper.instance(), 'nextSlide');
@@ -506,6 +478,7 @@ describe('<Carousel />', () => {
     it('should call the internal previousSlide func from a control using the previousSlide prop.', () => {
       const wrapper = mount(
         <Carousel
+          Slide={Slide}
           slideIndex={1}
           renderCenterCenterControls={({ previousSlide }) => (
             <button id="custom-prev-btn" onClick={previousSlide}>
@@ -513,10 +486,7 @@ describe('<Carousel />', () => {
             </button>
           )}
         >
-          >
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+          {data}
         </Carousel>
       );
       const spy = jest.spyOn(wrapper.instance(), 'previousSlide');
@@ -529,16 +499,14 @@ describe('<Carousel />', () => {
     it('should call the internal goToSlide func from a control using the goToSlide prop.', () => {
       const wrapper = mount(
         <Carousel
+          Slide={Slide}
           renderCenterCenterControls={({ goToSlide }) => (
             <button id="custom-goto-btn" onClick={() => goToSlide(2)}>
               Go to Slide 3
             </button>
           )}
         >
-          >
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+          {data}
         </Carousel>
       );
       const spy = jest.spyOn(wrapper.instance(), 'goToSlide');
