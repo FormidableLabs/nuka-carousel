@@ -70,6 +70,10 @@ export default class Carousel extends React.Component {
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleSwipe = this.handleSwipe.bind(this);
+    this.handleSwipeToNextSlide = this.handleSwipeToNextSlide.bind(this);
+    this.handleSwipeToPreviousSlide = this.handleSwipeToPreviousSlide.bind(
+      this
+    );
     this.swipeDirection = this.swipeDirection.bind(this);
     this.autoplayIterator = this.autoplayIterator.bind(this);
     this.startAutoplay = this.startAutoplay.bind(this);
@@ -317,6 +321,35 @@ export default class Carousel extends React.Component {
     }
   }
 
+  handleSwipeToNextSlide() {
+    let slidesToShow = this.props.slidesToShow;
+    if (this.props.slidesToScroll === 'auto') {
+      slidesToShow = this.state.slidesToScroll;
+    }
+
+    if (
+      React.Children.count(this.props.children) === 1 ||
+      (this.state.currentSlide >=
+        React.Children.count(this.props.children) - slidesToShow &&
+        !this.props.wrapAround)
+    ) {
+      this.setState({ easing: easing[this.props.edgeEasing] });
+    } else {
+      this.nextSlide();
+    }
+  }
+
+  handleSwipeToPreviousSlide() {
+    if (
+      React.Children.count(this.props.children) === 1 ||
+      (this.state.currentSlide <= 0 && !this.props.wrapAround)
+    ) {
+      this.setState({ easing: easing[this.props.edgeEasing] });
+    } else {
+      this.previousSlide();
+    }
+  }
+
   handleSwipe() {
     if (
       typeof this.touchObject.length !== 'undefined' &&
@@ -334,21 +367,9 @@ export default class Carousel extends React.Component {
 
     if (this.touchObject.length > this.state.slideWidth / slidesToShow / 5) {
       if (this.touchObject.direction === 1) {
-        if (
-          this.state.currentSlide >=
-            React.Children.count(this.props.children) - slidesToShow &&
-          !this.props.wrapAround
-        ) {
-          this.setState({ easing: easing[this.props.edgeEasing] });
-        } else {
-          this.nextSlide();
-        }
+        this.handleSwipeToNextSlide();
       } else if (this.touchObject.direction === -1) {
-        if (this.state.currentSlide <= 0 && !this.props.wrapAround) {
-          this.setState({ easing: easing[this.props.edgeEasing] });
-        } else {
-          this.previousSlide();
-        }
+        this.handleSwipeToPreviousSlide();
       }
     } else {
       this.goToSlide(this.state.currentSlide);
@@ -876,10 +897,6 @@ export default class Carousel extends React.Component {
     };
   }
 
-  getStyleTagStyles() {
-    return '.slider-slide > img {width: 100%; display: block;}';
-  }
-
   getDecoratorStyles(position) {
     switch (position) {
       case 'TopLeft': {
@@ -1063,11 +1080,6 @@ export default class Carousel extends React.Component {
         />
 
         {this.renderControls()}
-
-        <style
-          type="text/css"
-          dangerouslySetInnerHTML={{ __html: this.getStyleTagStyles() }}
-        />
       </div>
     );
   }
