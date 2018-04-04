@@ -17,9 +17,13 @@ class App extends React.Component {
       placeholderMode: false,
       preloadedChildrenLevel: undefined
     };
+
+    this.updateSlideIndex = this.updateSlideIndex.bind(this);
   }
 
-  _updateSlideIndex = slideIndex => this.setState({ slideIndex })
+  updateSlideIndex(slideIndex) {
+    this.setState({ slideIndex })
+  }
 
   getStyleTagStyles() {
     return '.slider-list img {width: 100%; display: block;}';
@@ -36,7 +40,7 @@ class App extends React.Component {
           heightMode='max'
           wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
-          afterSlide={this._updateSlideIndex}
+          afterSlide={this.updateSlideIndex}
           renderTopCenterControls={({ currentSlide }) => (
             <div style={{ fontFamily: 'Helvetica', color: '#fff' }}>
               Nuka Carousel: Slide {currentSlide + 1}

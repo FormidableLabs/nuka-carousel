@@ -357,7 +357,7 @@ export default class Carousel extends React.Component {
 
   handleSwipeToPreviousSlide() {
     if (
-      React.Children.count(this.props.children) === 1 ||
+      this.totalSlides() === 1 ||
       (this.state.currentSlide <= 0 && !this.props.wrapAround)
     ) {
       this.setState({ easing: easing[this.props.edgeEasing] });
