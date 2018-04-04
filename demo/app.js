@@ -4,8 +4,8 @@ import ReactDom from 'react-dom';
 
 const colors = ['7732bb', '047cc0', '00884b', 'e3bc13', 'db7c00', 'aa231f'];
 
-const Slide = ({ imgSrc }) => <img src={imgSrc} />
-const Placeholder = ({ imgSrc }) => <div>{imgSrc}</div>
+const Slide = ({ imgSrc }) => <img src={imgSrc} />;
+const Placeholder = ({ imgSrc }) => <div>{imgSrc}</div>;
 
 class App extends React.Component {
   constructor() {
@@ -22,7 +22,7 @@ class App extends React.Component {
   }
 
   updateSlideIndex(slideIndex) {
-    this.setState({ slideIndex })
+    this.setState({ slideIndex });
   }
 
   getStyleTagStyles() {
@@ -37,7 +37,7 @@ class App extends React.Component {
           Placeholder={Placeholder}
           placeholderMode={this.state.placeholderMode}
           preloadedChildrenLevel={this.state.preloadedChildrenLevel}
-          heightMode='max'
+          heightMode="max"
           wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
           afterSlide={this.updateSlideIndex}
@@ -47,9 +47,10 @@ class App extends React.Component {
             </div>
           )}
         >
-          {colors
-            .slice(0, this.state.length)
-            .map((color, index) => ({ imgSrc: `http://placehold.it/1000x400/${color}/ffffff/&text=slide${index + 1}` }))}
+          {colors.slice(0, this.state.length).map((color, index) => ({
+            imgSrc: `http://placehold.it/1000x400/${color}/ffffff/&text=slide${index +
+              1}`
+          }))}
         </Carousel>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
@@ -94,12 +95,36 @@ class App extends React.Component {
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
             preloadedChildrenLevel:
-            <button onClick={() => this.setState({ preloadedChildrenLevel: 1 })}>1</button>
-            <button onClick={() => this.setState({ preloadedChildrenLevel: 2 })}>2</button>
-            <button onClick={() => this.setState({ preloadedChildrenLevel: 3 })}>3</button>
-            <button onClick={() => this.setState({ preloadedChildrenLevel: 4 })}>4</button>
-            <button onClick={() => this.setState({ preloadedChildrenLevel: 5 })}>5</button>
-            <button onClick={() => this.setState({ preloadedChildrenLevel: 6 })}>6</button>
+            <button
+              onClick={() => this.setState({ preloadedChildrenLevel: 1 })}
+            >
+              1
+            </button>
+            <button
+              onClick={() => this.setState({ preloadedChildrenLevel: 2 })}
+            >
+              2
+            </button>
+            <button
+              onClick={() => this.setState({ preloadedChildrenLevel: 3 })}
+            >
+              3
+            </button>
+            <button
+              onClick={() => this.setState({ preloadedChildrenLevel: 4 })}
+            >
+              4
+            </button>
+            <button
+              onClick={() => this.setState({ preloadedChildrenLevel: 5 })}
+            >
+              5
+            </button>
+            <button
+              onClick={() => this.setState({ preloadedChildrenLevel: 6 })}
+            >
+              6
+            </button>
           </div>
           <div>
             <button

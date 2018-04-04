@@ -1,69 +1,46 @@
 import Carousel from '../../src';
 
-const createSlidesData = (numberOfSlides = 3) => Array.from({ length: numberOfSlides }, (v, k) => `Slide ${k + 1}`);
+const createSlidesData = (numberOfSlides = 3) =>
+  Array.from({ length: numberOfSlides }, (v, k) => `Slide ${k + 1}`);
 
-const data = createSlidesData(3)
-const Slide = ({ text }) => <p>{text}</p>
-const Placeholder = ({ text }) => <p>{`Placeholder for ${text}`}</p>
+const data = createSlidesData(3);
+const Slide = ({ text }) => <p>{text}</p>;
+const Placeholder = ({ text }) => <p>{`Placeholder for ${text}`}</p>;
 
 describe('<Carousel />', () => {
   describe('Rendering and Mounting', () => {
     it('should correctly mount with children.', () => {
-      const wrapper = mount(
-        <Carousel Slide={Slide}>
-          {data}
-        </Carousel>
-      );
+      const wrapper = mount(<Carousel Slide={Slide}>{data}</Carousel>);
       const children = wrapper.find('p');
       expect(children).toHaveLength(3);
     });
 
     it('should render a div with the class `slider`.', () => {
-      const wrapper = mount(
-        <Carousel Slide={Slide}>
-          {data}
-        </Carousel>
-      );
+      const wrapper = mount(<Carousel Slide={Slide}>{data}</Carousel>);
       const sliderDiv = wrapper.find('div.slider');
       expect(sliderDiv).toHaveLength(1);
     });
 
     it('should render a div with the class `slider-frame`.', () => {
-      const wrapper = mount(
-        <Carousel Slide={Slide}>
-          {data}
-        </Carousel>
-      );
+      const wrapper = mount(<Carousel Slide={Slide}>{data}</Carousel>);
       const sliderFrameDiv = wrapper.find('div.slider-frame');
       expect(sliderFrameDiv).toHaveLength(1);
     });
 
     it('should render an ul with the class `slider-list`.', () => {
-      const wrapper = mount(
-        <Carousel Slide={Slide}>
-          {data}
-        </Carousel>
-      );
+      const wrapper = mount(<Carousel Slide={Slide}>{data}</Carousel>);
       const sliderListUl = wrapper.find('ul.slider-list');
       expect(sliderListUl).toHaveLength(1);
     });
 
     it('should render children with the `slider-slide` class.', () => {
-      const wrapper = mount(
-        <Carousel Slide={Slide}>
-          {data}
-        </Carousel>
-      );
+      const wrapper = mount(<Carousel Slide={Slide}>{data}</Carousel>);
       const children = wrapper.find('.slider-slide');
       expect(children).toHaveLength(3);
     });
 
     it('should render controls by default.', () => {
-      const wrapper = mount(
-        <Carousel Slide={Slide}>
-          {data}
-        </Carousel>
-      );
+      const wrapper = mount(<Carousel Slide={Slide}>{data}</Carousel>);
       const decorator1 = wrapper.find('.slider-control-centerleft');
       const decorator2 = wrapper.find('.slider-control-centerright');
       const decorator3 = wrapper.find('.slider-control-bottomcenter');
@@ -75,11 +52,7 @@ describe('<Carousel />', () => {
 
   describe('Props', () => {
     it('should render with the class `slider` when no props are supplied.', () => {
-      const wrapper = mount(
-        <Carousel Slide={Slide}>
-          {data}
-        </Carousel>
-      );
+      const wrapper = mount(<Carousel Slide={Slide}>{data}</Carousel>);
       const slider = wrapper.find('div.slider');
       expect(slider).toHaveLength(1);
     });
@@ -182,7 +155,9 @@ describe('<Carousel />', () => {
           { offsetHeight: 200, style: {} },
           { offsetHeight: 300, style: {} }
         ]);
-      const CustomSlide = ({ text, height }) =>  <div style={{ height }}>{text}</div>
+      const CustomSlide = ({ text, height }) => (
+        <div style={{ height }}>{text}</div>
+      );
       const wrapper = mount(
         <Carousel Slide={CustomSlide} heightMode="max">
           {[
@@ -213,7 +188,9 @@ describe('<Carousel />', () => {
           { offsetHeight: 200, style: {} },
           { offsetHeight: 300, style: {} }
         ]);
-      const CustomSlide = ({ text, height }) =>  <div style={{ height }}>{text}</div>
+      const CustomSlide = ({ text, height }) => (
+        <div style={{ height }}>{text}</div>
+      );
       const wrapper = mount(
         <Carousel Slide={CustomSlide} heightMode="first">
           {[
@@ -244,7 +221,9 @@ describe('<Carousel />', () => {
           { offsetHeight: 200, style: {} },
           { offsetHeight: 300, style: {} }
         ]);
-      const CustomSlide = ({ text, height }) =>  <div style={{ height }}>{text}</div>
+      const CustomSlide = ({ text, height }) => (
+        <div style={{ height }}>{text}</div>
+      );
       const wrapper = mount(
         <Carousel Slide={CustomSlide} heightMode="current" slideIndex={1}>
           {[
@@ -357,7 +336,10 @@ describe('<Carousel />', () => {
   describe('Controls', () => {
     it('should render a custom left control.', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} renderCustomLeftControls={() => <div>Custom Left</div>}>
+        <Carousel
+          Slide={Slide}
+          renderCustomLeftControls={() => <div>Custom Left</div>}
+        >
           {data}
         </Carousel>
       );
@@ -366,7 +348,10 @@ describe('<Carousel />', () => {
 
     it('should render a custom right control.', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} renderCustomRightControls={() => <div>Custom Right</div>}>
+        <Carousel
+          Slide={Slide}
+          renderCustomRightControls={() => <div>Custom Right</div>}
+        >
           {data}
         </Carousel>
       );
@@ -375,7 +360,10 @@ describe('<Carousel />', () => {
 
     it('should render a custom bottom control.', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} renderCustomBottomControls={() => <div>Custom Bottom</div>}>
+        <Carousel
+          Slide={Slide}
+          renderCustomBottomControls={() => <div>Custom Bottom</div>}
+        >
           {data}
         </Carousel>
       );
@@ -384,7 +372,10 @@ describe('<Carousel />', () => {
 
     it('should render a custom top left control.', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} renderTopLeftControls={() => <div>Top Left</div>}>
+        <Carousel
+          Slide={Slide}
+          renderTopLeftControls={() => <div>Top Left</div>}
+        >
           {data}
         </Carousel>
       );
@@ -393,7 +384,10 @@ describe('<Carousel />', () => {
 
     it('should render a custom top center control.', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} renderTopCenterControls={() => <div>Top Center</div>}>
+        <Carousel
+          Slide={Slide}
+          renderTopCenterControls={() => <div>Top Center</div>}
+        >
           {data}
         </Carousel>
       );
@@ -402,7 +396,10 @@ describe('<Carousel />', () => {
 
     it('should render a custom top right control.', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} renderTopRightControls={() => <div>Top Right</div>}>
+        <Carousel
+          Slide={Slide}
+          renderTopRightControls={() => <div>Top Right</div>}
+        >
           {data}
         </Carousel>
       );
@@ -411,7 +408,10 @@ describe('<Carousel />', () => {
 
     it('should render a custom center left control.', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} renderCenterLeftControls={() => <div>Center Left</div>}>
+        <Carousel
+          Slide={Slide}
+          renderCenterLeftControls={() => <div>Center Left</div>}
+        >
           {data}
         </Carousel>
       );
@@ -420,7 +420,10 @@ describe('<Carousel />', () => {
 
     it('should render a custom center center control.', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} renderCenterCenterControls={() => <div>Center Center</div>}>
+        <Carousel
+          Slide={Slide}
+          renderCenterCenterControls={() => <div>Center Center</div>}
+        >
           {data}
         </Carousel>
       );
@@ -429,7 +432,10 @@ describe('<Carousel />', () => {
 
     it('should render a custom center right control.', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} renderCenterRightControls={() => <div>Center Right</div>}>
+        <Carousel
+          Slide={Slide}
+          renderCenterRightControls={() => <div>Center Right</div>}
+        >
           {data}
         </Carousel>
       );
@@ -438,7 +444,10 @@ describe('<Carousel />', () => {
 
     it('should render a custom bottom left control.', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} renderBottomLeftControls={() => <div>Bottom Left</div>}>
+        <Carousel
+          Slide={Slide}
+          renderBottomLeftControls={() => <div>Bottom Left</div>}
+        >
           {data}
         </Carousel>
       );
@@ -447,7 +456,10 @@ describe('<Carousel />', () => {
 
     it('should render a custom bottom center control.', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} renderBottomCenterControls={() => <div>Bottom Center</div>}>
+        <Carousel
+          Slide={Slide}
+          renderBottomCenterControls={() => <div>Bottom Center</div>}
+        >
           {data}
         </Carousel>
       );
@@ -456,7 +468,10 @@ describe('<Carousel />', () => {
 
     it('should render a custom bottom right control.', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} renderBottomRightControls={() => <div>Bottom Right</div>}>
+        <Carousel
+          Slide={Slide}
+          renderBottomRightControls={() => <div>Bottom Right</div>}
+        >
           {data}
         </Carousel>
       );
@@ -546,9 +561,7 @@ describe('<Carousel />', () => {
 
     it('should render all Slides', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide}>
-          {createSlidesData(6)}
-        </Carousel>
+        <Carousel Slide={Slide}>{createSlidesData(6)}</Carousel>
       );
 
       expect(wrapper.instance().shouldRenderSlide(0)).toEqual(true);
@@ -591,7 +604,12 @@ describe('<Carousel />', () => {
 
     it('should render Slides and Placeholders when placeholderMode is activated and wrapAround is set (preloadedChildrenLevel is taken in consideration)', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode wrapAround>
+        <Carousel
+          Slide={Slide}
+          Placeholder={Placeholder}
+          placeholderMode
+          wrapAround
+        >
           {createSlidesData(6)}
         </Carousel>
       );
@@ -606,7 +624,12 @@ describe('<Carousel />', () => {
 
     it('should render Slides and Placeholders when placeholderMode is activated and preloadedChildrenLevel is set', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode preloadedChildrenLevel={2}>
+        <Carousel
+          Slide={Slide}
+          Placeholder={Placeholder}
+          placeholderMode
+          preloadedChildrenLevel={2}
+        >
           {createSlidesData(6)}
         </Carousel>
       );
@@ -621,7 +644,13 @@ describe('<Carousel />', () => {
 
     it('should render Slides and Placeholders when placeholderMode is activated and wrapAround and preloadedChildrenLevel are set', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode preloadedChildrenLevel={2} wrapAround>
+        <Carousel
+          Slide={Slide}
+          Placeholder={Placeholder}
+          placeholderMode
+          preloadedChildrenLevel={2}
+          wrapAround
+        >
           {createSlidesData(6)}
         </Carousel>
       );
@@ -636,7 +665,12 @@ describe('<Carousel />', () => {
 
     it('should render all Slides when placeholderMode is activated and preloadedChildrenLevel is set (preloadedChildrenLevel covers all slides)', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode preloadedChildrenLevel={5}>
+        <Carousel
+          Slide={Slide}
+          Placeholder={Placeholder}
+          placeholderMode
+          preloadedChildrenLevel={5}
+        >
           {createSlidesData(6)}
         </Carousel>
       );
@@ -651,7 +685,13 @@ describe('<Carousel />', () => {
 
     it('should render all Slides when placeholderMode is activated and wrapAround and preloadedChildrenLevel are set (preloadedChildrenLevel covers all slides)', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode preloadedChildrenLevel={3} wrapAround>
+        <Carousel
+          Slide={Slide}
+          Placeholder={Placeholder}
+          placeholderMode
+          preloadedChildrenLevel={3}
+          wrapAround
+        >
           {createSlidesData(6)}
         </Carousel>
       );
@@ -687,7 +727,12 @@ describe('<Carousel />', () => {
 
     it('should render Slides and Placeholders when placeholderMode is activated and preloadedChildrenLevel is 0', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode preloadedChildrenLevel={0}>
+        <Carousel
+          Slide={Slide}
+          Placeholder={Placeholder}
+          placeholderMode
+          preloadedChildrenLevel={0}
+        >
           {createSlidesData(6)}
         </Carousel>
       );
@@ -702,7 +747,12 @@ describe('<Carousel />', () => {
 
     it('should render Placeholders when placeholderMode is activated and preloadedChildrenLevel is -1', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode preloadedChildrenLevel={-1}>
+        <Carousel
+          Slide={Slide}
+          Placeholder={Placeholder}
+          placeholderMode
+          preloadedChildrenLevel={-1}
+        >
           {createSlidesData(6)}
         </Carousel>
       );
@@ -717,7 +767,13 @@ describe('<Carousel />', () => {
 
     it('should render Placeholders when placeholderMode is activated and wrapAround is set and preloadedChildrenLevel is -2', () => {
       const wrapper = mount(
-        <Carousel Slide={Slide} Placeholder={Placeholder} placeholderMode preloadedChildrenLevel={-2} wrapAround>
+        <Carousel
+          Slide={Slide}
+          Placeholder={Placeholder}
+          placeholderMode
+          preloadedChildrenLevel={-2}
+          wrapAround
+        >
           {createSlidesData(6)}
         </Carousel>
       );

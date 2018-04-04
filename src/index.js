@@ -150,7 +150,7 @@ export default class Carousel extends React.Component {
 
   // TODO check why is this needed
   componentDidUpdate() {
-    this.updateDimensions()
+    this.updateDimensions();
   }
 
   componentWillUnmount() {
@@ -345,8 +345,7 @@ export default class Carousel extends React.Component {
 
     if (
       this.totalSlides() === 1 ||
-      (this.state.currentSlide >=
-      this.totalSlides() - slidesToShow &&
+      (this.state.currentSlide >= this.totalSlides() - slidesToShow &&
         !this.props.wrapAround)
     ) {
       this.setState({ easing: easing[this.props.edgeEasing] });
@@ -466,7 +465,7 @@ export default class Carousel extends React.Component {
   goToSlide(index) {
     this.setState({ easing: easing[this.props.easing] });
 
-    if ((index >= this.totalSlides() || index < 0)) {
+    if (index >= this.totalSlides() || index < 0) {
       if (!this.props.wrapAround) {
         return;
       }
@@ -504,8 +503,7 @@ export default class Carousel extends React.Component {
         );
         return;
       } else {
-        const endSlide =
-          this.totalSlides() - this.state.slidesToScroll;
+        const endSlide = this.totalSlides() - this.state.slidesToScroll;
         this.props.beforeSlide(this.state.currentSlide, endSlide);
         this.setState(
           prevState => ({
@@ -665,53 +663,67 @@ export default class Carousel extends React.Component {
   }
 
   shouldRenderSlide(index) {
-    const { Placeholder, placeholderMode, preloadedChildrenLevel, wrapAround } = this.props
+    const {
+      Placeholder,
+      placeholderMode,
+      preloadedChildrenLevel,
+      wrapAround
+    } = this.props;
 
     if (!placeholderMode || !Placeholder) {
-      return true
+      return true;
     }
 
-    const currentSlide = this.state.currentSlide
-    const totalPreloadedSlides = 2 * preloadedChildrenLevel + 1
-    const totalSlides = this.totalSlides()
+    const currentSlide = this.state.currentSlide;
+    const totalPreloadedSlides = 2 * preloadedChildrenLevel + 1;
+    const totalSlides = this.totalSlides();
 
     if (wrapAround) {
       if (totalPreloadedSlides >= totalSlides) {
         // should render all slides
-        return true
+        return true;
       }
 
       if (currentSlide + preloadedChildrenLevel > totalSlides - 1) {
         // if last index of preloaded children goes out of bounds, split the preloaded children set into 2 sets
-        return (index >= 0 && index <= (currentSlide + preloadedChildrenLevel - totalSlides)) ||
-          (index >= (currentSlide - preloadedChildrenLevel) && index <= totalSlides - 1)
+        return (
+          (index >= 0 &&
+            index <= currentSlide + preloadedChildrenLevel - totalSlides) ||
+          (index >= currentSlide - preloadedChildrenLevel &&
+            index <= totalSlides - 1)
+        );
       }
 
       if (currentSlide - preloadedChildrenLevel < 0) {
         // if first index of preloaded children goes out of bounds, split the preloaded children set into 2 sets
-        return (index >= 0 && index <= currentSlide + preloadedChildrenLevel) ||
-          (index >= (currentSlide - preloadedChildrenLevel + totalSlides) && index <= totalSlides - 1)
+        return (
+          (index >= 0 && index <= currentSlide + preloadedChildrenLevel) ||
+          (index >= currentSlide - preloadedChildrenLevel + totalSlides &&
+            index <= totalSlides - 1)
+        );
       }
 
-      return (index >= currentSlide - preloadedChildrenLevel) &&
-        (index <= currentSlide + preloadedChildrenLevel)
+      return (
+        index >= currentSlide - preloadedChildrenLevel &&
+        index <= currentSlide + preloadedChildrenLevel
+      );
     } else {
-      return index >= 0 &&
+      return (
+        index >= 0 &&
         index <= totalSlides - 1 &&
         index >= currentSlide - preloadedChildrenLevel &&
         index <= currentSlide + preloadedChildrenLevel
+      );
     }
   }
 
   formatChildren() {
-    const { children, vertical, Slide, Placeholder } = this.props
+    const { children, vertical, Slide, Placeholder } = this.props;
     if (!children) {
-      return null
+      return null;
     }
 
-    const positionValue = vertical
-      ? this.state.top
-      : this.state.left;
+    const positionValue = vertical ? this.state.top : this.state.left;
     return children.map((slide, index) => {
       return (
         <li
@@ -719,18 +731,18 @@ export default class Carousel extends React.Component {
           style={this.getSlideStyles(index, positionValue)}
           key={index}
         >
-          {
-            this.shouldRenderSlide(index)
-              ? Slide && <Slide {...slide} />
-              : <Placeholder {...slide} />
-          }
+          {this.shouldRenderSlide(index) ? (
+            Slide && <Slide {...slide} />
+          ) : (
+            <Placeholder {...slide} />
+          )}
         </li>
       );
     });
   }
 
   totalSlides() {
-    return this.props.children ? this.props.children.length : 0
+    return this.props.children ? this.props.children.length : 0;
   }
 
   setInitialDimensions() {
@@ -820,9 +832,10 @@ export default class Carousel extends React.Component {
     const slideWidth = this.getSlideWidth(props, frame, slideHeight);
     const frameWidth = this.getFrameWidth(props, frame, slideHeight);
 
-    const slidesToScroll = props.slidesToScroll === 'auto'
-      ? Math.floor(frameWidth / (slideWidth + props.cellSpacing))
-      : props.slidesToScroll
+    const slidesToScroll =
+      props.slidesToScroll === 'auto'
+        ? Math.floor(frameWidth / (slideWidth + props.cellSpacing))
+        : props.slidesToScroll;
 
     this.setState(
       {
@@ -840,9 +853,11 @@ export default class Carousel extends React.Component {
   }
 
   dimensionsChanged(newDimensions) {
-    return newDimensions.slideHeight !== this.state.slideHeight ||
+    return (
+      newDimensions.slideHeight !== this.state.slideHeight ||
       newDimensions.frameWidth !== this.state.frameWidth ||
       newDimensions.slideWidth !== this.state.slideWidth
+    );
   }
 
   updateDimensions() {
@@ -972,13 +987,15 @@ export default class Carousel extends React.Component {
 
     if (this.props.wrapAround && this.state.slideCount > 2) {
       if (index === 0) {
-        if (this.state.currentSlide === this.state.slideCount - 1) { // last slide is active
-          return (fullSlideWidth * (this.state.slideCount + index));
+        if (this.state.currentSlide === this.state.slideCount - 1) {
+          // last slide is active
+          return fullSlideWidth * (this.state.slideCount + index);
         }
       }
 
       if (index === this.state.slideCount - 1) {
-        if (this.state.currentSlide === 0) { // first slide is active
+        if (this.state.currentSlide === 0) {
+          // first slide is active
           return fullSlideWidth * (this.state.slideCount - index) * -1;
         }
       }
@@ -1078,11 +1095,11 @@ export default class Carousel extends React.Component {
           bottom: 0,
           right: 0
         };
-        }
+      }
       case 'CustomLeft':
       case 'CustomRight':
       case 'CustomBottom': {
-        return null
+        return null;
       }
       default: {
         return {
@@ -1112,10 +1129,11 @@ export default class Carousel extends React.Component {
   }
 
   renderControls() {
-    return controlsMap.map(
-      ({ funcName, key }) => {
-        const func = this.props[funcName]
-        return func && typeof func === 'function' && (
+    return controlsMap.map(({ funcName, key }) => {
+      const func = this.props[funcName];
+      return (
+        func &&
+        typeof func === 'function' && (
           <div
             className={`slider-control-${key.toLowerCase()}`}
             style={this.getDecoratorStyles(key)}
@@ -1136,12 +1154,12 @@ export default class Carousel extends React.Component {
             })}
           </div>
         )
-      }
-    );
+      );
+    });
   }
 
   render() {
-    const children = this.formatChildren(this.props.children)
+    const children = this.formatChildren(this.props.children);
     const duration =
       this.state.dragging || this.state.resetWrapAroundPosition
         ? 0
@@ -1210,7 +1228,6 @@ Carousel.propTypes = {
   preloadedChildrenLevel: PropTypes.number,
   renderCustomLeftControls: PropTypes.func,
   renderCustomRightControls: PropTypes.func,
-  renderCustomBottomControls: PropTypes.func,
   renderCustomBottomControls: PropTypes.func,
   renderTopLeftControls: PropTypes.func,
   renderTopCenterControls: PropTypes.func,
