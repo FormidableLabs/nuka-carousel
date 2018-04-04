@@ -948,7 +948,7 @@ export default class Carousel extends React.Component {
       return targetPosition;
     }
 
-    if (this.props.wrapAround && this.state.slideCount > 1) {
+    if (this.props.wrapAround && this.state.slideCount > 2) {
       if (index === 0) {
         if (this.state.currentSlide === this.state.slideCount - 1) { // last slide is active
           return (fullSlideWidth * (this.state.slideCount + index));
