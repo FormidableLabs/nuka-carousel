@@ -1190,7 +1190,7 @@ export default class Carousel extends React.Component {
               style={frameStyles}
               {...touchEvents}
               {...mouseEvents}
-              onClickCapture={this.handleClick}
+              onClick={this.handleClick}
             >
               <ul
                 className="slider-list"
