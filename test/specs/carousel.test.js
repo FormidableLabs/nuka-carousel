@@ -261,6 +261,20 @@ describe('<Carousel />', () => {
   });
 
   describe('methods', () => {
+    it("should call onResize prop on onResize handler", () => {
+      const wrapper = mount(
+        <Carousel cellAlign="left">
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const instance = wrapper.instance();
+      const spy = jest.spyOn(instance, 'onResize');
+      instance.onResize();
+      expect(spy).toHaveBeenCalled();
+    });
+
     it('should advance if nextSlide() is called.', () => {
       const wrapper = mount(
         <Carousel cellAlign="left">

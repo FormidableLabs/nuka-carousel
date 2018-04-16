@@ -613,7 +613,7 @@ export default class Carousel extends React.Component {
   }
 
   onResize() {
-    this.setDimensions();
+    this.setDimensions(null, this.props.onResize);
   }
 
   onReadyStateChange() {
@@ -696,7 +696,7 @@ export default class Carousel extends React.Component {
     return 100;
   }
 
-  setDimensions(props) {
+  setDimensions(props, stateCb) {
     props = props || this.props;
 
     let slideWidth;
@@ -741,6 +741,7 @@ export default class Carousel extends React.Component {
         top: props.vertical ? this.getTargetLeft() : 0
       },
       () => {
+        stateCb();
         this.setLeft();
       }
     );
@@ -1081,6 +1082,7 @@ Carousel.propTypes = {
   heightMode: PropTypes.oneOf(['first', 'current', 'max']),
   initialSlideHeight: PropTypes.number,
   initialSlideWidth: PropTypes.number,
+  onResize: PropTypes.func,
   renderTopLeftControls: PropTypes.func,
   renderTopCenterControls: PropTypes.func,
   renderTopRightControls: PropTypes.func,
@@ -1117,6 +1119,7 @@ Carousel.defaultProps = {
   framePadding: '0px',
   frameOverflow: 'hidden',
   heightMode: 'first',
+  onResize() {},
   slideIndex: 0,
   slidesToScroll: 1,
   slidesToShow: 1,
