@@ -728,8 +728,7 @@ const Carousel = createReactClass({
   },
 
   onResize() {
-    this.setDimensions();
-    this.props.onResize();
+    this.setDimensions(null, this.props.onResize);
   },
 
   onReadyStateChange() {
@@ -802,7 +801,7 @@ const Carousel = createReactClass({
     return maxHeight;
   },
 
-  setDimensions(props) {
+  setDimensions(props, stateCb) {
     props = props || this.props;
 
     var self = this,
@@ -869,6 +868,7 @@ const Carousel = createReactClass({
         top: props.vertical ? this.getTargetLeft() : 0,
       },
       function() {
+        stateCb();
         self.setLeft();
       }
     );

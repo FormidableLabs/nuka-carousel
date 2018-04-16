@@ -518,20 +518,6 @@ describe('Carousel', function() {
       teardown();
     });
 
-    it('should call onResize prop on onResize handler', () => {
-      component = ReactDOM.render(
-        React.createElement(carousel, null,
-          React.createElement('p', null, 'Slide 1'),
-          React.createElement('p', null, 'Slide 2'),
-          React.createElement('p', null, 'Slide 3')
-        ),
-        container
-      );
-      const spy = sinon.spy(component, 'onResize');
-      component.onResize();
-      expect(spy).to.have.been.called;
-    });
-
     it('should advance if nextSlide() is called', function() {
       component = ReactDOM.render(
         React.createElement(carousel, null,
