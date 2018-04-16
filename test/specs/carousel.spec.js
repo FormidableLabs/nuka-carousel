@@ -518,6 +518,24 @@ describe('Carousel', function() {
       teardown();
     });
 
+    describe('setDimensions', () => {
+      it('should call the method\'s callback after setState', () => {
+        var onResizeSpy = sinon.stub();
+        component = ReactDOM.render(
+          React.createElement(carousel, { onResize: onResizeSpy },
+            React.createElement('p', null, 'Slide 1'),
+            React.createElement('p', null, 'Slide 2'),
+            React.createElement('p', null, 'Slide 3')
+          ),
+          container
+        );
+
+        component.onResize();
+
+        expect(onResizeSpy).to.have.been.called;
+      });
+    });
+
     it('should advance if nextSlide() is called', function() {
       component = ReactDOM.render(
         React.createElement(carousel, null,

@@ -801,7 +801,7 @@ const Carousel = createReactClass({
     return maxHeight;
   },
 
-  setDimensions(props, stateCb) {
+  setDimensions(props, stateCb = () => {}) {
     props = props || this.props;
 
     var self = this,
