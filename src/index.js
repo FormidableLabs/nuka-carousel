@@ -696,7 +696,7 @@ export default class Carousel extends React.Component {
     return 100;
   }
 
-  setDimensions(props, stateCb) {
+  setDimensions(props, stateCb = () => {}) {
     props = props || this.props;
 
     let slideWidth;
