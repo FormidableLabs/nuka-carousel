@@ -73,6 +73,7 @@ const Carousel = createReactClass({
     heightMode: PropTypes.oneOf(['first', 'max', 'current']),
     initialSlideHeight: PropTypes.number,
     initialSlideWidth: PropTypes.number,
+    onResize: PropTypes.func,
     shouldRecalculateHeight: PropTypes.bool,
     slideIndex: PropTypes.number,
     slidesToShow: PropTypes.number,
@@ -104,6 +105,7 @@ const Carousel = createReactClass({
       framePadding: '0px',
       frameOverflow: 'hidden',
       heightMode: 'first',
+      onResize: function() { },
       shouldRecalculateHeight: false,
       slideIndex: 0,
       slidesToScroll: 1,
@@ -727,6 +729,7 @@ const Carousel = createReactClass({
 
   onResize() {
     this.setDimensions();
+    this.props.onResize();
   },
 
   onReadyStateChange() {
