@@ -261,6 +261,19 @@ describe('<Carousel />', () => {
   });
 
   describe('methods', () => {
+    it('should call setDimensions callback after setState', () => {
+      const onResizeSpy = jest.fn();
+      const wrapper = mount(
+        <Carousel cellAlign="left" onResize={onResizeSpy}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      wrapper.instance().onResize();
+      expect(onResizeSpy).toHaveBeenCalled();
+    });
+
     it('should advance if nextSlide() is called.', () => {
       const wrapper = mount(
         <Carousel cellAlign="left">
