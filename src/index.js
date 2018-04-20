@@ -799,7 +799,8 @@ export default class Carousel extends React.Component {
       WebkitTransform: 'translate3d(0, 0, 0)',
       msTransform: 'translate(0, 0)',
       boxSizing: 'border-box',
-      MozBoxSizing: 'border-box'
+      MozBoxSizing: 'border-box',
+      touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`
     };
   }
 
