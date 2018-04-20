@@ -81,6 +81,7 @@ export default class Carousel extends React.Component {
     this.getTargetLeft = this.getTargetLeft.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onReadyStateChange = this.onReadyStateChange.bind(this);
+    this.onVisibilityChange = this.onVisibilityChange.bind(this);
     this.setInitialDimensions = this.setInitialDimensions.bind(this);
     this.setDimensions = this.setDimensions.bind(this);
     this.setLeft = this.setLeft.bind(this);
@@ -292,18 +293,26 @@ export default class Carousel extends React.Component {
     };
   }
 
-  handleMouseOver() {
+  pauseAutoplay() {
     if (this.props.autoplay) {
       this.autoplayPaused = true;
       this.stopAutoplay();
     }
   }
 
-  handleMouseOut() {
+  unpauseAutoplay() {
     if (this.props.autoplay && this.autoplayPaused) {
       this.startAutoplay();
       this.autoplayPaused = null;
     }
+  }
+
+  handleMouseOver() {
+    this.pauseAutoplay();
+  }
+
+  handleMouseOut() {
+    this.unpauseAutoplay();
   }
 
   handleClick(event) {
@@ -609,6 +618,7 @@ export default class Carousel extends React.Component {
     if (ExecutionEnvironment.canUseDOM) {
       addEvent(window, 'resize', this.onResize);
       addEvent(document, 'readystatechange', this.onReadyStateChange);
+      addEvent(document, 'visibilitychange', this.onVisibilityChange);
     }
   }
 
@@ -618,6 +628,14 @@ export default class Carousel extends React.Component {
 
   onReadyStateChange() {
     this.setDimensions();
+  }
+
+  onVisibilityChange() {
+    if (document.hidden) {
+      this.pauseAutoplay();
+    } else {
+      this.unpauseAutoplay();
+    }
   }
 
   unbindEvents() {
