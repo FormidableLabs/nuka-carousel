@@ -51,7 +51,7 @@ export default class Carousel extends React.Component {
     super(...arguments);
 
     this.displayName = 'Carousel';
-    this.clickSafe = true;
+    this.clickSafe = false;
     this.touchObject = {};
     this.state = {
       currentSlide: this.props.slideIndex,
@@ -89,6 +89,7 @@ export default class Carousel extends React.Component {
     this.getTargetLeft = this.getTargetLeft.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onReadyStateChange = this.onReadyStateChange.bind(this);
+    this.onVisibilityChange = this.onVisibilityChange.bind(this);
     this.setInitialDimensions = this.setInitialDimensions.bind(this);
     this.totalSlides = this.totalSlides.bind(this);
     this.setDimensions = this.setDimensions.bind(this);
@@ -312,18 +313,26 @@ export default class Carousel extends React.Component {
     };
   }
 
-  handleMouseOver() {
+  pauseAutoplay() {
     if (this.props.autoplay) {
       this.autoplayPaused = true;
       this.stopAutoplay();
     }
   }
 
-  handleMouseOut() {
+  unpauseAutoplay() {
     if (this.props.autoplay && this.autoplayPaused) {
       this.startAutoplay();
       this.autoplayPaused = null;
     }
+  }
+
+  handleMouseOver() {
+    this.pauseAutoplay();
+  }
+
+  handleMouseOut() {
+    this.unpauseAutoplay();
   }
 
   handleClick(event) {
@@ -644,15 +653,24 @@ export default class Carousel extends React.Component {
     if (ExecutionEnvironment.canUseDOM) {
       addEvent(window, 'resize', this.onResize);
       addEvent(document, 'readystatechange', this.onReadyStateChange);
+      addEvent(document, 'visibilitychange', this.onVisibilityChange);
     }
   }
 
   onResize() {
-    this.setDimensions();
+    this.setDimensions(null, this.props.onResize);
   }
 
   onReadyStateChange() {
     this.setDimensions();
+  }
+
+  onVisibilityChange() {
+    if (document.hidden) {
+      this.pauseAutoplay();
+    } else {
+      this.unpauseAutoplay();
+    }
   }
 
   unbindEvents() {
@@ -822,7 +840,7 @@ export default class Carousel extends React.Component {
     return props.vertical ? frameHeight : frame.offsetWidth;
   }
 
-  setDimensions(props) {
+  setDimensions(props, stateCb = () => {}) {
     props = props || this.props;
 
     const frame = this.frame;
@@ -847,6 +865,7 @@ export default class Carousel extends React.Component {
         top: props.vertical ? this.getTargetLeft() : 0
       },
       () => {
+        stateCb();
         this.setLeft();
       }
     );
@@ -929,7 +948,8 @@ export default class Carousel extends React.Component {
       WebkitTransform: 'translate3d(0, 0, 0)',
       msTransform: 'translate(0, 0)',
       boxSizing: 'border-box',
-      MozBoxSizing: 'border-box'
+      MozBoxSizing: 'border-box',
+      touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`
     };
   }
 
@@ -1223,6 +1243,7 @@ Carousel.propTypes = {
   heightMode: PropTypes.oneOf(['first', 'current', 'max']),
   initialSlideHeight: PropTypes.number,
   initialSlideWidth: PropTypes.number,
+  onResize: PropTypes.func,
   Placeholder: PropTypes.func,
   placeholderMode: PropTypes.bool,
   preloadedChildrenLevel: PropTypes.number,
@@ -1266,6 +1287,7 @@ Carousel.defaultProps = {
   framePadding: '0px',
   frameOverflow: 'hidden',
   heightMode: 'first',
+  onResize() {},
   placeholderMode: false,
   preloadedChildrenLevel: 1,
   slideIndex: 0,
