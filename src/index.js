@@ -65,7 +65,8 @@ export default class Carousel extends React.Component {
       easing: easing.easeCircleOut,
       isWrappingAround: false,
       wrapToIndex: null,
-      resetWrapAroundPosition: false
+      resetWrapAroundPosition: false,
+      autoSizeBeforeMount: true
     };
 
     this.getTouchEvents = this.getTouchEvents.bind(this);
@@ -926,13 +927,15 @@ export default class Carousel extends React.Component {
         ? `${this.props.cellSpacing / 2 * -1}px 0px`
         : `0px ${this.props.cellSpacing / 2 * -1}px`,
       padding: 0,
-      height: this.props.vertical
-        ? listWidth + spacingOffset
-        : this.state.slideHeight,
-      width: this.props.vertical ? 'auto' : listWidth + spacingOffset,
       cursor: this.state.dragging === true ? 'pointer' : 'inherit',
       boxSizing: 'border-box',
-      MozBoxSizing: 'border-box'
+      MozBoxSizing: 'border-box',
+      ...(this.mounted && {
+        height: this.props.vertical
+          ? listWidth + spacingOffset
+          : this.state.slideHeight,
+        width: this.props.vertical ? 'auto' : listWidth + spacingOffset
+      })
     };
   }
 
@@ -955,15 +958,19 @@ export default class Carousel extends React.Component {
 
   getSlideStyles(index, positionValue) {
     const targetPosition = this.getSlideTargetPosition(index, positionValue);
+    const positionAbsolute = this.mounted || (!this.mounted && index !== 0);
+
     return {
-      position: 'absolute',
+      ...(positionAbsolute && {
+        position: 'absolute',
+        display: this.props.vertical ? 'block' : 'inline-block',
+        width: this.props.vertical ? '100%' : this.state.slideWidth
+      }),
+      height: 'auto',
       left: this.props.vertical ? 0 : targetPosition,
       top: this.props.vertical ? targetPosition : 0,
-      display: this.props.vertical ? 'block' : 'inline-block',
       listStyleType: 'none',
       verticalAlign: 'top',
-      width: this.props.vertical ? '100%' : this.state.slideWidth,
-      height: 'auto',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
       marginLeft: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
@@ -1032,7 +1039,7 @@ export default class Carousel extends React.Component {
       height: 'auto',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
-      visibility: this.state.slideWidth ? 'visible' : 'hidden'
+      visibility: !this.mounted || this.state.slideWidth ? 'visible' : 'hidden'
     };
   }
 
