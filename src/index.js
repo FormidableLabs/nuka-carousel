@@ -911,12 +911,11 @@ export default class Carousel extends React.Component {
 
   // Styles
 
-  getListStyles(styles) {
-    const { tx, ty } = styles;
+  getListStyles({ tx, ty }) {
     const listWidth = this.state.slideWidth * this.totalSlides();
     const spacingOffset = this.props.cellSpacing * this.totalSlides();
     const transform = `translate3d(${tx}px, ${ty}px, 0)`;
-    return {
+    const styles = {
       transform,
       WebkitTransform: transform,
       msTransform: `translate(${tx}px, ${ty}px)`,
@@ -926,14 +925,19 @@ export default class Carousel extends React.Component {
         ? `${this.props.cellSpacing / 2 * -1}px 0px`
         : `0px ${this.props.cellSpacing / 2 * -1}px`,
       padding: 0,
-      height: this.props.vertical
-        ? listWidth + spacingOffset
-        : this.state.slideHeight,
-      width: this.props.vertical ? 'auto' : listWidth + spacingOffset,
       cursor: this.state.dragging === true ? 'pointer' : 'inherit',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box'
     };
+
+    if (this.mounted) {
+      styles.height = this.props.vertical
+        ? listWidth + spacingOffset
+        : this.state.slideHeight;
+      styles.width = this.props.vertical ? 'auto' : listWidth + spacingOffset;
+    }
+
+    return styles;
   }
 
   getFrameStyles() {
@@ -955,15 +959,14 @@ export default class Carousel extends React.Component {
 
   getSlideStyles(index, positionValue) {
     const targetPosition = this.getSlideTargetPosition(index, positionValue);
-    return {
-      position: 'absolute',
+    const positionAbsolute = this.mounted || (!this.mounted && index !== 0);
+
+    const styles = {
+      height: 'auto',
       left: this.props.vertical ? 0 : targetPosition,
       top: this.props.vertical ? targetPosition : 0,
-      display: this.props.vertical ? 'block' : 'inline-block',
       listStyleType: 'none',
       verticalAlign: 'top',
-      width: this.props.vertical ? '100%' : this.state.slideWidth,
-      height: 'auto',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
       marginLeft: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
@@ -971,6 +974,14 @@ export default class Carousel extends React.Component {
       marginTop: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
       marginBottom: this.props.vertical ? this.props.cellSpacing / 2 : 'auto'
     };
+
+    if (positionAbsolute) {
+      styles.position = 'absolute';
+      styles.display = this.props.vertical ? 'block' : 'inline-block';
+      styles.width = this.props.vertical ? '100%' : this.state.slideWidth;
+    }
+
+    return styles;
   }
 
   getSlideTargetPosition(index, positionValue) {
@@ -1032,7 +1043,7 @@ export default class Carousel extends React.Component {
       height: 'auto',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
-      visibility: this.state.slideWidth ? 'visible' : 'hidden'
+      visibility: !this.mounted || this.state.slideWidth ? 'visible' : 'hidden'
     };
   }
 
