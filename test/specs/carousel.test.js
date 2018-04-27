@@ -62,6 +62,16 @@ describe('<Carousel />', () => {
       expect(children).toHaveLength(3);
     });
 
+    it('should render a single child with the `slider-slide` class.', () => {
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+        </Carousel>
+      );
+      const children = wrapper.find('.slider-slide');
+      expect(children).toHaveLength(1);
+    });
+
     it('should render controls by default.', () => {
       const wrapper = mount(
         <Carousel>

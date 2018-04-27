@@ -1037,10 +1037,7 @@ export default class Carousel extends React.Component {
   }
 
   render() {
-    const children =
-      React.Children.count(this.props.children) > 1
-        ? this.formatChildren(this.props.children)
-        : this.props.children;
+    const children = this.formatChildren(this.props.children);
     const duration =
       this.state.dragging || this.state.resetWrapAroundPosition
         ? 0
