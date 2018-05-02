@@ -110,6 +110,12 @@ Used to set overflow style property on slider frame. Defaults to `hidden`.
 
 Animation easing function when swipe exceeds edge. See valid easings here: [D3 Easing Functions](https://github.com/d3/d3-ease).
 
+### heightMode
+
+`React.PropTypes.oneOf(['first', 'current', 'max'])`
+
+Change the height of the slides based either on the first slide, the current slide, or the maximum height of all slides.
+
 #### initialSlideHeight
 
 `React.PropTypes.number`
