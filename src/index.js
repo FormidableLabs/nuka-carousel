@@ -65,7 +65,8 @@ export default class Carousel extends React.Component {
       easing: easing.easeCircleOut,
       isWrappingAround: false,
       wrapToIndex: null,
-      resetWrapAroundPosition: false
+      resetWrapAroundPosition: false,
+      loadedSlidesList: []
     };
 
     this.getTouchEvents = this.getTouchEvents.bind(this);
@@ -110,6 +111,7 @@ export default class Carousel extends React.Component {
     this.findMaxHeightSlide = this.findMaxHeightSlide.bind(this);
     this.shouldRenderSlide = this.shouldRenderSlide.bind(this);
     this.renderControls = this.renderControls.bind(this);
+    this.updateLoadedSlidesList = this.updateLoadedSlidesList.bind(this);
   }
 
   componentWillMount() {
@@ -124,6 +126,9 @@ export default class Carousel extends React.Component {
     if (this.props.autoplay) {
       this.startAutoplay();
     }
+
+    // update the loaded slides list on first render, if placeholder mode is activated
+    this.updateLoadedSlidesList();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -149,9 +154,13 @@ export default class Carousel extends React.Component {
     }
   }
 
-  // TODO check why is this needed
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     this.updateDimensions();
+
+    // update the loaded slides when current slide changes, if placeholder mode is activated
+    if (prevState.currentSlide !== this.state.currentSlide) {
+      this.updateLoadedSlidesList(prevState.loadedSlidesList);
+    }
   }
 
   componentWillUnmount() {
@@ -159,6 +168,40 @@ export default class Carousel extends React.Component {
     this.stopAutoplay();
     // see https://github.com/facebook/react/issues/3417#issuecomment-121649937
     this.mounted = false;
+  }
+
+  /**
+   * This function updates the loaded slides list if placeholder mode is activated.
+   * The purpose of loadedSlidesList is to store the indexes of the slides that are already loaded,
+   *   so that they don't get replaced with a Placeholder when they get out of focus.
+   * For slides that have been loaded at least once, a Slide component will always be render -> This avoids the
+   *   flickering in the carousel.
+   *
+   * @param {number[]} loadedSlidesList - the list that contains the slides that have already been loaded
+   * @returns {void}
+   */
+  updateLoadedSlidesList(loadedSlidesList = []) {
+    const { placeholderMode, Placeholder } = this.props;
+    if (!placeholderMode || !Placeholder) {
+      return;
+    }
+
+    const newLoadedSlidesList = loadedSlidesList.slice(0);
+
+    const { children } = this.props;
+    children.map((_, index) => {
+      if (newLoadedSlidesList.includes(index)) {
+        return;
+      }
+
+      if (this.shouldRenderSlide(index)) {
+        newLoadedSlidesList.push(index);
+      }
+    });
+
+    this.setState({
+      loadedSlidesList: newLoadedSlidesList
+    });
   }
 
   getTouchEvents() {
@@ -680,7 +723,18 @@ export default class Carousel extends React.Component {
     }
   }
 
+  /**
+   * This function checks whether a Slide or Placeholder should be rendered for a slide with the given index.
+   * If placeholderMode is not activated, a Slide component will be rendered for all slides.
+   * The number of slides to be rendered depends on the preloadedChildrenLevel property.
+   *   For ex. if preloadedChildrenLevel is 2, this means that there will be a Slide component for the current slide,
+   *   2 slides on the left and 2 slides on the right. For all other slides, a Placeholder will be rendered instead.
+   *
+   * @param {number} index - The slide index
+   * @returns {boolean} a flag that indicates whether Slide should be rendered (true) or Placeholder (false)
+   */
   shouldRenderSlide(index) {
+    const { currentSlide, loadedSlidesList = [] } = this.state;
     const {
       Placeholder,
       placeholderMode,
@@ -692,7 +746,14 @@ export default class Carousel extends React.Component {
       return true;
     }
 
-    const currentSlide = this.state.currentSlide;
+    // loadedSlidesList keeps the indexes of slides that are already loaded.
+    // If a slide has been already loaded, we render a Slide component, no matter if the slide is in focus or not.
+    // So, if the slide index provided as a param to this function is included in loadedSlidesList,
+    //   this means that we can render a Slide directly and skip the logic below.
+    if (loadedSlidesList.includes(index)) {
+      return true;
+    }
+
     const totalPreloadedSlides = 2 * preloadedChildrenLevel + 1;
     const totalSlides = this.totalSlides();
 
@@ -962,11 +1023,11 @@ export default class Carousel extends React.Component {
     const positionAbsolute = this.mounted || (!this.mounted && index !== 0);
 
     const styles = {
-      height: 'auto',
       left: this.props.vertical ? 0 : targetPosition,
       top: this.props.vertical ? targetPosition : 0,
       listStyleType: 'none',
       verticalAlign: 'top',
+      height: 'auto',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
       marginLeft: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
@@ -1190,7 +1251,7 @@ export default class Carousel extends React.Component {
   }
 
   render() {
-    const children = this.formatChildren(this.props.children);
+    const children = this.formatChildren();
     const duration =
       this.state.dragging || this.state.resetWrapAroundPosition
         ? 0

@@ -39,6 +39,14 @@ describe('<Carousel />', () => {
       expect(children).toHaveLength(3);
     });
 
+    it('should render a single child with the `slider-slide` class.', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide}>{createSlidesData(1)}</Carousel>
+      );
+      const children = wrapper.find('.slider-slide');
+      expect(children).toHaveLength(1);
+    });
+
     it('should render controls by default.', () => {
       const wrapper = mount(<Carousel Slide={Slide}>{data}</Carousel>);
       const decorator1 = wrapper.find('.slider-control-centerleft');
@@ -252,9 +260,7 @@ describe('<Carousel />', () => {
       const onResizeSpy = jest.fn();
       const wrapper = mount(
         <Carousel cellAlign="left" onResize={onResizeSpy}>
-          <p>Slide 1</p>
-          <p>Slide 2</p>
-          <p>Slide 3</p>
+          {data}
         </Carousel>
       );
       wrapper.instance().onResize();
