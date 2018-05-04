@@ -134,6 +134,20 @@ export default class Carousel extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    this.controlsMap = [
+      { func: this.props.renderTopLeftControls, key: 'TopLeft' },
+      { func: this.props.renderTopCenterControls, key: 'TopCenter' },
+      { func: this.props.renderTopRightControls, key: 'TopRight' },
+      { func: this.props.renderCenterLeftControls, key: 'CenterLeft' },
+      { func: this.props.renderCenterCenterControls, key: 'CenterCenter' },
+      { func: this.props.renderCenterRightControls, key: 'CenterRight' },
+      { func: this.props.renderBottomLeftControls, key: 'BottomLeft' },
+      { func: this.props.renderBottomCenterControls, key: 'BottomCenter' },
+      { func: this.props.renderBottomRightControls, key: 'BottomRight' }
+    ];
+  }
+
   componentWillUnmount() {
     this.unbindEvents();
     this.stopAutoplay();
