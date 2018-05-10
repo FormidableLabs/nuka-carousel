@@ -1,3 +1,4 @@
+/*eslint max-nested-callbacks: ["error", 4]*/
 import Carousel from '../../src';
 
 describe('<Carousel />', () => {
@@ -267,6 +268,20 @@ describe('<Carousel />', () => {
       );
       Carousel.prototype.getChildNodes.mockRestore();
       expect(wrapper).toHaveState({ slideHeight: 200 });
+    });
+
+    it('should correctly count number of slides after props being updated.', () => {
+      const elems = ['Slide 2', 'Slide 3', 'Slide 4'];
+      const wrapper = mount(
+        <Carousel>
+          <p>Static Slide</p>
+          {elems.map(e => `<p key={${e}}>${e}</e>`)}
+        </Carousel>
+      );
+      expect(wrapper).toHaveState({ slideCount: 4 });
+      const children = wrapper.props().children.concat(<p>Slide 4</p>);
+      wrapper.setProps({ children });
+      expect(wrapper).toHaveState({ slideCount: 5 });
     });
   });
 
