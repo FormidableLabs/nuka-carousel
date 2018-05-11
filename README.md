@@ -7,7 +7,7 @@ A Pure ReactJS Carousel Component
 ### Install
 
 ```bash
-$ yarn add nuka-carousel
+$ yarn add @todaytix/nuka-carousel
 ```
 
 ### Example
@@ -31,6 +31,9 @@ export default class extends React.Component {
   }
 }
 ```
+
+### How is this differen than [nuka-carousel](https://github.com/FormidableLabs/nuka-carousel)?
+There is a bug in the current version, v4.0.2, of Nuka Carousel that prevents a user from clicking DOM elements inside a carousel whose dragging prop is false. More information [here](https://github.com/FormidableLabs/nuka-carousel/pull/347).
 
 ### Running demo locally
 
