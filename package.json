@@ -1,6 +1,6 @@
 {
-  "name": "nuka-carousel",
-  "version": "4.2.1",
+  "name": "@todaytix/nuka-carousel",
+  "version": "4.2.2",
   "description": "Pure React Carousel",
   "main": "index.js",
   "module": "es/index.js",
@@ -75,7 +75,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kenwheeler/nuka-carousel.git"
+    "url": "https://github.com/TodayTix/nuka-carousel.git"
   },
   "keywords": [
     "react",
@@ -85,8 +85,8 @@
   "author": "Ken Wheeler",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/FormidableLabs/nuka-carousel/issues"
+    "url": "https://github.com/TodayTix/nuka-carousel/issues"
   },
-  "homepage": "https://github.com/FormidableLabs/nuka-carousel",
+  "homepage": "https://github.com/TodayTix/nuka-carousel",
   "sideEffects": false
 }
