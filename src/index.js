@@ -36,7 +36,7 @@ export default class Carousel extends React.Component {
     super(...arguments);
 
     this.displayName = 'Carousel';
-    this.clickSafe = true;
+    this.clickSafe = false;
     this.controlsMap = [
       { func: this.props.renderTopLeftControls, key: 'TopLeft' },
       { func: this.props.renderTopCenterControls, key: 'TopCenter' },
@@ -144,6 +144,8 @@ export default class Carousel extends React.Component {
   getTouchEvents() {
     if (this.props.swiping === false) {
       return null;
+    } else {
+      self.clickSafe = true;
     }
 
     return {
