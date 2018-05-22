@@ -103,6 +103,18 @@ describe('<Carousel />', () => {
       expect(slider).toHaveLength(1);
     });
 
+    it('should render with right height when supplied an initialSlideHeight prop.', () => {
+      const wrapper = render(
+        <Carousel initialSlideHeight={64} slidesToShow={2}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const frame = wrapper.find('.slider-frame');
+      expect(frame.html()).toContain('height:64px;');
+    });
+
     it('should render with the class `test` with className supplied.', () => {
       const wrapper = mount(
         <Carousel className="test">
