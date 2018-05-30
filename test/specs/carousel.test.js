@@ -1,3 +1,4 @@
+/*eslint max-nested-callbacks: ["error", 4]*/
 import Carousel from '../../src';
 
 const createSlidesData = (numberOfSlides = 3) =>
@@ -63,6 +64,16 @@ describe('<Carousel />', () => {
       const wrapper = mount(<Carousel Slide={Slide}>{data}</Carousel>);
       const slider = wrapper.find('div.slider');
       expect(slider).toHaveLength(1);
+    });
+
+    it('should render with right height when supplied an initialSlideHeight prop.', () => {
+      const wrapper = render(
+        <Carousel Slide={Slide} initialSlideHeight={64} slidesToShow={2}>
+          {data}
+        </Carousel>
+      );
+      const frame = wrapper.find('.slider-frame');
+      expect(frame.html()).toContain('height:64px;');
     });
 
     it('should render with the class `test` with className supplied.', () => {
@@ -252,6 +263,16 @@ describe('<Carousel />', () => {
       );
       Carousel.prototype.getChildNodes.mockRestore();
       expect(wrapper).toHaveState({ slideHeight: 200 });
+    });
+
+    it('should correctly count number of slides after props being updated.', () => {
+      const wrapper = mount(
+        <Carousel Slide={Slide}>{createSlidesData(4)}</Carousel>
+      );
+      expect(wrapper).toHaveState({ slideCount: 4 });
+      const children = wrapper.props().children.concat('Slide 5');
+      wrapper.setProps({ children });
+      expect(wrapper).toHaveState({ slideCount: 5 });
     });
   });
 

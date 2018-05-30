@@ -132,7 +132,7 @@ export default class Carousel extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const slideCount = nextProps.children.length;
+    const slideCount = this.totalSlides(nextProps.children);
     this.setState({ slideCount });
     if (slideCount <= this.state.currentSlide) {
       this.goToSlide(Math.max(slideCount - 1, 0));
@@ -820,17 +820,18 @@ export default class Carousel extends React.Component {
     });
   }
 
-  totalSlides() {
-    return this.props.children ? this.props.children.length : 0;
+  totalSlides(children) {
+    children = children || this.props.children;
+    return children ? children.length : 0;
   }
 
   setInitialDimensions() {
     const slideWidth = this.props.vertical
       ? this.props.initialSlideHeight || 0
       : this.props.initialSlideWidth || 0;
-    const slideHeight = this.props.initialSlideHeight
-      ? this.props.initialSlideHeight * this.props.slidesToShow
-      : 0;
+    const slideHeight = this.props.vertical
+      ? (this.props.initialSlideHeight || 0) * this.props.slidesToShow
+      : this.props.initialSlideHeight || 0;
 
     const frameHeight =
       slideHeight + this.props.cellSpacing * (this.props.slidesToShow - 1);
