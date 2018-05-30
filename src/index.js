@@ -85,6 +85,7 @@ export default class Carousel extends React.Component {
     this.getTargetLeft = this.getTargetLeft.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onReadyStateChange = this.onReadyStateChange.bind(this);
+    this.onVisibilityChange = this.onVisibilityChange.bind(this);
     this.setInitialDimensions = this.setInitialDimensions.bind(this);
     this.setDimensions = this.setDimensions.bind(this);
     this.setLeft = this.setLeft.bind(this);
@@ -115,7 +116,7 @@ export default class Carousel extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const slideCount = nextProps.children.length;
+    const slideCount = React.Children.count(nextProps.children);
     this.setState({ slideCount });
     if (slideCount <= this.state.currentSlide) {
       this.goToSlide(Math.max(slideCount - 1, 0));
@@ -296,18 +297,26 @@ export default class Carousel extends React.Component {
     };
   }
 
-  handleMouseOver() {
+  pauseAutoplay() {
     if (this.props.autoplay) {
       this.autoplayPaused = true;
       this.stopAutoplay();
     }
   }
 
-  handleMouseOut() {
+  unpauseAutoplay() {
     if (this.props.autoplay && this.autoplayPaused) {
       this.startAutoplay();
       this.autoplayPaused = null;
     }
+  }
+
+  handleMouseOver() {
+    this.pauseAutoplay();
+  }
+
+  handleMouseOut() {
+    this.unpauseAutoplay();
   }
 
   handleClick(event) {
@@ -630,15 +639,24 @@ export default class Carousel extends React.Component {
     if (ExecutionEnvironment.canUseDOM) {
       addEvent(window, 'resize', this.onResize);
       addEvent(document, 'readystatechange', this.onReadyStateChange);
+      addEvent(document, 'visibilitychange', this.onVisibilityChange);
     }
   }
 
   onResize() {
-    this.setDimensions();
+    this.setDimensions(null, this.props.onResize);
   }
 
   onReadyStateChange() {
     this.setDimensions();
+  }
+
+  onVisibilityChange() {
+    if (document.hidden) {
+      this.pauseAutoplay();
+    } else {
+      this.unpauseAutoplay();
+    }
   }
 
   unbindEvents() {
@@ -669,9 +687,9 @@ export default class Carousel extends React.Component {
     const slideWidth = this.props.vertical
       ? this.props.initialSlideHeight || 0
       : this.props.initialSlideWidth || 0;
-    const slideHeight = this.props.initialSlideHeight
-      ? this.props.initialSlideHeight * this.props.slidesToShow
-      : 0;
+    const slideHeight = this.props.vertical
+      ? (this.props.initialSlideHeight || 0) * this.props.slidesToShow
+      : this.props.initialSlideHeight || 0;
 
     const frameHeight =
       slideHeight + this.props.cellSpacing * (this.props.slidesToShow - 1);
@@ -717,7 +735,7 @@ export default class Carousel extends React.Component {
     return 100;
   }
 
-  setDimensions(props) {
+  setDimensions(props, stateCb = () => {}) {
     props = props || this.props;
 
     let slideWidth;
@@ -762,6 +780,7 @@ export default class Carousel extends React.Component {
         top: props.vertical ? this.getTargetLeft() : 0
       },
       () => {
+        stateCb();
         this.setLeft();
       }
     );
@@ -819,7 +838,8 @@ export default class Carousel extends React.Component {
       WebkitTransform: 'translate3d(0, 0, 0)',
       msTransform: 'translate(0, 0)',
       boxSizing: 'border-box',
-      MozBoxSizing: 'border-box'
+      MozBoxSizing: 'border-box',
+      touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`
     };
   }
 
@@ -834,6 +854,7 @@ export default class Carousel extends React.Component {
       verticalAlign: 'top',
       width: this.props.vertical ? '100%' : this.state.slideWidth,
       height: 'auto',
+      minHeight: '100%',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
       marginLeft: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
@@ -1033,10 +1054,7 @@ export default class Carousel extends React.Component {
   }
 
   render() {
-    const children =
-      React.Children.count(this.props.children) > 1
-        ? this.formatChildren(this.props.children)
-        : this.props.children;
+    const children = this.formatChildren(this.props.children);
     const duration =
       this.state.dragging || this.state.resetWrapAroundPosition
         ? 0
@@ -1100,6 +1118,7 @@ Carousel.propTypes = {
   heightMode: PropTypes.oneOf(['first', 'current', 'max']),
   initialSlideHeight: PropTypes.number,
   initialSlideWidth: PropTypes.number,
+  onResize: PropTypes.func,
   renderTopLeftControls: PropTypes.func,
   renderTopCenterControls: PropTypes.func,
   renderTopRightControls: PropTypes.func,
@@ -1136,6 +1155,7 @@ Carousel.defaultProps = {
   framePadding: '0px',
   frameOverflow: 'hidden',
   heightMode: 'first',
+  onResize() {},
   slideIndex: 0,
   slidesToScroll: 1,
   slidesToShow: 1,

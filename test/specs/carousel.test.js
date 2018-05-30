@@ -1,3 +1,4 @@
+/*eslint max-nested-callbacks: ["error", 4]*/
 import Carousel from '../../src';
 
 describe('<Carousel />', () => {
@@ -62,6 +63,16 @@ describe('<Carousel />', () => {
       expect(children).toHaveLength(3);
     });
 
+    it('should render a single child with the `slider-slide` class.', () => {
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+        </Carousel>
+      );
+      const children = wrapper.find('.slider-slide');
+      expect(children).toHaveLength(1);
+    });
+
     it('should render controls by default.', () => {
       const wrapper = mount(
         <Carousel>
@@ -90,6 +101,18 @@ describe('<Carousel />', () => {
       );
       const slider = wrapper.find('div.slider');
       expect(slider).toHaveLength(1);
+    });
+
+    it('should render with right height when supplied an initialSlideHeight prop.', () => {
+      const wrapper = render(
+        <Carousel initialSlideHeight={64} slidesToShow={2}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const frame = wrapper.find('.slider-frame');
+      expect(frame.html()).toContain('height:64px;');
     });
 
     it('should render with the class `test` with className supplied.', () => {
@@ -258,9 +281,36 @@ describe('<Carousel />', () => {
       Carousel.prototype.getChildNodes.mockRestore();
       expect(wrapper).toHaveState({ slideHeight: 200 });
     });
+
+    it('should correctly count number of slides after props being updated.', () => {
+      const elems = ['Slide 2', 'Slide 3', 'Slide 4'];
+      const wrapper = mount(
+        <Carousel>
+          <p>Static Slide</p>
+          {elems.map(e => `<p key={${e}}>${e}</e>`)}
+        </Carousel>
+      );
+      expect(wrapper).toHaveState({ slideCount: 4 });
+      const children = wrapper.props().children.concat(<p>Slide 4</p>);
+      wrapper.setProps({ children });
+      expect(wrapper).toHaveState({ slideCount: 5 });
+    });
   });
 
   describe('methods', () => {
+    it('should call setDimensions callback after setState', () => {
+      const onResizeSpy = jest.fn();
+      const wrapper = mount(
+        <Carousel cellAlign="left" onResize={onResizeSpy}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      wrapper.instance().onResize();
+      expect(onResizeSpy).toHaveBeenCalled();
+    });
+
     it('should advance if nextSlide() is called.', () => {
       const wrapper = mount(
         <Carousel cellAlign="left">
