@@ -436,7 +436,9 @@ export default class Carousel extends React.Component {
   // Action Methods
 
   goToSlide(index) {
-    this.setState({ easing: easing[this.props.easing] });
+    if (!this.mounted) return;
+
+    if (this.mounted) this.setState({ easing: easing[this.props.easing] });
 
     if (index >= React.Children.count(this.props.children) || index < 0) {
       if (!this.props.wrapAround) {
