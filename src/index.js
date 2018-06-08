@@ -52,6 +52,7 @@ export default class Carousel extends React.Component {
 
     this.displayName = 'Carousel';
     this.clickSafe = false;
+    this.disableAnimation = true;
     this.touchObject = {};
     this.state = {
       currentSlide: this.props.slideIndex,
@@ -701,6 +702,7 @@ export default class Carousel extends React.Component {
   }
 
   onResize() {
+    this.disableAnimation = true
     this.setDimensions(null, this.props.onResize);
   }
 
@@ -968,6 +970,10 @@ export default class Carousel extends React.Component {
     this.setState({
       left: this.props.vertical ? 0 : this.getTargetLeft(),
       top: this.props.vertical ? this.getTargetLeft() : 0
+    }, () => {
+      if (this.disableAnimation) {
+        this.disableAnimation = false
+      }
     });
   }
 
@@ -1254,7 +1260,7 @@ export default class Carousel extends React.Component {
   render() {
     const children = this.formatChildren();
     const duration =
-      this.state.dragging || this.state.resetWrapAroundPosition
+      this.state.dragging || this.state.resetWrapAroundPosition || this.disableAnimation
         ? 0
         : this.props.speed;
 
