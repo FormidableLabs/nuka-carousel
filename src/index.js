@@ -642,6 +642,7 @@ export default class Carousel extends React.Component {
     if (ExecutionEnvironment.canUseDOM) {
       removeEvent(window, 'resize', this.onResize);
       removeEvent(document, 'readystatechange', this.onReadyStateChange);
+      removeEvent(document, 'visibilitychange', this.onVisibilityChange);
     }
   }
 
