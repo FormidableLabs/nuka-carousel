@@ -602,6 +602,10 @@ export default class Carousel extends React.Component {
   }
 
   nextSlide() {
+    if (this.state.isWrappingAround) {
+      return;
+    }
+
     const childrenCount = this.totalSlides();
     let slidesToShow = this.props.slidesToShow;
     if (this.props.slidesToScroll === 'auto') {
@@ -632,6 +636,10 @@ export default class Carousel extends React.Component {
   }
 
   previousSlide() {
+    if (this.state.isWrappingAround) {
+      return;
+    }
+
     if (this.state.currentSlide <= 0 && !this.props.wrapAround) {
       return;
     }
@@ -702,7 +710,7 @@ export default class Carousel extends React.Component {
   }
 
   onResize() {
-    this.disableAnimation = true
+    this.disableAnimation = true;
     this.setDimensions(null, this.props.onResize);
   }
 
@@ -967,14 +975,17 @@ export default class Carousel extends React.Component {
   }
 
   setLeft() {
-    this.setState({
-      left: this.props.vertical ? 0 : this.getTargetLeft(),
-      top: this.props.vertical ? this.getTargetLeft() : 0
-    }, () => {
-      if (this.disableAnimation) {
-        this.disableAnimation = false
+    this.setState(
+      {
+        left: this.props.vertical ? 0 : this.getTargetLeft(),
+        top: this.props.vertical ? this.getTargetLeft() : 0
+      },
+      () => {
+        if (this.disableAnimation) {
+          this.disableAnimation = false;
+        }
       }
-    });
+    );
   }
 
   // Styles
@@ -1029,9 +1040,11 @@ export default class Carousel extends React.Component {
     const targetPosition = this.getSlideTargetPosition(index, positionValue);
     const positionAbsolute = this.mounted || (!this.mounted && index !== 0);
 
+    const x = this.props.vertical ? 0 : targetPosition;
+    const y = this.props.vertical ? targetPosition : 0;
+    const transform = `translate3d(${x}px, ${y}px, 0)`;
+
     const styles = {
-      left: this.props.vertical ? 0 : targetPosition,
-      top: this.props.vertical ? targetPosition : 0,
       listStyleType: 'none',
       verticalAlign: 'top',
       height: 'auto',
@@ -1047,6 +1060,10 @@ export default class Carousel extends React.Component {
       styles.position = 'absolute';
       styles.display = this.props.vertical ? 'block' : 'inline-block';
       styles.width = this.props.vertical ? '100%' : this.state.slideWidth;
+
+      styles.transform = transform;
+      styles.WebkitTransform = transform;
+      styles.msTransform = `translate(${x}px, ${y}px)`;
     }
 
     return styles;
@@ -1260,7 +1277,9 @@ export default class Carousel extends React.Component {
   render() {
     const children = this.formatChildren();
     const duration =
-      this.state.dragging || this.state.resetWrapAroundPosition || this.disableAnimation
+      this.state.dragging ||
+      this.state.resetWrapAroundPosition ||
+      this.disableAnimation
         ? 0
         : this.props.speed;
 
