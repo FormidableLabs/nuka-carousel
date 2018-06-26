@@ -544,14 +544,16 @@ export default class Carousel extends React.Component {
           }),
           () =>
             setTimeout(() => {
-              this.setState(
-                { isWrappingAround: false, resetWrapAroundPosition: true },
-                () => {
-                  this.setState({ resetWrapAroundPosition: false });
-                  this.props.afterSlide(0);
-                  this.resetAutoplay();
-                }
-              );
+              if (this.mounted) {
+                this.setState(
+                  { isWrappingAround: false, resetWrapAroundPosition: true },
+                  () => {
+                    this.setState({ resetWrapAroundPosition: false });
+                    this.props.afterSlide(0);
+                    this.resetAutoplay();
+                  }
+                );
+              }
             }, this.props.speed)
         );
         return;
@@ -572,14 +574,16 @@ export default class Carousel extends React.Component {
           }),
           () =>
             setTimeout(() => {
-              this.setState(
-                { isWrappingAround: false, resetWrapAroundPosition: true },
-                () => {
-                  this.setState({ resetWrapAroundPosition: false });
-                  this.props.afterSlide(endSlide);
-                  this.resetAutoplay();
-                }
-              );
+              if (this.mounted) {
+                this.setState(
+                  { isWrappingAround: false, resetWrapAroundPosition: true },
+                  () => {
+                    this.setState({ resetWrapAroundPosition: false });
+                    this.props.afterSlide(endSlide);
+                    this.resetAutoplay();
+                  }
+                );
+              }
             }, this.props.speed)
         );
         return;
