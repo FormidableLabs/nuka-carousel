@@ -125,16 +125,14 @@ describe('Nuka Carousel', () => {
       await expect(page).toClick('button', { text: 'PREV' });
       await expect(page).toMatch('Nuka Carousel: Slide 6');
       await page.waitFor(600); // need to let slide transition complete
-      const mouseUpLeft = await page.evaluate(() => {
+      const getComputedStyleLeft = () => {
         const e = document.querySelector('.slider-slide:last-child');
         return window.getComputedStyle(e).left;
-      });
+      };
+      const mouseUpLeft = await page.evaluate(getComputedStyleLeft);
       await page.mouse.move(pointX, pointY);
       await page.mouse.down();
-      const mouseUpDown = await page.evaluate(() => {
-        const e = document.querySelector('.slider-slide:last-child');
-        return window.getComputedStyle(e).left;
-      });
+      const mouseUpDown = await page.evaluate(getComputedStyleLeft);
       expect(mouseUpLeft).toMatch(mouseUpDown);
     });
 
@@ -149,17 +147,63 @@ describe('Nuka Carousel', () => {
       await expect(page).toClick('button', { text: 'NEXT' });
       await expect(page).toMatch('Nuka Carousel: Slide 1');
       await page.waitFor(600); // need to let slide transition complete
-      const mouseUpLeft = await page.evaluate(() => {
+      const getComputedStyleLeft = () => {
         const e = document.querySelector('.slider-slide:first-child');
         return window.getComputedStyle(e).left;
-      });
+      };
+      const mouseUpLeft = await page.evaluate(getComputedStyleLeft);
       await page.mouse.move(pointX, pointY);
       await page.mouse.down();
-      const mouseUpDown = await page.evaluate(() => {
-        const e = document.querySelector('.slider-slide:first-child');
-        return window.getComputedStyle(e).left;
-      });
+      const mouseUpDown = await page.evaluate(getComputedStyleLeft);
       expect(mouseUpLeft).toMatch(mouseUpDown);
+    });
+
+    it('should handle click events when slides wrap around from first -> last', async () => {
+      const slide = await page.$('.slider-slide');
+      const metrics = await slide.boundingBox();
+      const pointX = metrics.x + metrics.width / 2.0;
+      const pointY = metrics.y + metrics.height / 2.0;
+      await expect(page).toClick('button', { text: 'Toggle Wrap Around' });
+      await expect(page).toClick('button', { text: 'PREV' });
+      await expect(page).toMatch('Nuka Carousel: Slide 6');
+      await page.waitFor(600); // need to let slide transition complete
+      const getTextDecoration = () => {
+        const e = document.querySelector('.slider-control-topcenter div');
+        return window.getComputedStyle(e).textDecorationLine;
+      };
+      let textDecoration = await page.evaluate(getTextDecoration);
+      expect(textDecoration).toMatch('none');
+      await page.mouse.click(pointX, pointY);
+      textDecoration = await page.evaluate(getTextDecoration);
+      expect(textDecoration).toMatch('underline');
+      await page.mouse.click(pointX, pointY);
+      textDecoration = await page.evaluate(getTextDecoration);
+      expect(textDecoration).toMatch('none');
+    });
+
+    it('should handle click events when slides wrap around from last -> first', async () => {
+      const slide = await page.$('.slider-slide');
+      const metrics = await slide.boundingBox();
+      const pointX = metrics.x + metrics.width / 2.0;
+      const pointY = metrics.y + metrics.height / 2.0;
+      await expect(page).toClick('button', { text: 'Toggle Wrap Around' });
+      await expect(page).toClick('button', { text: '6' });
+      await expect(page).toMatch('Nuka Carousel: Slide 6');
+      await expect(page).toClick('button', { text: 'NEXT' });
+      await expect(page).toMatch('Nuka Carousel: Slide 1');
+      await page.waitFor(600); // need to let slide transition complete
+      const getTextDecoration = () => {
+        const e = document.querySelector('.slider-control-topcenter div');
+        return window.getComputedStyle(e).textDecorationLine;
+      };
+      let textDecoration = await page.evaluate(getTextDecoration);
+      expect(textDecoration).toMatch('none');
+      await page.mouse.click(pointX, pointY);
+      textDecoration = await page.evaluate(getTextDecoration);
+      expect(textDecoration).toMatch('underline');
+      await page.mouse.click(pointX, pointY);
+      textDecoration = await page.evaluate(getTextDecoration);
+      expect(textDecoration).toMatch('none');
     });
   });
 });
