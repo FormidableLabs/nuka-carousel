@@ -802,7 +802,8 @@ export default class Carousel extends React.Component {
       width: this.props.vertical ? 'auto' : listWidth + spacingOffset,
       cursor: this.state.dragging === true ? 'pointer' : 'inherit',
       boxSizing: 'border-box',
-      MozBoxSizing: 'border-box'
+      MozBoxSizing: 'border-box',
+      touchAction: 'none'
     };
   }
 
@@ -840,8 +841,7 @@ export default class Carousel extends React.Component {
       marginLeft: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
       marginRight: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
       marginTop: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
-      marginBottom: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
-      touchAction: 'none'
+      marginBottom: this.props.vertical ? this.props.cellSpacing / 2 : 'auto'
     };
   }
 
