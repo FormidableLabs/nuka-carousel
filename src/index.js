@@ -468,7 +468,6 @@ export default class Carousel extends React.Component {
                 { isWrappingAround: false, resetWrapAroundPosition: true },
                 () => {
                   this.setState({ resetWrapAroundPosition: false });
-                  this.setLeft();
                   this.props.afterSlide(0);
                   this.resetAutoplay();
                 }
@@ -498,7 +497,6 @@ export default class Carousel extends React.Component {
                 { isWrappingAround: false, resetWrapAroundPosition: true },
                 () => {
                   this.setState({ resetWrapAroundPosition: false });
-                  this.setLeft();
                   this.props.afterSlide(endSlide);
                   this.resetAutoplay();
                 }
@@ -520,7 +518,6 @@ export default class Carousel extends React.Component {
       },
       () => {
         this.resetAutoplay();
-        this.setLeft();
       }
     );
   }
@@ -774,10 +771,15 @@ export default class Carousel extends React.Component {
   }
 
   setLeft() {
-    this.setState({
-      left: this.props.vertical ? 0 : this.getTargetLeft(),
-      top: this.props.vertical ? this.getTargetLeft() : 0
-    });
+    const newLeft = this.props.vertical ? 0 : this.getTargetLeft();
+    const newTop = this.props.vertical ? this.getTargetLeft() : 0;
+
+    if (newLeft !== this.state.left || newTop !== this.state.top) {
+      this.setState({
+        left: newLeft,
+        top: newTop
+      });
+    }
   }
 
   // Styles
@@ -1064,7 +1066,8 @@ export default class Carousel extends React.Component {
             timing: {
               duration,
               ease: this.state.easing
-            }
+            },
+            events: { end: this.setLeft }
           })}
           children={({ tx, ty }) => (
             <div
