@@ -21,9 +21,13 @@ class App extends React.Component {
     this.setState({ underlineHeader: !this.state.underlineHeader });
   }
 
+  getStyleTagStyles() {
+    return '.slider-list img {width: 100%; display: block;}';
+  }
+
   render() {
     return (
-      <div style={{ width: '50%', margin: 'auto' }}>
+      <div style={{ width: '70%', margin: 'auto' }}>
         <Carousel
           wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
@@ -65,6 +69,15 @@ class App extends React.Component {
             <button
               onClick={() =>
                 this.setState({
+                  length: 1
+                })
+              }
+            >
+              1 Slide Only
+            </button>
+            <button
+              onClick={() =>
+                this.setState({
                   length: 2
                 })
               }
@@ -82,6 +95,11 @@ class App extends React.Component {
             </button>
           </div>
         </div>
+
+        <style
+          type="text/css"
+          dangerouslySetInnerHTML={{ __html: this.getStyleTagStyles() }}
+        />
       </div>
     );
   }
