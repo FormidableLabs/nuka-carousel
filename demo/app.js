@@ -7,7 +7,18 @@ const colors = ['7732bb', '047cc0', '00884b', 'e3bc13', 'db7c00', 'aa231f'];
 class App extends React.Component {
   constructor() {
     super(...arguments);
-    this.state = { slideIndex: 0, length: 6, wrapAround: false };
+    this.state = {
+      slideIndex: 0,
+      length: 6,
+      wrapAround: false,
+      underlineHeader: false
+    };
+
+    this.handleImageClick = this.handleImageClick.bind(this);
+  }
+
+  handleImageClick() {
+    this.setState({ underlineHeader: !this.state.underlineHeader });
   }
 
   render() {
@@ -16,9 +27,16 @@ class App extends React.Component {
         <Carousel
           wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
-          afterSlide={slideIndex => this.setState({ slideIndex })}
           renderTopCenterControls={({ currentSlide }) => (
-            <div style={{ fontFamily: 'Helvetica', color: '#fff' }}>
+            <div
+              style={{
+                fontFamily: 'Helvetica',
+                color: '#fff',
+                textDecoration: this.state.underlineHeader
+                  ? 'underline'
+                  : 'none'
+              }}
+            >
               Nuka Carousel: Slide {currentSlide + 1}
             </div>
           )}
@@ -30,6 +48,7 @@ class App extends React.Component {
                 src={`http://placehold.it/1000x400/${color}/ffffff/&text=slide${index +
                   1}`}
                 key={color}
+                onClick={this.handleImageClick}
               />
             ))}
         </Carousel>
