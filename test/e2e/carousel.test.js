@@ -301,7 +301,7 @@ describe('Nuka Carousel', () => {
           ['left', 'width']
         );
         const correctLeft = -parseFloat(styles.width);
-        expect(`${styles.left}`).toMatch(`${correctLeft}px`);
+        expect(`${approximately(styles.left, correctLeft)}`).toMatch('true');
       });
 
       it('should partially show first slide when on last slide.', async () => {
@@ -313,7 +313,6 @@ describe('Nuka Carousel', () => {
         );
         const slideCount = (await page.$$('.slider-slide')).length;
         const correctLeft = parseFloat(styles.width) * slideCount;
-        expect(`${styles.left}`).toMatch(`${correctLeft}px`);
         expect(`${approximately(styles.left, correctLeft)}`).toMatch('true');
       });
 
