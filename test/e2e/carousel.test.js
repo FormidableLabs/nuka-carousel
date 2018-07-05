@@ -206,4 +206,143 @@ describe('Nuka Carousel', () => {
       expect(textDecoration).toMatch('none');
     });
   });
+
+  describe.only('Neighboring Slide Visibility and Slide Alignment', () => {
+    const getStyles = (selector, keys) => {
+      const e = document.querySelector(selector);
+      const styles = window.getComputedStyle(e);
+      return keys.reduce((acc, curr) => {
+        acc[curr] = styles[curr];
+        return acc;
+      }, {});
+    };
+
+    const approximately = (a, b) => {
+      return Math.abs(parseFloat(a) - parseFloat(b)) < 0.25;
+    };
+
+    beforeEach(async () => {
+      await page.setViewport({
+        width: 1024,
+        height: 768
+      });
+      await expect(page).toClick('button', {
+        text: 'Toggle Partially Visible Slides'
+      });
+    });
+
+    describe('WrapAround Disabled and center aligned', () => {
+      beforeEach(async () => {
+        await expect(page).toClick('button', { text: 'Center' });
+      });
+
+      it('should not partially show last slide when on first slide.', async () => {
+        // starts on first slide
+        const styles = await page.evaluate(
+          getStyles,
+          '.slider-slide:last-child',
+          ['left', 'width']
+        );
+        const slideCount = (await page.$$('.slider-slide')).length;
+        const correctLeft = parseFloat(styles.width) * (slideCount - 1);
+
+        expect(`${approximately(styles.left, correctLeft)}`).toMatch('true');
+      });
+
+      it('should not partially show first slide when on last slide.', async () => {
+        await expect(page).toClick('button', { text: '6' });
+        const styles = await page.evaluate(
+          getStyles,
+          '.slider-slide:first-child',
+          ['left']
+        );
+        expect(styles.left).toMatch('0px');
+      });
+
+      it('should partially show previous and next slide when on a middle slide.', async () => {
+        const slide = 3;
+        await expect(page).toClick('button', { text: `${slide}` });
+
+        const prevSlide = slide - 1;
+        const prevStyles = await page.evaluate(
+          getStyles,
+          `.slider-slide:nth-child(${prevSlide})`,
+          ['left', 'width']
+        );
+        const correctPrevLeft = parseFloat(prevStyles.width) * (prevSlide - 1);
+        expect(`${approximately(prevStyles.left, correctPrevLeft)}`).toMatch(
+          'true'
+        );
+
+        const nextSlide = slide + 1;
+        const nextStyles = await page.evaluate(
+          getStyles,
+          `.slider-slide:nth-child(${nextSlide})`,
+          ['left', 'width']
+        );
+        const correctNextLeft = parseFloat(nextStyles.width) * (nextSlide - 1);
+        expect(`${approximately(nextStyles.left, correctNextLeft)}`).toMatch(
+          'true'
+        );
+      });
+    });
+
+    describe('WrapAround Enabled and center aligned', () => {
+      beforeEach(async () => {
+        await expect(page).toClick('button', { text: 'Toggle Wrap Around' });
+        await expect(page).toClick('button', { text: 'Center' });
+      });
+
+      it('should partially show last slide when on first slide.', async () => {
+        // starts on first slide
+        const styles = await page.evaluate(
+          getStyles,
+          '.slider-slide:last-child',
+          ['left', 'width']
+        );
+        const correctLeft = -parseFloat(styles.width);
+        expect(`${styles.left}`).toMatch(`${correctLeft}px`);
+      });
+
+      it('should partially show first slide when on last slide.', async () => {
+        await expect(page).toClick('button', { text: '6' });
+        const styles = await page.evaluate(
+          getStyles,
+          '.slider-slide:first-child',
+          ['left', 'width']
+        );
+        const slideCount = (await page.$$('.slider-slide')).length;
+        const correctLeft = parseFloat(styles.width) * slideCount;
+        expect(`${styles.left}`).toMatch(`${correctLeft}px`);
+        expect(`${approximately(styles.left, correctLeft)}`).toMatch('true');
+      });
+
+      it('should partially show previous and next slide when on a middle slide.', async () => {
+        const slide = 3;
+        await expect(page).toClick('button', { text: `${slide}` });
+
+        const prevSlide = slide - 1;
+        const prevStyles = await page.evaluate(
+          getStyles,
+          `.slider-slide:nth-child(${prevSlide})`,
+          ['left', 'width']
+        );
+        const correctPrevLeft = parseFloat(prevStyles.width) * (prevSlide - 1);
+        expect(`${approximately(prevStyles.left, correctPrevLeft)}`).toMatch(
+          'true'
+        );
+
+        const nextSlide = slide + 1;
+        const nextStyles = await page.evaluate(
+          getStyles,
+          `.slider-slide:nth-child(${nextSlide})`,
+          ['left', 'width']
+        );
+        const correctNextLeft = parseFloat(nextStyles.width) * (nextSlide - 1);
+        expect(`${approximately(nextStyles.left, correctNextLeft)}`).toMatch(
+          'true'
+        );
+      });
+    });
+  });
 });
