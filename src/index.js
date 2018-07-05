@@ -483,9 +483,9 @@ export default class Carousel extends React.Component {
           prevState => ({
             left: this.props.vertical
               ? 0
-              : this.getTargetLeft(-1, prevState.currentSlide),
+              : this.getTargetLeft(0, prevState.currentSlide),
             top: this.props.vertical
-              ? this.getTargetLeft(-1, prevState.currentSlide)
+              ? this.getTargetLeft(0, prevState.currentSlide)
               : 0,
             currentSlide: endSlide,
             isWrappingAround: true,
@@ -851,42 +851,58 @@ export default class Carousel extends React.Component {
   }
 
   getSlideTargetPosition(index, positionValue) {
-    const slidesToShow = this.state.frameWidth / this.state.slideWidth;
-    const targetPosition =
+    let targetPosition =
       (this.state.slideWidth + this.props.cellSpacing) * index;
-    const end =
-      (this.state.slideWidth + this.props.cellSpacing) * slidesToShow * -1;
+    const centerSlide = Math.abs(
+      Math.floor(positionValue / this.state.slideWidth)
+    );
+    if (this.props.wrapAround && index !== centerSlide) {
+      const slidesBefore = Math.floor((this.state.slideCount - 1) / 2);
+      const slidesAfter = this.state.slideCount - slidesBefore - 1;
+      const distanceFromCurrent = Math.abs(centerSlide - index);
 
-    if (
-      this.props.wrapAround &&
-      (this.state.isWrappingAround || this.state.dragging)
-    ) {
-      const slidesBefore = Math.ceil(positionValue / this.state.slideWidth);
-      if (this.state.slideCount - slidesBefore <= index) {
-        return (
+      if (index < centerSlide) {
+        if (distanceFromCurrent > slidesBefore) {
+          targetPosition =
+            (this.state.slideWidth + this.props.cellSpacing) *
+            (this.state.slideCount + index);
+        }
+      } else if (distanceFromCurrent > slidesAfter) {
+        targetPosition =
           (this.state.slideWidth + this.props.cellSpacing) *
           (this.state.slideCount - index) *
-          -1
-        );
+          -1;
       }
 
-      let slidesAfter = Math.ceil(
-        (Math.abs(positionValue) - Math.abs(end)) / this.state.slideWidth
-      );
+      // const slidesBefore = Math.ceil(positionValue / this.state.slideWidth);
+      // if (this.state.slideCount - slidesBefore <= index) {
+      //   return (
+      //     (this.state.slideWidth + this.props.cellSpacing) *
+      //     (this.state.slideCount - index) *
+      //     -1
+      //   );
+      // }
 
-      if (this.state.slideWidth !== 1) {
-        slidesAfter = Math.ceil(
-          (Math.abs(positionValue) - this.state.slideWidth) /
-            this.state.slideWidth
-        );
-      }
+      // const slidesToShow = this.state.frameWidth / this.state.slideWidth;
+      // const end =
+      //   (this.state.slideWidth + this.props.cellSpacing) * slidesToShow * -1;
+      // let slidesAfter = Math.ceil(
+      //   (Math.abs(positionValue) - Math.abs(end)) / this.state.slideWidth
+      // );
 
-      if (index <= slidesAfter - 1) {
-        return (
-          (this.state.slideWidth + this.props.cellSpacing) *
-          (this.state.slideCount + index)
-        );
-      }
+      // if (this.state.slideWidth !== 1) {
+      //   slidesAfter = Math.ceil(
+      //     (Math.abs(positionValue) - this.state.slideWidth) /
+      //       this.state.slideWidth
+      //   );
+      // }
+
+      // if (index <= slidesAfter - 1) {
+      //   return (
+      //     (this.state.slideWidth + this.props.cellSpacing) *
+      //     (this.state.slideCount + index)
+      //   );
+      // }
     }
 
     return targetPosition;
