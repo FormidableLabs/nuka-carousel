@@ -221,6 +221,8 @@ describe('Nuka Carousel', () => {
       return Math.abs(parseFloat(a) - parseFloat(b)) < 0.25;
     };
 
+    const transitionSpeed = 500;
+
     beforeEach(async () => {
       await page.setViewport({
         width: 1024,
@@ -251,6 +253,7 @@ describe('Nuka Carousel', () => {
 
       it('should not partially show first slide when on last slide.', async () => {
         await expect(page).toClick('button', { text: '6' });
+        await page.waitFor(transitionSpeed); // need to let slide transition complete
         const styles = await page.evaluate(
           getStyles,
           '.slider-slide:first-child',
@@ -262,6 +265,7 @@ describe('Nuka Carousel', () => {
       it('should partially show previous and next slide when on a middle slide.', async () => {
         const slide = 3;
         await expect(page).toClick('button', { text: `${slide}` });
+        await page.waitFor(transitionSpeed); // need to let slide transition complete
 
         const prevSlide = slide - 1;
         const prevStyles = await page.evaluate(
@@ -306,6 +310,7 @@ describe('Nuka Carousel', () => {
 
       it('should partially show first slide when on last slide.', async () => {
         await expect(page).toClick('button', { text: '6' });
+        await page.waitFor(transitionSpeed); // need to let slide transition complete
         const styles = await page.evaluate(
           getStyles,
           '.slider-slide:first-child',
@@ -319,6 +324,7 @@ describe('Nuka Carousel', () => {
       it('should partially show previous and next slide when on a middle slide.', async () => {
         const slide = 3;
         await expect(page).toClick('button', { text: `${slide}` });
+        await page.waitFor(transitionSpeed); // need to let slide transition complete
 
         const prevSlide = slide - 1;
         const prevStyles = await page.evaluate(
