@@ -886,14 +886,14 @@ export default class Carousel extends React.Component {
         slidesAfter = temp;
       }
 
-      const distanceFromCurrent = Math.abs(startSlide - index);
+      const distanceFromStart = Math.abs(startSlide - index);
       if (index < startSlide) {
-        if (distanceFromCurrent > slidesBefore) {
+        if (distanceFromStart > slidesBefore) {
           targetPosition =
             (this.state.slideWidth + this.props.cellSpacing) *
             (this.state.slideCount + index);
         }
-      } else if (distanceFromCurrent > slidesAfter) {
+      } else if (distanceFromStart > slidesAfter) {
         targetPosition =
           (this.state.slideWidth + this.props.cellSpacing) *
           (this.state.slideCount - index) *
