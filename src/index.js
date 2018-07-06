@@ -113,11 +113,40 @@ export default class Carousel extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const slideCount = React.Children.count(nextProps.children);
+    const slideCountChanged = slideCount !== this.state.slideCount;
+
     this.setState({ slideCount });
     if (slideCount <= this.state.currentSlide) {
       this.goToSlide(Math.max(slideCount - 1, 0));
     }
-    this.setDimensions(nextProps);
+
+    const updateDimensions =
+      slideCountChanged ||
+      ((curr, next, keys) => {
+        let shouldUpdate = false;
+
+        for (let i = 0; i < keys.length; i++) {
+          if (curr[keys[i]] !== next[keys[i]]) {
+            shouldUpdate = true;
+            break;
+          }
+        }
+
+        return shouldUpdate;
+      })(this.props, nextProps, [
+        'cellSpacing',
+        'vertical',
+        'slideWidth',
+        'slideHeight',
+        'heightMode',
+        'slidesToScroll',
+        'slidesToShow'
+      ]);
+
+    if (updateDimensions) {
+      this.setDimensions(nextProps);
+    }
+
     if (
       this.props.slideIndex !== nextProps.slideIndex &&
       nextProps.slideIndex !== this.state.currentSlide &&
@@ -483,9 +512,9 @@ export default class Carousel extends React.Component {
           prevState => ({
             left: this.props.vertical
               ? 0
-              : this.getTargetLeft(-1, prevState.currentSlide),
+              : this.getTargetLeft(0, prevState.currentSlide),
             top: this.props.vertical
-              ? this.getTargetLeft(-1, prevState.currentSlide)
+              ? this.getTargetLeft(0, prevState.currentSlide)
               : 0,
             currentSlide: endSlide,
             isWrappingAround: true,
@@ -850,42 +879,54 @@ export default class Carousel extends React.Component {
     };
   }
 
-  getSlideTargetPosition(index, positionValue) {
-    const slidesToShow = this.state.frameWidth / this.state.slideWidth;
-    const targetPosition =
-      (this.state.slideWidth + this.props.cellSpacing) * index;
-    const end =
-      (this.state.slideWidth + this.props.cellSpacing) * slidesToShow * -1;
+  getSlideDirection(start, end, isWrapping) {
+    let direction = 0;
+    if (start === end) return direction;
 
-    if (
-      this.props.wrapAround &&
-      (this.state.isWrappingAround || this.state.dragging)
-    ) {
-      const slidesBefore = Math.ceil(positionValue / this.state.slideWidth);
-      if (this.state.slideCount - slidesBefore <= index) {
-        return (
+    if (isWrapping) {
+      direction = start < end ? -1 : 1;
+    } else {
+      direction = start < end ? 1 : -1;
+    }
+
+    return direction;
+  }
+
+  getSlideTargetPosition(index, positionValue) {
+    let targetPosition =
+      (this.state.slideWidth + this.props.cellSpacing) * index;
+    const startSlide = Math.min(
+      Math.abs(Math.floor(positionValue / this.state.slideWidth)),
+      this.state.slideCount - 1
+    );
+
+    if (this.props.wrapAround && index !== startSlide) {
+      const direction = this.getSlideDirection(
+        startSlide,
+        this.state.currentSlide,
+        this.state.isWrappingAround
+      );
+      let slidesBefore = Math.floor((this.state.slideCount - 1) / 2);
+      let slidesAfter = this.state.slideCount - slidesBefore - 1;
+
+      if (direction < 0) {
+        const temp = slidesBefore;
+        slidesBefore = slidesAfter;
+        slidesAfter = temp;
+      }
+
+      const distanceFromStart = Math.abs(startSlide - index);
+      if (index < startSlide) {
+        if (distanceFromStart > slidesBefore) {
+          targetPosition =
+            (this.state.slideWidth + this.props.cellSpacing) *
+            (this.state.slideCount + index);
+        }
+      } else if (distanceFromStart > slidesAfter) {
+        targetPosition =
           (this.state.slideWidth + this.props.cellSpacing) *
           (this.state.slideCount - index) *
-          -1
-        );
-      }
-
-      let slidesAfter = Math.ceil(
-        (Math.abs(positionValue) - Math.abs(end)) / this.state.slideWidth
-      );
-
-      if (this.state.slideWidth !== 1) {
-        slidesAfter = Math.ceil(
-          (Math.abs(positionValue) - this.state.slideWidth) /
-            this.state.slideWidth
-        );
-      }
-
-      if (index <= slidesAfter - 1) {
-        return (
-          (this.state.slideWidth + this.props.cellSpacing) *
-          (this.state.slideCount + index)
-        );
+          -1;
       }
     }
 

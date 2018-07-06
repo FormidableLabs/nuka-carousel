@@ -11,7 +11,9 @@ class App extends React.Component {
       slideIndex: 0,
       length: 6,
       wrapAround: false,
-      underlineHeader: false
+      underlineHeader: false,
+      slidesToShow: 1.0,
+      cellAlign: 'left'
     };
 
     this.handleImageClick = this.handleImageClick.bind(this);
@@ -25,6 +27,8 @@ class App extends React.Component {
     return (
       <div style={{ width: '50%', margin: 'auto' }}>
         <Carousel
+          cellAlign={this.state.cellAlign}
+          slidesToShow={this.state.slidesToShow}
           wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
           renderTopCenterControls={({ currentSlide }) => (
@@ -79,6 +83,32 @@ class App extends React.Component {
               }
             >
               Toggle Wrap Around
+            </button>
+          </div>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          {this.state.slidesToShow > 1.0 && (
+            <div>
+              <button onClick={() => this.setState({ cellAlign: 'left' })}>
+                Left
+              </button>
+              <button onClick={() => this.setState({ cellAlign: 'center' })}>
+                Center
+              </button>
+              <button onClick={() => this.setState({ cellAlign: 'right' })}>
+                Right
+              </button>
+            </div>
+          )}
+          <div style={{ marginLeft: 'auto' }}>
+            <button
+              onClick={() =>
+                this.setState({
+                  slidesToShow: this.state.slidesToShow > 1.0 ? 1.0 : 1.25
+                })
+              }
+            >
+              Toggle Partially Visible Slides
             </button>
           </div>
         </div>
