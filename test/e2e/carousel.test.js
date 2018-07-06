@@ -207,7 +207,7 @@ describe('Nuka Carousel', () => {
     });
   });
 
-  describe.only('Neighboring Slide Visibility and Slide Alignment', () => {
+  describe('Neighboring Slide Visibility and Slide Alignment', () => {
     const getStyles = (selector, keys) => {
       const e = document.querySelector(selector);
       const styles = window.getComputedStyle(e);
