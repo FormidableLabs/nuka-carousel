@@ -899,36 +899,6 @@ export default class Carousel extends React.Component {
           (this.state.slideCount - index) *
           -1;
       }
-
-      // const slidesBefore = Math.ceil(positionValue / this.state.slideWidth);
-      // if (this.state.slideCount - slidesBefore <= index) {
-      //   return (
-      //     (this.state.slideWidth + this.props.cellSpacing) *
-      //     (this.state.slideCount - index) *
-      //     -1
-      //   );
-      // }
-
-      // const slidesToShow = this.state.frameWidth / this.state.slideWidth;
-      // const end =
-      //   (this.state.slideWidth + this.props.cellSpacing) * slidesToShow * -1;
-      // let slidesAfter = Math.ceil(
-      //   (Math.abs(positionValue) - Math.abs(end)) / this.state.slideWidth
-      // );
-
-      // if (this.state.slideWidth !== 1) {
-      //   slidesAfter = Math.ceil(
-      //     (Math.abs(positionValue) - this.state.slideWidth) /
-      //       this.state.slideWidth
-      //   );
-      // }
-
-      // if (index <= slidesAfter - 1) {
-      //   return (
-      //     (this.state.slideWidth + this.props.cellSpacing) *
-      //     (this.state.slideCount + index)
-      //   );
-      // }
     }
 
     return targetPosition;
