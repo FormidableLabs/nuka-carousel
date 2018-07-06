@@ -850,18 +850,44 @@ export default class Carousel extends React.Component {
     };
   }
 
+  getSlideDirection(start, end, isWrapping) {
+    let direction = 0;
+    if (start === end) return direction;
+
+    if (isWrapping) {
+      direction = start < end ? -1 : 1;
+    } else {
+      direction = start < end ? 1 : -1;
+    }
+
+    return direction;
+  }
+
   getSlideTargetPosition(index, positionValue) {
     let targetPosition =
       (this.state.slideWidth + this.props.cellSpacing) * index;
-    const centerSlide = Math.abs(
-      Math.floor(positionValue / this.state.slideWidth)
+    const startSlide = Math.min(
+      Math.abs(Math.floor(positionValue / this.state.slideWidth)),
+      this.state.slideCount - 1
     );
-    if (this.props.wrapAround && index !== centerSlide) {
-      const slidesBefore = Math.floor((this.state.slideCount - 1) / 2);
-      const slidesAfter = this.state.slideCount - slidesBefore - 1;
-      const distanceFromCurrent = Math.abs(centerSlide - index);
 
-      if (index < centerSlide) {
+    if (this.props.wrapAround && index !== startSlide) {
+      const direction = this.getSlideDirection(
+        startSlide,
+        this.state.currentSlide,
+        this.state.isWrappingAround
+      );
+      let slidesBefore = Math.floor((this.state.slideCount - 1) / 2);
+      let slidesAfter = this.state.slideCount - slidesBefore - 1;
+
+      if (direction < 0) {
+        const temp = slidesBefore;
+        slidesBefore = slidesAfter;
+        slidesAfter = temp;
+      }
+
+      const distanceFromCurrent = Math.abs(startSlide - index);
+      if (index < startSlide) {
         if (distanceFromCurrent > slidesBefore) {
           targetPosition =
             (this.state.slideWidth + this.props.cellSpacing) *
