@@ -221,7 +221,7 @@ describe('Nuka Carousel', () => {
       return Math.abs(parseFloat(a) - parseFloat(b)) < 0.25;
     };
 
-    const transitionSpeed = 500;
+    const transitionSpeed = 700;
 
     beforeEach(async () => {
       await page.setViewport({
