@@ -944,7 +944,8 @@ export default class Carousel extends React.Component {
       cellSpacing: this.props.cellSpacing,
       vertical: this.props.vertical,
       dragging: this.props.dragging,
-      wrapAround: this.props.wrapAround
+      wrapAround: this.props.wrapAround,
+      slidesToShow: this.props.slidesToShow
     };
   }
 
