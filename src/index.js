@@ -4,7 +4,7 @@ import ExecutionEnvironment from 'exenv';
 import Animate from 'react-move/Animate';
 import * as easing from 'd3-ease';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
-import ScrollTransition from './transitions/scroll-transition';
+import Transitions from './all-transitions';
 
 const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
@@ -985,6 +985,7 @@ export default class Carousel extends React.Component {
     const frameStyles = this.getFrameStyles();
     const touchEvents = this.getTouchEvents();
     const mouseEvents = this.getMouseEvents();
+    const TransitionControl = Transitions[this.props.transitionMode];
 
     return (
       <div
@@ -1010,13 +1011,13 @@ export default class Carousel extends React.Component {
               {...mouseEvents}
               onClick={this.handleClick}
             >
-              <ScrollTransition
+              <TransitionControl
                 {...this.getTransitionProps()}
                 deltaX={tx}
                 deltaY={ty}
               >
                 {this.props.children}
-              </ScrollTransition>
+              </TransitionControl>
             </div>
           )}
         />
@@ -1045,6 +1046,7 @@ Carousel.propTypes = {
   frameOverflow: PropTypes.string,
   framePadding: PropTypes.string,
   heightMode: PropTypes.oneOf(['first', 'current', 'max']),
+  transitionMode: PropTypes.oneOf(['scroll', 'fade']),
   initialSlideHeight: PropTypes.number,
   initialSlideWidth: PropTypes.number,
   onResize: PropTypes.func,
@@ -1084,6 +1086,7 @@ Carousel.defaultProps = {
   framePadding: '0px',
   frameOverflow: 'hidden',
   heightMode: 'first',
+  transitionMode: 'scroll',
   onResize() {},
   slideIndex: 0,
   slidesToScroll: 1,
