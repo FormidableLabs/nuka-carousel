@@ -4,6 +4,7 @@ import ExecutionEnvironment from 'exenv';
 import Animate from 'react-move/Animate';
 import * as easing from 'd3-ease';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
+import ScrollTransition from './transitions/scroll-transition';
 
 const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
@@ -85,13 +86,9 @@ export default class Carousel extends React.Component {
     this.setInitialDimensions = this.setInitialDimensions.bind(this);
     this.setDimensions = this.setDimensions.bind(this);
     this.setLeft = this.setLeft.bind(this);
-    this.getListStyles = this.getListStyles.bind(this);
     this.getFrameStyles = this.getFrameStyles.bind(this);
-    this.getSlideStyles = this.getSlideStyles.bind(this);
-    this.getSlideTargetPosition = this.getSlideTargetPosition.bind(this);
     this.getSliderStyles = this.getSliderStyles.bind(this);
     this.getOffsetDeltas = this.getOffsetDeltas.bind(this);
-    this.formatChildren = this.formatChildren.bind(this);
     this.getChildNodes = this.getChildNodes.bind(this);
     this.getSlideHeight = this.getSlideHeight.bind(this);
     this.findMaxHeightSlide = this.findMaxHeightSlide.bind(this);
@@ -675,23 +672,6 @@ export default class Carousel extends React.Component {
     }
   }
 
-  formatChildren(children) {
-    const positionValue = this.props.vertical
-      ? this.state.top
-      : this.state.left;
-    return React.Children.map(children, (child, index) => {
-      return (
-        <li
-          className="slider-slide"
-          style={this.getSlideStyles(index, positionValue)}
-          key={index}
-        >
-          {child}
-        </li>
-      );
-    });
-  }
-
   setInitialDimensions() {
     const slideWidth = this.props.vertical
       ? this.props.initialSlideHeight || 0
@@ -812,35 +792,6 @@ export default class Carousel extends React.Component {
   }
 
   // Styles
-
-  getListStyles(styles) {
-    const { tx, ty } = styles;
-    const listWidth =
-      this.state.slideWidth * React.Children.count(this.props.children);
-    const spacingOffset =
-      this.props.cellSpacing * React.Children.count(this.props.children);
-    const transform = `translate3d(${tx}px, ${ty}px, 0)`;
-    return {
-      transform,
-      WebkitTransform: transform,
-      msTransform: `translate(${tx}px, ${ty}px)`,
-      position: 'relative',
-      display: 'block',
-      margin: this.props.vertical
-        ? `${this.props.cellSpacing / 2 * -1}px 0px`
-        : `0px ${this.props.cellSpacing / 2 * -1}px`,
-      padding: 0,
-      height: this.props.vertical
-        ? listWidth + spacingOffset
-        : this.state.slideHeight,
-      width: this.props.vertical ? 'auto' : listWidth + spacingOffset,
-      cursor: this.state.dragging === true ? 'pointer' : 'inherit',
-      boxSizing: 'border-box',
-      MozBoxSizing: 'border-box',
-      touchAction: 'none'
-    };
-  }
-
   getFrameStyles() {
     return {
       position: 'relative',
@@ -856,81 +807,6 @@ export default class Carousel extends React.Component {
       MozBoxSizing: 'border-box',
       touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`
     };
-  }
-
-  getSlideStyles(index, positionValue) {
-    const targetPosition = this.getSlideTargetPosition(index, positionValue);
-    return {
-      position: 'absolute',
-      left: this.props.vertical ? 0 : targetPosition,
-      top: this.props.vertical ? targetPosition : 0,
-      display: this.props.vertical ? 'block' : 'inline-block',
-      listStyleType: 'none',
-      verticalAlign: 'top',
-      width: this.props.vertical ? '100%' : this.state.slideWidth,
-      height: 'auto',
-      minHeight: '100%',
-      boxSizing: 'border-box',
-      MozBoxSizing: 'border-box',
-      marginLeft: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
-      marginRight: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
-      marginTop: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
-      marginBottom: this.props.vertical ? this.props.cellSpacing / 2 : 'auto'
-    };
-  }
-
-  getSlideDirection(start, end, isWrapping) {
-    let direction = 0;
-    if (start === end) return direction;
-
-    if (isWrapping) {
-      direction = start < end ? -1 : 1;
-    } else {
-      direction = start < end ? 1 : -1;
-    }
-
-    return direction;
-  }
-
-  getSlideTargetPosition(index, positionValue) {
-    let targetPosition =
-      (this.state.slideWidth + this.props.cellSpacing) * index;
-    const startSlide = Math.min(
-      Math.abs(Math.floor(positionValue / this.state.slideWidth)),
-      this.state.slideCount - 1
-    );
-
-    if (this.props.wrapAround && index !== startSlide) {
-      const direction = this.getSlideDirection(
-        startSlide,
-        this.state.currentSlide,
-        this.state.isWrappingAround
-      );
-      let slidesBefore = Math.floor((this.state.slideCount - 1) / 2);
-      let slidesAfter = this.state.slideCount - slidesBefore - 1;
-
-      if (direction < 0) {
-        const temp = slidesBefore;
-        slidesBefore = slidesAfter;
-        slidesAfter = temp;
-      }
-
-      const distanceFromStart = Math.abs(startSlide - index);
-      if (index < startSlide) {
-        if (distanceFromStart > slidesBefore) {
-          targetPosition =
-            (this.state.slideWidth + this.props.cellSpacing) *
-            (this.state.slideCount + index);
-        }
-      } else if (distanceFromStart > slidesAfter) {
-        targetPosition =
-          (this.state.slideWidth + this.props.cellSpacing) *
-          (this.state.slideCount - index) *
-          -1;
-      }
-    }
-
-    return targetPosition;
   }
 
   getSliderStyles() {
@@ -1056,6 +932,22 @@ export default class Carousel extends React.Component {
     };
   }
 
+  getTransitionProps() {
+    return {
+      slideWidth: this.state.slideWidth,
+      slideHeight: this.state.slideHeight,
+      slideCount: this.state.slideCount,
+      currentSlide: this.state.currentSlide,
+      isWrappingAround: this.state.isWrappingAround,
+      top: this.state.top,
+      left: this.state.left,
+      cellSpacing: this.props.cellSpacing,
+      vertical: this.props.vertical,
+      dragging: this.props.dragging,
+      wrapAround: this.props.wrapAround
+    };
+  }
+
   renderControls() {
     return this.controlsMap.map(
       ({ func, key }) =>
@@ -1085,7 +977,6 @@ export default class Carousel extends React.Component {
   }
 
   render() {
-    const children = this.formatChildren(this.props.children);
     const duration =
       this.state.dragging || this.state.resetWrapAroundPosition
         ? 0
@@ -1119,12 +1010,13 @@ export default class Carousel extends React.Component {
               {...mouseEvents}
               onClick={this.handleClick}
             >
-              <ul
-                className="slider-list"
-                style={this.getListStyles({ tx, ty })}
+              <ScrollTransition
+                {...this.getTransitionProps()}
+                deltaX={tx}
+                deltaY={ty}
               >
-                {children}
-              </ul>
+                {this.props.children}
+              </ScrollTransition>
             </div>
           )}
         />
