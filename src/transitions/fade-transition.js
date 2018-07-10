@@ -7,33 +7,17 @@ export default class FadeTransition extends React.Component {
     this.fadeFromSlide = props.currentSlide;
   }
 
-  getSlideDistance(slideA, slideB, count, wrapAround) {
-    if (wrapAround) {
-      return count - Math.abs(slideA - slideB) % count;
-    } else {
-      return Math.abs(slideA - slideB);
-    }
-  }
-
-  getSlideIndex(position, count, wrapAround) {
-    if (wrapAround) {
-      return position > 0
-        ? position % count
-        : (count + position % count) % count;
-    } else {
-      return Math.min(Math.max(0, position), count - 1);
-    }
-  }
-
   getSlideOpacity(slideAInfo, slideBInfo, inBetweenPosition) {
     const opacity = {};
 
     if (slideAInfo.key === slideBInfo.key) {
       opacity[slideAInfo.key] = 1;
     } else {
-      const distance = slideAInfo.raw - slideBInfo.raw;
-      opacity[slideAInfo.key] = (inBetweenPosition - slideBInfo.raw) / distance;
-      opacity[slideBInfo.key] = (slideAInfo.raw - inBetweenPosition) / distance;
+      const distance = slideAInfo.target - slideBInfo.target;
+      opacity[slideAInfo.key] =
+        (inBetweenPosition - slideBInfo.target) / distance;
+      opacity[slideBInfo.key] =
+        (slideAInfo.target - inBetweenPosition) / distance;
     }
 
     return opacity;
@@ -100,59 +84,46 @@ export default class FadeTransition extends React.Component {
     const fade =
       -(this.props.deltaX || this.props.deltaY) / this.props.slideWidth;
 
-    let slideA = Math.floor(fade);
-    let slideB = Math.ceil(fade);
-
-    if (slideA === slideB) {
-      this.fadeFromSlide = slideA;
+    if (parseInt(fade) === fade) {
+      this.fadeFromSlide = fade;
     }
 
-    if (
-      this.getSlideDistance(
-        this.props.currentSlide,
-        this.fadeFromSlide,
-        this.props.slideCount,
-        this.props.isWrappingAround
-      ) > 1
-    ) {
-      slideA = this.fadeFromSlide;
-      slideB = this.props.currentSlide;
-    }
-
-    const slideAInfo = {
-      key: this.getSlideIndex(
-        slideA,
-        this.props.slideCount,
-        this.props.wrapAround
-      ),
-      raw: slideA
+    const fadeFromInfo = {
+      key: this.fadeFromSlide,
+      target: this.fadeFromSlide
     };
 
-    const slideBInfo = {
-      key: this.getSlideIndex(
-        slideB,
-        this.props.slideCount,
-        this.props.wrapAround
-      ),
-      raw: slideB
+    let targetFadeTo = this.props.currentSlide;
+    if (this.fadeFromSlide > fade && this.fadeFromSlide === 0) {
+      targetFadeTo = this.fadeFromSlide - this.props.slidesToShow;
+    } else if (
+      this.fadeFromSlide < fade &&
+      this.fadeFromSlide + this.props.slidesToShow > this.props.slideCount - 1
+    ) {
+      targetFadeTo = this.fadeFromSlide + this.props.slidesToShow;
+    }
+
+    const fadeToInfo = {
+      key: this.props.currentSlide,
+      target: targetFadeTo
     };
 
     const opacity = this.getSlideOpacity(
-      slideAInfo,
-      slideBInfo,
+      fadeFromInfo,
+      fadeToInfo,
       fade,
       this.props.slidesToShow
     );
 
     const data = {};
     for (let i = 0; i < this.props.slidesToShow; i++) {
-      data[slideAInfo.key + i] = {
-        opacity: opacity[slideAInfo.key],
+      data[fadeFromInfo.key + i] = {
+        opacity: opacity[fadeFromInfo.key],
         left: this.props.slideWidth * i
       };
 
-      data[slideBInfo.key + i] = {
-        opacity: opacity[slideBInfo.key],
+      data[fadeToInfo.key + i] = {
+        opacity: opacity[fadeToInfo.key],
         left: this.props.slideWidth * i
       };
     }
