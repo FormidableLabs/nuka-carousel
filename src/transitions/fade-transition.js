@@ -53,13 +53,13 @@ export default class FadeTransition extends React.Component {
     });
   }
 
-  getSlideStyles(index, opacity) {
-    return opacity[index]
+  getSlideStyles(index, data) {
+    return data[index]
       ? {
           position: 'absolute',
-          left: 0,
+          left: data[index].left,
           top: 0,
-          opacity: opacity[index],
+          opacity: data[index].opacity,
           display: 'block',
           listStyleType: 'none',
           verticalAlign: 'top',
@@ -118,27 +118,46 @@ export default class FadeTransition extends React.Component {
       slideA = this.fadeFromSlide;
       slideB = this.props.currentSlide;
     }
+    console.log(`${slideA} | ${slideB} | ${fade}`);
+    const slideAInfo = {
+      key: this.getSlideIndex(
+        slideA,
+        this.props.slideCount,
+        this.props.wrapAround
+      ),
+      raw: slideA
+    };
+
+    const slideBInfo = {
+      key: this.getSlideIndex(
+        slideB,
+        this.props.slideCount,
+        this.props.wrapAround
+      ),
+      raw: slideB
+    };
 
     const opacity = this.getSlideOpacity(
-      {
-        key: this.getSlideIndex(
-          slideA,
-          this.props.slideCount,
-          this.props.wrapAround
-        ),
-        raw: slideA
-      },
-      {
-        key: this.getSlideIndex(
-          slideB,
-          this.props.slideCount,
-          this.props.wrapAround
-        ),
-        raw: slideB
-      },
-      fade
+      slideAInfo,
+      slideBInfo,
+      fade,
+      this.props.slidesToShow
     );
-    const children = this.formatChildren(this.props.children, opacity);
+
+    const data = {};
+    for (let i = 0; i < this.props.slidesToShow; i++) {
+      data[slideAInfo.key + i] = {
+        opacity: opacity[slideAInfo.key],
+        left: this.props.slideWidth * i
+      };
+
+      data[slideBInfo.key + i] = {
+        opacity: opacity[slideBInfo.key],
+        left: this.props.slideWidth * i
+      };
+    }
+
+    const children = this.formatChildren(this.props.children, data);
 
     return (
       <ul className="slider-list" style={this.getContainerStyles()}>
@@ -161,7 +180,8 @@ FadeTransition.propTypes = {
   cellSpacing: PropTypes.number,
   vertical: PropTypes.bool,
   dragging: PropTypes.bool,
-  wrapAround: PropTypes.bool
+  wrapAround: PropTypes.bool,
+  slidesToShow: PropTypes.number
 };
 
 FadeTransition.defaultProps = {
@@ -177,5 +197,6 @@ FadeTransition.defaultProps = {
   cellSpacing: 0,
   vertical: false,
   dragging: false,
-  wrapAround: false
+  wrapAround: false,
+  slidesToShow: 1
 };
