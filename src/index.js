@@ -837,7 +837,7 @@ export default class Carousel extends React.Component {
       cursor: this.state.dragging === true ? 'pointer' : 'inherit',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
-      touchAction: 'none'
+      touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`
     };
   }
 
