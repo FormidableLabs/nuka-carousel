@@ -118,7 +118,7 @@ export default class FadeTransition extends React.Component {
       slideA = this.fadeFromSlide;
       slideB = this.props.currentSlide;
     }
-    console.log(`${slideA} | ${slideB} | ${fade}`);
+
     const slideAInfo = {
       key: this.getSlideIndex(
         slideA,
