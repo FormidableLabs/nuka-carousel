@@ -2,35 +2,49 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default class FadeTransition extends React.Component {
-  getSlideIndex(position, count) {
-    return position > 0 ? position % count : (count + position % count) % count;
+  constructor(props) {
+    super(props);
+    this.fadeFromSlide = props.currentSlide;
   }
 
-  getSlideOpacity(fade) {
-    const active = {};
-    const floor = Math.floor(fade);
-    const ceil = Math.ceil(fade);
-    const slideA = this.getSlideIndex(floor, this.props.slideCount);
-
-    if (floor === ceil) {
-      active[slideA] = 1;
+  getSlideDistance(slideA, slideB, count, wrapAround) {
+    if (wrapAround) {
+      return count - Math.abs(slideA - slideB) % count;
     } else {
-      const slideB = this.getSlideIndex(ceil, this.props.slideCount);
-      active[slideA] = ceil - fade;
-      active[slideB] = fade - floor;
+      return Math.abs(slideA - slideB);
+    }
+  }
+
+  getSlideIndex(position, count, wrapAround) {
+    if (wrapAround) {
+      return position > 0
+        ? position % count
+        : (count + position % count) % count;
+    } else {
+      return Math.min(Math.max(0, position), count - 1);
+    }
+  }
+
+  getSlideOpacity(slideAInfo, slideBInfo, inBetweenPosition) {
+    const opacity = {};
+
+    if (slideAInfo.key === slideBInfo.key) {
+      opacity[slideAInfo.key] = 1;
+    } else {
+      const distance = slideAInfo.raw - slideBInfo.raw;
+      opacity[slideAInfo.key] = (inBetweenPosition - slideBInfo.raw) / distance;
+      opacity[slideBInfo.key] = (slideAInfo.raw - inBetweenPosition) / distance;
     }
 
-    return active;
+    return opacity;
   }
 
-  formatChildren(children, fade) {
-    const opacity = this.getSlideOpacity(fade);
-
+  formatChildren(children, opacity) {
     return React.Children.map(children, (child, index) => {
       return (
         <li
           className="slider-slide"
-          style={this.getSlideStyles(index, fade, opacity)}
+          style={this.getSlideStyles(index, opacity)}
           key={index}
         >
           {child}
@@ -39,7 +53,7 @@ export default class FadeTransition extends React.Component {
     });
   }
 
-  getSlideStyles(index, fade, opacity) {
+  getSlideStyles(index, opacity) {
     return opacity[index]
       ? {
           position: 'absolute',
@@ -85,7 +99,46 @@ export default class FadeTransition extends React.Component {
   render() {
     const fade =
       -(this.props.deltaX || this.props.deltaY) / this.props.slideWidth;
-    const children = this.formatChildren(this.props.children, fade);
+
+    let slideA = Math.floor(fade);
+    let slideB = Math.ceil(fade);
+
+    if (slideA === slideB) {
+      this.fadeFromSlide = slideA;
+    }
+
+    if (
+      this.getSlideDistance(
+        this.props.currentSlide,
+        this.fadeFromSlide,
+        this.props.slideCount,
+        this.props.isWrappingAround
+      ) > 1
+    ) {
+      slideA = this.fadeFromSlide;
+      slideB = this.props.currentSlide;
+    }
+
+    const opacity = this.getSlideOpacity(
+      {
+        key: this.getSlideIndex(
+          slideA,
+          this.props.slideCount,
+          this.props.wrapAround
+        ),
+        raw: slideA
+      },
+      {
+        key: this.getSlideIndex(
+          slideB,
+          this.props.slideCount,
+          this.props.wrapAround
+        ),
+        raw: slideB
+      },
+      fade
+    );
+    const children = this.formatChildren(this.props.children, opacity);
 
     return (
       <ul className="slider-list" style={this.getContainerStyles()}>
