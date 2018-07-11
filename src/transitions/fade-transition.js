@@ -7,22 +7,6 @@ export default class FadeTransition extends React.Component {
     this.fadeFromSlide = props.currentSlide;
   }
 
-  getSlideOpacity(slideAInfo, slideBInfo, inBetweenPosition) {
-    const opacity = {};
-
-    if (slideAInfo.key === slideBInfo.key) {
-      opacity[slideAInfo.key] = 1;
-    } else {
-      const distance = slideAInfo.target - slideBInfo.target;
-      opacity[slideAInfo.key] =
-        (inBetweenPosition - slideBInfo.target) / distance;
-      opacity[slideBInfo.key] =
-        (slideAInfo.target - inBetweenPosition) / distance;
-    }
-
-    return opacity;
-  }
-
   formatChildren(children, opacity) {
     return React.Children.map(children, (child, index) => {
       return (
@@ -35,6 +19,45 @@ export default class FadeTransition extends React.Component {
         </li>
       );
     });
+  }
+
+  getSlideOpacityAndLeftMap(fadeFrom, fade) {
+    // Figure out which slide to fade to
+    let fadeTo = this.props.currentSlide;
+    if (fadeFrom > fade && fadeFrom === 0) {
+      fadeTo = fadeFrom - this.props.slidesToShow;
+    } else if (
+      fadeFrom < fade &&
+      fadeFrom + this.props.slidesToShow > this.props.slideCount - 1
+    ) {
+      fadeTo = fadeFrom + this.props.slidesToShow;
+    }
+
+    // Calculate opacity for active slides
+    const opacity = {};
+    if (fadeFrom === this.props.currentSlide) {
+      opacity[fadeFrom] = 1;
+    } else {
+      const distance = fadeFrom - fadeTo;
+      opacity[fadeFrom] = (fade - fadeTo) / distance;
+      opacity[this.props.currentSlide] = (fadeFrom - fade) / distance;
+    }
+
+    // Calculate left for slides and merge in opacity
+    const map = {};
+    for (let i = 0; i < this.props.slidesToShow; i++) {
+      map[fadeFrom + i] = {
+        opacity: opacity[fadeFrom],
+        left: this.props.slideWidth * i
+      };
+
+      map[this.props.currentSlide + i] = {
+        opacity: opacity[this.props.currentSlide],
+        left: this.props.slideWidth * i
+      };
+    }
+
+    return map;
   }
 
   getSlideStyles(index, data) {
@@ -88,47 +111,15 @@ export default class FadeTransition extends React.Component {
       this.fadeFromSlide = fade;
     }
 
-    const fadeFromInfo = {
-      key: this.fadeFromSlide,
-      target: this.fadeFromSlide
-    };
-
-    let targetFadeTo = this.props.currentSlide;
-    if (this.fadeFromSlide > fade && this.fadeFromSlide === 0) {
-      targetFadeTo = this.fadeFromSlide - this.props.slidesToShow;
-    } else if (
-      this.fadeFromSlide < fade &&
-      this.fadeFromSlide + this.props.slidesToShow > this.props.slideCount - 1
-    ) {
-      targetFadeTo = this.fadeFromSlide + this.props.slidesToShow;
-    }
-
-    const fadeToInfo = {
-      key: this.props.currentSlide,
-      target: targetFadeTo
-    };
-
-    const opacity = this.getSlideOpacity(
-      fadeFromInfo,
-      fadeToInfo,
-      fade,
-      this.props.slidesToShow
+    const opacityAndLeftMap = this.getSlideOpacityAndLeftMap(
+      this.fadeFromSlide,
+      fade
     );
 
-    const data = {};
-    for (let i = 0; i < this.props.slidesToShow; i++) {
-      data[fadeFromInfo.key + i] = {
-        opacity: opacity[fadeFromInfo.key],
-        left: this.props.slideWidth * i
-      };
-
-      data[fadeToInfo.key + i] = {
-        opacity: opacity[fadeToInfo.key],
-        left: this.props.slideWidth * i
-      };
-    }
-
-    const children = this.formatChildren(this.props.children, data);
+    const children = this.formatChildren(
+      this.props.children,
+      opacityAndLeftMap
+    );
 
     return (
       <ul className="slider-list" style={this.getContainerStyles()}>
