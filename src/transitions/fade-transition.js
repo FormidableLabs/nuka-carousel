@@ -21,26 +21,26 @@ export default class FadeTransition extends React.Component {
     });
   }
 
-  getSlideOpacityAndLeftMap(fadeFrom, fade) {
-    // Figure out which slide to fade to
-    let fadeTo = this.props.currentSlide;
+  getSlideOpacityAndLeftMap(fadeFrom, fadeTo, fade) {
+    // Figure out which position to fade to
+    let fadeToPosition = fadeTo;
     if (fadeFrom > fade && fadeFrom === 0) {
-      fadeTo = fadeFrom - this.props.slidesToShow;
+      fadeToPosition = fadeFrom - this.props.slidesToShow;
     } else if (
       fadeFrom < fade &&
       fadeFrom + this.props.slidesToShow > this.props.slideCount - 1
     ) {
-      fadeTo = fadeFrom + this.props.slidesToShow;
+      fadeToPosition = fadeFrom + this.props.slidesToShow;
     }
 
     // Calculate opacity for active slides
     const opacity = {};
-    if (fadeFrom === this.props.currentSlide) {
+    if (fadeFrom === fadeTo) {
       opacity[fadeFrom] = 1;
     } else {
-      const distance = fadeFrom - fadeTo;
-      opacity[fadeFrom] = (fade - fadeTo) / distance;
-      opacity[this.props.currentSlide] = (fadeFrom - fade) / distance;
+      const distance = fadeFrom - fadeToPosition;
+      opacity[fadeFrom] = (fade - fadeToPosition) / distance;
+      opacity[fadeTo] = (fadeFrom - fade) / distance;
     }
 
     // Calculate left for slides and merge in opacity
@@ -51,8 +51,8 @@ export default class FadeTransition extends React.Component {
         left: this.props.slideWidth * i
       };
 
-      map[this.props.currentSlide + i] = {
-        opacity: opacity[this.props.currentSlide],
+      map[fadeTo + i] = {
+        opacity: opacity[fadeTo],
         left: this.props.slideWidth * i
       };
     }
@@ -113,6 +113,7 @@ export default class FadeTransition extends React.Component {
 
     const opacityAndLeftMap = this.getSlideOpacityAndLeftMap(
       this.fadeFromSlide,
+      this.props.currentSlide,
       fade
     );
 

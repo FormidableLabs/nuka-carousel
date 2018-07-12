@@ -299,6 +299,134 @@ describe('<Carousel />', () => {
     });
   });
 
+  describe('transitionModes - scroll', () => {
+    describe('scroll', () => {
+      it('should default to scroll mode', () => {
+        const wrapper = mount(
+          <Carousel>
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(wrapper).toHaveProp({ transitionMode: 'scroll' });
+      });
+
+      it('should allow users to set fractional slidesToShow', () => {
+        const wrapper = mount(
+          <Carousel slidesToShow={1.5}>
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(wrapper).toHaveState({ slidesToShow: 1.5 });
+      });
+
+      it('should not set slidesToScroll automatically equal to slidesToShow', () => {
+        const wrapper = mount(
+          <Carousel slidesToShow={2}>
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(wrapper).toHaveState({ slidesToScroll: 1 });
+      });
+
+      it('should set cellAlign state to prop value', () => {
+        const centerWrapper = mount(
+          <Carousel cellAlign="center">
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(centerWrapper).toHaveState({ cellAlign: 'center' });
+
+        const rightWrapper = mount(
+          <Carousel cellAlign="right">
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(rightWrapper).toHaveState({ cellAlign: 'right' });
+
+        const defaultWrapper = mount(
+          <Carousel>
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(defaultWrapper).toHaveState({ cellAlign: 'left' });
+      });
+    });
+
+    describe('fade', () => {
+      it('should allow user to set transitionMode to fade', () => {
+        const wrapper = mount(
+          <Carousel transitionMode="fade">
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(wrapper).toHaveProp({ transitionMode: 'fade' });
+      });
+
+      it('should not allow users to set fractional slidesToShow', () => {
+        const wrapper = mount(
+          <Carousel transitionMode="fade" slidesToShow={1.5}>
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(wrapper).toHaveState({ slidesToShow: 1 });
+      });
+
+      it('should default slidesToScroll equal to slidesToShow', () => {
+        const wrapper = mount(
+          <Carousel transitionMode="fade" slidesToShow={2}>
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(wrapper).toHaveState({ slidesToScroll: 2 });
+      });
+
+      it('should override slidesToScroll value with slidesToShow value', () => {
+        const wrapper = mount(
+          <Carousel transitionMode="fade" slidesToShow={2} slidesToScroll={3}>
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(wrapper).toHaveState({ slidesToScroll: 2 });
+      });
+
+      it('should set cellAlign to "left" regardless of prop', () => {
+        const centerWrapper = mount(
+          <Carousel transitionMode="fade" cellAlign="center">
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(centerWrapper).toHaveState({ cellAlign: 'left' });
+
+        const rightWrapper = mount(
+          <Carousel transitionMode="fade" cellAlign="right">
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(rightWrapper).toHaveState({ cellAlign: 'left' });
+
+        const defaultWrapper = mount(
+          <Carousel transitionMode="fade">
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(defaultWrapper).toHaveState({ cellAlign: 'left' });
+      });
+    });
+  });
+
   describe('methods', () => {
     it('should call setDimensions callback after setState', () => {
       const onResizeSpy = jest.fn();
