@@ -1,10 +1,15 @@
 /* eslint-disable max-nested-callbacks */
 describe('Nuka Carousel', () => {
-  beforeEach(async () => {
-    await page.goto('http://localhost:8080');
-  });
+  const getStyles = (selector, keys) => {
+    const e = document.querySelector(selector);
+    const styles = window.getComputedStyle(e);
+    return keys.reduce((acc, curr) => {
+      acc[curr] = styles[curr];
+      return acc;
+    }, {});
+  };
 
-  describe('Button Navigation and Loading', () => {
+  const defaultNavigationAndLoading = () => {
     it('should load the carousel page with the initial slide.', async () => {
       await expect(page).toMatch('Nuka Carousel: Slide 1');
     });
@@ -43,6 +48,58 @@ describe('Nuka Carousel', () => {
       await expect(page).toMatch('Nuka Carousel: Slide 2');
       await expect(page).toClick('button', { text: 'NEXT' });
       await expect(page).toMatch('Nuka Carousel: Slide 1');
+    });
+  };
+
+  beforeEach(async () => {
+    await page.goto('http://localhost:8080');
+  });
+
+  describe('Button Navigation and Loading', () => {
+    describe('transitionMode - scroll', () => {
+      defaultNavigationAndLoading();
+    });
+
+    describe('transitionMode - fade', () => {
+      beforeEach(async () => {
+        await expect(page).toClick('button', { text: 'Toggle Fade On' });
+      });
+
+      defaultNavigationAndLoading();
+
+      it('should set currentSlide opacity to 1 and display to block', async () => {
+        const activeSlide = 3;
+        await expect(page).toClick('button', { text: `${activeSlide}` });
+        await page.waitFor(600); // need to let slide transition complete
+
+        const styles = await page.evaluate(
+          getStyles,
+          `.slider-slide:nth-child(${activeSlide})`,
+          ['opacity', 'display']
+        );
+
+        await expect(styles.opacity).toMatch('1');
+        await expect(styles.display).toMatch('block');
+      });
+
+      it('should set hidden slides display to "none"', async () => {
+        const activeSlide = 4;
+        const slideCount = 6;
+        await expect(page).toClick('button', { text: `${activeSlide}` });
+        await page.waitFor(600); // need to let slide transition complete
+
+        for (let i = 0; i < slideCount; i++) {
+          if (i !== activeSlide - 1) {
+            const styles = await page.evaluate(
+              getStyles,
+              `.slider-slide:nth-child(${i + 1})`,
+              ['display']
+            );
+
+            await expect(styles.display).toMatch('none');
+          }
+        }
+      });
     });
   });
 
@@ -208,15 +265,6 @@ describe('Nuka Carousel', () => {
   });
 
   describe('Neighboring Slide Visibility and Slide Alignment', () => {
-    const getStyles = (selector, keys) => {
-      const e = document.querySelector(selector);
-      const styles = window.getComputedStyle(e);
-      return keys.reduce((acc, curr) => {
-        acc[curr] = styles[curr];
-        return acc;
-      }, {});
-    };
-
     const approximately = (a, b) => {
       return Math.abs(parseFloat(a) - parseFloat(b)) < 0.25;
     };

@@ -299,7 +299,7 @@ describe('<Carousel />', () => {
     });
   });
 
-  describe('transitionModes - scroll', () => {
+  describe('transitionModes', () => {
     describe('scroll', () => {
       it('should default to scroll mode', () => {
         const wrapper = mount(
