@@ -61,28 +61,25 @@ export default class FadeTransition extends React.Component {
   }
 
   getSlideStyles(index, data) {
-    return data[index]
-      ? {
-          position: 'absolute',
-          left: data[index].left,
-          top: 0,
-          opacity: data[index].opacity,
-          display: 'block',
-          listStyleType: 'none',
-          verticalAlign: 'top',
-          width: this.props.slideWidth,
-          height: 'auto',
-          minHeight: '100%',
-          boxSizing: 'border-box',
-          MozBoxSizing: 'border-box',
-          marginLeft: this.props.cellSpacing / 2,
-          marginRight: this.props.cellSpacing / 2,
-          marginTop: 'auto',
-          marginBottom: 'auto'
-        }
-      : {
-          display: 'none'
-        };
+    return {
+      position: 'absolute',
+      visibility: data[index] ? 'inherit' : 'hidden',
+      left: data[index] ? data[index].left : 0,
+      top: 0,
+      opacity: data[index] ? data[index].opacity : 0,
+      display: 'block',
+      listStyleType: 'none',
+      verticalAlign: 'top',
+      width: this.props.slideWidth,
+      height: 'auto',
+      minHeight: '100%',
+      boxSizing: 'border-box',
+      MozBoxSizing: 'border-box',
+      marginLeft: this.props.cellSpacing / 2,
+      marginRight: this.props.cellSpacing / 2,
+      marginTop: 'auto',
+      marginBottom: 'auto'
+    };
   }
 
   getContainerStyles() {

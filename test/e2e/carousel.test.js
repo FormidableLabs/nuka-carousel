@@ -67,7 +67,7 @@ describe('Nuka Carousel', () => {
 
       defaultNavigationAndLoading();
 
-      it('should set currentSlide opacity to 1 and display to block', async () => {
+      it('should set currentSlide opacity to 1 and visibility to inherit', async () => {
         const activeSlide = 3;
         await expect(page).toClick('button', { text: `${activeSlide}` });
         await page.waitFor(600); // need to let slide transition complete
@@ -75,14 +75,14 @@ describe('Nuka Carousel', () => {
         const styles = await page.evaluate(
           getStyles,
           `.slider-slide:nth-child(${activeSlide})`,
-          ['opacity', 'display']
+          ['opacity', 'visibility']
         );
 
         await expect(styles.opacity).toMatch('1');
-        await expect(styles.display).toMatch('block');
+        await expect(styles.visibility).toMatch('visible');
       });
 
-      it('should set hidden slides display to "none"', async () => {
+      it('should set hidden slides visibility to hidden', async () => {
         const activeSlide = 4;
         const slideCount = 6;
         await expect(page).toClick('button', { text: `${activeSlide}` });
@@ -93,10 +93,10 @@ describe('Nuka Carousel', () => {
             const styles = await page.evaluate(
               getStyles,
               `.slider-slide:nth-child(${i + 1})`,
-              ['display']
+              ['visibility']
             );
 
-            await expect(styles.display).toMatch('none');
+            await expect(styles.visibility).toMatch('hidden');
           }
         }
       });

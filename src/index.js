@@ -753,13 +753,7 @@ export default class Carousel extends React.Component {
 
   getSlideHeight(props, childNodes = []) {
     const { heightMode, vertical } = props;
-    // in 'fade' mode, non-visible slides have height of 0
-    // so to get height of "firstSlide" we'll just use current
-    const firstSlide =
-      this.props.transitionMode === 'fade'
-        ? childNodes[this.state.currentSlide]
-        : childNodes[0];
-
+    const firstSlide = childNodes[0];
     if (firstSlide && heightMode === 'first') {
       return vertical
         ? firstSlide.offsetHeight * this.state.slidesToShow
