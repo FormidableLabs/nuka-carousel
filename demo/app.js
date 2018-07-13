@@ -13,7 +13,8 @@ class App extends React.Component {
       wrapAround: false,
       underlineHeader: false,
       slidesToShow: 1.0,
-      cellAlign: 'left'
+      cellAlign: 'left',
+      transitionMode: 'scroll'
     };
 
     this.handleImageClick = this.handleImageClick.bind(this);
@@ -27,6 +28,7 @@ class App extends React.Component {
     return (
       <div style={{ width: '50%', margin: 'auto' }}>
         <Carousel
+          transitionMode={this.state.transitionMode}
           cellAlign={this.state.cellAlign}
           slidesToShow={this.state.slidesToShow}
           wrapAround={this.state.wrapAround}
@@ -77,6 +79,16 @@ class App extends React.Component {
             </button>
             <button
               onClick={() =>
+                this.setState({
+                  transitionMode:
+                    this.state.transitionMode === 'fade' ? 'scroll' : 'fade'
+                })
+              }
+            >
+              Toggle Fade {this.state.transitionMode === 'fade' ? 'Off' : 'On'}
+            </button>
+            <button
+              onClick={() =>
                 this.setState(prevState => ({
                   wrapAround: !prevState.wrapAround
                 }))
@@ -86,32 +98,34 @@ class App extends React.Component {
             </button>
           </div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          {this.state.slidesToShow > 1.0 && (
-            <div>
-              <button onClick={() => this.setState({ cellAlign: 'left' })}>
-                Left
-              </button>
-              <button onClick={() => this.setState({ cellAlign: 'center' })}>
-                Center
-              </button>
-              <button onClick={() => this.setState({ cellAlign: 'right' })}>
-                Right
+        {this.state.transitionMode !== 'fade' && (
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            {this.state.slidesToShow > 1.0 && (
+              <div>
+                <button onClick={() => this.setState({ cellAlign: 'left' })}>
+                  Left
+                </button>
+                <button onClick={() => this.setState({ cellAlign: 'center' })}>
+                  Center
+                </button>
+                <button onClick={() => this.setState({ cellAlign: 'right' })}>
+                  Right
+                </button>
+              </div>
+            )}
+            <div style={{ marginLeft: 'auto' }}>
+              <button
+                onClick={() =>
+                  this.setState({
+                    slidesToShow: this.state.slidesToShow > 1.0 ? 1.0 : 1.25
+                  })
+                }
+              >
+                Toggle Partially Visible Slides
               </button>
             </div>
-          )}
-          <div style={{ marginLeft: 'auto' }}>
-            <button
-              onClick={() =>
-                this.setState({
-                  slidesToShow: this.state.slidesToShow > 1.0 ? 1.0 : 1.25
-                })
-              }
-            >
-              Toggle Partially Visible Slides
-            </button>
           </div>
-        </div>
+        )}
       </div>
     );
   }

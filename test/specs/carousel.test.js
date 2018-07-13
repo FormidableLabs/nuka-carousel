@@ -286,14 +286,144 @@ describe('<Carousel />', () => {
       const elems = ['Slide 2', 'Slide 3', 'Slide 4'];
       const wrapper = mount(
         <Carousel>
-          <p>Static Slide</p>
+          <p key="Static Slide">Static Slide</p>
           {elems.map(e => `<p key={${e}}>${e}</e>`)}
         </Carousel>
       );
       expect(wrapper).toHaveState({ slideCount: 4 });
-      const children = wrapper.props().children.concat(<p>Slide 4</p>);
+      const children = wrapper
+        .props()
+        .children.concat(<p key="Slide 5">Slide 4</p>);
       wrapper.setProps({ children });
       expect(wrapper).toHaveState({ slideCount: 5 });
+    });
+  });
+
+  describe('transitionModes', () => {
+    describe('scroll', () => {
+      it('should default to scroll mode', () => {
+        const wrapper = mount(
+          <Carousel>
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(wrapper).toHaveProp({ transitionMode: 'scroll' });
+      });
+
+      it('should allow users to set fractional slidesToShow', () => {
+        const wrapper = mount(
+          <Carousel slidesToShow={1.5}>
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(wrapper).toHaveState({ slidesToShow: 1.5 });
+      });
+
+      it('should not set slidesToScroll automatically equal to slidesToShow', () => {
+        const wrapper = mount(
+          <Carousel slidesToShow={2}>
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(wrapper).toHaveState({ slidesToScroll: 1 });
+      });
+
+      it('should set cellAlign state to prop value', () => {
+        const centerWrapper = mount(
+          <Carousel cellAlign="center">
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(centerWrapper).toHaveState({ cellAlign: 'center' });
+
+        const rightWrapper = mount(
+          <Carousel cellAlign="right">
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(rightWrapper).toHaveState({ cellAlign: 'right' });
+
+        const defaultWrapper = mount(
+          <Carousel>
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(defaultWrapper).toHaveState({ cellAlign: 'left' });
+      });
+    });
+
+    describe('fade', () => {
+      it('should allow user to set transitionMode to fade', () => {
+        const wrapper = mount(
+          <Carousel transitionMode="fade">
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(wrapper).toHaveProp({ transitionMode: 'fade' });
+      });
+
+      it('should not allow users to set fractional slidesToShow', () => {
+        const wrapper = mount(
+          <Carousel transitionMode="fade" slidesToShow={1.5}>
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(wrapper).toHaveState({ slidesToShow: 1 });
+      });
+
+      it('should default slidesToScroll equal to slidesToShow', () => {
+        const wrapper = mount(
+          <Carousel transitionMode="fade" slidesToShow={2}>
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(wrapper).toHaveState({ slidesToScroll: 2 });
+      });
+
+      it('should override slidesToScroll value with slidesToShow value', () => {
+        const wrapper = mount(
+          <Carousel transitionMode="fade" slidesToShow={2} slidesToScroll={3}>
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(wrapper).toHaveState({ slidesToScroll: 2 });
+      });
+
+      it('should set cellAlign to "left" regardless of prop', () => {
+        const centerWrapper = mount(
+          <Carousel transitionMode="fade" cellAlign="center">
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(centerWrapper).toHaveState({ cellAlign: 'left' });
+
+        const rightWrapper = mount(
+          <Carousel transitionMode="fade" cellAlign="right">
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(rightWrapper).toHaveState({ cellAlign: 'left' });
+
+        const defaultWrapper = mount(
+          <Carousel transitionMode="fade">
+            <p>Slide 1</p>
+          </Carousel>
+        );
+
+        expect(defaultWrapper).toHaveState({ cellAlign: 'left' });
+      });
     });
   });
 
@@ -407,58 +537,6 @@ describe('<Carousel />', () => {
       expect(wrapper).toHaveState({ currentSlide: 2 });
       nextButton.simulate('click');
       expect(wrapper).toHaveState({ currentSlide: 0 });
-    });
-
-    describe('#getSlideDirection', () => {
-      let instance;
-
-      beforeEach(async () => {
-        const wrapper = mount(
-          <Carousel>
-            <p>Slide 1</p>
-            <p>Slide 2</p>
-            <p>Slide 3</p>
-          </Carousel>
-        );
-        instance = wrapper.instance();
-      });
-
-      it('should return zero if start and end slide are the same regardless of isWrapping', () => {
-        expect(instance.getSlideDirection(2, 2, true)).toEqual(0);
-        expect(instance.getSlideDirection(2, 2, false)).toEqual(0);
-      });
-
-      it('should return -1 if isWrapping is true and start is less than end', () => {
-        const isWrapping = true;
-        const start = 0;
-        const end = 6;
-
-        expect(instance.getSlideDirection(start, end, isWrapping)).toEqual(-1);
-      });
-
-      it('should return 1 if isWrapping is true and start is greater than end', () => {
-        const isWrapping = true;
-        const start = 6;
-        const end = 0;
-
-        expect(instance.getSlideDirection(start, end, isWrapping)).toEqual(1);
-      });
-
-      it('should return 1 if isWrapping is false and start is less than end', () => {
-        const isWrapping = false;
-        const start = 0;
-        const end = 6;
-
-        expect(instance.getSlideDirection(start, end, isWrapping)).toEqual(1);
-      });
-
-      it('should return -1 if isWrapping is false and start is greater than end', () => {
-        const isWrapping = false;
-        const start = 6;
-        const end = 0;
-
-        expect(instance.getSlideDirection(start, end, isWrapping)).toEqual(-1);
-      });
     });
   });
 

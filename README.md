@@ -74,6 +74,8 @@ Hook to be called before a slide is changed.
 
 When displaying more than one slide, sets which position to anchor the current slide to.
 
+Is overridden to `left` when `transitionMode="fade"`.
+
 #### cellSpacing
 
 `React.PropTypes.number`
@@ -92,6 +94,12 @@ Enable mouse swipe/dragging
 
 Animation easing function. See valid easings here: [D3 Easing Functions](https://github.com/d3/d3-ease).
 
+#### edgeEasing
+
+`React.PropTypes.string`
+
+Animation easing function when swipe exceeds edge. See valid easings here: [D3 Easing Functions](https://github.com/d3/d3-ease).
+
 #### framePadding
 
 `React.PropTypes.string`
@@ -104,13 +112,7 @@ Used to set the margin of the slider frame. Accepts any string dimension value s
 
 Used to set overflow style property on slider frame. Defaults to `hidden`.
 
-#### edgeEasing
-
-`React.PropTypes.string`
-
-Animation easing function when swipe exceeds edge. See valid easings here: [D3 Easing Functions](https://github.com/d3/d3-ease).
-
-### heightMode
+#### heightMode
 
 `React.PropTypes.oneOf(['first', 'current', 'max'])`
 
@@ -166,6 +168,8 @@ Manually set the index of the slide to be shown.
 
 Slides to show at once.
 
+Will be cast to an `integer` when `transitionMode="fade"`.
+
 #### slidesToScroll
 
 ```
@@ -176,6 +180,8 @@ slidesToScroll: React.PropTypes.oneOfType([
 ```
 
 Slides to scroll at once. Set to `"auto"` to always scroll the current number of visible slides.
+
+Is overridden to `slidesToShow` when `transitionMode="fade"`.
 
 #### slideWidth
 
@@ -194,6 +200,12 @@ Animation duration.
 `React.PropTypes.bool`
 
 Enable touch swipe/dragging
+
+#### transitionMode
+
+`React.PropTypes.oneOf(['scroll', 'fade'])`
+
+Set the way slides transition from one to the next. Defaults to `scroll`.
 
 #### vertical
 
