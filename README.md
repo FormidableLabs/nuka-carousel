@@ -116,7 +116,7 @@ Used to set overflow style property on slider frame. Defaults to `hidden`.
 
 `React.PropTypes.oneOf(['first', 'current', 'max'])`
 
-Change the height of the slides based either on the first slide, the current slide, or the maximum height of all slides.
+Change the height of the slides based either on the first slide, the current slide, or the maximum height of all slides. Defaults to `max`.
 
 #### initialSlideHeight
 
