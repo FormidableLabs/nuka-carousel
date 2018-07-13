@@ -225,6 +225,25 @@ describe('<Carousel />', () => {
       expect(nextButton).toHaveProp('disabled', true);
     });
 
+    it('should set slideHeight to max value by default', () => {
+      jest
+        .spyOn(Carousel.prototype, 'getChildNodes')
+        .mockReturnValue([
+          { offsetHeight: 100, style: {} },
+          { offsetHeight: 200, style: {} },
+          { offsetHeight: 300, style: {} }
+        ]);
+      const wrapper = mount(
+        <Carousel>
+          <div style={{ height: '100px' }}>Slide 1</div>
+          <div style={{ height: '200px' }}>Slide 1</div>
+          <div style={{ height: '300px' }}>Slide 1</div>
+        </Carousel>
+      );
+      Carousel.prototype.getChildNodes.mockRestore();
+      expect(wrapper).toHaveState({ slideHeight: 300 });
+    });
+
     it('should set slideHeight to max value when `heightMode` is `max`', () => {
       jest
         .spyOn(Carousel.prototype, 'getChildNodes')

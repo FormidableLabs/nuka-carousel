@@ -1137,7 +1137,7 @@ Carousel.defaultProps = {
   edgeEasing: 'easeElasticOut',
   framePadding: '0px',
   frameOverflow: 'hidden',
-  heightMode: 'first',
+  heightMode: 'max',
   transitionMode: 'scroll',
   onResize() {},
   slideIndex: 0,
