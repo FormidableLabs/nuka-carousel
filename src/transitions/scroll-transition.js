@@ -124,7 +124,7 @@ export default class ScrollTransition extends React.Component {
       cursor: this.props.dragging === true ? 'pointer' : 'inherit',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
-      touchAction: 'none'
+      touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`
     };
   }
 
