@@ -334,7 +334,7 @@ describe('<Carousel />', () => {
       expect(topCenterControl.html()).toContain('Top center control');
     });
 
-    it('should correctly render controls after props being updated.', () => {
+    it('should correctly count number of slides after props being updated.', () => {
       const elems = ['Slide 2', 'Slide 3', 'Slide 4'];
       const wrapper = mount(
         <Carousel>

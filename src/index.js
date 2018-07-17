@@ -32,18 +32,6 @@ const removeEvent = function(elem, type, eventHandle) {
   }
 };
 
-const controlsMap = [
-  { funcName: 'renderTopLeftControls', key: 'TopLeft' },
-  { funcName: 'renderTopCenterControls', key: 'TopCenter' },
-  { funcName: 'renderTopRightControls', key: 'TopRight' },
-  { funcName: 'renderCenterLeftControls', key: 'CenterLeft' },
-  { funcName: 'renderCenterCenterControls', key: 'CenterCenter' },
-  { funcName: 'renderCenterRightControls', key: 'CenterRight' },
-  { funcName: 'renderBottomLeftControls', key: 'BottomLeft' },
-  { funcName: 'renderBottomCenterControls', key: 'BottomCenter' },
-  { funcName: 'renderBottomRightControls', key: 'BottomRight' }
-];
-
 export default class Carousel extends React.Component {
   constructor() {
     super(...arguments);
@@ -51,6 +39,17 @@ export default class Carousel extends React.Component {
     this.displayName = 'Carousel';
     this.clickSafe = true;
     this.touchObject = {};
+    this.controlsMap = [
+      { funcName: 'renderTopLeftControls', key: 'TopLeft' },
+      { funcName: 'renderTopCenterControls', key: 'TopCenter' },
+      { funcName: 'renderTopRightControls', key: 'TopRight' },
+      { funcName: 'renderCenterLeftControls', key: 'CenterLeft' },
+      { funcName: 'renderCenterCenterControls', key: 'CenterCenter' },
+      { funcName: 'renderCenterRightControls', key: 'CenterRight' },
+      { funcName: 'renderBottomLeftControls', key: 'BottomLeft' },
+      { funcName: 'renderBottomCenterControls', key: 'BottomCenter' },
+      { funcName: 'renderBottomRightControls', key: 'BottomRight' }
+    ];
 
     const {
       slidesToScroll,
@@ -1002,7 +1001,7 @@ export default class Carousel extends React.Component {
   }
 
   renderControls() {
-    return controlsMap.map(({ funcName, key }) => {
+    return this.controlsMap.map(({ funcName, key }) => {
       const func = this.props[funcName];
       return (
         func &&
