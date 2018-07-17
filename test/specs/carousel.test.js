@@ -88,6 +88,20 @@ describe('<Carousel />', () => {
       expect(decorator2).toHaveLength(1);
       expect(decorator3).toHaveLength(1);
     });
+
+    it('should ignore null/undefined child elements', () => {
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+          {null}
+          {undefined}
+        </Carousel>
+      );
+
+      expect(wrapper.find('.slider-list').children()).toHaveLength(3);
+    });
   });
 
   describe('Props', () => {
