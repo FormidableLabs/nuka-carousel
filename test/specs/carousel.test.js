@@ -349,6 +349,41 @@ describe('<Carousel />', () => {
       wrapper.setProps({ children });
       expect(wrapper).toHaveState({ slideCount: 5 });
     });
+
+    it('should default autoGenerateStyleTag to true', () => {
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+        </Carousel>
+      );
+
+      expect(wrapper).toHaveProp({ autoGenerateStyleTag: true });
+    });
+
+    it('should generate style tag when autoGenerateStyle tag is true', () => {
+      const wrapper = mount(
+        <Carousel autoGenerateStyleTag>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+        </Carousel>
+      );
+
+      const styleTag = wrapper.find('style');
+      expect(styleTag).toExist();
+    });
+
+    it('should not generate style tag when autoGenerateStyle tag is false', () => {
+      const wrapper = mount(
+        <Carousel autoGenerateStyleTag={false}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+        </Carousel>
+      );
+
+      const styleTag = wrapper.find('style');
+      expect(styleTag).not.toExist();
+    });
   });
 
   describe('transitionModes', () => {
