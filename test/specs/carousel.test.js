@@ -89,7 +89,7 @@ describe('<Carousel />', () => {
       expect(decorator3).toHaveLength(1);
     });
 
-    it('should ignore null/undefined child elements', () => {
+    it('should ignore non-component child elements', () => {
       const wrapper = mount(
         <Carousel>
           <p>Slide 1</p>
@@ -97,10 +97,22 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
           {null}
           {undefined}
+          {false}
+          {true}
         </Carousel>
       );
 
       expect(wrapper.find('.slider-list').children()).toHaveLength(3);
+    });
+
+    it('should not render child elements if logic to generate slides does not return valid components', () => {
+      let showSlide = true;
+      let wrapper = mount(<Carousel>{showSlide && <p>Slide 1</p>}</Carousel>);
+      expect(wrapper.find('.slider-list').children()).toHaveLength(1);
+
+      showSlide = false;
+      wrapper = mount(<Carousel>{showSlide && <p>Slide 1</p>}</Carousel>);
+      expect(wrapper.find('.slider-list').children()).toHaveLength(0);
     });
   });
 
@@ -376,6 +388,16 @@ describe('<Carousel />', () => {
       );
 
       expect(wrapper).toHaveState({ slideCount: 3 });
+    });
+
+    it('should set slideCount to 0 if logic to render slides does not return valid components', () => {
+      let showSlide = true;
+      let wrapper = mount(<Carousel>{showSlide && <p>Slide 1</p>}</Carousel>);
+      expect(wrapper).toHaveState({ slideCount: 1 });
+
+      showSlide = false;
+      wrapper = mount(<Carousel>{showSlide && <p>Slide 1</p>}</Carousel>);
+      expect(wrapper).toHaveState({ slideCount: 0 });
     });
   });
 
