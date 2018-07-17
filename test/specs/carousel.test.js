@@ -301,6 +301,39 @@ describe('<Carousel />', () => {
       expect(wrapper).toHaveState({ slideHeight: 200 });
     });
 
+    it('should correctly render controls after props being updated.', () => {
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+
+      let previousButton = wrapper.find('.slider-control-centerleft button');
+      expect(previousButton).toExist();
+
+      const nextButton = wrapper.find('.slider-control-centerright button');
+      expect(nextButton).toExist();
+
+      const indicator = wrapper.find('.slider-control-bottomcenter button');
+      expect(indicator).toExist();
+
+      let topCenterControl = wrapper.find('.slider-control-topcenter button');
+      expect(topCenterControl).not.toExist();
+
+      wrapper.setProps({ renderCenterLeftControls: null });
+      previousButton = wrapper.find('.slider-control-centerleft button');
+      expect(previousButton).not.toExist();
+
+      wrapper.setProps({
+        renderTopCenterControls: () => <button>Top center control</button>
+      });
+      topCenterControl = wrapper.find('.slider-control-topcenter button');
+      expect(topCenterControl).toExist();
+      expect(topCenterControl.html()).toContain('Top center control');
+    });
+
     it('should correctly count number of slides after props being updated.', () => {
       const elems = ['Slide 2', 'Slide 3', 'Slide 4'];
       const wrapper = mount(

@@ -38,18 +38,18 @@ export default class Carousel extends React.Component {
 
     this.displayName = 'Carousel';
     this.clickSafe = true;
-    this.controlsMap = [
-      { func: this.props.renderTopLeftControls, key: 'TopLeft' },
-      { func: this.props.renderTopCenterControls, key: 'TopCenter' },
-      { func: this.props.renderTopRightControls, key: 'TopRight' },
-      { func: this.props.renderCenterLeftControls, key: 'CenterLeft' },
-      { func: this.props.renderCenterCenterControls, key: 'CenterCenter' },
-      { func: this.props.renderCenterRightControls, key: 'CenterRight' },
-      { func: this.props.renderBottomLeftControls, key: 'BottomLeft' },
-      { func: this.props.renderBottomCenterControls, key: 'BottomCenter' },
-      { func: this.props.renderBottomRightControls, key: 'BottomRight' }
-    ];
     this.touchObject = {};
+    this.controlsMap = [
+      { funcName: 'renderTopLeftControls', key: 'TopLeft' },
+      { funcName: 'renderTopCenterControls', key: 'TopCenter' },
+      { funcName: 'renderTopRightControls', key: 'TopRight' },
+      { funcName: 'renderCenterLeftControls', key: 'CenterLeft' },
+      { funcName: 'renderCenterCenterControls', key: 'CenterCenter' },
+      { funcName: 'renderCenterRightControls', key: 'CenterRight' },
+      { funcName: 'renderBottomLeftControls', key: 'BottomLeft' },
+      { funcName: 'renderBottomCenterControls', key: 'BottomCenter' },
+      { funcName: 'renderBottomRightControls', key: 'BottomRight' }
+    ];
 
     const {
       slidesToScroll,
@@ -1001,8 +1001,9 @@ export default class Carousel extends React.Component {
   }
 
   renderControls() {
-    return this.controlsMap.map(
-      ({ func, key }) =>
+    return this.controlsMap.map(({ funcName, key }) => {
+      const func = this.props[funcName];
+      return (
         func &&
         typeof func === 'function' && (
           <div
@@ -1025,7 +1026,8 @@ export default class Carousel extends React.Component {
             })}
           </div>
         )
-    );
+      );
+    });
   }
 
   render() {
