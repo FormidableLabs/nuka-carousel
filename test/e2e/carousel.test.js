@@ -49,6 +49,24 @@ describe('Nuka Carousel', () => {
       await expect(page).toClick('button', { text: 'NEXT' });
       await expect(page).toMatch('Nuka Carousel: Slide 1');
     });
+
+    it('should be hidden if containing div visibility is set to hidden', async () => {
+      const visibleStyles = await page.evaluate(getStyles, `.slider`, [
+        'visibility'
+      ]);
+
+      await expect(visibleStyles.visibility).toMatch('visible');
+
+      await page.evaluate(() => {
+        document.getElementById('content').style.visibility = 'hidden';
+      });
+
+      const hiddenStyles = await page.evaluate(getStyles, `.slider`, [
+        'visibility'
+      ]);
+
+      await expect(hiddenStyles.visibility).toMatch('hidden');
+    });
   };
 
   beforeEach(async () => {

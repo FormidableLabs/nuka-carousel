@@ -868,7 +868,7 @@ export default class Carousel extends React.Component {
       height: 'auto',
       boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
-      visibility: this.state.slideWidth ? 'visible' : 'hidden'
+      visibility: this.state.slideWidth ? 'inherit' : 'hidden'
     };
   }
 
