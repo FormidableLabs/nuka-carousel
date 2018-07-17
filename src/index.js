@@ -122,7 +122,7 @@ export default class Carousel extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const slideCount = React.Children.count(nextProps.children);
+    const slideCount = this.getValidChildren(nextProps.children).length;
     const slideCountChanged = slideCount !== this.state.slideCount;
 
     this.setState({ slideCount });
@@ -413,8 +413,7 @@ export default class Carousel extends React.Component {
     if (this.touchObject.length > this.state.slideWidth / slidesToShow / 5) {
       if (this.touchObject.direction === 1) {
         if (
-          this.state.currentSlide >=
-            React.Children.count(this.props.children) - slidesToShow &&
+          this.state.currentSlide >= this.state.slideCount - slidesToShow &&
           !this.props.wrapAround
         ) {
           this.setState({ easing: easing[this.props.edgeEasing] });
@@ -507,11 +506,11 @@ export default class Carousel extends React.Component {
   goToSlide(index) {
     this.setState({ easing: easing[this.props.easing] });
 
-    if (index >= React.Children.count(this.props.children) || index < 0) {
+    if (index >= this.state.slideCount || index < 0) {
       if (!this.props.wrapAround) {
         return;
       }
-      if (index >= React.Children.count(this.props.children)) {
+      if (index >= this.state.slideCount) {
         this.props.beforeSlide(this.state.currentSlide, 0);
         this.setState(
           prevState => ({
@@ -545,8 +544,7 @@ export default class Carousel extends React.Component {
         );
         return;
       } else {
-        const endSlide =
-          React.Children.count(this.props.children) - this.state.slidesToScroll;
+        const endSlide = this.state.slideCount - this.state.slidesToScroll;
         this.props.beforeSlide(this.state.currentSlide, endSlide);
         this.setState(
           prevState => ({
@@ -592,7 +590,7 @@ export default class Carousel extends React.Component {
   }
 
   nextSlide() {
-    const childrenCount = React.Children.count(this.props.children);
+    const childrenCount = this.state.slideCount;
     let slidesToShow = this.state.slidesToShow;
 
     if (this.props.slidesToScroll === 'auto') {
@@ -732,7 +730,7 @@ export default class Carousel extends React.Component {
       {
         slideHeight,
         frameWidth: this.props.vertical ? frameHeight : '100%',
-        slideCount: React.Children.count(this.props.children),
+        slideCount: this.getValidChildren(this.props.children).length,
         slideWidth
       },
       () => {
@@ -824,6 +822,11 @@ export default class Carousel extends React.Component {
         this.setLeft();
       }
     );
+  }
+
+  getValidChildren(children) {
+    // .toArray automatically removes invalid React children
+    return React.Children.toArray(children);
   }
 
   getChildNodes() {
@@ -1040,6 +1043,7 @@ export default class Carousel extends React.Component {
     const touchEvents = this.getTouchEvents();
     const mouseEvents = this.getMouseEvents();
     const TransitionControl = Transitions[this.props.transitionMode];
+    const validChildren = this.getValidChildren(this.props.children);
 
     return (
       <div
@@ -1070,7 +1074,7 @@ export default class Carousel extends React.Component {
                 deltaX={tx}
                 deltaY={ty}
               >
-                {this.props.children}
+                {validChildren}
               </TransitionControl>
             </div>
           )}

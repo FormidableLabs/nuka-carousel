@@ -88,6 +88,32 @@ describe('<Carousel />', () => {
       expect(decorator2).toHaveLength(1);
       expect(decorator3).toHaveLength(1);
     });
+
+    it('should ignore non-component child elements', () => {
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+          {null}
+          {undefined}
+          {false}
+          {true}
+        </Carousel>
+      );
+
+      expect(wrapper.find('.slider-list').children()).toHaveLength(3);
+    });
+
+    it('should not render child elements if logic to generate slides does not return valid components', () => {
+      let showSlide = true;
+      let wrapper = mount(<Carousel>{showSlide && <p>Slide 1</p>}</Carousel>);
+      expect(wrapper.find('.slider-list').children()).toHaveLength(1);
+
+      showSlide = false;
+      wrapper = mount(<Carousel>{showSlide && <p>Slide 1</p>}</Carousel>);
+      expect(wrapper.find('.slider-list').children()).toHaveLength(0);
+    });
   });
 
   describe('Props', () => {
@@ -348,6 +374,30 @@ describe('<Carousel />', () => {
         .children.concat(<p key="Slide 5">Slide 4</p>);
       wrapper.setProps({ children });
       expect(wrapper).toHaveState({ slideCount: 5 });
+    });
+
+    it('should set slideCount to equal the amount of valid react children', () => {
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+          {null}
+          {undefined}
+        </Carousel>
+      );
+
+      expect(wrapper).toHaveState({ slideCount: 3 });
+    });
+
+    it('should set slideCount to 0 if logic to render slides does not return valid components', () => {
+      let showSlide = true;
+      let wrapper = mount(<Carousel>{showSlide && <p>Slide 1</p>}</Carousel>);
+      expect(wrapper).toHaveState({ slideCount: 1 });
+
+      showSlide = false;
+      wrapper = mount(<Carousel>{showSlide && <p>Slide 1</p>}</Carousel>);
+      expect(wrapper).toHaveState({ slideCount: 0 });
     });
   });
 
