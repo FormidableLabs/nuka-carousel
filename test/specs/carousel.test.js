@@ -363,6 +363,20 @@ describe('<Carousel />', () => {
       wrapper.setProps({ children });
       expect(wrapper).toHaveState({ slideCount: 5 });
     });
+
+    it('should set slideCount to equal the amount of valid react children', () => {
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+          {null}
+          {undefined}
+        </Carousel>
+      );
+
+      expect(wrapper).toHaveState({ slideCount: 3 });
+    });
   });
 
   describe('transitionModes', () => {
