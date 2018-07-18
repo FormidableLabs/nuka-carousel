@@ -50,6 +50,11 @@ Now, you can access the application on your localhost at following url: <a href=
 
 Hook to be called after a slide is changed.
 
+#### autoGenerateStyleTag
+`React.PropTypes.bool`
+
+When set to `true`, it will generate a `style` tag to help ensure images are displayed properly. Set to `false` if you don't want or need the style tag generated. Defaults to `true`.
+
 #### autoplay
 
 `React.PropTypes.bool`

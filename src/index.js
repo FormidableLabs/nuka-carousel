@@ -1082,10 +1082,12 @@ export default class Carousel extends React.Component {
 
         {this.renderControls()}
 
-        <style
-          type="text/css"
-          dangerouslySetInnerHTML={{ __html: this.getStyleTagStyles() }}
-        />
+        {this.props.autoGenerateStyleTag && (
+          <style
+            type="text/css"
+            dangerouslySetInnerHTML={{ __html: this.getStyleTagStyles() }}
+          />
+        )}
       </div>
     );
   }
@@ -1095,6 +1097,7 @@ Carousel.propTypes = {
   afterSlide: PropTypes.func,
   autoplay: PropTypes.bool,
   autoplayInterval: PropTypes.number,
+  autoGenerateStyleTag: PropTypes.bool,
   beforeSlide: PropTypes.func,
   cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
   cellSpacing: PropTypes.number,
@@ -1135,6 +1138,7 @@ Carousel.defaultProps = {
   afterSlide() {},
   autoplay: false,
   autoplayInterval: 3000,
+  autoGenerateStyleTag: true,
   beforeSlide() {},
   cellAlign: 'left',
   cellSpacing: 0,

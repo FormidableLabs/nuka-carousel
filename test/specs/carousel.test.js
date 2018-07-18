@@ -376,6 +376,41 @@ describe('<Carousel />', () => {
       expect(wrapper).toHaveState({ slideCount: 5 });
     });
 
+    it('should default autoGenerateStyleTag to true', () => {
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+        </Carousel>
+      );
+
+      expect(wrapper).toHaveProp({ autoGenerateStyleTag: true });
+    });
+
+    it('should generate style tag when autoGenerateStyle tag is true', () => {
+      const wrapper = mount(
+        <Carousel autoGenerateStyleTag>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+        </Carousel>
+      );
+
+      const styleTag = wrapper.find('style');
+      expect(styleTag).toExist();
+    });
+
+    it('should not generate style tag when autoGenerateStyle tag is false', () => {
+      const wrapper = mount(
+        <Carousel autoGenerateStyleTag={false}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+        </Carousel>
+      );
+
+      const styleTag = wrapper.find('style');
+      expect(styleTag).not.toExist();
+    });
+
     it('should set slideCount to equal the amount of valid react children', () => {
       const wrapper = mount(
         <Carousel>
