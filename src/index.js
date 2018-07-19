@@ -1067,7 +1067,7 @@ export default class Carousel extends React.Component {
               style={frameStyles}
               {...touchEvents}
               {...mouseEvents}
-              onClick={this.handleClick}
+              onClick={this.props.handleClick || this.handleClick}
             >
               <TransitionControl
                 {...this.getTransitionProps()}
