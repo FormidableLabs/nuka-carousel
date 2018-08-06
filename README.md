@@ -148,7 +148,7 @@ Pause autoPlay when mouse is over carousel. Defaults to `true`.
 
 A set of eight render props for rendering controls in different positions around the carousel.
 
-- Valid render props for the eight positions are `renderTopLeftControls`, `renderTopCenterControls`, `renderTopRightControls`, `renderCenterLeftControls`, `renderCenterCenterControls`, `renderCenterRightControls`, `renderBottomLeftControls`, `renderBottomCenterControls`, and `renderBottomRightControls`.
+* Valid render props for the eight positions are `renderTopLeftControls`, `renderTopCenterControls`, `renderTopRightControls`, `renderCenterLeftControls`, `renderCenterCenterControls`, `renderCenterRightControls`, `renderBottomLeftControls`, `renderBottomCenterControls`, and `renderBottomRightControls`.
 
 ```jsx
 <Carousel
@@ -166,7 +166,7 @@ A set of eight render props for rendering controls in different positions around
 </Carousel>
 ```
 
-- The function returns the props for `goToSlide`, `nextSlide` and `previousSlide` functions in addition to `slideCount` and `currentSlide` values.
+* The function returns the props for `goToSlide`, `nextSlide` and `previousSlide` functions in addition to `slideCount` and `currentSlide` values.
 
 #### slideIndex
 
