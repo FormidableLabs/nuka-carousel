@@ -377,11 +377,15 @@ export default class Carousel extends React.Component {
   }
 
   handleMouseOver() {
-    this.pauseAutoplay();
+    if (this.props.pauseOnHover) {
+      this.pauseAutoplay();
+    }
   }
 
   handleMouseOut() {
-    this.unpauseAutoplay();
+    if (this.autoplayPaused) {
+      this.unpauseAutoplay();
+    }
   }
 
   handleClick(event) {
@@ -1111,6 +1115,7 @@ Carousel.propTypes = {
   initialSlideHeight: PropTypes.number,
   initialSlideWidth: PropTypes.number,
   onResize: PropTypes.func,
+  pauseOnHover: PropTypes.bool,
   renderTopLeftControls: PropTypes.func,
   renderTopCenterControls: PropTypes.func,
   renderTopRightControls: PropTypes.func,
@@ -1154,6 +1159,7 @@ Carousel.defaultProps = {
   slidesToScroll: 1,
   slidesToShow: 1,
   style: {},
+  pauseOnHover: true,
   renderCenterLeftControls: props => <PreviousButton {...props} />,
   renderCenterRightControls: props => <NextButton {...props} />,
   renderBottomCenterControls: props => <PagingDots {...props} />,
