@@ -127,7 +127,7 @@ export default class Carousel extends React.Component {
 
     this.setState({ slideCount, currentSlide: nextProps.slideIndex });
     if (slideCount <= this.state.currentSlide) {
-      this._goToSlide(nextProps, Math.max(slideCount - 1, 0));
+      this.goToSlide(Math.max(slideCount - 1, 0), nextProps);
     }
 
     const updateDimensions =
@@ -164,7 +164,7 @@ export default class Carousel extends React.Component {
       nextProps.slideIndex !== this.state.currentSlide &&
       !this.state.isWrappingAround
     ) {
-      this._goToSlide(this.props, nextProps.slideIndex);
+      this.goToSlide(nextProps.slideIndex, this.props);
     }
     if (this.props.autoplay !== nextProps.autoplay) {
       if (nextProps.autoplay) {
@@ -503,7 +503,11 @@ export default class Carousel extends React.Component {
 
   // Action Methods
 
-  _goToSlide(props, index) {
+  goToSlide(index, props) {
+    if (props === undefined) {
+      props = this.props;
+    }
+
     this.setState({ easing: easing[props.easing] });
 
     if (index >= this.state.slideCount || index < 0) {
@@ -587,10 +591,6 @@ export default class Carousel extends React.Component {
         this.resetAutoplay();
       }
     );
-  }
-
-  goToSlide(index) {
-    this._goToSlide(this.props, index);
   }
 
   nextSlide() {
