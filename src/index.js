@@ -125,9 +125,9 @@ export default class Carousel extends React.Component {
     const slideCount = this.getValidChildren(nextProps.children).length;
     const slideCountChanged = slideCount !== this.state.slideCount;
 
-    this.setState({ slideCount });
+    this.setState({ slideCount, currentSlide: nextProps.slideIndex });
     if (slideCount <= this.state.currentSlide) {
-      this.goToSlide(Math.max(slideCount - 1, 0));
+      this._goToSlide(nextProps, Math.max(slideCount - 1, 0));
     }
 
     const updateDimensions =
@@ -164,7 +164,7 @@ export default class Carousel extends React.Component {
       nextProps.slideIndex !== this.state.currentSlide &&
       !this.state.isWrappingAround
     ) {
-      this.goToSlide(nextProps.slideIndex);
+      this._goToSlide(this.props, nextProps.slideIndex);
     }
     if (this.props.autoplay !== nextProps.autoplay) {
       if (nextProps.autoplay) {
@@ -442,7 +442,7 @@ export default class Carousel extends React.Component {
     const xDist = x1 - x2;
     const yDist = y1 - y2;
     const r = Math.atan2(yDist, xDist);
-    let swipeAngle = Math.round(r * 180 / Math.PI);
+    let swipeAngle = Math.round((r * 180) / Math.PI);
 
     if (swipeAngle < 0) {
       swipeAngle = 360 - Math.abs(swipeAngle);
@@ -503,24 +503,24 @@ export default class Carousel extends React.Component {
 
   // Action Methods
 
-  goToSlide(index) {
-    this.setState({ easing: easing[this.props.easing] });
+  _goToSlide(props, index) {
+    this.setState({ easing: easing[props.easing] });
 
     if (index >= this.state.slideCount || index < 0) {
-      if (!this.props.wrapAround) {
+      if (!props.wrapAround) {
         return;
       }
       if (index >= this.state.slideCount) {
-        this.props.beforeSlide(this.state.currentSlide, 0);
+        props.beforeSlide(this.state.currentSlide, 0);
         this.setState(
           prevState => ({
-            left: this.props.vertical
+            left: props.vertical
               ? 0
               : this.getTargetLeft(
                   this.state.slideWidth,
                   prevState.currentSlide
                 ),
-            top: this.props.vertical
+            top: props.vertical
               ? this.getTargetLeft(
                   this.state.slideWidth,
                   prevState.currentSlide
@@ -536,22 +536,22 @@ export default class Carousel extends React.Component {
                 { isWrappingAround: false, resetWrapAroundPosition: true },
                 () => {
                   this.setState({ resetWrapAroundPosition: false });
-                  this.props.afterSlide(0);
+                  props.afterSlide(0);
                   this.resetAutoplay();
                 }
               );
-            }, this.props.speed)
+            }, props.speed)
         );
         return;
       } else {
         const endSlide = this.state.slideCount - this.state.slidesToScroll;
-        this.props.beforeSlide(this.state.currentSlide, endSlide);
+        props.beforeSlide(this.state.currentSlide, endSlide);
         this.setState(
           prevState => ({
-            left: this.props.vertical
+            left: props.vertical
               ? 0
               : this.getTargetLeft(0, prevState.currentSlide),
-            top: this.props.vertical
+            top: props.vertical
               ? this.getTargetLeft(0, prevState.currentSlide)
               : 0,
             currentSlide: endSlide,
@@ -564,11 +564,11 @@ export default class Carousel extends React.Component {
                 { isWrappingAround: false, resetWrapAroundPosition: true },
                 () => {
                   this.setState({ resetWrapAroundPosition: false });
-                  this.props.afterSlide(endSlide);
+                  props.afterSlide(endSlide);
                   this.resetAutoplay();
                 }
               );
-            }, this.props.speed)
+            }, props.speed)
         );
         return;
       }
@@ -587,6 +587,10 @@ export default class Carousel extends React.Component {
         this.resetAutoplay();
       }
     );
+  }
+
+  goToSlide(index) {
+    this._goToSlide(this.props, index);
   }
 
   nextSlide() {
@@ -784,9 +788,9 @@ export default class Carousel extends React.Component {
     if (typeof props.slideWidth !== 'number') {
       slideWidth = parseInt(props.slideWidth);
     } else if (props.vertical) {
-      slideWidth = slideHeight / slidesToShow * props.slideWidth;
+      slideWidth = (slideHeight / slidesToShow) * props.slideWidth;
     } else {
-      slideWidth = frame.offsetWidth / slidesToShow * props.slideWidth;
+      slideWidth = (frame.offsetWidth / slidesToShow) * props.slideWidth;
     }
 
     if (!props.vertical) {
