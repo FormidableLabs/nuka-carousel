@@ -126,10 +126,9 @@ export default class Carousel extends React.Component {
     const slideCountChanged = slideCount !== this.state.slideCount;
     this.setState({
       slideCount,
-      currentSlide:
-        nextProps.slideIndex < this.state.currentSlide
-          ? this.state.currentSlide
-          : nextProps.slideIndex
+      currentSlide: slideCountChanged
+        ? nextProps.slideIndex
+        : this.state.currentSlide
     });
 
     if (slideCount <= this.state.currentSlide) {
@@ -170,8 +169,9 @@ export default class Carousel extends React.Component {
       nextProps.slideIndex !== this.state.currentSlide &&
       !this.state.isWrappingAround
     ) {
-      this.goToSlide(nextProps.slideIndex, nextProps);
+      this.goToSlide(nextProps.slideIndex, this.props);
     }
+
     if (this.props.autoplay !== nextProps.autoplay) {
       if (nextProps.autoplay) {
         this.startAutoplay();
