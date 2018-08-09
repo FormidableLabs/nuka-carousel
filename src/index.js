@@ -593,8 +593,10 @@ export default class Carousel extends React.Component {
       () =>
         setTimeout(() => {
           this.resetAutoplay();
-          this.props.afterSlide(index);
-        })
+          if (index !== this.state.currentSlide) {
+            this.props.afterSlide(index);
+          }
+        }, props.speed)
     );
   }
 
