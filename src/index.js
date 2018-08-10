@@ -296,6 +296,10 @@ export default class Carousel extends React.Component {
       onMouseOut: () => this.handleMouseOut(),
 
       onMouseDown: e => {
+        if (e.preventDefault) {
+          e.preventDefault();
+        }
+
         this.touchObject = {
           startX: e.clientX,
           startY: e.clientY
