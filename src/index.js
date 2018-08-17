@@ -589,7 +589,8 @@ export default class Carousel extends React.Component {
     }
 
     this.props.beforeSlide(this.state.currentSlide, index);
-
+    let previousSlide = this.state.currentSlide;
+    
     this.setState(
       {
         currentSlide: index
@@ -597,7 +598,7 @@ export default class Carousel extends React.Component {
       () =>
         setTimeout(() => {
           this.resetAutoplay();
-          if (index !== this.state.currentSlide) {
+          if (index !== previousSlide) {
             this.props.afterSlide(index);
           }
         }, props.speed)
