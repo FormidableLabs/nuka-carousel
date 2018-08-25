@@ -589,7 +589,7 @@ export default class Carousel extends React.Component {
     }
 
     this.props.beforeSlide(this.state.currentSlide, index);
-    let previousSlide = this.state.currentSlide;
+    const previousSlide = this.state.currentSlide;
     
     this.setState(
       {
