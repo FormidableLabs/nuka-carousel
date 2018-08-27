@@ -51,6 +51,7 @@ Now, you can access the application on your localhost at following url: <a href=
 Hook to be called after a slide is changed.
 
 #### autoGenerateStyleTag
+
 `React.PropTypes.bool`
 
 When set to `true`, it will generate a `style` tag to help ensure images are displayed properly. Set to `false` if you don't want or need the style tag generated. Defaults to `true`.
@@ -134,6 +135,12 @@ Initial height of the slides in pixels.
 `React.PropTypes.number`
 
 Initial width of the slides in pixels.
+
+#### pauseOnHover
+
+`React.PropTypes.bool`
+
+Pause autoPlay when mouse is over carousel. Defaults to `true`.
 
 #### render\*Controls
 
