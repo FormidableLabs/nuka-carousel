@@ -128,14 +128,12 @@ class App extends React.Component {
                 Toggle Partially Visible Slides
               </button>
               <button
-                onClick={() => {
-                  console.log(this.state.heightMode);
-
+                onClick={() =>
                   this.setState({
                     heightMode:
                       this.state.heightMode === 'current' ? 'max' : 'current'
-                  });
-                }}
+                  })
+                }
               >
                 Toggle Height Mode Current
               </button>

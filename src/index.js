@@ -121,15 +121,6 @@ export default class Carousel extends React.Component {
     }
   }
 
-  componentDidUpdate(nextProps, nextState) {
-    const slideChanged = nextState.currentSlide !== this.state.currentSlide;
-    const heightModeChanged = nextProps.heightMode !== this.props.heightMode;    
-
-    if (slideChanged || heightModeChanged) {
-      this.setDimensions();
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     const slideCount = this.getValidChildren(nextProps.children).length;
     const slideCountChanged = slideCount !== this.state.slideCount;
@@ -187,6 +178,15 @@ export default class Carousel extends React.Component {
       } else {
         this.stopAutoplay();
       }
+    }
+  }
+
+  componentDidUpdate(nextProps, nextState) {
+    const slideChanged = nextState.currentSlide !== this.state.currentSlide;
+    const heightModeChanged = nextProps.heightMode !== this.props.heightMode;
+    
+    if (slideChanged || heightModeChanged) {
+      this.setDimensions();
     }
   }
 
