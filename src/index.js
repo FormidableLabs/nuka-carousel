@@ -181,6 +181,14 @@ export default class Carousel extends React.Component {
     }
   }
 
+  componentDidUpdate(nextProps, nextState) {
+    const slideChanged = nextState.currentSlide !== this.state.currentSlide;
+    const heightModeChanged = nextProps.heightMode !== this.props.heightMode;
+    if (slideChanged || heightModeChanged) {
+      this.setDimensions();
+    }
+  }
+
   componentWillUnmount() {
     this.unbindEvents();
     this.stopAutoplay();
