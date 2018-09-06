@@ -33,6 +33,7 @@ class App extends React.Component {
           slidesToShow={this.state.slidesToShow}
           wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
+          heightMode="current"
           renderTopCenterControls={({ currentSlide }) => (
             <div
               style={{
@@ -55,6 +56,7 @@ class App extends React.Component {
                   1}`}
                 key={color}
                 onClick={this.handleImageClick}
+                style={{ height: 100 * (index + 1) }}
               />
             ))}
         </Carousel>
