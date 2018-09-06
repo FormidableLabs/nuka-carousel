@@ -128,8 +128,6 @@ export default class Carousel extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-
     const slideCount = this.getValidChildren(nextProps.children).length;
     const slideCountChanged = slideCount !== this.state.slideCount;
     this.setState({
@@ -167,8 +165,6 @@ export default class Carousel extends React.Component {
         'transitionMode',
         'cellAlign'
       ]);
-
-    console.log(updateDimensions);
 
     if (updateDimensions) {
       this.setDimensions(nextProps);
