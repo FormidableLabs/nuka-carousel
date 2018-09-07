@@ -29,6 +29,7 @@ class App extends React.Component {
     return (
       <div style={{ width: '50%', margin: 'auto' }}>
         <Carousel
+          withoutControls
           transitionMode={this.state.transitionMode}
           cellAlign={this.state.cellAlign}
           slidesToShow={this.state.slidesToShow}

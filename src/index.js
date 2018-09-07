@@ -1032,6 +1032,12 @@ export default class Carousel extends React.Component {
   }
 
   renderControls() {
+    const { withoutControls } = this.props;
+
+    if (withoutControls) {
+      return;
+    }
+
     return this.controlsMap.map(({ funcName, key }) => {
       const func = this.props[funcName];
       return (
@@ -1160,6 +1166,7 @@ Carousel.propTypes = {
   swiping: PropTypes.bool,
   vertical: PropTypes.bool,
   width: PropTypes.string,
+  withoutControls: PropTypes.bool,
   wrapAround: PropTypes.bool
 };
 
@@ -1192,6 +1199,7 @@ Carousel.defaultProps = {
   swiping: true,
   vertical: false,
   width: '100%',
+  withoutControls: false,
   wrapAround: false
 };
 
