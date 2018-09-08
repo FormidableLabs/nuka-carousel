@@ -702,6 +702,27 @@ describe('<Carousel />', () => {
   });
 
   describe('Controls', () => {
+    it('should default withoutControls to false', () => {
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+        </Carousel>
+      );
+      expect(wrapper).toHaveProp({ withoutControls: false });
+    });
+    it('should render with no controls when set to true.', () => {
+      const wrapper = mount(
+        <Carousel withoutControls>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      expect(wrapper).toHaveProp({ withoutControls: true });
+      const { renderControls } = wrapper.instance();
+      expect(renderControls().every(element => element === null));
+    });
     it('should render a custom top left control.', () => {
       const wrapper = mount(
         <Carousel renderTopLeftControls={() => <div>Top Left</div>}>

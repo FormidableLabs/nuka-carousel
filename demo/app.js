@@ -15,7 +15,8 @@ class App extends React.Component {
       slidesToShow: 1.0,
       cellAlign: 'left',
       transitionMode: 'scroll',
-      heightMode: 'max'
+      heightMode: 'max',
+      withoutControls: false
     };
 
     this.handleImageClick = this.handleImageClick.bind(this);
@@ -29,6 +30,7 @@ class App extends React.Component {
     return (
       <div style={{ width: '50%', margin: 'auto' }}>
         <Carousel
+          withoutControls={this.state.withoutControls}
           transitionMode={this.state.transitionMode}
           cellAlign={this.state.cellAlign}
           slidesToShow={this.state.slidesToShow}
@@ -136,6 +138,15 @@ class App extends React.Component {
                 }
               >
                 Toggle Height Mode Current
+              </button>
+              <button
+                onClick={() =>
+                  this.setState({
+                    withoutControls: !this.state.withoutControls
+                  })
+                }
+              >
+                Toggle Controls
               </button>
             </div>
           </div>

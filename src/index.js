@@ -105,6 +105,7 @@ export default class Carousel extends React.Component {
     this.getChildNodes = this.getChildNodes.bind(this);
     this.getSlideHeight = this.getSlideHeight.bind(this);
     this.findMaxHeightSlide = this.findMaxHeightSlide.bind(this);
+    this.renderControls = this.renderControls.bind(this);
   }
 
   componentWillMount() {
@@ -1032,35 +1033,38 @@ export default class Carousel extends React.Component {
   }
 
   renderControls() {
-    return this.controlsMap.map(({ funcName, key }) => {
-      const func = this.props[funcName];
-      return (
-        func &&
-        typeof func === 'function' && (
-          <div
-            className={`slider-control-${key.toLowerCase()}`}
-            style={this.getDecoratorStyles(key)}
-            key={key}
-          >
-            {func({
-              currentSlide: this.state.currentSlide,
-              slideCount: this.state.slideCount,
-              frameWidth: this.state.frameWidth,
-              slideWidth: this.state.slideWidth,
-              slidesToScroll: this.state.slidesToScroll,
-              cellSpacing: this.props.cellSpacing,
-              slidesToShow: this.state.slidesToShow,
-              wrapAround: this.props.wrapAround,
-              nextSlide: () => this.nextSlide(),
-              previousSlide: () => this.previousSlide(),
-              goToSlide: index => this.goToSlide(index)
-            })}
-          </div>
-        )
-      );
-    });
+    if (this.props.withoutControls) {
+      return this.controlsMap.map(() => null);
+    } else {
+      return this.controlsMap.map(({ funcName, key }) => {
+        const func = this.props[funcName];
+        return (
+          func &&
+          typeof func === 'function' && (
+            <div
+              className={`slider-control-${key.toLowerCase()}`}
+              style={this.getDecoratorStyles(key)}
+              key={key}
+            >
+              {func({
+                currentSlide: this.state.currentSlide,
+                slideCount: this.state.slideCount,
+                frameWidth: this.state.frameWidth,
+                slideWidth: this.state.slideWidth,
+                slidesToScroll: this.state.slidesToScroll,
+                cellSpacing: this.props.cellSpacing,
+                slidesToShow: this.state.slidesToShow,
+                wrapAround: this.props.wrapAround,
+                nextSlide: () => this.nextSlide(),
+                previousSlide: () => this.previousSlide(),
+                goToSlide: index => this.goToSlide(index)
+              })}
+            </div>
+          )
+        );
+      });
+    }
   }
-
   render() {
     const duration =
       this.state.dragging || this.state.resetWrapAroundPosition
@@ -1160,6 +1164,7 @@ Carousel.propTypes = {
   swiping: PropTypes.bool,
   vertical: PropTypes.bool,
   width: PropTypes.string,
+  withoutControls: PropTypes.bool,
   wrapAround: PropTypes.bool
 };
 
@@ -1192,6 +1197,7 @@ Carousel.defaultProps = {
   swiping: true,
   vertical: false,
   width: '100%',
+  withoutControls: false,
   wrapAround: false
 };
 
