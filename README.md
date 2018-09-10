@@ -2,6 +2,8 @@
 
 A Pure ReactJS Carousel Component
 
+Maintained by [Sarah Meyer](https://github.com/sarmeyer)
+
 ![Nuka Carousel Animated Example](https://i.imgur.com/UwP5gle.gif)
 
 ### Install
