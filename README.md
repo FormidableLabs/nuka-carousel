@@ -2,6 +2,8 @@
 
 A Pure ReactJS Carousel Component
 
+Maintained by [Sarah Meyer](https://github.com/sarmeyer)
+
 ![Nuka Carousel Animated Example](https://i.imgur.com/UwP5gle.gif)
 
 ### Install
@@ -51,6 +53,7 @@ Now, you can access the application on your localhost at following url: <a href=
 Hook to be called after a slide is changed.
 
 #### autoGenerateStyleTag
+
 `React.PropTypes.bool`
 
 When set to `true`, it will generate a `style` tag to help ensure images are displayed properly. Set to `false` if you don't want or need the style tag generated. Defaults to `true`.
@@ -135,6 +138,12 @@ Initial height of the slides in pixels.
 
 Initial width of the slides in pixels.
 
+#### pauseOnHover
+
+`React.PropTypes.bool`
+
+Pause autoPlay when mouse is over carousel. Defaults to `true`.
+
 #### render\*Controls
 
 `React.PropTypes.func`
@@ -159,7 +168,7 @@ A set of eight render props for rendering controls in different positions around
 </Carousel>
 ```
 
-* The function returns the props for `goToSlide`, `nextSlide` and `previousSlide` functions in addition to `slideCount` and `currentSlide` values.
+- The function returns the props for `goToSlide`, `nextSlide` and `previousSlide` functions in addition to `slideCount` and `currentSlide` values. Can also remove all render controls using `withoutControls`.
 
 #### slideIndex
 
@@ -223,6 +232,12 @@ Enable the slides to transition vertically.
 `React.PropTypes.string`
 
 Used to hardcode the slider width. Accepts any string dimension value such as `"80%"` or `"500px"`.
+
+#### withoutControls
+
+`React.PropTypes.bool`
+
+Used to remove all controls at once. Overwrites the `render[Top, Right, Bottom, Left]CenterControls()`. Defaults to `false`
 
 #### wrapAround
 

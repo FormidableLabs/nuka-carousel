@@ -434,6 +434,30 @@ describe('<Carousel />', () => {
       wrapper = mount(<Carousel>{showSlide && <p>Slide 1</p>}</Carousel>);
       expect(wrapper).toHaveState({ slideCount: 0 });
     });
+
+    it('should call beforeSlide and afterSlide when slide change', async () => {
+      const speed = 500;
+      const beforeSlideSpy = jest.fn();
+      const afterSlideSpy = jest.fn();
+
+      const wrapper = mount(
+        <Carousel
+          slideIndex={0}
+          beforeSlide={beforeSlideSpy}
+          afterSlide={afterSlideSpy}
+          speed={speed}
+        >
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+
+      wrapper.instance().goToSlide(1);
+      await new Promise(resolve => setTimeout(resolve, speed));
+      expect(beforeSlideSpy).toBeCalledWith(0, 1);
+      expect(afterSlideSpy).toBeCalledWith(1);
+    });
   });
 
   describe('transitionModes', () => {
@@ -678,6 +702,27 @@ describe('<Carousel />', () => {
   });
 
   describe('Controls', () => {
+    it('should default withoutControls to false', () => {
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+        </Carousel>
+      );
+      expect(wrapper).toHaveProp({ withoutControls: false });
+    });
+    it('should render with no controls when set to true.', () => {
+      const wrapper = mount(
+        <Carousel withoutControls>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      expect(wrapper).toHaveProp({ withoutControls: true });
+      const { renderControls } = wrapper.instance();
+      expect(renderControls().every(element => element === null));
+    });
     it('should render a custom top left control.', () => {
       const wrapper = mount(
         <Carousel renderTopLeftControls={() => <div>Top Left</div>}>

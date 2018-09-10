@@ -105,6 +105,7 @@ export default class Carousel extends React.Component {
     this.getChildNodes = this.getChildNodes.bind(this);
     this.getSlideHeight = this.getSlideHeight.bind(this);
     this.findMaxHeightSlide = this.findMaxHeightSlide.bind(this);
+    this.renderControls = this.renderControls.bind(this);
   }
 
   componentWillMount() {
@@ -124,10 +125,15 @@ export default class Carousel extends React.Component {
   componentWillReceiveProps(nextProps) {
     const slideCount = this.getValidChildren(nextProps.children).length;
     const slideCountChanged = slideCount !== this.state.slideCount;
+    this.setState({
+      slideCount,
+      currentSlide: slideCountChanged
+        ? nextProps.slideIndex
+        : this.state.currentSlide
+    });
 
-    this.setState({ slideCount });
     if (slideCount <= this.state.currentSlide) {
-      this.goToSlide(Math.max(slideCount - 1, 0));
+      this.goToSlide(Math.max(slideCount - 1, 0), nextProps);
     }
 
     const updateDimensions =
@@ -164,14 +170,23 @@ export default class Carousel extends React.Component {
       nextProps.slideIndex !== this.state.currentSlide &&
       !this.state.isWrappingAround
     ) {
-      this.goToSlide(nextProps.slideIndex);
+      this.goToSlide(nextProps.slideIndex, this.props);
     }
+
     if (this.props.autoplay !== nextProps.autoplay) {
       if (nextProps.autoplay) {
         this.startAutoplay();
       } else {
         this.stopAutoplay();
       }
+    }
+  }
+
+  componentDidUpdate(nextProps, nextState) {
+    const slideChanged = nextState.currentSlide !== this.state.currentSlide;
+    const heightModeChanged = nextProps.heightMode !== this.props.heightMode;
+    if (slideChanged || heightModeChanged) {
+      this.setDimensions();
     }
   }
 
@@ -290,6 +305,10 @@ export default class Carousel extends React.Component {
       onMouseOut: () => this.handleMouseOut(),
 
       onMouseDown: e => {
+        if (e.preventDefault) {
+          e.preventDefault();
+        }
+
         this.touchObject = {
           startX: e.clientX,
           startY: e.clientY
@@ -377,11 +396,15 @@ export default class Carousel extends React.Component {
   }
 
   handleMouseOver() {
-    this.pauseAutoplay();
+    if (this.props.pauseOnHover) {
+      this.pauseAutoplay();
+    }
   }
 
   handleMouseOut() {
-    this.unpauseAutoplay();
+    if (this.autoplayPaused) {
+      this.unpauseAutoplay();
+    }
   }
 
   handleClick(event) {
@@ -503,24 +526,28 @@ export default class Carousel extends React.Component {
 
   // Action Methods
 
-  goToSlide(index) {
-    this.setState({ easing: easing[this.props.easing] });
+  goToSlide(index, props) {
+    if (props === undefined) {
+      props = this.props;
+    }
+
+    this.setState({ easing: easing[props.easing] });
 
     if (index >= this.state.slideCount || index < 0) {
-      if (!this.props.wrapAround) {
+      if (!props.wrapAround) {
         return;
       }
       if (index >= this.state.slideCount) {
-        this.props.beforeSlide(this.state.currentSlide, 0);
+        props.beforeSlide(this.state.currentSlide, 0);
         this.setState(
           prevState => ({
-            left: this.props.vertical
+            left: props.vertical
               ? 0
               : this.getTargetLeft(
                   this.state.slideWidth,
                   prevState.currentSlide
                 ),
-            top: this.props.vertical
+            top: props.vertical
               ? this.getTargetLeft(
                   this.state.slideWidth,
                   prevState.currentSlide
@@ -536,22 +563,22 @@ export default class Carousel extends React.Component {
                 { isWrappingAround: false, resetWrapAroundPosition: true },
                 () => {
                   this.setState({ resetWrapAroundPosition: false });
-                  this.props.afterSlide(0);
+                  props.afterSlide(0);
                   this.resetAutoplay();
                 }
               );
-            }, this.props.speed)
+            }, props.speed)
         );
         return;
       } else {
         const endSlide = this.state.slideCount - this.state.slidesToScroll;
-        this.props.beforeSlide(this.state.currentSlide, endSlide);
+        props.beforeSlide(this.state.currentSlide, endSlide);
         this.setState(
           prevState => ({
-            left: this.props.vertical
+            left: props.vertical
               ? 0
               : this.getTargetLeft(0, prevState.currentSlide),
-            top: this.props.vertical
+            top: props.vertical
               ? this.getTargetLeft(0, prevState.currentSlide)
               : 0,
             currentSlide: endSlide,
@@ -564,28 +591,30 @@ export default class Carousel extends React.Component {
                 { isWrappingAround: false, resetWrapAroundPosition: true },
                 () => {
                   this.setState({ resetWrapAroundPosition: false });
-                  this.props.afterSlide(endSlide);
+                  props.afterSlide(endSlide);
                   this.resetAutoplay();
                 }
               );
-            }, this.props.speed)
+            }, props.speed)
         );
         return;
       }
     }
 
     this.props.beforeSlide(this.state.currentSlide, index);
+    const previousSlide = this.state.currentSlide;
 
-    if (index !== this.state.currentSlide) {
-      this.props.afterSlide(index);
-    }
     this.setState(
       {
         currentSlide: index
       },
-      () => {
-        this.resetAutoplay();
-      }
+      () =>
+        setTimeout(() => {
+          this.resetAutoplay();
+          if (index !== previousSlide) {
+            this.props.afterSlide(index);
+          }
+        }, props.speed)
     );
   }
 
@@ -1004,35 +1033,38 @@ export default class Carousel extends React.Component {
   }
 
   renderControls() {
-    return this.controlsMap.map(({ funcName, key }) => {
-      const func = this.props[funcName];
-      return (
-        func &&
-        typeof func === 'function' && (
-          <div
-            className={`slider-control-${key.toLowerCase()}`}
-            style={this.getDecoratorStyles(key)}
-            key={key}
-          >
-            {func({
-              currentSlide: this.state.currentSlide,
-              slideCount: this.state.slideCount,
-              frameWidth: this.state.frameWidth,
-              slideWidth: this.state.slideWidth,
-              slidesToScroll: this.state.slidesToScroll,
-              cellSpacing: this.props.cellSpacing,
-              slidesToShow: this.state.slidesToShow,
-              wrapAround: this.props.wrapAround,
-              nextSlide: () => this.nextSlide(),
-              previousSlide: () => this.previousSlide(),
-              goToSlide: index => this.goToSlide(index)
-            })}
-          </div>
-        )
-      );
-    });
+    if (this.props.withoutControls) {
+      return this.controlsMap.map(() => null);
+    } else {
+      return this.controlsMap.map(({ funcName, key }) => {
+        const func = this.props[funcName];
+        return (
+          func &&
+          typeof func === 'function' && (
+            <div
+              className={`slider-control-${key.toLowerCase()}`}
+              style={this.getDecoratorStyles(key)}
+              key={key}
+            >
+              {func({
+                currentSlide: this.state.currentSlide,
+                slideCount: this.state.slideCount,
+                frameWidth: this.state.frameWidth,
+                slideWidth: this.state.slideWidth,
+                slidesToScroll: this.state.slidesToScroll,
+                cellSpacing: this.props.cellSpacing,
+                slidesToShow: this.state.slidesToShow,
+                wrapAround: this.props.wrapAround,
+                nextSlide: () => this.nextSlide(),
+                previousSlide: () => this.previousSlide(),
+                goToSlide: index => this.goToSlide(index)
+              })}
+            </div>
+          )
+        );
+      });
+    }
   }
-
   render() {
     const duration =
       this.state.dragging || this.state.resetWrapAroundPosition
@@ -1067,7 +1099,7 @@ export default class Carousel extends React.Component {
               style={frameStyles}
               {...touchEvents}
               {...mouseEvents}
-              onClick={this.props.handleClick || this.handleClick}
+              onClickCapture={this.handleClick || this.props.handleClick }
             >
               <TransitionControl
                 {...this.getTransitionProps()}
@@ -1111,6 +1143,7 @@ Carousel.propTypes = {
   initialSlideHeight: PropTypes.number,
   initialSlideWidth: PropTypes.number,
   onResize: PropTypes.func,
+  pauseOnHover: PropTypes.bool,
   renderTopLeftControls: PropTypes.func,
   renderTopCenterControls: PropTypes.func,
   renderTopRightControls: PropTypes.func,
@@ -1131,6 +1164,7 @@ Carousel.propTypes = {
   swiping: PropTypes.bool,
   vertical: PropTypes.bool,
   width: PropTypes.string,
+  withoutControls: PropTypes.bool,
   wrapAround: PropTypes.bool
 };
 
@@ -1154,6 +1188,7 @@ Carousel.defaultProps = {
   slidesToScroll: 1,
   slidesToShow: 1,
   style: {},
+  pauseOnHover: true,
   renderCenterLeftControls: props => <PreviousButton {...props} />,
   renderCenterRightControls: props => <NextButton {...props} />,
   renderBottomCenterControls: props => <PagingDots {...props} />,
@@ -1162,6 +1197,7 @@ Carousel.defaultProps = {
   swiping: true,
   vertical: false,
   width: '100%',
+  withoutControls: false,
   wrapAround: false
 };
 

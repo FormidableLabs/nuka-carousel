@@ -34,3 +34,4 @@ dist
 es
 lib
 yarn-error.log*
+package-lock.json

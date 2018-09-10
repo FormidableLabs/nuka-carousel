@@ -14,7 +14,9 @@ class App extends React.Component {
       underlineHeader: false,
       slidesToShow: 1.0,
       cellAlign: 'left',
-      transitionMode: 'scroll'
+      transitionMode: 'scroll',
+      heightMode: 'max',
+      withoutControls: false
     };
 
     this.handleImageClick = this.handleImageClick.bind(this);
@@ -28,11 +30,13 @@ class App extends React.Component {
     return (
       <div style={{ width: '50%', margin: 'auto' }}>
         <Carousel
+          withoutControls={this.state.withoutControls}
           transitionMode={this.state.transitionMode}
           cellAlign={this.state.cellAlign}
           slidesToShow={this.state.slidesToShow}
           wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
+          heightMode={this.state.heightMode}
           renderTopCenterControls={({ currentSlide }) => (
             <div
               style={{
@@ -47,16 +51,18 @@ class App extends React.Component {
             </div>
           )}
         >
-          {colors
-            .slice(0, this.state.length)
-            .map((color, index) => (
-              <img
-                src={`http://placehold.it/1000x400/${color}/ffffff/&text=slide${index +
-                  1}`}
-                key={color}
-                onClick={this.handleImageClick}
-              />
-            ))}
+          {colors.slice(0, this.state.length).map((color, index) => (
+            <img
+              src={`http://placehold.it/1000x400/${color}/ffffff/&text=slide${index +
+                1}`}
+              key={color}
+              onClick={this.handleImageClick}
+              style={{
+                height:
+                  this.state.heightMode === 'current' ? 100 * (index + 1) : 400
+              }}
+            />
+          ))}
         </Carousel>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
@@ -122,6 +128,25 @@ class App extends React.Component {
                 }
               >
                 Toggle Partially Visible Slides
+              </button>
+              <button
+                onClick={() =>
+                  this.setState({
+                    heightMode:
+                      this.state.heightMode === 'current' ? 'max' : 'current'
+                  })
+                }
+              >
+                Toggle Height Mode Current
+              </button>
+              <button
+                onClick={() =>
+                  this.setState({
+                    withoutControls: !this.state.withoutControls
+                  })
+                }
+              >
+                Toggle Controls
               </button>
             </div>
           </div>
