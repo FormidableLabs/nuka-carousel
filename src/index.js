@@ -781,6 +781,7 @@ export default class Carousel extends React.Component {
   getSlideHeight(props, childNodes = []) {
     const { heightMode, vertical, initialSlideHeight } = props;
     const firstSlide = childNodes[0];
+
     if (firstSlide && heightMode === 'first') {
       return vertical
         ? firstSlide.offsetHeight * this.state.slidesToShow
@@ -792,7 +793,7 @@ export default class Carousel extends React.Component {
     if (props.heightMode === 'current') {
       return childNodes[this.state.currentSlide].offsetHeight;
     }
-    return initialSlideHeight;
+    return initialSlideHeight || 100;
   }
 
   setDimensions(props, stateCb = () => {}) {
@@ -1180,7 +1181,7 @@ Carousel.defaultProps = {
   edgeEasing: 'easeElasticOut',
   framePadding: '0px',
   frameOverflow: 'hidden',
-  initialSlideHeight: 100,
+  heightMode: 'max',
   transitionMode: 'scroll',
   onResize() {},
   slideIndex: 0,
