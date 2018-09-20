@@ -191,6 +191,35 @@ describe('Nuka Carousel', () => {
       await expect(page).toMatch('Nuka Carousel: Slide 1');
     });
 
+    it('should handle wraparound and setLeft before and after', async () => {
+      await page.$('.slider-slide');
+      await expect(page).toClick('button', { text: 'Toggle Wrap Around' });
+      let firstSlide = await page.evaluate(
+        getStyles,
+        `.slider-slide:first-child`,
+        ['left', 'width']
+      );
+      let lastSlide = await page.evaluate(
+        getStyles,
+        `.slider-slide:last-child`,
+        ['left']
+      );
+      const getWidth = parseInt(firstSlide.width, 10);
+      await expect(firstSlide.left).toMatch('0px');
+      await expect(lastSlide.left).toMatch(`${getWidth * -1}px`);
+      await expect(page).toClick('button', { text: 'PREV' });
+      await expect(page).toMatch('Nuka Carousel: Slide 6');
+      await page.waitFor(600); // need to let slide transition complete
+      firstSlide = await page.evaluate(getStyles, `.slider-slide:first-child`, [
+        'left'
+      ]);
+      lastSlide = await page.evaluate(getStyles, `.slider-slide:last-child`, [
+        'left'
+      ]);
+      await expect(firstSlide.left).toMatch(`${getWidth * 6}px`);
+      await expect(lastSlide.left).toMatch(`${getWidth * 5}px`);
+    });
+
     it('should maintain left position of last slide on drag start when wrapping around from first -> last', async () => {
       const slide = await page.$('.slider-slide');
       const metrics = await slide.boundingBox();

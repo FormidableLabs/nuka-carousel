@@ -67,6 +67,7 @@ export default class Carousel extends React.Component {
       frameWidth: 0,
       left: 0,
       slideCount: 0,
+      slideHeight: 0,
       slidesToScroll,
       slidesToShow,
       slideWidth: 0,
@@ -106,6 +107,8 @@ export default class Carousel extends React.Component {
     this.getSlideHeight = this.getSlideHeight.bind(this);
     this.findMaxHeightSlide = this.findMaxHeightSlide.bind(this);
     this.renderControls = this.renderControls.bind(this);
+    this.setSlideHeightAndWidth = this.setSlideHeightAndWidth.bind(this);
+    this.calcSlideHeightAndWidth = this.calcSlideHeightAndWidth.bind(this);
   }
 
   componentWillMount() {
@@ -186,7 +189,7 @@ export default class Carousel extends React.Component {
     const slideChanged = nextState.currentSlide !== this.state.currentSlide;
     const heightModeChanged = nextProps.heightMode !== this.props.heightMode;
     if (slideChanged || heightModeChanged) {
-      this.setDimensions();
+      this.setSlideHeightAndWidth();
     }
   }
 
@@ -417,7 +420,6 @@ export default class Carousel extends React.Component {
       }
     }
   }
-
   handleSwipe() {
     if (
       typeof this.touchObject.length !== 'undefined' &&
@@ -796,18 +798,17 @@ export default class Carousel extends React.Component {
     return initialSlideHeight || 100;
   }
 
-  setDimensions(props, stateCb = () => {}) {
+  calcSlideHeightAndWidth(props) {
+    // slide height
     props = props || this.props;
-
-    const { slidesToShow, cellAlign } = this.getPropsByTransitionMode(props, [
-      'slidesToShow',
-      'cellAlign'
-    ]);
-
-    const frame = this.frame;
     const childNodes = this.getChildNodes();
     const slideHeight = this.getSlideHeight(props, childNodes);
 
+    //slide width
+    const { slidesToShow } = this.getPropsByTransitionMode(props, [
+      'slidesToShow'
+    ]);
+    const frame = this.frame;
     let slideWidth;
 
     if (typeof props.slideWidth !== 'number') {
@@ -821,6 +822,24 @@ export default class Carousel extends React.Component {
     if (!props.vertical) {
       slideWidth -= props.cellSpacing * ((100 - 100 / slidesToShow) / 100);
     }
+
+    return { slideHeight, slideWidth };
+  }
+
+  setSlideHeightAndWidth() {
+    this.setState(this.calcSlideHeightAndWidth());
+  }
+
+  setDimensions(props, stateCb = () => {}) {
+    props = props || this.props;
+
+    const { slidesToShow, cellAlign } = this.getPropsByTransitionMode(props, [
+      'slidesToShow',
+      'cellAlign'
+    ]);
+
+    const frame = this.frame;
+    const { slideHeight, slideWidth } = this.calcSlideHeightAndWidth(props);
 
     const frameHeight = slideHeight + props.cellSpacing * (slidesToShow - 1);
     const frameWidth = props.vertical ? frameHeight : frame.offsetWidth;
@@ -837,11 +856,11 @@ export default class Carousel extends React.Component {
 
     this.setState(
       {
-        slideHeight,
         frameWidth,
-        slideWidth,
+        slideHeight,
         slidesToScroll,
         slidesToShow,
+        slideWidth,
         cellAlign,
         left: props.vertical ? 0 : this.getTargetLeft(),
         top: props.vertical ? this.getTargetLeft() : 0
