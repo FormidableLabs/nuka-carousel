@@ -345,6 +345,7 @@ export default class Carousel extends React.Component {
               Math.sqrt(Math.pow(e.clientX - this.touchObject.startX, 2))
             );
 
+        this.clickSafe = false;
         this.touchObject = {
           startX: this.touchObject.startX,
           startY: this.touchObject.startY,
@@ -411,7 +412,7 @@ export default class Carousel extends React.Component {
   }
 
   handleClick(event) {
-    if (this.clickSafe === true) {
+    if (this.clickSafe === false) {
       event.preventDefault();
       event.stopPropagation();
 
@@ -421,15 +422,6 @@ export default class Carousel extends React.Component {
     }
   }
   handleSwipe() {
-    if (
-      typeof this.touchObject.length !== 'undefined' &&
-      this.touchObject.length > 44
-    ) {
-      this.clickSafe = true;
-    } else {
-      this.clickSafe = false;
-    }
-
     let slidesToShow = this.state.slidesToShow;
     if (this.props.slidesToScroll === 'auto') {
       slidesToShow = this.state.slidesToScroll;
@@ -456,6 +448,10 @@ export default class Carousel extends React.Component {
       this.goToSlide(this.state.currentSlide);
     }
 
+    // wait for `handleClick` event before resetting clickSafe
+    setTimeout(() => {
+      this.clickSafe = true;
+    }, 200);
     this.touchObject = {};
 
     this.setState({
