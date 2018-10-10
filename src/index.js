@@ -462,10 +462,15 @@ export default class Carousel extends React.Component {
   }
 
   handleKeyPress(e) {
-    if (e.keyCode === 39 || e.keyCode === 68) {
-      this.nextSlide();
-    } else if (e.keyCode === 37 || e.keyCode === 65) {
-      this.previousSlide();
+    switch (e.keyCode) {
+      case 39:
+      case 68:
+        this.nextSlide();
+        break;
+      case 37:
+      case 65:
+        this.previousSlide();
+        break;
     }
   }
 

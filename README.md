@@ -44,6 +44,13 @@ yarn start
 
 Now, you can access the application on your localhost at following url: <a href="http://localhost:8080/demo" target="_blank">Demo</a>
 
+### Controls
+
+| Key Combination      | Function       |
+| -------------------- | -------------- |
+| Left Arrow or A key  | Previous slide |
+| Right Arrow or D key | Next slide     |
+
 ### Props
 
 | Name                 | PropType                                                                                | Description                                                                                                                                                                                   |
