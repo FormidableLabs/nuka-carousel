@@ -5,6 +5,7 @@ import Animate from 'react-move/Animate';
 import * as easing from 'd3-ease';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import Transitions from './all-transitions';
+import AnnounceSlide from './announce-slide';
 
 const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
@@ -109,6 +110,7 @@ export default class Carousel extends React.Component {
     this.renderControls = this.renderControls.bind(this);
     this.setSlideHeightAndWidth = this.setSlideHeightAndWidth.bind(this);
     this.calcSlideHeightAndWidth = this.calcSlideHeightAndWidth.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   componentWillMount() {
@@ -459,11 +461,19 @@ export default class Carousel extends React.Component {
     });
   }
 
+  handleKeyPress(e) {
+    if (e.keyCode === 39 || e.keyCode === 68) {
+      this.nextSlide();
+    } else if (e.keyCode === 37 || e.keyCode === 65) {
+      this.previousSlide();
+    }
+  }
+
   swipeDirection(x1, x2, y1, y2) {
     const xDist = x1 - x2;
     const yDist = y1 - y2;
     const r = Math.atan2(yDist, xDist);
-    let swipeAngle = Math.round(r * 180 / Math.PI);
+    let swipeAngle = Math.round((r * 180) / Math.PI);
 
     if (swipeAngle < 0) {
       swipeAngle = 360 - Math.abs(swipeAngle);
@@ -715,6 +725,7 @@ export default class Carousel extends React.Component {
       addEvent(window, 'resize', this.onResize);
       addEvent(document, 'readystatechange', this.onReadyStateChange);
       addEvent(document, 'visibilitychange', this.onVisibilityChange);
+      addEvent(document, 'keydown', this.handleKeyPress);
     }
   }
 
@@ -739,6 +750,7 @@ export default class Carousel extends React.Component {
       removeEvent(window, 'resize', this.onResize);
       removeEvent(document, 'readystatechange', this.onReadyStateChange);
       removeEvent(document, 'visibilitychange', this.onVisibilityChange);
+      removeEvent(document, 'keydown', this.handleKeyPress);
     }
   }
 
@@ -810,9 +822,9 @@ export default class Carousel extends React.Component {
     if (typeof props.slideWidth !== 'number') {
       slideWidth = parseInt(props.slideWidth);
     } else if (props.vertical) {
-      slideWidth = slideHeight / slidesToShow * props.slideWidth;
+      slideWidth = (slideHeight / slidesToShow) * props.slideWidth;
     } else {
-      slideWidth = frame.offsetWidth / slidesToShow * props.slideWidth;
+      slideWidth = (frame.offsetWidth / slidesToShow) * props.slideWidth;
     }
 
     if (!props.vertical) {
@@ -1097,6 +1109,7 @@ export default class Carousel extends React.Component {
         className={['slider', this.props.className || ''].join(' ')}
         style={Object.assign({}, this.getSliderStyles(), this.props.style)}
       >
+        <AnnounceSlide message={`Slide ${this.state.currentSlide + 1}`} />
         <Animate
           show
           start={{ tx: 0, ty: 0 }}
