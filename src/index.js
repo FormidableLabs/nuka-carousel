@@ -113,7 +113,9 @@ export default class Carousel extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcas
+  // @TODO Remove deprecated componentWillMount with componentDidMount
+  UNSAFE_componentWillMount() {
     this.setInitialDimensions();
   }
 
@@ -127,7 +129,9 @@ export default class Carousel extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  // @TODO Remove deprecated componentWillReceiveProps with getDerivedStateFromProps
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const slideCount = this.getValidChildren(nextProps.children).length;
     const slideCountChanged = slideCount !== this.state.slideCount;
     this.setState({
@@ -1108,13 +1112,18 @@ export default class Carousel extends React.Component {
     const mouseEvents = this.getMouseEvents();
     const TransitionControl = Transitions[this.props.transitionMode];
     const validChildren = this.getValidChildren(this.props.children);
+    const { currentSlide, slideCount } = this.state;
 
     return (
       <div
         className={['slider', this.props.className || ''].join(' ')}
         style={Object.assign({}, this.getSliderStyles(), this.props.style)}
       >
-        <AnnounceSlide message={`Slide ${this.state.currentSlide + 1}`} />
+        {!this.props.autoplay && (
+          <AnnounceSlide
+            message={`Slide ${currentSlide + 1} of ${slideCount}`}
+          />
+        )}
         <Animate
           show
           start={{ tx: 0, ty: 0 }}
