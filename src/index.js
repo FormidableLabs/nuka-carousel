@@ -113,9 +113,9 @@ export default class Carousel extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
-  // eslint-disable-next-line camelcas
   // @TODO Remove deprecated componentWillMount with componentDidMount
-  UNSAFE_componentWillMount() {
+  // eslint-disable-next-line react/no-deprecated
+  componentWillMount() {
     this.setInitialDimensions();
   }
 
@@ -129,9 +129,9 @@ export default class Carousel extends React.Component {
     }
   }
 
-  // eslint-disable-next-line camelcase
   // @TODO Remove deprecated componentWillReceiveProps with getDerivedStateFromProps
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line react/no-deprecated
+  componentWillReceiveProps(nextProps) {
     const slideCount = this.getValidChildren(nextProps.children).length;
     const slideCountChanged = slideCount !== this.state.slideCount;
     this.setState({
@@ -891,8 +891,6 @@ export default class Carousel extends React.Component {
 
   getValidChildren(children) {
     // .toArray automatically removes invalid React children
-    // const reactChildrenToArray = React.Children.toArray(children);
-    // console.log({ children, reactChildrenToArray });
     return React.Children.toArray(children);
   }
 
@@ -1150,11 +1148,9 @@ export default class Carousel extends React.Component {
                 deltaX={tx}
                 deltaY={ty}
               >
-                {React.Children.map(validChildren, child => {
-                  // console.log(child.key);
-                  const slideKey = Number(child.key[1]);
+                {React.Children.map(validChildren, (child, index) => {
                   const style =
-                    slideKey !== currentSlide ? { display: 'none' } : {};
+                    index !== currentSlide ? { display: 'none' } : {};
                   return React.cloneElement(child, { ...child.props, style });
                 })}
               </TransitionControl>
