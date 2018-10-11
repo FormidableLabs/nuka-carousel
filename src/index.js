@@ -891,6 +891,8 @@ export default class Carousel extends React.Component {
 
   getValidChildren(children) {
     // .toArray automatically removes invalid React children
+    // const reactChildrenToArray = React.Children.toArray(children);
+    // console.log({ children, reactChildrenToArray });
     return React.Children.toArray(children);
   }
 
@@ -1148,7 +1150,13 @@ export default class Carousel extends React.Component {
                 deltaX={tx}
                 deltaY={ty}
               >
-                {validChildren}
+                {React.Children.map(validChildren, child => {
+                  // console.log(child.key);
+                  const slideKey = Number(child.key[1]);
+                  const style =
+                    slideKey !== currentSlide ? { display: 'none' } : {};
+                  return React.cloneElement(child, { ...child.props, style });
+                })}
               </TransitionControl>
             </div>
           )}
