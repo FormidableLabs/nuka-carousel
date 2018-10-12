@@ -1153,7 +1153,12 @@ export default class Carousel extends React.Component {
                 {React.Children.map(validChildren, (child, index) => {
                   const style =
                     index !== currentSlide ? { display: 'none' } : {};
-                  return React.cloneElement(child, { ...child.props, style });
+                  const tabIndex = 1;
+                  return React.cloneElement(child, {
+                    ...child.props,
+                    style,
+                    tabIndex
+                  });
                 })}
               </TransitionControl>
             </div>

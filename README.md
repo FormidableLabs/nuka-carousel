@@ -8,6 +8,8 @@ Maintained by [Sarah Meyer](https://github.com/sarmeyer)
 
 ### Install
 
+To add `nuka-carousel` to your project run the following command in your project folder.
+
 ```bash
 $ yarn add nuka-carousel
 ```
@@ -46,10 +48,10 @@ Now, you can access the application on your localhost at following url: <a href=
 
 ### Controls
 
-| Key Combination      | Function       |
-| -------------------- | -------------- |
-| Left Arrow or A key  | Previous slide |
-| Right Arrow or D key | Next slide     |
+| Key Combination          | Function       |
+| ------------------------ | -------------- |
+| Right/Up Arrow or D key  | Next slide     |
+| Left/Down Arrow or A key | Previous slide |
 
 ### Props
 
