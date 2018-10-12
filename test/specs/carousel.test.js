@@ -854,7 +854,7 @@ describe('<Carousel />', () => {
             </button>
           )}
         >
-          ><p>Slide 1</p>
+          <p>Slide 1</p>
           <p>Slide 2</p>
           <p>Slide 3</p>
         </Carousel>
@@ -876,7 +876,7 @@ describe('<Carousel />', () => {
             </button>
           )}
         >
-          ><p>Slide 1</p>
+          <p>Slide 1</p>
           <p>Slide 2</p>
           <p>Slide 3</p>
         </Carousel>
@@ -897,7 +897,7 @@ describe('<Carousel />', () => {
             </button>
           )}
         >
-          ><p>Slide 1</p>
+          <p>Slide 1</p>
           <p>Slide 2</p>
           <p>Slide 3</p>
         </Carousel>

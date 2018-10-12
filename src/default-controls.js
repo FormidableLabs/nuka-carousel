@@ -1,5 +1,4 @@
 import React from 'react';
-import AnnounceSlide from './announce-slide';
 
 const defaultButtonStyles = disabled => ({
   border: 0,
