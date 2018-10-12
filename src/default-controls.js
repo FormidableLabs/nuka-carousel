@@ -1,4 +1,5 @@
 import React from 'react';
+import AnnounceSlide from './announce-slide';
 
 const defaultButtonStyles = disabled => ({
   border: 0,
@@ -111,6 +112,7 @@ export class PagingDots extends React.Component {
               <button
                 style={this.getButtonStyles(this.props.currentSlide === index)}
                 onClick={this.props.goToSlide.bind(null, index)}
+                aria-label={`for slide ${index + 1} bullet`}
               >
                 &bull;
               </button>

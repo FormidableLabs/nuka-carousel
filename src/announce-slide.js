@@ -10,7 +10,7 @@ const AnnounceSlide = ({ message }) => {
     overflow: 'hidden'
   };
   return (
-    <div aria-live="polite" aria-atomic="true" style={styles}>
+    <div aria-live="polite" aria-atomic="true" style={styles} tabIndex={-1}>
       {message}
     </div>
   );
