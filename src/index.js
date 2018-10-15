@@ -6,6 +6,7 @@ import * as easing from 'd3-ease';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import Transitions from './all-transitions';
 import AnnounceSlide from './announce-slide';
+import { isThisSecond } from 'date-fns';
 
 const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
@@ -477,6 +478,16 @@ export default class Carousel extends React.Component {
       case 40:
         this.previousSlide();
         break;
+      case 32:
+        if (this.state.pauseOnHover && this.props.autoplay) {
+          this.setState({ pauseOnHover: false });
+          this.pauseAutoplay();
+          break;
+        } else {
+          this.setState({ pauseOnHover: true });
+          this.unpauseAutoplay();
+          break;
+        }
     }
   }
 
@@ -1154,7 +1165,7 @@ export default class Carousel extends React.Component {
                   const ariaProps =
                     index !== currentSlide
                       ? { 'aria-hidden': 'true' }
-                      : { 'aria-hidden': 'false', tabindex: 2 };
+                      : { 'aria-hidden': 'false', tabIndex: 2 };
                   return React.cloneElement(child, {
                     ...child.props,
                     ...ariaProps
