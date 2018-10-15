@@ -1150,7 +1150,16 @@ export default class Carousel extends React.Component {
                 deltaX={tx}
                 deltaY={ty}
               >
-                {validChildren}
+                {React.Children.map(validChildren, (child, index) => {
+                  const ariaProps =
+                    index !== currentSlide
+                      ? { 'aria-hidden': 'true' }
+                      : { 'aria-hidden': 'false', tabindex: 2 };
+                  return React.cloneElement(child, {
+                    ...child.props,
+                    ...ariaProps
+                  });
+                })}
               </TransitionControl>
             </div>
           )}
