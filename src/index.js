@@ -6,7 +6,6 @@ import * as easing from 'd3-ease';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import Transitions from './all-transitions';
 import AnnounceSlide from './announce-slide';
-import { isThisSecond } from 'date-fns';
 
 const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
@@ -495,7 +494,7 @@ export default class Carousel extends React.Component {
     const xDist = x1 - x2;
     const yDist = y1 - y2;
     const r = Math.atan2(yDist, xDist);
-    let swipeAngle = Math.round((r * 180) / Math.PI);
+    let swipeAngle = Math.round(r * 180 / Math.PI);
 
     if (swipeAngle < 0) {
       swipeAngle = 360 - Math.abs(swipeAngle);
@@ -844,9 +843,9 @@ export default class Carousel extends React.Component {
     if (typeof props.slideWidth !== 'number') {
       slideWidth = parseInt(props.slideWidth);
     } else if (props.vertical) {
-      slideWidth = (slideHeight / slidesToShow) * props.slideWidth;
+      slideWidth = slideHeight / slidesToShow * props.slideWidth;
     } else {
-      slideWidth = (frame.offsetWidth / slidesToShow) * props.slideWidth;
+      slideWidth = frame.offsetWidth / slidesToShow * props.slideWidth;
     }
 
     if (!props.vertical) {

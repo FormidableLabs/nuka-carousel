@@ -48,10 +48,11 @@ Now, you can access the application on your localhost at following url: <a href=
 
 ### Controls
 
-| Key Combination          | Function       |
-| ------------------------ | -------------- |
-| Right/Up Arrow or D key  | Next slide     |
-| Left/Down Arrow or A key | Previous slide |
+| Key Combination          | Function                                            |
+| ------------------------ | --------------------------------------------------- |
+| Right/Up Arrow or D key  | Next slide                                          |
+| Left/Down Arrow or A key | Previous slide                                      |
+| SpaceBar                 | When `autoplay={true}` pauses and unpauses carousel |
 
 ### Props
 
