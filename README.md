@@ -38,13 +38,17 @@ export default class extends React.Component {
 
 ### Running demo locally
 
-The demo can be launched on local machine via `webpack-dev-server`. Run the following:
+The demo can be launched on your local machine via `webpack-dev-server`. Once you have clone this repo locally, run the following:
 
 ```bash
+yarn
+yarn build
 yarn start
 ```
 
-Now, you can access the application on your localhost at following url: <a href="https://codesandbox.io/s/mjxwl64p2y" target="_blank">Demo</a>
+You can access the application on your localhost at the following url: <a href="http://localhost:8080/demo" target="_blank">Local Demo</a>
+
+Or on CodeSandeBox at the following url: <a href="https://codesandbox.io/s/mjxwl64p2y" target="_blank">CodeSandBox Demo</a>
 
 ### Controls
 
