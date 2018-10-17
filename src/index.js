@@ -464,18 +464,26 @@ export default class Carousel extends React.Component {
       dragging: false
     });
   }
-
+  // eslint-disable-next-line complexity
   handleKeyPress(e) {
     switch (e.keyCode) {
       case 39:
       case 68:
       case 38:
+      case 87:
         this.nextSlide();
         break;
       case 37:
       case 65:
       case 40:
+      case 83:
         this.previousSlide();
+        break;
+      case 81:
+        this.goToSlide(0, this.props);
+        break;
+      case 69:
+        this.goToSlide(this.state.slideCount - 1, this.props);
         break;
       case 32:
         if (this.state.pauseOnHover && this.props.autoplay) {

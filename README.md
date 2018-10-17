@@ -52,11 +52,13 @@ Or on CodeSandeBox at the following url: <a href="https://codesandbox.io/s/mjxwl
 
 ### Controls
 
-| Key Combination          | Function                                            |
-| ------------------------ | --------------------------------------------------- |
-| Right/Up Arrow or D key  | Next slide                                          |
-| Left/Down Arrow or A key | Previous slide                                      |
-| SpaceBar                 | When `autoplay={true}` pauses and unpauses carousel |
+| Key Combination            | Function                                            |
+| -------------------------- | --------------------------------------------------- |
+| Right/Up Arrow or D/W key  | Next slide                                          |
+| Left/Down Arrow or A/S key | Previous slide                                      |
+| Q key                      | First slide                                         |
+| E key                      | Last slide                                          |
+| SpaceBar                   | When `autoplay={true}` pauses and unpauses carousel |
 
 ### Props
 
