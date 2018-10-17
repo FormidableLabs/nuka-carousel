@@ -952,8 +952,9 @@ export default class Carousel extends React.Component {
     };
   }
 
-  getStyleTagStyles() {
-    return '.slider-slide > img {width: 100%; display: block;}';
+  getImgTagStyles() {
+    return `.slider-slide > img { width: 100%; display: block;}
+            .slider-slide > img:focus {margin: auto; width: 99.5%; outline-width: 11px}`;
   }
 
   getDecoratorStyles(position) {
@@ -1180,7 +1181,7 @@ export default class Carousel extends React.Component {
         {this.props.autoGenerateStyleTag && (
           <style
             type="text/css"
-            dangerouslySetInnerHTML={{ __html: this.getStyleTagStyles() }}
+            dangerouslySetInnerHTML={{ __html: this.getImgTagStyles() }}
           />
         )}
       </div>
