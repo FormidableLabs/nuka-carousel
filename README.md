@@ -119,7 +119,7 @@ export default class extends React.Component {
     return (
       <Carousel
         slideIndex={this.state.slideIndex}
-        afterSlide={slideIndex => this.setState({ slideIndex })}
+        afterSlide={slideIndex => this.setState({ currentSlide: slideIndex })}
       >
         <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide1" />
         <img src="http://placehold.it/1000x400/ffffff/c0392b/&text=slide2" />
