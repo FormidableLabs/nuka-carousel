@@ -111,7 +111,7 @@ export class PagingDots extends React.Component {
               <button
                 style={this.getButtonStyles(this.props.currentSlide === index)}
                 onClick={this.props.goToSlide.bind(null, index)}
-                aria-label={`for slide ${index + 1} bullet`}
+                aria-label={`slide ${index + 1} bullet`}
               >
                 &bull;
               </button>
