@@ -365,7 +365,7 @@ describe('<Carousel />', () => {
       const wrapper = mount(
         <Carousel>
           <p key="Static Slide">Static Slide</p>
-          {elems.map(e => `<p key={${e}}>${e}</e>`)}
+          {elems.map(e => <p key={e}>{e}</p>)}
         </Carousel>
       );
       expect(wrapper).toHaveState({ slideCount: 4 });
@@ -852,7 +852,6 @@ describe('<Carousel />', () => {
             </button>
           )}
         >
-          >
           <p>Slide 1</p>
           <p>Slide 2</p>
           <p>Slide 3</p>
@@ -875,7 +874,6 @@ describe('<Carousel />', () => {
             </button>
           )}
         >
-          >
           <p>Slide 1</p>
           <p>Slide 2</p>
           <p>Slide 3</p>
@@ -897,7 +895,6 @@ describe('<Carousel />', () => {
             </button>
           )}
         >
-          >
           <p>Slide 1</p>
           <p>Slide 2</p>
           <p>Slide 3</p>

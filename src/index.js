@@ -5,6 +5,7 @@ import Animate from 'react-move/Animate';
 import * as easing from 'd3-ease';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import Transitions from './all-transitions';
+import AnnounceSlide from './announce-slide';
 
 const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
@@ -109,8 +110,11 @@ export default class Carousel extends React.Component {
     this.renderControls = this.renderControls.bind(this);
     this.setSlideHeightAndWidth = this.setSlideHeightAndWidth.bind(this);
     this.calcSlideHeightAndWidth = this.calcSlideHeightAndWidth.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
+  // @TODO Remove deprecated componentWillMount with componentDidMount
+  // eslint-disable-next-line react/no-deprecated
   componentWillMount() {
     this.setInitialDimensions();
   }
@@ -125,6 +129,8 @@ export default class Carousel extends React.Component {
     }
   }
 
+  // @TODO Remove deprecated componentWillReceiveProps with getDerivedStateFromProps
+  // eslint-disable-next-line react/no-deprecated
   componentWillReceiveProps(nextProps) {
     const slideCount = this.getValidChildren(nextProps.children).length;
     const slideCountChanged = slideCount !== this.state.slideCount;
@@ -185,9 +191,9 @@ export default class Carousel extends React.Component {
     }
   }
 
-  componentDidUpdate(nextProps, nextState) {
-    const slideChanged = nextState.currentSlide !== this.state.currentSlide;
-    const heightModeChanged = nextProps.heightMode !== this.props.heightMode;
+  componentDidUpdate(prevProps, prevState) {
+    const slideChanged = prevState.currentSlide !== this.state.currentSlide;
+    const heightModeChanged = prevProps.heightMode !== this.props.heightMode;
     if (slideChanged || heightModeChanged) {
       this.setSlideHeightAndWidth();
     }
@@ -458,6 +464,39 @@ export default class Carousel extends React.Component {
       dragging: false
     });
   }
+  // eslint-disable-next-line complexity
+  handleKeyPress(e) {
+    switch (e.keyCode) {
+      case 39:
+      case 68:
+      case 38:
+      case 87:
+        this.nextSlide();
+        break;
+      case 37:
+      case 65:
+      case 40:
+      case 83:
+        this.previousSlide();
+        break;
+      case 81:
+        this.goToSlide(0, this.props);
+        break;
+      case 69:
+        this.goToSlide(this.state.slideCount - 1, this.props);
+        break;
+      case 32:
+        if (this.state.pauseOnHover && this.props.autoplay) {
+          this.setState({ pauseOnHover: false });
+          this.pauseAutoplay();
+          break;
+        } else {
+          this.setState({ pauseOnHover: true });
+          this.unpauseAutoplay();
+          break;
+        }
+    }
+  }
 
   swipeDirection(x1, x2, y1, y2) {
     const xDist = x1 - x2;
@@ -715,6 +754,7 @@ export default class Carousel extends React.Component {
       addEvent(window, 'resize', this.onResize);
       addEvent(document, 'readystatechange', this.onReadyStateChange);
       addEvent(document, 'visibilitychange', this.onVisibilityChange);
+      addEvent(document, 'keydown', this.handleKeyPress);
     }
   }
 
@@ -739,6 +779,7 @@ export default class Carousel extends React.Component {
       removeEvent(window, 'resize', this.onResize);
       removeEvent(document, 'readystatechange', this.onReadyStateChange);
       removeEvent(document, 'visibilitychange', this.onVisibilityChange);
+      removeEvent(document, 'keydown', this.handleKeyPress);
     }
   }
 
@@ -919,8 +960,9 @@ export default class Carousel extends React.Component {
     };
   }
 
-  getStyleTagStyles() {
-    return '.slider-slide > img {width: 100%; display: block;}';
+  getImgTagStyles() {
+    return `.slider-slide > img { width: 100%; display: block;}
+            .slider-slide > img:focus {margin: auto; width: 99.5%; outline-width: 11px}`;
   }
 
   getDecoratorStyles(position) {
@@ -1091,12 +1133,18 @@ export default class Carousel extends React.Component {
     const mouseEvents = this.getMouseEvents();
     const TransitionControl = Transitions[this.props.transitionMode];
     const validChildren = this.getValidChildren(this.props.children);
+    const { currentSlide, slideCount } = this.state;
 
     return (
       <div
         className={['slider', this.props.className || ''].join(' ')}
         style={Object.assign({}, this.getSliderStyles(), this.props.style)}
       >
+        {!this.props.autoplay && (
+          <AnnounceSlide
+            message={`Slide ${currentSlide + 1} of ${slideCount}`}
+          />
+        )}
         <Animate
           show
           start={{ tx: 0, ty: 0 }}
@@ -1121,7 +1169,16 @@ export default class Carousel extends React.Component {
                 deltaX={tx}
                 deltaY={ty}
               >
-                {validChildren}
+                {React.Children.map(validChildren, (child, index) => {
+                  const ariaProps =
+                    index !== currentSlide
+                      ? { 'aria-hidden': 'true' }
+                      : { 'aria-hidden': 'false', tabIndex: 2 };
+                  return React.cloneElement(child, {
+                    ...child.props,
+                    ...ariaProps
+                  });
+                })}
               </TransitionControl>
             </div>
           )}
@@ -1132,7 +1189,7 @@ export default class Carousel extends React.Component {
         {this.props.autoGenerateStyleTag && (
           <style
             type="text/css"
-            dangerouslySetInnerHTML={{ __html: this.getStyleTagStyles() }}
+            dangerouslySetInnerHTML={{ __html: this.getImgTagStyles() }}
           />
         )}
       </div>

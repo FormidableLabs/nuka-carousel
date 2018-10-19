@@ -5,7 +5,6 @@ const defaultButtonStyles = disabled => ({
   background: 'rgba(0,0,0,0.4)',
   color: 'white',
   padding: 10,
-  outline: 0,
   opacity: disabled ? 0.3 : 1,
   cursor: disabled ? 'not-allowed' : 'pointer'
 });
@@ -28,6 +27,7 @@ export class PreviousButton extends React.Component {
         style={defaultButtonStyles(disabled)}
         disabled={disabled}
         onClick={this.handleClick}
+        aria-label="previous"
       >
         PREV
       </button>
@@ -53,6 +53,7 @@ export class NextButton extends React.Component {
         style={defaultButtonStyles(disabled)}
         disabled={disabled}
         onClick={this.handleClick}
+        aria-label="next"
       >
         NEXT
       </button>
@@ -92,7 +93,6 @@ export class PagingDots extends React.Component {
       color: 'black',
       cursor: 'pointer',
       padding: 10,
-      outline: 0,
       fontSize: 24,
       opacity: active ? 1 : 0.5
     };
@@ -111,6 +111,7 @@ export class PagingDots extends React.Component {
               <button
                 style={this.getButtonStyles(this.props.currentSlide === index)}
                 onClick={this.props.goToSlide.bind(null, index)}
+                aria-label={`slide ${index + 1} bullet`}
               >
                 &bull;
               </button>
