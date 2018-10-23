@@ -6,6 +6,7 @@ import * as easing from 'd3-ease';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import Transitions from './all-transitions';
 import AnnounceSlide from './announce-slide';
+import { _addAccessibility } from './utilities';
 
 const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
@@ -1148,7 +1149,7 @@ export default class Carousel extends React.Component {
     const TransitionControl = Transitions[this.props.transitionMode];
     const validChildren = this.getValidChildren(this.props.children);
     const { currentSlide, slideCount } = this.state;
-
+    const { slidesToShow } = this.props;
     return (
       <div
         className={['slider', this.props.className || ''].join(' ')}
@@ -1183,16 +1184,7 @@ export default class Carousel extends React.Component {
                 deltaX={tx}
                 deltaY={ty}
               >
-                {React.Children.map(validChildren, (child, index) => {
-                  const ariaProps =
-                    index !== currentSlide
-                      ? { 'aria-hidden': 'true' }
-                      : { 'aria-hidden': 'false', tabIndex: 2 };
-                  return React.cloneElement(child, {
-                    ...child.props,
-                    ...ariaProps
-                  });
-                })}
+                {_addAccessibility(validChildren, slidesToShow, currentSlide)}
               </TransitionControl>
             </div>
           )}
