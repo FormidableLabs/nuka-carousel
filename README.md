@@ -118,6 +118,8 @@ A set of eight render props for rendering controls in different positions around
 
 - The function returns the props for `goToSlide`, `nextSlide` and `previousSlide` functions in addition to `slideCount` and `currentSlide` values. Can also remove all render controls using `withoutControls`.
 
+- NOTE: The className `slide-visible` is added to the currently visible slide.
+
 ### External Control of Carousel State
 
 You can control the state of the carousel from your parent component as shown below:
