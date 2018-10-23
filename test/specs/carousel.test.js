@@ -458,7 +458,6 @@ describe('<Carousel />', () => {
       );
 
       wrapper.instance().goToSlide(1);
-      // await new Promise(resolve => setTimeout(resolve, speed));
       jest.advanceTimersByTime(speed);
       expect(beforeSlideSpy).toBeCalledWith(0, 1);
       expect(afterSlideSpy).toBeCalledWith(1);
