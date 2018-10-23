@@ -73,6 +73,18 @@ describe('<Carousel />', () => {
       expect(children).toHaveLength(1);
     });
 
+    it('should render visible child with the `slide-visible` class.', () => {
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const children = wrapper.find('.slide-visible');
+      expect(children).toHaveLength(1);
+    });
+
     it('should render controls by default.', () => {
       const wrapper = mount(
         <Carousel>
