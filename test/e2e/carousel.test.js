@@ -22,6 +22,7 @@ describe('Nuka Carousel', () => {
     it('should show the previous slide when the Previous button is clicked.', async () => {
       await expect(page).toClick('button', { text: 'NEXT' });
       await expect(page).toMatch('Nuka Carousel: Slide 2');
+      await page.waitFor(600); // need to let slide transition complete
       await expect(page).toClick('button', { text: 'PREV' });
       await expect(page).toMatch('Nuka Carousel: Slide 1');
     });
@@ -35,17 +36,22 @@ describe('Nuka Carousel', () => {
 
     it('should navigate to the first slide from the last in wrapAround mode.', async () => {
       await expect(page).toClick('button', { text: 'Toggle Wrap Around' });
+      await page.waitFor(600); // need to let slide transition complete
       await expect(page).toClick('button', { text: '6' });
       await expect(page).toMatch('Nuka Carousel: Slide 6');
+      await page.waitFor(600); // need to let slide transition complete
       await expect(page).toClick('button', { text: 'NEXT' });
       await expect(page).toMatch('Nuka Carousel: Slide 1');
     });
 
     it('should navigate to the first slide from the second in wrapAround mode with only 2 slides.', async () => {
       await expect(page).toClick('button', { text: 'Toggle Wrap Around' });
+      await page.waitFor(600); // need to let slide transition complete
       await expect(page).toClick('button', { text: '2 Slides Only' });
+      await page.waitFor(600); // need to let slide transition complete
       await expect(page).toClick('button', { text: '2' });
       await expect(page).toMatch('Nuka Carousel: Slide 2');
+      await page.waitFor(600); // need to let slide transition complete
       await expect(page).toClick('button', { text: 'NEXT' });
       await expect(page).toMatch('Nuka Carousel: Slide 1');
     });
@@ -153,6 +159,7 @@ describe('Nuka Carousel', () => {
       await page.mouse.move(startX - metrics.width / 3.0, startY);
       await page.mouse.up();
       await expect(page).toMatch('Nuka Carousel: Slide 2');
+      await page.waitFor(600); // need to let slide transition complete
       await page.mouse.move(startX, startY);
       await page.mouse.down();
       await page.mouse.move(startX + metrics.width / 3.0, startY);
@@ -184,6 +191,7 @@ describe('Nuka Carousel', () => {
       await page.mouse.move(startX + metrics.width / 3.0, startY);
       await page.mouse.up();
       await expect(page).toMatch('Nuka Carousel: Slide 6');
+      await page.waitFor(600); // need to let slide transition complete
       await page.mouse.move(startX, startY);
       await page.mouse.down();
       await page.mouse.move(startX - metrics.width / 3.0, startY);
@@ -248,6 +256,7 @@ describe('Nuka Carousel', () => {
       await expect(page).toClick('button', { text: 'Toggle Wrap Around' });
       await expect(page).toClick('button', { text: '6' });
       await expect(page).toMatch('Nuka Carousel: Slide 6');
+      await page.waitFor(600); // need to let slide transition complete
       await expect(page).toClick('button', { text: 'NEXT' });
       await expect(page).toMatch('Nuka Carousel: Slide 1');
       await page.waitFor(600); // need to let slide transition complete
@@ -293,6 +302,7 @@ describe('Nuka Carousel', () => {
       await expect(page).toClick('button', { text: 'Toggle Wrap Around' });
       await expect(page).toClick('button', { text: '6' });
       await expect(page).toMatch('Nuka Carousel: Slide 6');
+      await page.waitFor(600); // need to let slide transition complete
       await expect(page).toClick('button', { text: 'NEXT' });
       await expect(page).toMatch('Nuka Carousel: Slide 1');
       await page.waitFor(600); // need to let slide transition complete

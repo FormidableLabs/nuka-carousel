@@ -39,6 +39,7 @@ export default class Carousel extends React.Component {
 
     this.displayName = 'Carousel';
     this.clickDisabled = false;
+    this.isTransitioning = false;
     this.touchObject = {};
     this.controlsMap = [
       { funcName: 'renderTopLeftControls', key: 'TopLeft' },
@@ -568,10 +569,16 @@ export default class Carousel extends React.Component {
       props = this.props;
     }
 
+    if (this.isTransitioning) {
+      return;
+    }
+
     this.setState({ easing: easing[props.easing] });
+    this.isTransitioning = true;
 
     if (index >= this.state.slideCount || index < 0) {
       if (!props.wrapAround) {
+        this.isTransitioning = false;
         return;
       }
       if (index >= this.state.slideCount) {
@@ -599,7 +606,10 @@ export default class Carousel extends React.Component {
               this.setState(
                 { isWrappingAround: false, resetWrapAroundPosition: true },
                 () => {
-                  this.setState({ resetWrapAroundPosition: false });
+                  this.setState({
+                    resetWrapAroundPosition: false
+                  });
+                  this.isTransitioning = false;
                   props.afterSlide(0);
                   this.resetAutoplay();
                 }
@@ -627,7 +637,10 @@ export default class Carousel extends React.Component {
               this.setState(
                 { isWrappingAround: false, resetWrapAroundPosition: true },
                 () => {
-                  this.setState({ resetWrapAroundPosition: false });
+                  this.setState({
+                    resetWrapAroundPosition: false
+                  });
+                  this.isTransitioning = false;
                   props.afterSlide(endSlide);
                   this.resetAutoplay();
                 }
@@ -648,6 +661,7 @@ export default class Carousel extends React.Component {
       () =>
         setTimeout(() => {
           this.resetAutoplay();
+          this.isTransitioning = false;
           if (index !== previousSlide) {
             this.props.afterSlide(index);
           }

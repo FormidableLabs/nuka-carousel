@@ -209,11 +209,13 @@ describe('<Carousel />', () => {
         </Carousel>
       );
       const nextButton = wrapper.find('.slider-control-centerright button');
-      nextButton.simulate('click');
-      nextButton.simulate('click');
-      nextButton.simulate('click');
-      nextButton.simulate('click');
-      nextButton.simulate('click');
+      jest.useFakeTimers();
+
+      for (let i = 0; i < 5; i++) {
+        nextButton.simulate('click');
+        jest.advanceTimersByTime(500);
+      }
+
       expect(wrapper).toHaveState({ currentSlide: 5 });
     });
 
@@ -229,11 +231,13 @@ describe('<Carousel />', () => {
         </Carousel>
       );
       const nextButton = wrapper.find('.slider-control-centerright button');
-      nextButton.simulate('click');
-      nextButton.simulate('click');
-      nextButton.simulate('click');
-      nextButton.simulate('click');
-      nextButton.simulate('click');
+      jest.useFakeTimers();
+
+      for (let i = 0; i < 5; i++) {
+        nextButton.simulate('click');
+        jest.advanceTimersByTime(500);
+      }
+
       expect(wrapper).toHaveState({ currentSlide: 5 });
     });
 
@@ -454,7 +458,7 @@ describe('<Carousel />', () => {
       );
 
       wrapper.instance().goToSlide(1);
-      await new Promise(resolve => setTimeout(resolve, speed));
+      jest.advanceTimersByTime(speed);
       expect(beforeSlideSpy).toBeCalledWith(0, 1);
       expect(afterSlideSpy).toBeCalledWith(1);
     });
@@ -623,8 +627,14 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
         </Carousel>
       );
-      wrapper.instance().nextSlide();
-      wrapper.instance().nextSlide();
+
+      jest.useFakeTimers();
+
+      for (let i = 0; i < 2; i++) {
+        wrapper.instance().nextSlide();
+        jest.advanceTimersByTime(500);
+      }
+
       expect(wrapper).toHaveState({ currentSlide: 2 });
       wrapper.instance().nextSlide();
       expect(wrapper).toHaveState({ currentSlide: 2 });
