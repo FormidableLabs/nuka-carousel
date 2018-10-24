@@ -12,8 +12,9 @@ const _addAccessibility = (children, slidesToShow, currentSlide) => {
   let needsTabIndex;
   if (slidesToShow > 1) {
     return React.Children.map(children, (child, index) => {
-      needsTabIndex =
-        index >= currentSlide && index < slidesToShow + currentSlide;
+      const firstVisibleSlide = index >= currentSlide;
+      const lastVisibleSlide = index < slidesToShow + currentSlide;
+      needsTabIndex = firstVisibleSlide && lastVisibleSlide;
       const ariaProps = needsTabIndex
         ? { 'aria-hidden': 'false', tabIndex: 0 }
         : { 'aria-hidden': 'true' };
