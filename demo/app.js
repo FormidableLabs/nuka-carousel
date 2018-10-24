@@ -12,7 +12,7 @@ class App extends React.Component {
       length: 6,
       wrapAround: false,
       underlineHeader: false,
-      slidesToShow: 1.0,
+      slidesToShow: 1,
       cellAlign: 'left',
       transitionMode: 'scroll',
       heightMode: 'max',

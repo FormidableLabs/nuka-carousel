@@ -63,10 +63,11 @@ export default class ScrollTransition extends React.Component {
   }
 
   formatChildren(children) {
-    const { top, left, currentSlide } = this.props;
+    const { top, left, currentSlide, slidesToShow } = this.props;
     const positionValue = this.props.vertical ? top : left;
     return React.Children.map(children, (child, index) => {
-      const visible = index >= currentSlide && index < currentSlide + 1;
+      const visible =
+        index >= currentSlide && index < currentSlide + slidesToShow;
       return (
         <li
           className={`slider-slide${visible ? ' slide-visible' : ''}`}
