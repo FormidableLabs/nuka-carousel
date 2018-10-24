@@ -8,10 +8,13 @@ export default class FadeTransition extends React.Component {
   }
 
   formatChildren(children, opacity) {
+    const { currentSlide, slidesToShow } = this.props;
     return React.Children.map(children, (child, index) => {
+      const visible =
+        index >= currentSlide && index < currentSlide + slidesToShow;
       return (
         <li
-          className="slider-slide"
+          className={`slider-slide${visible ? ' slide-visible' : ''}`}
           style={this.getSlideStyles(index, opacity)}
           key={index}
         >
