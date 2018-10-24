@@ -6,7 +6,6 @@ import * as easing from 'd3-ease';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import Transitions from './all-transitions';
 import AnnounceSlide from './announce-slide';
-import { _addAccessibility } from './utilities';
 
 const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
@@ -31,6 +30,34 @@ const removeEvent = function(elem, type, eventHandle) {
     elem.detachEvent(`on${type}`, eventHandle);
   } else {
     elem[`on${type}`] = null;
+  }
+};
+
+const _addAccessibility = (children, slidesToShow, currentSlide) => {
+  let needsTabIndex;
+  if (slidesToShow > 1) {
+    return React.Children.map(children, (child, index) => {
+      needsTabIndex =
+        index >= currentSlide && index < slidesToShow + currentSlide;
+      const ariaProps = needsTabIndex
+        ? { 'aria-hidden': 'false', tabIndex: 0 }
+        : { 'aria-hidden': 'true' };
+      return React.cloneElement(child, {
+        ...child.props,
+        ...ariaProps
+      });
+    });
+  } else {
+    return React.Children.map(children, (child, index) => {
+      needsTabIndex = index !== currentSlide;
+      const ariaProps = needsTabIndex
+        ? { 'aria-hidden': 'true' }
+        : { 'aria-hidden': 'false', tabIndex: 0 };
+      return React.cloneElement(child, {
+        ...child.props,
+        ...ariaProps
+      });
+    });
   }
 };
 
