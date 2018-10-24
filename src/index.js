@@ -6,32 +6,7 @@ import * as easing from 'd3-ease';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import Transitions from './all-transitions';
 import AnnounceSlide from './announce-slide';
-
-const addEvent = function(elem, type, eventHandle) {
-  if (elem === null || typeof elem === 'undefined') {
-    return;
-  }
-  if (elem.addEventListener) {
-    elem.addEventListener(type, eventHandle, false);
-  } else if (elem.attachEvent) {
-    elem.attachEvent(`on${type}`, eventHandle);
-  } else {
-    elem[`on${type}`] = eventHandle;
-  }
-};
-
-const removeEvent = function(elem, type, eventHandle) {
-  if (elem === null || typeof elem === 'undefined') {
-    return;
-  }
-  if (elem.removeEventListener) {
-    elem.removeEventListener(type, eventHandle, false);
-  } else if (elem.detachEvent) {
-    elem.detachEvent(`on${type}`, eventHandle);
-  } else {
-    elem[`on${type}`] = null;
-  }
-};
+import { addEvent, removeEvent } from './utilities';
 
 const _addAccessibility = (children, slidesToShow, currentSlide) => {
   let needsTabIndex;
