@@ -54,3 +54,60 @@ export const addAccessibility = (children, slidesToShow, currentSlide) => {
     });
   }
 };
+
+export const getPropsByTransitionMode = (props, keys) => {
+  const { slidesToShow, transitionMode } = props;
+  const updatedDefaults = {};
+  if (transitionMode === 'fade') {
+    keys.forEach(key => {
+      switch (key) {
+        case 'slidesToShow':
+          updatedDefaults[key] = Math.max(parseInt(slidesToShow), 1);
+          break;
+        case 'slidesToScroll':
+          updatedDefaults[key] = Math.max(parseInt(slidesToShow), 1);
+          break;
+        case 'cellAlign':
+          updatedDefaults[key] = 'left';
+          break;
+        default:
+          updatedDefaults[key] = props[key];
+          break;
+      }
+    });
+  } else {
+    keys.forEach(key => {
+      updatedDefaults[key] = props[key];
+    });
+  }
+
+  return updatedDefaults;
+};
+
+export const swipeDirection = (x1, x2, y1, y2, vertical) => {
+  const xDist = x1 - x2;
+  const yDist = y1 - y2;
+  const r = Math.atan2(yDist, xDist);
+  let swipeAngle = Math.round(r * 180 / Math.PI);
+
+  if (swipeAngle < 0) {
+    swipeAngle = 360 - Math.abs(swipeAngle);
+  }
+  if (swipeAngle <= 45 && swipeAngle >= 0) {
+    return 1;
+  }
+  if (swipeAngle <= 360 && swipeAngle >= 315) {
+    return 1;
+  }
+  if (swipeAngle >= 135 && swipeAngle <= 225) {
+    return -1;
+  }
+  if (vertical === true) {
+    if (swipeAngle >= 35 && swipeAngle <= 135) {
+      return 1;
+    } else {
+      return -1;
+    }
+  }
+  return 0;
+};
