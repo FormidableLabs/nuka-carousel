@@ -6,36 +6,7 @@ import * as easing from 'd3-ease';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import Transitions from './all-transitions';
 import AnnounceSlide from './announce-slide';
-import { addEvent, removeEvent } from './utilities';
-
-const _addAccessibility = (children, slidesToShow, currentSlide) => {
-  let needsTabIndex;
-  if (slidesToShow > 1) {
-    return React.Children.map(children, (child, index) => {
-      const firstVisibleSlide = index >= currentSlide;
-      const lastVisibleSlide = index < slidesToShow + currentSlide;
-      needsTabIndex = firstVisibleSlide && lastVisibleSlide;
-      const ariaProps = needsTabIndex
-        ? { 'aria-hidden': 'false', tabIndex: 0 }
-        : { 'aria-hidden': 'true' };
-      return React.cloneElement(child, {
-        ...child.props,
-        ...ariaProps
-      });
-    });
-  } else {
-    return React.Children.map(children, (child, index) => {
-      needsTabIndex = index !== currentSlide;
-      const ariaProps = needsTabIndex
-        ? { 'aria-hidden': 'true' }
-        : { 'aria-hidden': 'false', tabIndex: 0 };
-      return React.cloneElement(child, {
-        ...child.props,
-        ...ariaProps
-      });
-    });
-  }
-};
+import { addEvent, removeEvent, addAccessibility } from './utilities';
 
 export default class Carousel extends React.Component {
   constructor() {
@@ -1187,7 +1158,7 @@ export default class Carousel extends React.Component {
                 deltaX={tx}
                 deltaY={ty}
               >
-                {_addAccessibility(validChildren, slidesToShow, currentSlide)}
+                {addAccessibility(validChildren, slidesToShow, currentSlide)}
               </TransitionControl>
             </div>
           )}
