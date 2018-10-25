@@ -458,7 +458,7 @@ export default class Carousel extends React.Component {
     // wait for `handleClick` event before resetting clickDisabled
     setTimeout(() => {
       this.clickDisabled = false;
-    }, 200);
+    }, 0);
     this.touchObject = {};
 
     this.setState({
