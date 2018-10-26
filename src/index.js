@@ -6,13 +6,13 @@ import * as easing from 'd3-ease';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import Transitions from './all-transitions';
 import AnnounceSlide from './announce-slide';
-import { getTargetLeft } from './animation-utility';
+import { getTargetLeft } from './utilities/animation-utility';
 import {
   addEvent,
   removeEvent,
   getPropsByTransitionMode,
   swipeDirection
-} from './utilities';
+} from './utilities/utilities';
 import {
   getImgTagStyles,
   getDecoratorStyles,
@@ -20,12 +20,12 @@ import {
   getFrameStyles,
   getTransitionProps,
   getOffsetDeltas
-} from './style-utilities';
+} from './utilities/style-utilities';
 import {
   addAccessibility,
   getValidChildren,
   getSlideHeight
-} from './bootstrapping-utilities';
+} from './utilities/bootstrapping-utilities';
 
 export default class Carousel extends React.Component {
   constructor() {
