@@ -721,6 +721,39 @@ describe('<Carousel />', () => {
       nextButton.simulate('click');
       expect(wrapper).toHaveState({ currentSlide: 0 });
     });
+
+    it('should give children correct aria-hidden props', () => {
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const firstChild = wrapper.find('p').first();
+      const thirdChild = wrapper.find('p').last();
+      expect(firstChild.props().tabIndex).toBe(0);
+      expect(firstChild.props()['aria-hidden']).toBe('false');
+      expect(thirdChild.props().tabIndex).toBe(undefined);
+      expect(thirdChild.props()['aria-hidden']).toBe('true');
+    });
+
+    it('should give children correct aria-hidden props when currentSlide is 1', () => {
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      wrapper.setState({ currentSlide: 2 });
+      const firstChild = wrapper.find('p').first();
+      const thirdChild = wrapper.find('p').last();
+      expect(firstChild.props().tabIndex).toBe(undefined);
+      expect(firstChild.props()['aria-hidden']).toBe('true');
+      expect(thirdChild.props().tabIndex).toBe(0);
+      expect(thirdChild.props()['aria-hidden']).toBe('false');
+    });
   });
 
   describe('Controls', () => {
