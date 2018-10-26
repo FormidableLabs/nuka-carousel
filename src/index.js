@@ -327,7 +327,9 @@ export default class Carousel extends React.Component {
               Math.sqrt(Math.pow(e.clientX - this.touchObject.startX, 2))
             );
 
-        this.clickDisabled = true;
+        // prevents disabling click just because mouse moves a fraction of a pixel
+        if (length >= 10) this.clickDisabled = true;
+
         this.touchObject = {
           startX: this.touchObject.startX,
           startY: this.touchObject.startY,
@@ -433,7 +435,7 @@ export default class Carousel extends React.Component {
     // wait for `handleClick` event before resetting clickDisabled
     setTimeout(() => {
       this.clickDisabled = false;
-    }, 200);
+    }, 0);
     this.touchObject = {};
 
     this.setState({
