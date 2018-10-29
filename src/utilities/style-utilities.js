@@ -130,30 +130,19 @@ export const getFrameStyles = (
 };
 
 export const getTransitionProps = (props, state) => {
-  const {
-    slideCount,
-    slideHeight,
-    slideWidth,
-    currentSlide,
-    isWrappingAround,
-    top,
-    left,
-    slidesToShow
-  } = state;
-  const { cellSpacing, vertical, dragging, wrapAround } = props;
   return {
-    slideWidth,
-    slideHeight,
-    slideCount,
-    currentSlide,
-    isWrappingAround,
-    top,
-    left,
-    cellSpacing,
-    vertical,
-    dragging,
-    wrapAround,
-    slidesToShow
+    slideWidth: state.slideWidth,
+    slideHeight: state.slideHeight,
+    slideCount: state.slideCount,
+    currentSlide: state.currentSlide,
+    isWrappingAround: state.isWrappingAround,
+    top: state.top,
+    left: state.left,
+    cellSpacing: props.cellSpacing,
+    vertical: props.vertical,
+    dragging: props.dragging,
+    wrapAround: props.wrapAround,
+    slidesToShow: state.slidesToShow
   };
 };
 
@@ -164,7 +153,7 @@ export const getOffsetDeltas = (touchObject, props, state) => {
   let offset = 0;
 
   if (isWrappingAround) {
-    offset = getTargetLeft(null, wrapToIndex, props, state);
+    offset = getTargetLeft(0, wrapToIndex, props, state);
   } else {
     offset = getTargetLeft(length * direction, null, props, state);
   }

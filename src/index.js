@@ -800,10 +800,8 @@ export default class Carousel extends React.Component {
         cellAlign,
         left: props.vertical
           ? 0
-          : getTargetLeft(null, null, this.props, this.state),
-        top: props.vertical
-          ? getTargetLeft(null, null, this.props, this.state)
-          : 0
+          : getTargetLeft(0, null, this.props, this.state),
+        top: props.vertical ? getTargetLeft(0, null, this.props, this.state) : 0
       },
       () => {
         stateCb();
@@ -819,9 +817,9 @@ export default class Carousel extends React.Component {
   setLeft() {
     const newLeft = this.props.vertical
       ? 0
-      : getTargetLeft(null, null, this.props, this.state);
+      : getTargetLeft(0, null, this.props, this.state);
     const newTop = this.props.vertical
-      ? getTargetLeft(null, null, this.props, this.state)
+      ? getTargetLeft(0, null, this.props, this.state)
       : 0;
 
     if (newLeft !== this.state.left || newTop !== this.state.top) {
