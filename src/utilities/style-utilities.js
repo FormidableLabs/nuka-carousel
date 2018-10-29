@@ -1,5 +1,3 @@
-import { getTargetLeft } from './animation-utility';
-
 export const getImgTagStyles = () => {
   return `.slider-slide > img { width: 100%; display: block;}
           .slider-slide > img:focus {margin: auto; width: 99.5%; outline-width: 11px}`;
@@ -143,23 +141,5 @@ export const getTransitionProps = (props, state) => {
     dragging: props.dragging,
     wrapAround: props.wrapAround,
     slidesToShow: state.slidesToShow
-  };
-};
-
-export const getOffsetDeltas = (touchObject, props, state) => {
-  const { vertical } = props;
-  const { isWrappingAround, wrapToIndex } = state;
-  const { length, direction } = touchObject;
-  let offset = 0;
-
-  if (isWrappingAround) {
-    offset = getTargetLeft(0, wrapToIndex, props, state);
-  } else {
-    offset = getTargetLeft(length * direction, null, props, state);
-  }
-
-  return {
-    tx: [vertical ? 0 : offset],
-    ty: [vertical ? offset : 0]
   };
 };

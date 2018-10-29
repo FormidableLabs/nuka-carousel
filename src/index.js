@@ -6,7 +6,6 @@ import * as easing from 'd3-ease';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import Transitions from './all-transitions';
 import AnnounceSlide from './announce-slide';
-import { getTargetLeft } from './utilities/animation-utility';
 import {
   addEvent,
   removeEvent,
@@ -18,8 +17,7 @@ import {
   getDecoratorStyles,
   getSliderStyles,
   getFrameStyles,
-  getTransitionProps,
-  getOffsetDeltas
+  getTransitionProps
 } from './utilities/style-utilities';
 import {
   addAccessibility,
@@ -88,12 +86,14 @@ export default class Carousel extends React.Component {
     this.goToSlide = this.goToSlide.bind(this);
     this.nextSlide = this.nextSlide.bind(this);
     this.previousSlide = this.previousSlide.bind(this);
+    this.getTargetLeft = this.getTargetLeft.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onReadyStateChange = this.onReadyStateChange.bind(this);
     this.onVisibilityChange = this.onVisibilityChange.bind(this);
     this.setInitialDimensions = this.setInitialDimensions.bind(this);
     this.setDimensions = this.setDimensions.bind(this);
     this.setLeft = this.setLeft.bind(this);
+    this.getOffsetDeltas = this.getOffsetDeltas.bind(this);
     this.getChildNodes = this.getChildNodes.bind(this);
     this.renderControls = this.renderControls.bind(this);
     this.setSlideHeightAndWidth = this.setSlideHeightAndWidth.bind(this);
@@ -244,18 +244,12 @@ export default class Carousel extends React.Component {
         this.setState({
           left: this.props.vertical
             ? 0
-            : getTargetLeft(
-                this.touchObject.length * this.touchObject.direction,
-                null,
-                this.props,
-                this.state
+            : this.getTargetLeft(
+                this.touchObject.length * this.touchObject.direction
               ),
           top: this.props.vertical
-            ? getTargetLeft(
-                this.touchObject.length * this.touchObject.direction,
-                null,
-                this.props,
-                this.state
+            ? this.getTargetLeft(
+                this.touchObject.length * this.touchObject.direction
               )
             : 0
         });
@@ -334,18 +328,12 @@ export default class Carousel extends React.Component {
         this.setState({
           left: this.props.vertical
             ? 0
-            : getTargetLeft(
-                this.touchObject.length * this.touchObject.direction,
-                null,
-                this.props,
-                this.state
+            : this.getTargetLeft(
+                this.touchObject.length * this.touchObject.direction
               ),
           top: this.props.vertical
-            ? getTargetLeft(
-                this.touchObject.length * this.touchObject.direction,
-                null,
-                this.props,
-                this.state
+            ? this.getTargetLeft(
+                this.touchObject.length * this.touchObject.direction
               )
             : 0
         });
@@ -509,6 +497,69 @@ export default class Carousel extends React.Component {
     }
   }
 
+  // Animation Method
+
+  getTargetLeft(touchOffset, slide) {
+    let offset;
+    const target = slide || this.state.currentSlide;
+    switch (this.state.cellAlign) {
+      case 'left': {
+        offset = 0;
+        offset -= this.props.cellSpacing * target;
+        break;
+      }
+      case 'center': {
+        offset = (this.state.frameWidth - this.state.slideWidth) / 2;
+        offset -= this.props.cellSpacing * target;
+        break;
+      }
+      case 'right': {
+        offset = this.state.frameWidth - this.state.slideWidth;
+        offset -= this.props.cellSpacing * target;
+        break;
+      }
+    }
+
+    let left = this.state.slideWidth * target;
+
+    const lastSlide =
+      this.state.currentSlide > 0 &&
+      target + this.state.slidesToScroll >= this.state.slideCount;
+
+    if (
+      lastSlide &&
+      this.props.slideWidth !== 1 &&
+      !this.props.wrapAround &&
+      this.props.slidesToScroll === 'auto'
+    ) {
+      left =
+        this.state.slideWidth * this.state.slideCount - this.state.frameWidth;
+      offset = 0;
+      offset -= this.props.cellSpacing * (this.state.slideCount - 1);
+    }
+
+    offset -= touchOffset || 0;
+
+    return (left - offset) * -1;
+  }
+
+  getOffsetDeltas() {
+    let offset = 0;
+
+    if (this.state.isWrappingAround) {
+      offset = this.getTargetLeft(null, this.state.wrapToIndex);
+    } else {
+      offset = this.getTargetLeft(
+        this.touchObject.length * this.touchObject.direction
+      );
+    }
+
+    return {
+      tx: [this.props.vertical ? 0 : offset],
+      ty: [this.props.vertical ? offset : 0]
+    };
+  }
+
   // Action Methods
 
   goToSlide(index, props) {
@@ -534,18 +585,14 @@ export default class Carousel extends React.Component {
           prevState => ({
             left: props.vertical
               ? 0
-              : getTargetLeft(
+              : this.getTargetLeft(
                   this.state.slideWidth,
-                  prevState.currentSlide,
-                  this.props,
-                  this.state
+                  prevState.currentSlide
                 ),
             top: props.vertical
-              ? getTargetLeft(
+              ? this.getTargetLeft(
                   this.state.slideWidth,
-                  prevState.currentSlide,
-                  this.props,
-                  this.state
+                  prevState.currentSlide
                 )
               : 0,
             currentSlide: 0,
@@ -575,19 +622,9 @@ export default class Carousel extends React.Component {
           prevState => ({
             left: props.vertical
               ? 0
-              : getTargetLeft(
-                  0,
-                  prevState.currentSlide,
-                  this.props,
-                  this.state
-                ),
+              : this.getTargetLeft(0, prevState.currentSlide),
             top: props.vertical
-              ? getTargetLeft(
-                  null,
-                  prevState.currentSlide,
-                  this.props,
-                  this.state
-                )
+              ? this.getTargetLeft(0, prevState.currentSlide)
               : 0,
             currentSlide: endSlide,
             isWrappingAround: true,
@@ -798,10 +835,8 @@ export default class Carousel extends React.Component {
         slidesToShow,
         slideWidth,
         cellAlign,
-        left: props.vertical
-          ? 0
-          : getTargetLeft(0, null, this.props, this.state),
-        top: props.vertical ? getTargetLeft(0, null, this.props, this.state) : 0
+        left: props.vertical ? 0 : this.getTargetLeft(),
+        top: props.vertical ? this.getTargetLeft() : 0
       },
       () => {
         stateCb();
@@ -815,12 +850,8 @@ export default class Carousel extends React.Component {
   }
 
   setLeft() {
-    const newLeft = this.props.vertical
-      ? 0
-      : getTargetLeft(0, null, this.props, this.state);
-    const newTop = this.props.vertical
-      ? getTargetLeft(0, null, this.props, this.state)
-      : 0;
+    const newLeft = this.props.vertical ? 0 : this.getTargetLeft();
+    const newTop = this.props.vertical ? this.getTargetLeft() : 0;
 
     if (newLeft !== this.state.left || newTop !== this.state.top) {
       this.setState({
@@ -901,7 +932,7 @@ export default class Carousel extends React.Component {
           start={{ tx: 0, ty: 0 }}
           update={Object.assign(
             {},
-            getOffsetDeltas(this.touchObject, this.props, this.state),
+            this.getOffsetDeltas(this.touchObject, this.props, this.state),
             {
               timing: {
                 duration,
