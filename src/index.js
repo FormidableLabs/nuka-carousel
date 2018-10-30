@@ -54,17 +54,26 @@ export default class Carousel extends React.Component {
       'slidesToShow',
       'cellAlign'
     ]);
+    const slideWidth = this.props.vertical
+      ? this.props.initialSlideHeight || 0
+      : this.props.initialSlideWidth || 0;
+    const slideHeight = this.props.vertical
+      ? (this.props.initialSlideHeight || 0) * this.state.slidesToShow
+      : this.props.initialSlideHeight || 0;
+
+    const frameHeight =
+      slideHeight + this.props.cellSpacing * (slidesToShow - 1);
 
     this.state = {
       currentSlide: this.props.slideIndex,
       dragging: false,
-      frameWidth: 0,
+      frameWidth: this.props.vertical ? frameHeight : '100%',
       left: 0,
-      slideCount: 0,
-      slideHeight: 0,
+      slideCount: getValidChildren(this.props.children).length,
+      slideHeight,
       slidesToScroll,
       slidesToShow,
-      slideWidth: 0,
+      slideWidth,
       top: 0,
       cellAlign,
       easing: easing.easeCircleOut,
@@ -90,7 +99,6 @@ export default class Carousel extends React.Component {
     this.onResize = this.onResize.bind(this);
     this.onReadyStateChange = this.onReadyStateChange.bind(this);
     this.onVisibilityChange = this.onVisibilityChange.bind(this);
-    this.setInitialDimensions = this.setInitialDimensions.bind(this);
     this.setDimensions = this.setDimensions.bind(this);
     this.setLeft = this.setLeft.bind(this);
     this.getOffsetDeltas = this.getOffsetDeltas.bind(this);
@@ -101,15 +109,10 @@ export default class Carousel extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
-  // @TODO Remove deprecated componentWillMount with componentDidMount
-  // eslint-disable-next-line react/no-deprecated
-  componentWillMount() {
-    this.setInitialDimensions();
-  }
-
   componentDidMount() {
     // see https://github.com/facebook/react/issues/3417#issuecomment-121649937
     this.mounted = true;
+    this.setLeft();
     this.setDimensions();
     this.bindEvents();
     if (this.props.autoplay) {
@@ -747,30 +750,6 @@ export default class Carousel extends React.Component {
       removeEvent(document, 'visibilitychange', this.onVisibilityChange);
       removeEvent(document, 'keydown', this.handleKeyPress);
     }
-  }
-
-  setInitialDimensions() {
-    const slideWidth = this.props.vertical
-      ? this.props.initialSlideHeight || 0
-      : this.props.initialSlideWidth || 0;
-    const slideHeight = this.props.vertical
-      ? (this.props.initialSlideHeight || 0) * this.state.slidesToShow
-      : this.props.initialSlideHeight || 0;
-
-    const frameHeight =
-      slideHeight + this.props.cellSpacing * (this.state.slidesToShow - 1);
-
-    this.setState(
-      {
-        slideHeight,
-        frameWidth: this.props.vertical ? frameHeight : '100%',
-        slideCount: getValidChildren(this.props.children).length,
-        slideWidth
-      },
-      () => {
-        this.setLeft();
-      }
-    );
   }
 
   calcSlideHeightAndWidth(props) {
