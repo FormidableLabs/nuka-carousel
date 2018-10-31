@@ -10,7 +10,8 @@ import {
   addEvent,
   removeEvent,
   getPropsByTransitionMode,
-  swipeDirection
+  swipeDirection,
+  shouldUpdate
 } from './utilities/utilities';
 import {
   getImgTagStyles,
@@ -138,18 +139,7 @@ export default class Carousel extends React.Component {
 
     const updateDimensions =
       slideCountChanged ||
-      ((curr, next, keys) => {
-        let shouldUpdate = false;
-
-        for (let i = 0; i < keys.length; i++) {
-          if (curr[keys[i]] !== next[keys[i]]) {
-            shouldUpdate = true;
-            break;
-          }
-        }
-
-        return shouldUpdate;
-      })(this.props, nextProps, [
+      shouldUpdate(this.props, nextProps, [
         'cellSpacing',
         'vertical',
         'slideWidth',

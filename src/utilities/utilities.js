@@ -111,3 +111,16 @@ export const swipeDirection = (x1, x2, y1, y2, vertical) => {
   }
   return 0;
 };
+
+export const shouldUpdate = (curr, next, keys) => {
+  let update = false;
+
+  for (let i = 0; i < keys.length; i++) {
+    if (curr[keys[i]] !== next[keys[i]]) {
+      update = true;
+      break;
+    }
+  }
+
+  return update;
+};
