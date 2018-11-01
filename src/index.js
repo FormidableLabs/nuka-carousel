@@ -55,32 +55,40 @@ export default class Carousel extends React.Component {
       'slidesToShow',
       'cellAlign'
     ]);
-    const slideWidth = this.props.vertical
-      ? this.props.initialSlideHeight || 0
-      : this.props.initialSlideWidth || 0;
-    const slideHeight = this.props.vertical
-      ? (this.props.initialSlideHeight || 0) * this.state.slidesToShow
-      : this.props.initialSlideHeight || 0;
 
-    const frameHeight =
-      slideHeight + this.props.cellSpacing * (slidesToShow - 1);
+    const calcInitial = () => {
+      const slideWidth = this.props.vertical
+        ? this.props.initialSlideHeight || 0
+        : this.props.initialSlideWidth || 0;
+      const slideHeight = this.props.vertical
+        ? (this.props.initialSlideHeight || 0) * this.state.slidesToShow
+        : this.props.initialSlideHeight || 0;
+
+      const frameHeight =
+        slideHeight + this.props.cellSpacing * (slidesToShow - 1);
+
+      const frameWidth = this.props.vertical ? frameHeight : '100%';
+      return {
+        slideWidth,
+        slideHeight,
+        frameWidth
+      };
+    };
 
     this.state = {
       currentSlide: this.props.slideIndex,
       dragging: false,
-      frameWidth: this.props.vertical ? frameHeight : '100%',
       left: 0,
       slideCount: getValidChildren(this.props.children).length,
-      slideHeight,
       slidesToScroll,
       slidesToShow,
-      slideWidth,
       top: 0,
       cellAlign,
       easing: easing.easeCircleOut,
       isWrappingAround: false,
       wrapToIndex: null,
-      resetWrapAroundPosition: false
+      resetWrapAroundPosition: false,
+      ...calcInitial()
     };
 
     this.getTouchEvents = this.getTouchEvents.bind(this);
@@ -756,9 +764,9 @@ export default class Carousel extends React.Component {
     if (typeof props.slideWidth !== 'number') {
       slideWidth = parseInt(props.slideWidth);
     } else if (props.vertical) {
-      slideWidth = slideHeight / slidesToShow * props.slideWidth;
+      slideWidth = (slideHeight / slidesToShow) * props.slideWidth;
     } else {
-      slideWidth = frame.offsetWidth / slidesToShow * props.slideWidth;
+      slideWidth = (frame.offsetWidth / slidesToShow) * props.slideWidth;
     }
 
     if (!props.vertical) {
