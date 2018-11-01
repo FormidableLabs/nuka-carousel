@@ -56,7 +56,7 @@ export default class Carousel extends React.Component {
       'cellAlign'
     ]);
 
-    const calcInitial = () => {
+    const calcInitialDimension = () => {
       const slideWidth = this.props.vertical
         ? this.props.initialSlideHeight || 0
         : this.props.initialSlideWidth || 0;
@@ -88,7 +88,7 @@ export default class Carousel extends React.Component {
       isWrappingAround: false,
       wrapToIndex: null,
       resetWrapAroundPosition: false,
-      ...calcInitial()
+      ...calcInitialDimension()
     };
 
     this.getTouchEvents = this.getTouchEvents.bind(this);
