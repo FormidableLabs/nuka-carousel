@@ -61,7 +61,7 @@ export default class Carousel extends React.Component {
         ? this.props.initialSlideHeight || 0
         : this.props.initialSlideWidth || 0;
       const slideHeight = this.props.vertical
-        ? (this.props.initialSlideHeight || 0) * this.state.slidesToShow
+        ? (this.props.initialSlideHeight || 0) * this.props.slidesToShow
         : this.props.initialSlideHeight || 0;
 
       const frameHeight =
@@ -872,6 +872,7 @@ export default class Carousel extends React.Component {
     }
   }
   render() {
+    console.log(this.state);
     const { currentSlide, slideCount, frameWidth } = this.state;
     const { frameOverflow, vertical, framePadding, slidesToShow } = this.props;
     const duration =
