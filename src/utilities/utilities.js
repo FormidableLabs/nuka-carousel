@@ -124,3 +124,28 @@ export const shouldUpdate = (curr, next, keys) => {
 
   return update;
 };
+
+export const calcSomeInitialState = props => {
+  const { slidesToScroll, slidesToShow, cellAlign } = getPropsByTransitionMode(
+    props,
+    ['slidesToScroll', 'slidesToShow', 'cellAlign']
+  );
+  const slideWidth = props.vertical
+    ? props.initialSlideHeight || 0
+    : props.initialSlideWidth || 0;
+  const slideHeight = props.vertical
+    ? (props.initialSlideHeight || 0) * props.slidesToShow
+    : props.initialSlideHeight || 0;
+
+  const frameHeight = slideHeight + props.cellSpacing * (slidesToShow - 1);
+
+  const frameWidth = props.vertical ? frameHeight : '100%';
+  return {
+    slideWidth,
+    slideHeight,
+    frameWidth,
+    slidesToScroll,
+    slidesToShow,
+    cellAlign
+  };
+};

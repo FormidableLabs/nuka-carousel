@@ -11,7 +11,8 @@ import {
   removeEvent,
   getPropsByTransitionMode,
   swipeDirection,
-  shouldUpdate
+  shouldUpdate,
+  calcSomeInitialState
 } from './utilities/utilities';
 import {
   getImgTagStyles,
@@ -46,49 +47,17 @@ export default class Carousel extends React.Component {
       { funcName: 'renderBottomRightControls', key: 'BottomRight' }
     ];
 
-    const {
-      slidesToScroll,
-      slidesToShow,
-      cellAlign
-    } = getPropsByTransitionMode(this.props, [
-      'slidesToScroll',
-      'slidesToShow',
-      'cellAlign'
-    ]);
-
-    const calcInitialDimension = () => {
-      const slideWidth = this.props.vertical
-        ? this.props.initialSlideHeight || 0
-        : this.props.initialSlideWidth || 0;
-      const slideHeight = this.props.vertical
-        ? (this.props.initialSlideHeight || 0) * this.props.slidesToShow
-        : this.props.initialSlideHeight || 0;
-
-      const frameHeight =
-        slideHeight + this.props.cellSpacing * (slidesToShow - 1);
-
-      const frameWidth = this.props.vertical ? frameHeight : '100%';
-      return {
-        slideWidth,
-        slideHeight,
-        frameWidth
-      };
-    };
-
     this.state = {
       currentSlide: this.props.slideIndex,
       dragging: false,
       left: 0,
       slideCount: getValidChildren(this.props.children).length,
-      slidesToScroll,
-      slidesToShow,
       top: 0,
-      cellAlign,
       easing: easing.easeCircleOut,
       isWrappingAround: false,
       wrapToIndex: null,
       resetWrapAroundPosition: false,
-      ...calcInitialDimension()
+      ...calcSomeInitialState(this.props)
     };
 
     this.getTouchEvents = this.getTouchEvents.bind(this);
@@ -764,9 +733,9 @@ export default class Carousel extends React.Component {
     if (typeof props.slideWidth !== 'number') {
       slideWidth = parseInt(props.slideWidth);
     } else if (props.vertical) {
-      slideWidth = (slideHeight / slidesToShow) * props.slideWidth;
+      slideWidth = slideHeight / slidesToShow * props.slideWidth;
     } else {
-      slideWidth = (frame.offsetWidth / slidesToShow) * props.slideWidth;
+      slideWidth = frame.offsetWidth / slidesToShow * props.slideWidth;
     }
 
     if (!props.vertical) {
@@ -872,7 +841,6 @@ export default class Carousel extends React.Component {
     }
   }
   render() {
-    console.log(this.state);
     const { currentSlide, slideCount, frameWidth } = this.state;
     const { frameOverflow, vertical, framePadding, slidesToShow } = this.props;
     const duration =
