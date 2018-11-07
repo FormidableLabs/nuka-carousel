@@ -533,6 +533,42 @@ describe('<Carousel />', () => {
 
         expect(defaultWrapper).toHaveState({ cellAlign: 'left' });
       });
+
+      it('should move to next slide when pressing right arrow key', () => {
+        const map = {};
+        document.addEventListener = jest.fn((event, cb) => {
+          map[event] = cb;
+        });
+
+        const wrapper = mount(
+          <Carousel>
+            <p>Slide1</p>
+            <p>Slide2</p>
+            <p>Slide3</p>
+          </Carousel>
+        );
+        expect(wrapper).toHaveState({ currentSlide: 0 });
+        map.keydown({ keyCode: 39 });
+        expect(wrapper).toHaveState({ currentSlide: 1 });
+      });
+
+      it('should not move to next slide when pressing right arrow key', () => {
+        const map = {};
+        document.addEventListener = jest.fn((event, cb) => {
+          map[event] = cb;
+        });
+
+        const wrapper = mount(
+          <Carousel keyboardControls={false}>
+            <p>Slide1</p>
+            <p>Slide2</p>
+            <p>Slide3</p>
+          </Carousel>
+        );
+        expect(wrapper).toHaveState({ currentSlide: 0 });
+        map.keydown({ keyCode: 39 });
+        expect(wrapper).toHaveState({ currentSlide: 0 });
+      });
     });
 
     describe('fade', () => {
@@ -600,6 +636,42 @@ describe('<Carousel />', () => {
         );
 
         expect(defaultWrapper).toHaveState({ cellAlign: 'left' });
+      });
+
+      it('should move to next slide when pressing right arrow key', () => {
+        const map = {};
+        document.addEventListener = jest.fn((event, cb) => {
+          map[event] = cb;
+        });
+
+        const wrapper = mount(
+          <Carousel>
+            <p>Slide1</p>
+            <p>Slide2</p>
+            <p>Slide3</p>
+          </Carousel>
+        );
+        expect(wrapper).toHaveState({ currentSlide: 0 });
+        map.keydown({ keyCode: 39 });
+        expect(wrapper).toHaveState({ currentSlide: 1 });
+      });
+
+      it('should not move to next slide when pressing right arrow key', () => {
+        const map = {};
+        document.addEventListener = jest.fn((event, cb) => {
+          map[event] = cb;
+        });
+
+        const wrapper = mount(
+          <Carousel keyboardControls={false}>
+            <p>Slide1</p>
+            <p>Slide2</p>
+            <p>Slide3</p>
+          </Carousel>
+        );
+        expect(wrapper).toHaveState({ currentSlide: 0 });
+        map.keydown({ keyCode: 39 });
+        expect(wrapper).toHaveState({ currentSlide: 0 });
       });
     });
   });

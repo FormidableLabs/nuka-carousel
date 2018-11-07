@@ -50,7 +50,7 @@ You can access the application on your localhost at the following url: <a href="
 
 Or on CodeSandeBox at the following url: <a href="https://codesandbox.io/s/04wxloyyp" target="_blank">CodeSandBox Demo</a>
 
-### Controls
+### Keyboard Controls
 
 | Key Combination            | Function                                            |
 | -------------------------- | --------------------------------------------------- |
@@ -79,6 +79,7 @@ Or on CodeSandeBox at the following url: <a href="https://codesandbox.io/s/04wxl
 | heightMode           | `React.PropTypes.oneOf(['first', 'current', 'max'])`                                    | Change the height of the slides based either on the first slide, the current slide, or the maximum height of all slides. Overrides height set by `initialSlideHeight`                         |                     |
 | initialSlideHeight   | `React.PropTypes.number`                                                                | Initial height of the slides in pixels.                                                                                                                                                       | `100`               |
 | initialSlideWidth    | `React.PropTypes.number`                                                                | Initial width of the slides in pixels                                                                                                                                                         |                     |
+| keyboardControls     | `React.PropTypes.bool`                                                                  | When set to `false` will disable keyboard controls.                                                                                                                                           | `true`              |
 | pauseOnHover         | `React.PropTypes.bool`                                                                  | Pause autoPlay when mouse is over carousel.                                                                                                                                                   | `true`              |
 | slideIndex           | `React.PropTypes.number`                                                                | Manually set the index of the slide to be shown                                                                                                                                               |                     |
 | slidesToShow         | `React.PropTypes.number`                                                                | Number of slides to show at once. Will be cast to an `integer` when `transitionMode="fade"`                                                                                                   |                     |

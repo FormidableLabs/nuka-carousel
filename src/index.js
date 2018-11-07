@@ -414,35 +414,37 @@ export default class Carousel extends React.Component {
   }
   // eslint-disable-next-line complexity
   handleKeyPress(e) {
-    switch (e.keyCode) {
-      case 39:
-      case 68:
-      case 38:
-      case 87:
-        this.nextSlide();
-        break;
-      case 37:
-      case 65:
-      case 40:
-      case 83:
-        this.previousSlide();
-        break;
-      case 81:
-        this.goToSlide(0, this.props);
-        break;
-      case 69:
-        this.goToSlide(this.state.slideCount - 1, this.props);
-        break;
-      case 32:
-        if (this.state.pauseOnHover && this.props.autoplay) {
-          this.setState({ pauseOnHover: false });
-          this.pauseAutoplay();
+    if (this.props.keyboardControls) {
+      switch (e.keyCode) {
+        case 39:
+        case 68:
+        case 38:
+        case 87:
+          this.nextSlide();
           break;
-        } else {
-          this.setState({ pauseOnHover: true });
-          this.unpauseAutoplay();
+        case 37:
+        case 65:
+        case 40:
+        case 83:
+          this.previousSlide();
           break;
-        }
+        case 81:
+          this.goToSlide(0, this.props);
+          break;
+        case 69:
+          this.goToSlide(this.state.slideCount - 1, this.props);
+          break;
+        case 32:
+          if (this.state.pauseOnHover && this.props.autoplay) {
+            this.setState({ pauseOnHover: false });
+            this.pauseAutoplay();
+            break;
+          } else {
+            this.setState({ pauseOnHover: true });
+            this.unpauseAutoplay();
+            break;
+          }
+      }
     }
   }
 
@@ -948,6 +950,7 @@ Carousel.propTypes = {
   frameOverflow: PropTypes.string,
   framePadding: PropTypes.string,
   heightMode: PropTypes.oneOf(['first', 'current', 'max']),
+  keyboardControls: PropTypes.bool,
   transitionMode: PropTypes.oneOf(['scroll', 'fade']),
   initialSlideHeight: PropTypes.number,
   initialSlideWidth: PropTypes.number,
@@ -991,6 +994,7 @@ Carousel.defaultProps = {
   framePadding: '0px',
   frameOverflow: 'hidden',
   heightMode: 'max',
+  keyboardControls: true,
   transitionMode: 'scroll',
   onResize() {},
   slideIndex: 0,
