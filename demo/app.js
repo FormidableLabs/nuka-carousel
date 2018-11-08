@@ -85,7 +85,7 @@ class App extends React.Component {
                 })
               }
             >
-              Toggle 2 Slides Only
+              Toggle 2 Slides
             </button>
             <button
               onClick={() =>
