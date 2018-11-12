@@ -353,6 +353,7 @@ export default class Carousel extends React.Component {
 
   handleClick(event) {
     if (this.clickDisabled === true) {
+      // Allow event propagation when CMD, Ctrl, Alt of Shift are being pressed
       if (event.metaKey || event.shiftKey || event.altKey || event.ctrlKey) {
         return;
       }
