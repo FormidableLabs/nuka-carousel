@@ -434,6 +434,9 @@ const Carousel = createReactClass({
 
   handleClick(e) {
     if (this.clickSafe === true) {
+      if (event.metaKey || event.shiftKey || event.altKey || event.ctrlKey) {
+        return;
+      }
       e.preventDefault();
       e.stopPropagation();
 
