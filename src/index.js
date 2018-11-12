@@ -353,6 +353,9 @@ export default class Carousel extends React.Component {
 
   handleClick(event) {
     if (this.clickDisabled === true) {
+      if (event.metaKey || event.shiftKey || event.altKey || event.ctrlKey) {
+        return;
+      }
       event.preventDefault();
       event.stopPropagation();
 
@@ -733,9 +736,9 @@ export default class Carousel extends React.Component {
     if (typeof props.slideWidth !== 'number') {
       slideWidth = parseInt(props.slideWidth);
     } else if (props.vertical) {
-      slideWidth = slideHeight / slidesToShow * props.slideWidth;
+      slideWidth = (slideHeight / slidesToShow) * props.slideWidth;
     } else {
-      slideWidth = frame.offsetWidth / slidesToShow * props.slideWidth;
+      slideWidth = (frame.offsetWidth / slidesToShow) * props.slideWidth;
     }
 
     if (!props.vertical) {
