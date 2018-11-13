@@ -474,6 +474,44 @@ describe('<Carousel />', () => {
       expect(beforeSlideSpy).toBeCalledWith(0, 1);
       expect(afterSlideSpy).toBeCalledWith(1);
     });
+
+    describe('disableKeyboardControls', () => {
+      it('should move to next slide when pressing right arrow key', () => {
+        const map = {};
+        document.addEventListener = jest.fn((event, cb) => {
+          map[event] = cb;
+        });
+
+        const wrapper = mount(
+          <Carousel>
+            <p>Slide1</p>
+            <p>Slide2</p>
+            <p>Slide3</p>
+          </Carousel>
+        );
+        expect(wrapper).toHaveState({ currentSlide: 0 });
+        map.keydown({ keyCode: 39 });
+        expect(wrapper).toHaveState({ currentSlide: 1 });
+      });
+
+      it('should not move to next slide when pressing right arrow key', () => {
+        const map = {};
+        document.addEventListener = jest.fn((event, cb) => {
+          map[event] = cb;
+        });
+
+        const wrapper = mount(
+          <Carousel disableKeyboardControls>
+            <p>Slide1</p>
+            <p>Slide2</p>
+            <p>Slide3</p>
+          </Carousel>
+        );
+        expect(wrapper).toHaveState({ currentSlide: 0 });
+        map.keydown({ keyCode: 39 });
+        expect(wrapper).toHaveState({ currentSlide: 0 });
+      });
+    });
   });
 
   describe('transitionModes', () => {
@@ -532,42 +570,6 @@ describe('<Carousel />', () => {
         );
 
         expect(defaultWrapper).toHaveState({ cellAlign: 'left' });
-      });
-
-      it('should move to next slide when pressing right arrow key', () => {
-        const map = {};
-        document.addEventListener = jest.fn((event, cb) => {
-          map[event] = cb;
-        });
-
-        const wrapper = mount(
-          <Carousel>
-            <p>Slide1</p>
-            <p>Slide2</p>
-            <p>Slide3</p>
-          </Carousel>
-        );
-        expect(wrapper).toHaveState({ currentSlide: 0 });
-        map.keydown({ keyCode: 39 });
-        expect(wrapper).toHaveState({ currentSlide: 1 });
-      });
-
-      it('should not move to next slide when pressing right arrow key', () => {
-        const map = {};
-        document.addEventListener = jest.fn((event, cb) => {
-          map[event] = cb;
-        });
-
-        const wrapper = mount(
-          <Carousel keyboardControls={false}>
-            <p>Slide1</p>
-            <p>Slide2</p>
-            <p>Slide3</p>
-          </Carousel>
-        );
-        expect(wrapper).toHaveState({ currentSlide: 0 });
-        map.keydown({ keyCode: 39 });
-        expect(wrapper).toHaveState({ currentSlide: 0 });
       });
     });
 
@@ -636,42 +638,6 @@ describe('<Carousel />', () => {
         );
 
         expect(defaultWrapper).toHaveState({ cellAlign: 'left' });
-      });
-
-      it('should move to next slide when pressing right arrow key', () => {
-        const map = {};
-        document.addEventListener = jest.fn((event, cb) => {
-          map[event] = cb;
-        });
-
-        const wrapper = mount(
-          <Carousel>
-            <p>Slide1</p>
-            <p>Slide2</p>
-            <p>Slide3</p>
-          </Carousel>
-        );
-        expect(wrapper).toHaveState({ currentSlide: 0 });
-        map.keydown({ keyCode: 39 });
-        expect(wrapper).toHaveState({ currentSlide: 1 });
-      });
-
-      it('should not move to next slide when pressing right arrow key', () => {
-        const map = {};
-        document.addEventListener = jest.fn((event, cb) => {
-          map[event] = cb;
-        });
-
-        const wrapper = mount(
-          <Carousel keyboardControls={false}>
-            <p>Slide1</p>
-            <p>Slide2</p>
-            <p>Slide3</p>
-          </Carousel>
-        );
-        expect(wrapper).toHaveState({ currentSlide: 0 });
-        map.keydown({ keyCode: 39 });
-        expect(wrapper).toHaveState({ currentSlide: 0 });
       });
     });
   });

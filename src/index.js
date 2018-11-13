@@ -414,7 +414,7 @@ export default class Carousel extends React.Component {
   }
   // eslint-disable-next-line complexity
   handleKeyPress(e) {
-    if (this.props.keyboardControls) {
+    if (!this.props.disableKeyboardControls) {
       switch (e.keyCode) {
         case 39:
         case 68:
@@ -950,7 +950,7 @@ Carousel.propTypes = {
   frameOverflow: PropTypes.string,
   framePadding: PropTypes.string,
   heightMode: PropTypes.oneOf(['first', 'current', 'max']),
-  keyboardControls: PropTypes.bool,
+  disableKeyboardControls: PropTypes.bool,
   transitionMode: PropTypes.oneOf(['scroll', 'fade']),
   initialSlideHeight: PropTypes.number,
   initialSlideWidth: PropTypes.number,
@@ -994,7 +994,7 @@ Carousel.defaultProps = {
   framePadding: '0px',
   frameOverflow: 'hidden',
   heightMode: 'max',
-  keyboardControls: true,
+  disableKeyboardControls: false,
   transitionMode: 'scroll',
   onResize() {},
   slideIndex: 0,
