@@ -6,7 +6,6 @@
   "module": "es/index.js",
   "jsnext:main": "es/index.js",
   "dependencies": {
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "d3-ease": "^1.0.3",
     "exenv": "^1.2.0",
     "prop-types": "^15.6.0",
@@ -15,6 +14,7 @@
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.42",
     "@babel/core": "^7.0.0-beta.42",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@babel/plugin-transform-object-assign": "^7.0.0-beta.42",
     "@babel/polyfill": "^7.0.0-beta.42",
     "@babel/preset-env": "^7.0.0-beta.42",
