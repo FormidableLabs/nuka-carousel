@@ -48,7 +48,7 @@ yarn start
 
 You can access the application on your localhost at the following url: <a href="http://localhost:8080/demo" target="_blank">Local Demo</a>
 
-Or on CodeSandeBox at the following url: <a href="https://codesandbox.io/s/mjxwl64p2y" target="_blank">CodeSandBox Demo</a>
+Or on CodeSandeBox at the following url: <a href="https://codesandbox.io/s/04wxloyyp" target="_blank">CodeSandBox Demo</a>
 
 ### Controls
 
