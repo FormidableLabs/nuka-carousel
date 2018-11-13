@@ -77,12 +77,15 @@ class App extends React.Component {
           <div>
             <button
               onClick={() =>
-                this.setState({
-                  length: 2
+                this.setState(prevState => {
+                  const length = prevState.length === 6 ? 2 : 6;
+                  return {
+                    length
+                  };
                 })
               }
             >
-              2 Slides Only
+              Toggle Show 2 Slides Only
             </button>
             <button
               onClick={() =>
