@@ -690,7 +690,7 @@ export default class Carousel extends React.Component {
       addEvent(window, 'resize', this.onResize);
       addEvent(document, 'readystatechange', this.onReadyStateChange);
       addEvent(document, 'visibilitychange', this.onVisibilityChange);
-      addEvent(document, 'keydown', this.handleKeyPress);
+      !this.props.disableKeyEvents && addEvent(document, 'keydown', this.handleKeyPress);
     }
   }
 
@@ -715,7 +715,7 @@ export default class Carousel extends React.Component {
       removeEvent(window, 'resize', this.onResize);
       removeEvent(document, 'readystatechange', this.onReadyStateChange);
       removeEvent(document, 'visibilitychange', this.onVisibilityChange);
-      removeEvent(document, 'keydown', this.handleKeyPress);
+      !this.props.disableKeyEvents && removeEvent(document, 'keydown', this.handleKeyPress);
     }
   }
 
