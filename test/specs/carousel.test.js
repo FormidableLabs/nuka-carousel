@@ -1,4 +1,4 @@
-/*eslint max-nested-callbacks: ["error", 4]*/
+/*eslint max-nested-callbacks: ["error", 5]*/
 import Carousel from '../../src';
 
 describe('<Carousel />', () => {
@@ -494,22 +494,24 @@ describe('<Carousel />', () => {
         expect(wrapper).toHaveState({ currentSlide: 1 });
       });
 
-      it('should not move to next slide when pressing right arrow key', () => {
-        const map = {};
-        document.addEventListener = jest.fn((event, cb) => {
-          map[event] = cb;
-        });
+      describe('when disableKeyboardControls is set to true', () => {
+        it('should not move to next slide when pressing right arrow key', () => {
+          const map = {};
+          document.addEventListener = jest.fn((event, cb) => {
+            map[event] = cb;
+          });
 
-        const wrapper = mount(
-          <Carousel disableKeyboardControls>
-            <p>Slide1</p>
-            <p>Slide2</p>
-            <p>Slide3</p>
-          </Carousel>
-        );
-        expect(wrapper).toHaveState({ currentSlide: 0 });
-        map.keydown({ keyCode: 39 });
-        expect(wrapper).toHaveState({ currentSlide: 0 });
+          const wrapper = mount(
+            <Carousel disableKeyboardControls>
+              <p>Slide1</p>
+              <p>Slide2</p>
+              <p>Slide3</p>
+            </Carousel>
+          );
+          expect(wrapper).toHaveState({ currentSlide: 0 });
+          map.keydown({ keyCode: 39 });
+          expect(wrapper).toHaveState({ currentSlide: 0 });
+        });
       });
     });
   });
