@@ -364,6 +364,9 @@ export default class Carousel extends React.Component {
 
   handleClick(event) {
     if (this.clickDisabled === true) {
+      if (event.metaKey || event.shiftKey || event.altKey || event.ctrlKey) {
+        return;
+      }
       event.preventDefault();
       event.stopPropagation();
 
