@@ -1,5 +1,14 @@
 # Nuka Changelog
 
+## 4.4.3 (2018-11-16)
+
+- [#451](https://github.com/FormidableLabs/nuka-carousel/pull/451) Allow clicks with modifier present 
+- [#446](https://github.com/FormidableLabs/nuka-carousel/pull/446) Fix for demo (toggle between 2 and 6 slides showing) 
+- [#445](https://github.com/FormidableLabs/nuka-carousel/pull/445) Add `disableKeyboardControls` prop to allow users to disable keyboard controls 
+- [#441](https://github.com/FormidableLabs/nuka-carousel/pull/441) Start work on removing deprecated lifecycle methods 
+- [#439](https://github.com/FormidableLabs/nuka-carousel/pull/439) Allow `pauseOnHover` to work when swiping/dragging is disabled 
+- [#436](https://github.com/FormidableLabs/nuka-carousel/pull/436) Refactoring 
+
 ## 4.4.2 (2018-10-29)
 
 - [#425](https://github.com/FormidableLabs/nuka-carousel/pull/425) Accessibility features added 
