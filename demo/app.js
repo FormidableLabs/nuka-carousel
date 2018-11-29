@@ -50,6 +50,9 @@ class App extends React.Component {
               Nuka Carousel: Slide {currentSlide + 1}
             </div>
           )}
+          renderAnnounceSlideMessage={({ currentSlide, slideCount }) => {
+            return `Showing slide ${currentSlide + 1} of ${slideCount}`;
+          }}
         >
           {colors.slice(0, this.state.length).map((color, index) => (
             <img

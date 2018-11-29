@@ -16,4 +16,9 @@ const AnnounceSlide = ({ message }) => {
   );
 };
 
+export const defaultRenderAnnounceSlideMessage = ({
+  currentSlide,
+  slideCount
+}) => `Slide ${currentSlide + 1} of ${slideCount}`;
+
 export default AnnounceSlide;
