@@ -5,7 +5,9 @@ import Animate from 'react-move/Animate';
 import * as easing from 'd3-ease';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import Transitions from './all-transitions';
-import AnnounceSlide from './announce-slide';
+import AnnounceSlide, {
+  defaultRenderAnnounceSlideMessage
+} from './announce-slide';
 import {
   addEvent,
   removeEvent,
@@ -858,7 +860,13 @@ export default class Carousel extends React.Component {
   }
   render() {
     const { currentSlide, slideCount, frameWidth } = this.state;
-    const { frameOverflow, vertical, framePadding, slidesToShow } = this.props;
+    const {
+      frameOverflow,
+      vertical,
+      framePadding,
+      slidesToShow,
+      renderAnnounceSlideMessage
+    } = this.props;
     const duration =
       this.state.dragging || this.state.resetWrapAroundPosition
         ? 0
@@ -886,7 +894,7 @@ export default class Carousel extends React.Component {
       >
         {!this.props.autoplay && (
           <AnnounceSlide
-            message={`Slide ${currentSlide + 1} of ${slideCount}`}
+            message={renderAnnounceSlideMessage({ currentSlide, slideCount })}
           />
         )}
         <Animate
@@ -965,6 +973,7 @@ Carousel.propTypes = {
   renderBottomLeftControls: PropTypes.func,
   renderBottomCenterControls: PropTypes.func,
   renderBottomRightControls: PropTypes.func,
+  renderAnnounceSlideMessage: PropTypes.func,
   slideIndex: PropTypes.number,
   slidesToScroll: PropTypes.oneOfType([
     PropTypes.number,
@@ -1005,6 +1014,7 @@ Carousel.defaultProps = {
   renderCenterLeftControls: props => <PreviousButton {...props} />,
   renderCenterRightControls: props => <NextButton {...props} />,
   renderBottomCenterControls: props => <PagingDots {...props} />,
+  renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
   slideWidth: 1,
   speed: 500,
   swiping: true,
