@@ -569,70 +569,32 @@ export default class Carousel extends React.Component {
       }
       if (index >= this.state.slideCount) {
         props.beforeSlide(this.state.currentSlide, 0);
-        this.setState(
-          prevState => ({
-            left: props.vertical
-              ? 0
-              : this.getTargetLeft(
-                  this.state.slideWidth,
-                  prevState.currentSlide
-                ),
-            top: props.vertical
-              ? this.getTargetLeft(
-                  this.state.slideWidth,
-                  prevState.currentSlide
-                )
-              : 0,
-            currentSlide: 0,
-            isWrappingAround: true,
-            wrapToIndex: index
-          }),
-          () =>
-            setTimeout(() => {
-              this.setState(
-                { isWrappingAround: false, resetWrapAroundPosition: true },
-                () => {
-                  this.setState({
-                    resetWrapAroundPosition: false
-                  });
-                  this.isTransitioning = false;
-                  props.afterSlide(0);
-                  this.resetAutoplay();
-                }
-              );
-            }, props.speed)
-        );
+        this.setState(prevState => ({
+          left: props.vertical
+            ? 0
+            : this.getTargetLeft(this.state.slideWidth, prevState.currentSlide),
+          top: props.vertical
+            ? this.getTargetLeft(this.state.slideWidth, prevState.currentSlide)
+            : 0,
+          currentSlide: 0,
+          isWrappingAround: true,
+          wrapToIndex: index
+        }));
         return;
       } else {
         const endSlide = this.state.slideCount - this.state.slidesToScroll;
         props.beforeSlide(this.state.currentSlide, endSlide);
-        this.setState(
-          prevState => ({
-            left: props.vertical
-              ? 0
-              : this.getTargetLeft(0, prevState.currentSlide),
-            top: props.vertical
-              ? this.getTargetLeft(0, prevState.currentSlide)
-              : 0,
-            currentSlide: endSlide,
-            isWrappingAround: true,
-            wrapToIndex: index
-          }),
-          () =>
-            setTimeout(() => {
-              this.setState(
-                { isWrappingAround: false, resetWrapAroundPosition: true },
-                () => {
-                  this.setState({
-                    resetWrapAroundPosition: false
-                  });
-                  this.isTransitioning = false;
-                  props.afterSlide(endSlide);
-                  this.resetAutoplay();
-                }
-              );
-            }, props.speed)
-        );
+        this.setState(prevState => ({
+          left: props.vertical
+            ? 0
+            : this.getTargetLeft(0, prevState.currentSlide),
+          top: props.vertical
+            ? this.getTargetLeft(0, prevState.currentSlide)
+            : 0,
+          currentSlide: endSlide,
+          isWrappingAround: true,
+          wrapToIndex: index
+        }));
         return;
       }
     }
@@ -908,7 +870,40 @@ export default class Carousel extends React.Component {
                 duration,
                 ease: this.state.easing
               },
-              events: { end: this.setLeft }
+              events: {
+                end: () => {
+                  const newLeft = this.props.vertical
+                    ? 0
+                    : this.getTargetLeft();
+                  const newTop = this.props.vertical ? this.getTargetLeft() : 0;
+
+                  if (
+                    newLeft !== this.state.left ||
+                    newTop !== this.state.top
+                  ) {
+                    this.setState(
+                      {
+                        left: newLeft,
+                        top: newTop,
+                        isWrappingAround: false,
+                        resetWrapAroundPosition: true
+                      },
+                      () => {
+                        this.setState({
+                          resetWrapAroundPosition: false
+                        });
+                        this.isTransitioning = false;
+                        if (this.props.currentSlide > this.props.slideCount) {
+                          this.props.afterSlide(0);
+                        } else {
+                          this.props.afterSlide(this.props.slideCount - 1);
+                        }
+                        this.resetAutoplay();
+                      }
+                    );
+                  }
+                }
+              }
             }
           )}
           children={({ tx, ty }) => (
