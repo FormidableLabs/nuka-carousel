@@ -105,12 +105,12 @@ export default class Carousel extends React.Component {
   componentWillReceiveProps(nextProps) {
     const slideCount = getValidChildren(nextProps.children).length;
     const slideCountChanged = slideCount !== this.state.slideCount;
-    this.setState({
+    this.setState(prevState => ({
       slideCount,
       currentSlide: slideCountChanged
         ? nextProps.slideIndex
-        : this.state.currentSlide
-    });
+        : prevState.currentSlide
+    }));
 
     if (slideCount <= this.state.currentSlide) {
       this.goToSlide(Math.max(slideCount - 1, 0), nextProps);
