@@ -1,5 +1,11 @@
 # Nuka Changelog
 
+## 4.4.4 (2018-12-07)
+
+- [#460](https://github.com/FormidableLabs/nuka-carousel/pull/460) Ability to configure aria-live message with prop
+- [#458](https://github.com/FormidableLabs/nuka-carousel/pull/458) Fix flicker in wrap-around 
+- [#453](https://github.com/FormidableLabs/nuka-carousel/pull/453) Fix issue involving updating props on beforeSlide
+
 ## 4.4.3 (2018-11-16)
 
 - [#451](https://github.com/FormidableLabs/nuka-carousel/pull/451) Allow clicks with modifier present 
