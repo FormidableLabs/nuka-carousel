@@ -934,7 +934,8 @@ export default class Carousel extends React.Component {
       framePadding,
       slidesToShow,
       renderAnnounceSlideMessage,
-      disableAnimation
+      disableAnimation,
+      swiping
     } = this.props;
     const duration =
       this.state.dragging ||
@@ -950,6 +951,7 @@ export default class Carousel extends React.Component {
       frameOverflow,
       vertical,
       framePadding,
+      swiping,
       frameWidth
     );
     const touchEvents = this.getTouchEvents();

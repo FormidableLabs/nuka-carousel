@@ -108,6 +108,7 @@ export const getFrameStyles = (
   propFrameOverFlow,
   propVertical,
   propFramePadding,
+  propSwiping,
   stateFrameWidth
 ) => {
   return {
@@ -120,7 +121,9 @@ export const getFrameStyles = (
     overflow: propFrameOverFlow,
     padding: 0,
     position: 'relative',
-    touchAction: `pinch-zoom ${propVertical ? 'pan-x' : 'pan-y'}`,
+    touchAction: propSwiping
+      ? `pinch-zoom ${propVertical ? 'pan-x' : 'pan-y'}`
+      : 'auto',
     transform: 'translate3d(0, 0, 0)',
     WebkitTransform: 'translate3d(0, 0, 0)'
   };
