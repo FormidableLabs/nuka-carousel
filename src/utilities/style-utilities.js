@@ -1,6 +1,6 @@
 export const getImgTagStyles = () => {
-  return `.slider-slide > img { width: 100%; display: block;}
-          .slider-slide > img:focus {margin: auto; width: 99.5%; outline-width: 11px}`;
+  return `.slider-slide > img { width: 100%; display: block; }
+          .slider-slide > img:focus { margin: auto; }`;
 };
 
 export const getDecoratorStyles = position => {
