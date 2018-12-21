@@ -1,6 +1,6 @@
 export const getImgTagStyles = () => {
-  return `.slider-slide > img { width: 100%; display: block;}
-          .slider-slide > img:focus {margin: auto; width: 99.5%; outline-width: 11px}`;
+  return `.slider-slide > img { width: 100%; display: block; }
+          .slider-slide > img:focus { margin: auto; }`;
 };
 
 export const getDecoratorStyles = position => {
@@ -98,7 +98,7 @@ export const getSliderStyles = (propWidth, stateSlideWidth) => {
     position: 'relative',
     display: 'block',
     width: propWidth,
-    height: 'auto',
+    height: '100%',
     boxSizing: 'border-box',
     MozBoxSizing: 'border-box',
     visibility: stateSlideWidth ? 'inherit' : 'hidden'
@@ -115,7 +115,7 @@ export const getFrameStyles = (
     position: 'relative',
     display: 'block',
     overflow: propFrameOverFlow,
-    height: propVertical ? stateFrameWidth || 'initial' : 'auto',
+    height: propVertical ? stateFrameWidth || 'initial' : '100%',
     margin: propFramePadding,
     padding: 0,
     transform: 'translate3d(0, 0, 0)',
