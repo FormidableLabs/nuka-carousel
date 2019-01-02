@@ -1,5 +1,9 @@
 # Nuka Changelog
 
+## 4.4.5 (2018-12-31)
+
+- [#469](https://github.com/FormidableLabs/nuka-carousel/pull/469) Fix initial height issue
+
 ## 4.4.4 (2018-12-07)
 
 - [#460](https://github.com/FormidableLabs/nuka-carousel/pull/460) Ability to configure aria-live message with prop
