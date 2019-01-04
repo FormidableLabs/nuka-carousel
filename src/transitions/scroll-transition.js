@@ -117,7 +117,7 @@ export default class ScrollTransition extends React.Component {
       top: this.props.vertical ? targetPosition : 0,
       transform:
         this.props.animation === 'zoom' && this.props.currentSlide !== index
-          ? 'scale(0.85)'
+          ? 'scale(0.85)' //TODO make this configurable via prop
           : 'scale(1.0)',
       transition: 'transform .4s linear',
       verticalAlign: 'top',
