@@ -52,41 +52,41 @@ export default class Carousel extends React.Component {
     this.state = {
       currentSlide: this.props.slideIndex,
       dragging: false,
-      left: 0,
-      slideCount: getValidChildren(this.props.children).length,
-      top: 0,
       easing: easing.easeCircleOut,
       isWrappingAround: false,
-      wrapToIndex: null,
+      left: 0,
       resetWrapAroundPosition: false,
+      slideCount: getValidChildren(this.props.children).length,
+      top: 0,
+      wrapToIndex: null,
       ...calcSomeInitialState(this.props)
     };
 
-    this.getTouchEvents = this.getTouchEvents.bind(this);
-    this.getMouseEvents = this.getMouseEvents.bind(this);
-    this.handleMouseOver = this.handleMouseOver.bind(this);
-    this.handleMouseOut = this.handleMouseOut.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleSwipe = this.handleSwipe.bind(this);
     this.autoplayIterator = this.autoplayIterator.bind(this);
-    this.startAutoplay = this.startAutoplay.bind(this);
-    this.stopAutoplay = this.stopAutoplay.bind(this);
-    this.resetAutoplay = this.resetAutoplay.bind(this);
-    this.goToSlide = this.goToSlide.bind(this);
-    this.nextSlide = this.nextSlide.bind(this);
-    this.previousSlide = this.previousSlide.bind(this);
+    this.calcSlideHeightAndWidth = this.calcSlideHeightAndWidth.bind(this);
+    this.getChildNodes = this.getChildNodes.bind(this);
+    this.getMouseEvents = this.getMouseEvents.bind(this);
+    this.getOffsetDeltas = this.getOffsetDeltas.bind(this);
     this.getTargetLeft = this.getTargetLeft.bind(this);
-    this.onResize = this.onResize.bind(this);
+    this.getTouchEvents = this.getTouchEvents.bind(this);
+    this.goToSlide = this.goToSlide.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleMouseOut = this.handleMouseOut.bind(this);
+    this.handleMouseOver = this.handleMouseOver.bind(this);
+    this.handleSwipe = this.handleSwipe.bind(this);
+    this.nextSlide = this.nextSlide.bind(this);
     this.onReadyStateChange = this.onReadyStateChange.bind(this);
+    this.onResize = this.onResize.bind(this);
     this.onVisibilityChange = this.onVisibilityChange.bind(this);
+    this.previousSlide = this.previousSlide.bind(this);
+    this.renderControls = this.renderControls.bind(this);
+    this.resetAutoplay = this.resetAutoplay.bind(this);
     this.setDimensions = this.setDimensions.bind(this);
     this.setLeft = this.setLeft.bind(this);
-    this.getOffsetDeltas = this.getOffsetDeltas.bind(this);
-    this.getChildNodes = this.getChildNodes.bind(this);
-    this.renderControls = this.renderControls.bind(this);
     this.setSlideHeightAndWidth = this.setSlideHeightAndWidth.bind(this);
-    this.calcSlideHeightAndWidth = this.calcSlideHeightAndWidth.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.startAutoplay = this.startAutoplay.bind(this);
+    this.stopAutoplay = this.stopAutoplay.bind(this);
   }
 
   componentDidMount() {
@@ -836,17 +836,17 @@ export default class Carousel extends React.Component {
               key={key}
             >
               {func({
-                currentSlide: this.state.currentSlide,
-                slideCount: this.state.slideCount,
-                frameWidth: this.state.frameWidth,
-                slideWidth: this.state.slideWidth,
-                slidesToScroll: this.state.slidesToScroll,
                 cellSpacing: this.props.cellSpacing,
-                slidesToShow: this.state.slidesToShow,
-                wrapAround: this.props.wrapAround,
+                currentSlide: this.state.currentSlide,
+                frameWidth: this.state.frameWidth,
+                goToSlide: index => this.goToSlide(index),
                 nextSlide: () => this.nextSlide(),
                 previousSlide: () => this.previousSlide(),
-                goToSlide: index => this.goToSlide(index)
+                slideCount: this.state.slideCount,
+                slidesToScroll: this.state.slidesToScroll,
+                slidesToShow: this.state.slidesToShow,
+                slideWidth: this.state.slideWidth,
+                wrapAround: this.props.wrapAround
               })}
             </div>
           )
@@ -998,7 +998,6 @@ Carousel.propTypes = {
   renderTopRightControls: PropTypes.func,
   slideIndex: PropTypes.number,
   slideOffset: PropTypes.number,
-  transitionMode: PropTypes.oneOf(['scroll', 'fade']),
   slidesToScroll: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.oneOf(['auto'])
@@ -1007,6 +1006,7 @@ Carousel.propTypes = {
   slideWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   speed: PropTypes.number,
   swiping: PropTypes.bool,
+  transitionMode: PropTypes.oneOf(['scroll', 'fade']),
   vertical: PropTypes.bool,
   width: PropTypes.string,
   withoutControls: PropTypes.bool,
