@@ -137,7 +137,7 @@ export const getTransitionProps = (props, state) => {
     left: state.left,
     slideCount: state.slideCount,
     slideHeight: state.slideHeight,
-    slideLeftOffset: props.slideLeftOffset,
+    slideOffset: props.slideOffset,
     slidesToShow: state.slidesToShow,
     slideWidth: state.slideWidth,
     top: state.top,

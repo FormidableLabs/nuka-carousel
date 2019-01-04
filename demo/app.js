@@ -11,6 +11,7 @@ class App extends React.Component {
       slideIndex: 0,
       length: 6,
       wrapAround: false,
+      animation: undefined,
       underlineHeader: false,
       slidesToShow: 1,
       cellAlign: 'left',
@@ -33,9 +34,7 @@ class App extends React.Component {
           withoutControls={this.state.withoutControls}
           transitionMode={this.state.transitionMode}
           cellAlign={this.state.cellAlign}
-          slidesToShow={3}
-          slideLeftOffset={50}
-          animation={'zoom'}
+          animation={this.state.animation}
           wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
           heightMode={this.state.heightMode}
@@ -83,20 +82,21 @@ class App extends React.Component {
             <button
               onClick={() =>
                 this.setState(prevState => {
-                  const length = prevState.length === 6 ? 2 : 6;
+                  const length = prevState.length === 6 ? 3 : 6;
                   return {
                     length
                   };
                 })
               }
             >
-              Toggle Show 2 Slides Only
+              Toggle Show 3 Slides Only
             </button>
             <button
               onClick={() =>
                 this.setState({
                   transitionMode:
-                    this.state.transitionMode === 'fade' ? 'scroll' : 'fade'
+                    this.state.transitionMode === 'fade' ? 'scroll' : 'fade',
+                  animation: undefined
                 })
               }
             >
@@ -110,6 +110,18 @@ class App extends React.Component {
               }
             >
               Toggle Wrap Around
+            </button>
+            <button
+              onClick={() =>
+                this.setState({
+                  animation:
+                    this.state.animation === 'zoom' ? undefined : 'zoom',
+                  cellAlign: 'center'
+                })
+              }
+            >
+              Toggle Zoom Animation{' '}
+              {this.state.animation === 'zoom' ? 'Off' : 'On'}
             </button>
           </div>
         </div>

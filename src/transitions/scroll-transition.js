@@ -38,14 +38,14 @@ export default class ScrollTransition extends React.Component {
         (this.props.currentSlide === 0 &&
           index === this.props.children.length - 1))
     ) {
-      offset = this.props.slideLeftOffset;
+      offset = this.props.slideOffset;
     } else if (
       this.props.animation === 'zoom' &&
       (this.props.currentSlide === index - 1 ||
         (this.props.currentSlide === this.props.children.length - 1 &&
           index === 0))
     ) {
-      offset = -this.props.slideLeftOffset;
+      offset = -this.props.slideOffset;
     }
 
     if (this.props.wrapAround && index !== startSlide) {
@@ -68,19 +68,17 @@ export default class ScrollTransition extends React.Component {
         if (distanceFromStart > slidesBefore) {
           targetPosition =
             (this.props.slideWidth + this.props.cellSpacing) *
-              (this.props.slideCount + index) +
-            offset;
+            (this.props.slideCount + index);
         }
       } else if (distanceFromStart > slidesAfter) {
         targetPosition =
           (this.props.slideWidth + this.props.cellSpacing) *
-            (this.props.slideCount - index) *
-            -1 +
-          offset;
+          (this.props.slideCount - index) *
+          -1;
       }
     }
 
-    return targetPosition;
+    return targetPosition + offset;
   }
   /* eslint-enable complexity */
 
@@ -182,7 +180,7 @@ ScrollTransition.propTypes = {
   left: PropTypes.number,
   slideCount: PropTypes.number,
   slideHeight: PropTypes.number,
-  slideLeftOffset: PropTypes.number,
+  slideOffset: PropTypes.number,
   slideWidth: PropTypes.number,
   top: PropTypes.number,
   vertical: PropTypes.bool,
