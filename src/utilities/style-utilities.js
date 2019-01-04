@@ -95,13 +95,13 @@ export const getDecoratorStyles = position => {
 
 export const getSliderStyles = (propWidth, stateSlideWidth) => {
   return {
-    position: 'relative',
-    display: 'block',
-    width: propWidth,
-    height: '100%',
     boxSizing: 'border-box',
+    display: 'block',
+    height: '100%',
     MozBoxSizing: 'border-box',
-    visibility: stateSlideWidth ? 'inherit' : 'hidden'
+    position: 'relative',
+    visibility: stateSlideWidth ? 'inherit' : 'hidden',
+    width: propWidth
   };
 };
 
@@ -112,34 +112,36 @@ export const getFrameStyles = (
   stateFrameWidth
 ) => {
   return {
-    position: 'relative',
+    boxSizing: 'border-box',
     display: 'block',
-    overflow: propFrameOverFlow,
     height: propVertical ? stateFrameWidth || 'initial' : '100%',
     margin: propFramePadding,
-    padding: 0,
-    transform: 'translate3d(0, 0, 0)',
-    WebkitTransform: 'translate3d(0, 0, 0)',
-    msTransform: 'translate(0, 0)',
-    boxSizing: 'border-box',
     MozBoxSizing: 'border-box',
-    touchAction: `pinch-zoom ${propVertical ? 'pan-x' : 'pan-y'}`
+    msTransform: 'translate(0, 0)',
+    overflow: propFrameOverFlow,
+    padding: 0,
+    position: 'relative',
+    touchAction: `pinch-zoom ${propVertical ? 'pan-x' : 'pan-y'}`,
+    transform: 'translate3d(0, 0, 0)',
+    WebkitTransform: 'translate3d(0, 0, 0)'
   };
 };
 
 export const getTransitionProps = (props, state) => {
   return {
-    slideWidth: state.slideWidth,
-    slideHeight: state.slideHeight,
-    slideCount: state.slideCount,
-    currentSlide: state.currentSlide,
-    isWrappingAround: state.isWrappingAround,
-    top: state.top,
-    left: state.left,
+    animation: props.animation,
     cellSpacing: props.cellSpacing,
-    vertical: props.vertical,
+    currentSlide: state.currentSlide,
     dragging: props.dragging,
-    wrapAround: props.wrapAround,
-    slidesToShow: state.slidesToShow
+    isWrappingAround: state.isWrappingAround,
+    left: state.left,
+    slideCount: state.slideCount,
+    slideHeight: state.slideHeight,
+    slideOffset: props.slideOffset,
+    slidesToShow: state.slidesToShow,
+    slideWidth: state.slideWidth,
+    top: state.top,
+    vertical: props.vertical,
+    wrapAround: props.wrapAround
   };
 };

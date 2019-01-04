@@ -52,41 +52,41 @@ export default class Carousel extends React.Component {
     this.state = {
       currentSlide: this.props.slideIndex,
       dragging: false,
-      left: 0,
-      slideCount: getValidChildren(this.props.children).length,
-      top: 0,
       easing: easing.easeCircleOut,
       isWrappingAround: false,
-      wrapToIndex: null,
+      left: 0,
       resetWrapAroundPosition: false,
+      slideCount: getValidChildren(this.props.children).length,
+      top: 0,
+      wrapToIndex: null,
       ...calcSomeInitialState(this.props)
     };
 
-    this.getTouchEvents = this.getTouchEvents.bind(this);
-    this.getMouseEvents = this.getMouseEvents.bind(this);
-    this.handleMouseOver = this.handleMouseOver.bind(this);
-    this.handleMouseOut = this.handleMouseOut.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleSwipe = this.handleSwipe.bind(this);
     this.autoplayIterator = this.autoplayIterator.bind(this);
-    this.startAutoplay = this.startAutoplay.bind(this);
-    this.stopAutoplay = this.stopAutoplay.bind(this);
-    this.resetAutoplay = this.resetAutoplay.bind(this);
-    this.goToSlide = this.goToSlide.bind(this);
-    this.nextSlide = this.nextSlide.bind(this);
-    this.previousSlide = this.previousSlide.bind(this);
+    this.calcSlideHeightAndWidth = this.calcSlideHeightAndWidth.bind(this);
+    this.getChildNodes = this.getChildNodes.bind(this);
+    this.getMouseEvents = this.getMouseEvents.bind(this);
+    this.getOffsetDeltas = this.getOffsetDeltas.bind(this);
     this.getTargetLeft = this.getTargetLeft.bind(this);
-    this.onResize = this.onResize.bind(this);
+    this.getTouchEvents = this.getTouchEvents.bind(this);
+    this.goToSlide = this.goToSlide.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleMouseOut = this.handleMouseOut.bind(this);
+    this.handleMouseOver = this.handleMouseOver.bind(this);
+    this.handleSwipe = this.handleSwipe.bind(this);
+    this.nextSlide = this.nextSlide.bind(this);
     this.onReadyStateChange = this.onReadyStateChange.bind(this);
+    this.onResize = this.onResize.bind(this);
     this.onVisibilityChange = this.onVisibilityChange.bind(this);
+    this.previousSlide = this.previousSlide.bind(this);
+    this.renderControls = this.renderControls.bind(this);
+    this.resetAutoplay = this.resetAutoplay.bind(this);
     this.setDimensions = this.setDimensions.bind(this);
     this.setLeft = this.setLeft.bind(this);
-    this.getOffsetDeltas = this.getOffsetDeltas.bind(this);
-    this.getChildNodes = this.getChildNodes.bind(this);
-    this.renderControls = this.renderControls.bind(this);
     this.setSlideHeightAndWidth = this.setSlideHeightAndWidth.bind(this);
-    this.calcSlideHeightAndWidth = this.calcSlideHeightAndWidth.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.startAutoplay = this.startAutoplay.bind(this);
+    this.stopAutoplay = this.stopAutoplay.bind(this);
   }
 
   componentDidMount() {
@@ -742,7 +742,9 @@ export default class Carousel extends React.Component {
     const frame = this.frame;
     let slideWidth;
 
-    if (typeof props.slideWidth !== 'number') {
+    if (this.props.animation === 'zoom') {
+      slideWidth = frame.offsetWidth - frame.offsetWidth * 15 / 100;
+    } else if (typeof props.slideWidth !== 'number') {
       slideWidth = parseInt(props.slideWidth);
     } else if (props.vertical) {
       slideWidth = slideHeight / slidesToShow * props.slideWidth;
@@ -834,17 +836,17 @@ export default class Carousel extends React.Component {
               key={key}
             >
               {func({
-                currentSlide: this.state.currentSlide,
-                slideCount: this.state.slideCount,
-                frameWidth: this.state.frameWidth,
-                slideWidth: this.state.slideWidth,
-                slidesToScroll: this.state.slidesToScroll,
                 cellSpacing: this.props.cellSpacing,
-                slidesToShow: this.state.slidesToShow,
-                wrapAround: this.props.wrapAround,
+                currentSlide: this.state.currentSlide,
+                frameWidth: this.state.frameWidth,
+                goToSlide: index => this.goToSlide(index),
                 nextSlide: () => this.nextSlide(),
                 previousSlide: () => this.previousSlide(),
-                goToSlide: index => this.goToSlide(index)
+                slideCount: this.state.slideCount,
+                slidesToScroll: this.state.slidesToScroll,
+                slidesToShow: this.state.slidesToShow,
+                slideWidth: this.state.slideWidth,
+                wrapAround: this.props.wrapAround
               })}
             </div>
           )
@@ -966,35 +968,36 @@ export default class Carousel extends React.Component {
 
 Carousel.propTypes = {
   afterSlide: PropTypes.func,
+  animation: PropTypes.oneOf(['zoom']),
+  autoGenerateStyleTag: PropTypes.bool,
   autoplay: PropTypes.bool,
   autoplayInterval: PropTypes.number,
-  autoGenerateStyleTag: PropTypes.bool,
   beforeSlide: PropTypes.func,
   cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
   cellSpacing: PropTypes.number,
+  disableKeyboardControls: PropTypes.bool,
   dragging: PropTypes.bool,
   easing: PropTypes.string,
   edgeEasing: PropTypes.string,
   frameOverflow: PropTypes.string,
   framePadding: PropTypes.string,
   heightMode: PropTypes.oneOf(['first', 'current', 'max']),
-  disableKeyboardControls: PropTypes.bool,
-  transitionMode: PropTypes.oneOf(['scroll', 'fade']),
   initialSlideHeight: PropTypes.number,
   initialSlideWidth: PropTypes.number,
   onResize: PropTypes.func,
   pauseOnHover: PropTypes.bool,
-  renderTopLeftControls: PropTypes.func,
-  renderTopCenterControls: PropTypes.func,
-  renderTopRightControls: PropTypes.func,
-  renderCenterLeftControls: PropTypes.func,
-  renderCenterCenterControls: PropTypes.func,
-  renderCenterRightControls: PropTypes.func,
-  renderBottomLeftControls: PropTypes.func,
-  renderBottomCenterControls: PropTypes.func,
-  renderBottomRightControls: PropTypes.func,
   renderAnnounceSlideMessage: PropTypes.func,
+  renderBottomCenterControls: PropTypes.func,
+  renderBottomLeftControls: PropTypes.func,
+  renderBottomRightControls: PropTypes.func,
+  renderCenterCenterControls: PropTypes.func,
+  renderCenterLeftControls: PropTypes.func,
+  renderCenterRightControls: PropTypes.func,
+  renderTopCenterControls: PropTypes.func,
+  renderTopLeftControls: PropTypes.func,
+  renderTopRightControls: PropTypes.func,
   slideIndex: PropTypes.number,
+  slideOffset: PropTypes.number,
   slidesToScroll: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.oneOf(['auto'])
@@ -1003,6 +1006,7 @@ Carousel.propTypes = {
   slideWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   speed: PropTypes.number,
   swiping: PropTypes.bool,
+  transitionMode: PropTypes.oneOf(['scroll', 'fade']),
   vertical: PropTypes.bool,
   width: PropTypes.string,
   withoutControls: PropTypes.bool,
@@ -1011,33 +1015,34 @@ Carousel.propTypes = {
 
 Carousel.defaultProps = {
   afterSlide() {},
+  autoGenerateStyleTag: true,
   autoplay: false,
   autoplayInterval: 3000,
-  autoGenerateStyleTag: true,
   beforeSlide() {},
   cellAlign: 'left',
   cellSpacing: 0,
+  disableKeyboardControls: false,
   dragging: true,
   easing: 'easeCircleOut',
   edgeEasing: 'easeElasticOut',
-  framePadding: '0px',
   frameOverflow: 'hidden',
+  framePadding: '0px',
   heightMode: 'max',
-  disableKeyboardControls: false,
-  transitionMode: 'scroll',
   onResize() {},
-  slideIndex: 0,
-  slidesToScroll: 1,
-  slidesToShow: 1,
-  style: {},
   pauseOnHover: true,
+  renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
+  renderBottomCenterControls: props => <PagingDots {...props} />,
   renderCenterLeftControls: props => <PreviousButton {...props} />,
   renderCenterRightControls: props => <NextButton {...props} />,
-  renderBottomCenterControls: props => <PagingDots {...props} />,
-  renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
+  slideIndex: 0,
+  slideOffset: 25,
+  slidesToScroll: 1,
+  slidesToShow: 1,
   slideWidth: 1,
   speed: 500,
+  style: {},
   swiping: true,
+  transitionMode: 'scroll',
   vertical: false,
   width: '100%',
   withoutControls: false,
