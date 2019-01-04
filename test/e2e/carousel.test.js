@@ -44,15 +44,15 @@ describe('Nuka Carousel', () => {
       await expect(page).toMatch('Nuka Carousel: Slide 1');
     });
 
-    it('should navigate to the first slide from the second in wrapAround mode with only 2 slides.', async () => {
+    it('should navigate to the first slide from the second in wrapAround mode with only 3 slides.', async () => {
       await expect(page).toClick('button', { text: 'Toggle Wrap Around' });
       await page.waitFor(600); // need to let slide transition complete
       await expect(page).toClick('button', {
-        text: 'Toggle Show 2 Slides Only'
+        text: 'Toggle Show 3 Slides Only'
       });
       await page.waitFor(600); // need to let slide transition complete
-      await expect(page).toClick('button', { text: '2' });
-      await expect(page).toMatch('Nuka Carousel: Slide 2');
+      await expect(page).toClick('button', { text: '3' });
+      await expect(page).toMatch('Nuka Carousel: Slide 3');
       await page.waitFor(600); // need to let slide transition complete
       await expect(page).toClick('button', { text: 'NEXT' });
       await expect(page).toMatch('Nuka Carousel: Slide 1');
