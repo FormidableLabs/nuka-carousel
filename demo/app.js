@@ -33,7 +33,9 @@ class App extends React.Component {
           withoutControls={this.state.withoutControls}
           transitionMode={this.state.transitionMode}
           cellAlign={this.state.cellAlign}
-          slidesToShow={this.state.slidesToShow}
+          slidesToShow={3}
+          slideLeftOffset={50}
+          animation={'zoom'}
           wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
           heightMode={this.state.heightMode}

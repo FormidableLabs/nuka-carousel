@@ -21,6 +21,7 @@ export default class ScrollTransition extends React.Component {
     return direction;
   }
 
+  /* eslint-disable complexity */
   getSlideTargetPosition(index, positionValue) {
     let targetPosition =
       (this.props.slideWidth + this.props.cellSpacing) * index;
@@ -28,6 +29,24 @@ export default class ScrollTransition extends React.Component {
       Math.abs(Math.floor(positionValue / this.props.slideWidth)),
       this.props.slideCount - 1
     );
+
+    let offset = 0;
+
+    if (
+      this.props.animation === 'zoom' &&
+      (this.props.currentSlide === index + 1 ||
+        (this.props.currentSlide === 0 &&
+          index === this.props.children.length - 1))
+    ) {
+      offset = this.props.slideLeftOffset;
+    } else if (
+      this.props.animation === 'zoom' &&
+      (this.props.currentSlide === index - 1 ||
+        (this.props.currentSlide === this.props.children.length - 1 &&
+          index === 0))
+    ) {
+      offset = -this.props.slideLeftOffset;
+    }
 
     if (this.props.wrapAround && index !== startSlide) {
       const direction = this.getSlideDirection(
@@ -49,18 +68,21 @@ export default class ScrollTransition extends React.Component {
         if (distanceFromStart > slidesBefore) {
           targetPosition =
             (this.props.slideWidth + this.props.cellSpacing) *
-            (this.props.slideCount + index);
+              (this.props.slideCount + index) +
+            offset;
         }
       } else if (distanceFromStart > slidesAfter) {
         targetPosition =
           (this.props.slideWidth + this.props.cellSpacing) *
-          (this.props.slideCount - index) *
-          -1;
+            (this.props.slideCount - index) *
+            -1 +
+          offset;
       }
     }
 
     return targetPosition;
   }
+  /* eslint-enable complexity */
 
   formatChildren(children) {
     const { top, left, currentSlide, slidesToShow } = this.props;
@@ -83,20 +105,25 @@ export default class ScrollTransition extends React.Component {
   getSlideStyles(index, positionValue) {
     const targetPosition = this.getSlideTargetPosition(index, positionValue);
     return {
-      position: 'absolute',
-      left: this.props.vertical ? 0 : targetPosition,
-      top: this.props.vertical ? targetPosition : 0,
-      display: this.props.vertical ? 'block' : 'inline-block',
-      listStyleType: 'none',
-      verticalAlign: 'top',
-      width: this.props.vertical ? '100%' : this.props.slideWidth,
-      height: 'auto',
       boxSizing: 'border-box',
-      MozBoxSizing: 'border-box',
+      display: this.props.vertical ? 'block' : 'inline-block',
+      height: 'auto',
+      left: this.props.vertical ? 0 : targetPosition,
+      listStyleType: 'none',
+      marginBottom: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
       marginLeft: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
       marginRight: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
       marginTop: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
-      marginBottom: this.props.vertical ? this.props.cellSpacing / 2 : 'auto'
+      MozBoxSizing: 'border-box',
+      position: 'absolute',
+      top: this.props.vertical ? targetPosition : 0,
+      transform:
+        this.props.animation === 'zoom' && this.props.currentSlide !== index
+          ? 'scale(0.85)'
+          : 'scale(1.0)',
+      transition: 'transform .4s linear',
+      verticalAlign: 'top',
+      width: this.props.vertical ? '100%' : this.props.slideWidth
     };
   }
 
@@ -145,33 +172,35 @@ export default class ScrollTransition extends React.Component {
 }
 
 ScrollTransition.propTypes = {
+  animation: PropTypes.oneOf(['zoom']),
+  cellSpacing: PropTypes.number,
+  currentSlide: PropTypes.number,
   deltaX: PropTypes.number,
   deltaY: PropTypes.number,
-  slideWidth: PropTypes.number,
-  slideHeight: PropTypes.number,
-  slideCount: PropTypes.number,
-  currentSlide: PropTypes.number,
-  isWrappingAround: PropTypes.bool,
-  top: PropTypes.number,
-  left: PropTypes.number,
-  cellSpacing: PropTypes.number,
-  vertical: PropTypes.bool,
   dragging: PropTypes.bool,
+  isWrappingAround: PropTypes.bool,
+  left: PropTypes.number,
+  slideCount: PropTypes.number,
+  slideHeight: PropTypes.number,
+  slideLeftOffset: PropTypes.number,
+  slideWidth: PropTypes.number,
+  top: PropTypes.number,
+  vertical: PropTypes.bool,
   wrapAround: PropTypes.bool
 };
 
 ScrollTransition.defaultProps = {
+  cellSpacing: 0,
+  currentSlide: 0,
   deltaX: 0,
   deltaY: 0,
-  slideWidth: 0,
-  slideHeight: 0,
-  slideCount: 0,
-  currentSlide: 0,
-  isWrappingAround: false,
-  top: 0,
-  left: 0,
-  cellSpacing: 0,
-  vertical: false,
   dragging: false,
+  isWrappingAround: false,
+  left: 0,
+  slideCount: 0,
+  slideHeight: 0,
+  slideWidth: 0,
+  top: 0,
+  vertical: false,
   wrapAround: false
 };

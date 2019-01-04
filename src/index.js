@@ -742,7 +742,9 @@ export default class Carousel extends React.Component {
     const frame = this.frame;
     let slideWidth;
 
-    if (typeof props.slideWidth !== 'number') {
+    if (this.props.animation === 'zoom') {
+      slideWidth = frame.offsetWidth - frame.offsetWidth * 15 / 100;
+    } else if (typeof props.slideWidth !== 'number') {
       slideWidth = parseInt(props.slideWidth);
     } else if (props.vertical) {
       slideWidth = slideHeight / slidesToShow * props.slideWidth;
@@ -966,6 +968,7 @@ export default class Carousel extends React.Component {
 
 Carousel.propTypes = {
   afterSlide: PropTypes.func,
+  animation: PropTypes.oneOf(['zoom']),
   autoplay: PropTypes.bool,
   autoplayInterval: PropTypes.number,
   autoGenerateStyleTag: PropTypes.bool,
@@ -995,6 +998,7 @@ Carousel.propTypes = {
   renderBottomRightControls: PropTypes.func,
   renderAnnounceSlideMessage: PropTypes.func,
   slideIndex: PropTypes.number,
+  slideLeftOffset: PropTypes.number,
   slidesToScroll: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.oneOf(['auto'])
@@ -1027,6 +1031,7 @@ Carousel.defaultProps = {
   transitionMode: 'scroll',
   onResize() {},
   slideIndex: 0,
+  slideLeftOffset: 100,
   slidesToScroll: 1,
   slidesToShow: 1,
   style: {},
