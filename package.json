@@ -60,19 +60,19 @@
     "react-dom": "^0.14.9 || ^15.3.0 || ^16.0.0"
   },
   "scripts": {
-    "preversion": "npm run check",
-    "version": "npm run build",
-    "start": "webpack-dev-server --mode development",
+    "build": "builder concurrent --buffer build-lib build-es",
     "build-babel": "babel src",
+    "build-dist": "webpack --config webpack.dist.config.js --mode production",
     "build-es": "builder run  --env \"{\\\"BABEL_ENV\\\":\\\"esm\\\"}\" build-babel -- -d es",
     "build-lib": "builder run build-babel -- -d lib",
-    "build-dist": "webpack --config webpack.dist.config.js --mode production",
-    "build": "builder concurrent --buffer build-lib build-es",
     "build-watch": "builder concurrent build-lib build-es -- --watch",
+    "check": "npm run lint && npm run test",
     "lint": "eslint .",
+    "preversion": "npm run check",
+    "start": "webpack-dev-server --mode development",
     "test": "jest test --config jest.unit.config.js",
     "test-e2e": "jest test --config jest.e2e.config.js",
-    "check": "npm run lint && npm run test"
+    "version": "npm run build"
   },
   "repository": {
     "type": "git",
