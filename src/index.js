@@ -326,7 +326,7 @@ export default class Carousel extends React.Component {
         });
       },
       onMouseUp: e => {
-        if (!this.state.dragging) {
+        if (!this.state.dragging || !this.touchObject.length) {
           return;
         }
 
@@ -381,6 +381,7 @@ export default class Carousel extends React.Component {
       }
     }
   }
+
   handleSwipe() {
     let slidesToShow = this.state.slidesToShow;
     if (this.props.slidesToScroll === 'auto') {
