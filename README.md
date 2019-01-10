@@ -169,6 +169,10 @@ export default class extends React.Component {
 }
 ```
 
+### TypeScript
+
+TypeScript type definitions are now shipped with nuka-carousel. You can use them directly from the library.
+
 ### Contributing
 
 See the [Contribution Docs](CONTRIBUTING.md).
