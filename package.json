@@ -44,6 +44,7 @@
     "jest-environment-enzyme": "^6.0.0",
     "jest-enzyme": "^6.0.0",
     "jest-puppeteer-preset": "^2.0.1",
+    "prettier": "1.15.3",
     "puppeteer": "^1.1.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
