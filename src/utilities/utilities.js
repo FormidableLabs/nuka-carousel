@@ -88,7 +88,7 @@ export const swipeDirection = (x1, x2, y1, y2, vertical) => {
   const xDist = x1 - x2;
   const yDist = y1 - y2;
   const r = Math.atan2(yDist, xDist);
-  let swipeAngle = Math.round(r * 180 / Math.PI);
+  let swipeAngle = Math.round((r * 180) / Math.PI);
 
   if (swipeAngle < 0) {
     swipeAngle = 360 - Math.abs(swipeAngle);

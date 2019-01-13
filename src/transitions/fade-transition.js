@@ -93,8 +93,8 @@ export default class FadeTransition extends React.Component {
       display: 'block',
       height: this.props.slideHeight,
       margin: this.props.vertical
-        ? `${this.props.cellSpacing / 2 * -1}px 0px`
-        : `0px ${this.props.cellSpacing / 2 * -1}px`,
+        ? `${(this.props.cellSpacing / 2) * -1}px 0px`
+        : `0px ${(this.props.cellSpacing / 2) * -1}px`,
       MozBoxSizing: 'border-box',
       padding: 0,
       touchAction: 'none',

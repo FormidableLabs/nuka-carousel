@@ -744,13 +744,13 @@ export default class Carousel extends React.Component {
     let slideWidth;
 
     if (this.props.animation === 'zoom') {
-      slideWidth = frame.offsetWidth - frame.offsetWidth * 15 / 100;
+      slideWidth = frame.offsetWidth - (frame.offsetWidth * 15) / 100;
     } else if (typeof props.slideWidth !== 'number') {
       slideWidth = parseInt(props.slideWidth);
     } else if (props.vertical) {
-      slideWidth = slideHeight / slidesToShow * props.slideWidth;
+      slideWidth = (slideHeight / slidesToShow) * props.slideWidth;
     } else {
-      slideWidth = frame.offsetWidth / slidesToShow * props.slideWidth;
+      slideWidth = (frame.offsetWidth / slidesToShow) * props.slideWidth;
     }
 
     if (!props.vertical) {

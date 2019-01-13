@@ -1,5 +1,4 @@
-Contributing
-============
+# Contributing
 
 ## Install
 

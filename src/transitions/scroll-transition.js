@@ -139,8 +139,8 @@ export default class ScrollTransition extends React.Component {
       position: 'relative',
       display: 'block',
       margin: this.props.vertical
-        ? `${this.props.cellSpacing / 2 * -1}px 0px`
-        : `0px ${this.props.cellSpacing / 2 * -1}px`,
+        ? `${(this.props.cellSpacing / 2) * -1}px 0px`
+        : `0px ${(this.props.cellSpacing / 2) * -1}px`,
       padding: 0,
       height: this.props.vertical
         ? listWidth + spacingOffset

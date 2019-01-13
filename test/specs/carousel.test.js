@@ -381,7 +381,9 @@ describe('<Carousel />', () => {
       const wrapper = mount(
         <Carousel>
           <p key="Static Slide">Static Slide</p>
-          {elems.map(e => <p key={e}>{e}</p>)}
+          {elems.map(e => (
+            <p key={e}>{e}</p>
+          ))}
         </Carousel>
       );
       expect(wrapper).toHaveState({ slideCount: 4 });
