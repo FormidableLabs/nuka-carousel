@@ -1,5 +1,11 @@
 # Nuka Changelog
 
+## 4.4.6 (2019-01-12)
+
+- [#477](https://github.com/FormidableLabs/nuka-carousel/pull/477) Add TypeScript types
+- [#475](https://github.com/FormidableLabs/nuka-carousel/pull/475) Fix click event handler on button within slide element
+- [#473](https://github.com/FormidableLabs/nuka-carousel/pull/473) Add zoom effect prop
+
 ## 4.4.5 (2018-12-31)
 
 - [#469](https://github.com/FormidableLabs/nuka-carousel/pull/469) Fix initial height issue
