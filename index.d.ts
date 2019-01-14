@@ -125,7 +125,7 @@ export interface CarouselProps {
    * When set to true, disable keyboard controls
    * @default false
    */
-  disableKeyboardControls?: boolean;
+  enableKeyboardControls?: boolean;
 
   /**
    * Enable mouse swipe/dragging

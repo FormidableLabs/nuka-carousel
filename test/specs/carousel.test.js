@@ -477,7 +477,7 @@ describe('<Carousel />', () => {
       expect(afterSlideSpy).toBeCalledWith(1);
     });
 
-    describe('disableKeyboardControls', () => {
+    describe('enableKeyboardControls', () => {
       it('should move to next slide when pressing right arrow key', () => {
         const map = {};
         document.addEventListener = jest.fn((event, cb) => {
@@ -485,7 +485,7 @@ describe('<Carousel />', () => {
         });
 
         const wrapper = mount(
-          <Carousel>
+          <Carousel enableKeyboardControls>
             <p>Slide1</p>
             <p>Slide2</p>
             <p>Slide3</p>
@@ -496,14 +496,14 @@ describe('<Carousel />', () => {
         expect(wrapper).toHaveState({ currentSlide: 1 });
       });
 
-      it('should not move to next slide when pressing right arrow key when disableKeyboardControls is set to true', () => {
+      it('should not move to next slide when pressing right arrow key when enableKeyboardControls is set to false/not passed in', () => {
         const map = {};
         document.addEventListener = jest.fn((event, cb) => {
           map[event] = cb;
         });
 
         const wrapper = mount(
-          <Carousel disableKeyboardControls>
+          <Carousel>
             <p>Slide1</p>
             <p>Slide2</p>
             <p>Slide3</p>
