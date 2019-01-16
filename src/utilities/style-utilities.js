@@ -97,7 +97,7 @@ export const getSliderStyles = (propWidth, stateSlideWidth) => {
   return {
     boxSizing: 'border-box',
     display: 'block',
-    height: '100%',
+    height: 'auto',
     MozBoxSizing: 'border-box',
     position: 'relative',
     visibility: stateSlideWidth ? 'inherit' : 'hidden',

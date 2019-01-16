@@ -421,7 +421,7 @@ export default class Carousel extends React.Component {
   }
   // eslint-disable-next-line complexity
   handleKeyPress(e) {
-    if (!this.props.disableKeyboardControls) {
+    if (this.props.enableKeyboardControls) {
       switch (e.keyCode) {
         case 39:
         case 68:
@@ -976,7 +976,7 @@ Carousel.propTypes = {
   beforeSlide: PropTypes.func,
   cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
   cellSpacing: PropTypes.number,
-  disableKeyboardControls: PropTypes.bool,
+  enableKeyboardControls: PropTypes.bool,
   dragging: PropTypes.bool,
   easing: PropTypes.string,
   edgeEasing: PropTypes.string,
@@ -1022,7 +1022,7 @@ Carousel.defaultProps = {
   beforeSlide() {},
   cellAlign: 'left',
   cellSpacing: 0,
-  disableKeyboardControls: false,
+  enableKeyboardControls: false,
   dragging: true,
   easing: 'easeCircleOut',
   edgeEasing: 'easeElasticOut',
