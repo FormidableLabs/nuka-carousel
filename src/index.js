@@ -262,10 +262,6 @@ export default class Carousel extends React.Component {
       onMouseOut: () => this.handleMouseOut(),
 
       onMouseDown: e => {
-        if (e.preventDefault) {
-          e.preventDefault();
-        }
-
         this.touchObject = {
           startX: e.clientX,
           startY: e.clientY
@@ -275,6 +271,7 @@ export default class Carousel extends React.Component {
           dragging: true
         });
       },
+
       onMouseMove: e => {
         if (!this.state.dragging) {
           return;
@@ -325,13 +322,19 @@ export default class Carousel extends React.Component {
             : 0
         });
       },
+
       onMouseUp: e => {
-        if (!this.state.dragging || !this.touchObject.length) {
+        if (
+          this.touchObject.length === 0 ||
+          this.touchObject.length === undefined
+        ) {
+          this.setState({ dragging: false });
           return;
         }
 
         this.handleSwipe(e);
       },
+
       onMouseLeave: e => {
         if (!this.state.dragging) {
           return;
