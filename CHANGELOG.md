@@ -1,5 +1,10 @@
 # Nuka Changelog
 
+## 4.4.7 (2019-01-21)
+
+- [#480](https://github.com/FormidableLabs/nuka-carousel/pull/480) Add Types to build
+- [#486](https://github.com/FormidableLabs/nuka-carousel/pull/486) Fix mouse event handling to account for click events within the slide
+
 ## 4.4.6 (2019-01-12)
 
 - [#477](https://github.com/FormidableLabs/nuka-carousel/pull/477) Add TypeScript types
