@@ -130,6 +130,7 @@ export const calcSomeInitialState = props => {
     props,
     ['slidesToScroll', 'slidesToShow', 'cellAlign']
   );
+
   const slideWidth = props.vertical
     ? props.initialSlideHeight || 0
     : props.initialSlideWidth || 0;

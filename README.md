@@ -38,7 +38,9 @@ export default class extends React.Component {
 
 ### Running demo locally
 
-The demo can be launched on your local machine via `webpack-dev-server`. Once you have clone this repo locally, run the following:
+The demo can be launched on your local machine via `webpack-dev-server`. Make sure you are running node version 9.11 or earlier. Once you have cloned this repo locally, run the following:
+
+
 
 ```bash
 yarn
@@ -59,6 +61,9 @@ Or on CodeSandBox at the following url: <a href="https://codesandbox.io/s/04wxlo
 | Q key                      | First slide                                         |
 | E key                      | Last slide                                          |
 | SpaceBar                   | When `autoplay={true}` pauses and unpauses carousel |
+
+
+- Keyboard shortcuts are disabled as a default. To enable them set `enableKeyboardControls` prop to `true`.
 
 ### Props
 
@@ -104,6 +109,8 @@ A set of eight render props for rendering controls in different positions around
 
 - Valid render props for the eight positions are `renderTopLeftControls`, `renderTopCenterControls`, `renderTopRightControls`, `renderCenterLeftControls`, `renderCenterCenterControls`, `renderCenterRightControls`, `renderBottomLeftControls`, `renderBottomCenterControls`, and `renderBottomRightControls`.
 
+- The default props are set as `renderCenterLeftControls` for `Previous` button, `renderCenterRightControls` for the `Next` button and `renderBottomCenterControls` for the "Paging dots". To change the position or remove "Paging dots", the default positions need to be disabled by setting them to null.
+
 ```jsx
 <Carousel
   renderTopCenterControls={({ currentSlide }) => (
@@ -128,7 +135,7 @@ A set of eight render props for rendering controls in different positions around
 
 `React.PropTypes.func`
 
-`renderAnnounceSlideMessage` render prop is a special case of the `render*Controls` props. It's responsibility is to render ARIA live announcement message every time the slide changes. The function returns only `slideCount` and `currentSlide` values.
+`renderAnnounceSlideMessage` render prop is a special case of the `render*Controls` props. It's responsibility is to render ARIA live announcement message to improve accessibility. The prop will announce the message you pass in every time the slide changes with `VoiceOver` enabled on your machine. The function returns only `slideCount` and `currentSlide` values.
 
 ```jsx
 <Carousel
