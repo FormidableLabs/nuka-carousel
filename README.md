@@ -63,7 +63,7 @@ Or on CodeSandBox at the following url: <a href="https://codesandbox.io/s/04wxlo
 | SpaceBar                   | When `autoplay={true}` pauses and unpauses carousel |
 
 
-- Keyboard shortcuts are disabled as a default. To enable them set `enableKeyboardControls` to `true`.
+- Keyboard shortcuts are disabled as a default. To enable them set `enableKeyboardControls` prop to `true`.
 
 ### Props
 
