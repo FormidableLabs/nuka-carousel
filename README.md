@@ -38,7 +38,9 @@ export default class extends React.Component {
 
 ### Running demo locally
 
-The demo can be launched on your local machine via `webpack-dev-server`. Once you have clone this repo locally, run the following:
+The demo can be launched on your local machine via `webpack-dev-server`. Make sure you are running the node version 9.11 or earlier. Once you have clone this repo locally, run the following:
+
+
 
 ```bash
 yarn
@@ -102,7 +104,7 @@ Or on CodeSandBox at the following url: <a href="https://codesandbox.io/s/04wxlo
 
 A set of eight render props for rendering controls in different positions around the carousel.
 
-- Valid render props for the eight positions are `renderTopLeftControls`, `renderTopCenterControls`, `renderTopRightControls`, `renderCenterLeftControls`, `renderCenterCenterControls`, `renderCenterRightControls`, `renderBottomLeftControls`, `renderBottomCenterControls`, and `renderBottomRightControls`.
+- Valid render props for the eight positions are `renderTopLeftControls`, `renderTopCenterControls`, `renderTopRightControls`, `renderCenterLeftControls`, `renderCenterCenterControls`, `renderCenterRightControls`, `renderBottomLeftControls`, `renderBottomCenterControls`, and `renderBottomRightControls`. The default props are set as `renderCenterLeftControls` for `Previous` button and `renderCenterRightControls` for the `Next` button. To change the position, the default positions need to be disabled by setting them to null.  
 
 ```jsx
 <Carousel
