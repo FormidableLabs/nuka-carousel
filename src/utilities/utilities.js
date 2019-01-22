@@ -126,9 +126,10 @@ export const shouldUpdate = (curr, next, keys) => {
 };
 
 export const calcSomeInitialState = props => {
-  const result = getPropsByTransitionMode(props, ['slidesToScroll', 'slidesToShow', 'cellAlign']);
-
-  const { slidesToScroll, slidesToShow, cellAlign } = result;
+  const { slidesToScroll, slidesToShow, cellAlign } = getPropsByTransitionMode(
+    props,
+    ['slidesToScroll', 'slidesToShow', 'cellAlign']
+  );
 
   const slideWidth = props.vertical
     ? props.initialSlideHeight || 0
