@@ -53,4 +53,22 @@ describe('<ScrollTransition />', () => {
       expect(instance.getSlideDirection(start, end, isWrapping)).toEqual(-1);
     });
   });
+
+  describe('#getSlideStyles', () => {
+    describe('calculating zoomScale', () => {
+      it('should return zoomScale of 1 for all slides when animation !== zoom , ', () => {
+        const wrapper = mount(
+          <ScrollTransition>
+            <p>Slide 1</p>
+            <p>Slide 2</p>
+            <p>Slide 3</p>
+          </ScrollTransition>
+        );
+        const instance = wrapper.instance();
+        expect(instance.getSlideStyles(0, 0).transform).toEqual(`scale(1)`);
+        expect(instance.getSlideStyles(1, 0).transform).toEqual(`scale(1)`);
+        expect(instance.getSlideStyles(2, 0).transform).toEqual(`scale(1)`);
+      });
+    });
+  });
 });

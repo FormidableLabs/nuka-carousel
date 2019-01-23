@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const MIN_ZOOM_SCALE = 0;
+const MAX_ZOOM_SCALE = 1;
+
 export default class ScrollTransition extends React.Component {
   constructor(props) {
     super(props);
@@ -103,8 +106,11 @@ export default class ScrollTransition extends React.Component {
   getSlideStyles(index, positionValue) {
     const targetPosition = this.getSlideTargetPosition(index, positionValue);
     const transformScale =
-      this.props.animation === 'zoom' && this.props.currentSlide !== index // why !== index?
-        ? this.props.zoomScale
+      this.props.animation === 'zoom' && this.props.currentSlide !== index
+        ? Math.max(
+            Math.min(this.props.zoomScale, MAX_ZOOM_SCALE),
+            MIN_ZOOM_SCALE
+          )
         : 1.0;
     // TODO
     // validation for `zoomScale` so the value is not over 1.0 or under 0.1
