@@ -142,6 +142,7 @@ export const getTransitionProps = (props, state) => {
     slideWidth: state.slideWidth,
     top: state.top,
     vertical: props.vertical,
-    wrapAround: props.wrapAround
+    wrapAround: props.wrapAround,
+    zoomScale: props.zoomScale
   };
 };
