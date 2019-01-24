@@ -13,6 +13,7 @@ class App extends React.Component {
       wrapAround: false,
       animation: undefined,
       underlineHeader: false,
+      zoomScale: 0.5,
       slidesToShow: 1,
       cellAlign: 'left',
       transitionMode: 'scroll',
@@ -21,10 +22,17 @@ class App extends React.Component {
     };
 
     this.handleImageClick = this.handleImageClick.bind(this);
+    this.handleZoomScaleChange = this.handleZoomScaleChange.bind(this);
   }
 
   handleImageClick() {
     this.setState({ underlineHeader: !this.state.underlineHeader });
+  }
+
+  handleZoomScaleChange(event) {
+    this.setState({
+      zoomScale: event.target.value
+    });
   }
 
   render() {
@@ -35,6 +43,7 @@ class App extends React.Component {
           transitionMode={this.state.transitionMode}
           cellAlign={this.state.cellAlign}
           animation={this.state.animation}
+          zoomScale={Number(this.state.zoomScale || 0)}
           wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
           heightMode={this.state.heightMode}
@@ -111,66 +120,79 @@ class App extends React.Component {
             >
               Toggle Wrap Around
             </button>
-            <button
-              onClick={() =>
-                this.setState({
-                  animation:
-                    this.state.animation === 'zoom' ? undefined : 'zoom',
-                  cellAlign: 'center'
-                })
-              }
-            >
-              Toggle Zoom Animation{' '}
-              {this.state.animation === 'zoom' ? 'Off' : 'On'}
-            </button>
           </div>
         </div>
         {this.state.transitionMode !== 'fade' && (
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {this.state.slidesToShow > 1.0 && (
-              <div>
-                <button onClick={() => this.setState({ cellAlign: 'left' })}>
-                  Left
+          <>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              {this.state.slidesToShow > 1.0 && (
+                <div>
+                  <button onClick={() => this.setState({ cellAlign: 'left' })}>
+                    Left
+                  </button>
+                  <button
+                    onClick={() => this.setState({ cellAlign: 'center' })}
+                  >
+                    Center
+                  </button>
+                  <button onClick={() => this.setState({ cellAlign: 'right' })}>
+                    Right
+                  </button>
+                </div>
+              )}
+              <div style={{ marginLeft: 'auto' }}>
+                <button
+                  onClick={() =>
+                    this.setState({
+                      slidesToShow: this.state.slidesToShow > 1.0 ? 1.0 : 1.25
+                    })
+                  }
+                >
+                  Toggle Partially Visible Slides
                 </button>
-                <button onClick={() => this.setState({ cellAlign: 'center' })}>
-                  Center
+                <button
+                  onClick={() =>
+                    this.setState({
+                      heightMode:
+                        this.state.heightMode === 'current' ? 'max' : 'current'
+                    })
+                  }
+                >
+                  Toggle Height Mode Current
                 </button>
-                <button onClick={() => this.setState({ cellAlign: 'right' })}>
-                  Right
+                <button
+                  onClick={() =>
+                    this.setState({
+                      withoutControls: !this.state.withoutControls
+                    })
+                  }
+                >
+                  Toggle Controls
                 </button>
               </div>
-            )}
-            <div style={{ marginLeft: 'auto' }}>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              {this.state.animation === 'zoom' && (
+                <input
+                  type="number"
+                  value={this.state.zoomScale}
+                  onChange={this.handleZoomScaleChange}
+                />
+              )}
               <button
                 onClick={() =>
                   this.setState({
-                    slidesToShow: this.state.slidesToShow > 1.0 ? 1.0 : 1.25
+                    animation:
+                      this.state.animation === 'zoom' ? undefined : 'zoom',
+                    cellAlign: 'center'
                   })
                 }
               >
-                Toggle Partially Visible Slides
-              </button>
-              <button
-                onClick={() =>
-                  this.setState({
-                    heightMode:
-                      this.state.heightMode === 'current' ? 'max' : 'current'
-                  })
-                }
-              >
-                Toggle Height Mode Current
-              </button>
-              <button
-                onClick={() =>
-                  this.setState({
-                    withoutControls: !this.state.withoutControls
-                  })
-                }
-              >
-                Toggle Controls
+                Toggle Zoom Animation{' '}
+                {this.state.animation === 'zoom' ? 'Off' : 'On'}
               </button>
             </div>
-          </div>
+          </>
         )}
       </div>
     );

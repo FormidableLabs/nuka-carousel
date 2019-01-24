@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const MIN_ZOOM_SCALE = 0;
+const MAX_ZOOM_SCALE = 1;
+
 export default class ScrollTransition extends React.Component {
   constructor(props) {
     super(props);
@@ -102,6 +105,13 @@ export default class ScrollTransition extends React.Component {
 
   getSlideStyles(index, positionValue) {
     const targetPosition = this.getSlideTargetPosition(index, positionValue);
+    const transformScale =
+      this.props.animation === 'zoom' && this.props.currentSlide !== index
+        ? Math.max(
+            Math.min(this.props.zoomScale, MAX_ZOOM_SCALE),
+            MIN_ZOOM_SCALE
+          )
+        : 1.0;
     return {
       boxSizing: 'border-box',
       display: this.props.vertical ? 'block' : 'inline-block',
@@ -115,10 +125,7 @@ export default class ScrollTransition extends React.Component {
       MozBoxSizing: 'border-box',
       position: 'absolute',
       top: this.props.vertical ? targetPosition : 0,
-      transform:
-        this.props.animation === 'zoom' && this.props.currentSlide !== index
-          ? 'scale(0.85)' //TODO make this configurable via prop
-          : 'scale(1.0)',
+      transform: `scale(${transformScale})`,
       transition: 'transform .4s linear',
       verticalAlign: 'top',
       width: this.props.vertical ? '100%' : this.props.slideWidth
@@ -184,7 +191,8 @@ ScrollTransition.propTypes = {
   slideWidth: PropTypes.number,
   top: PropTypes.number,
   vertical: PropTypes.bool,
-  wrapAround: PropTypes.bool
+  wrapAround: PropTypes.bool,
+  zoomScale: PropTypes.number
 };
 
 ScrollTransition.defaultProps = {
@@ -200,5 +208,6 @@ ScrollTransition.defaultProps = {
   slideWidth: 0,
   top: 0,
   vertical: false,
-  wrapAround: false
+  wrapAround: false,
+  zoomScale: 0.85
 };
