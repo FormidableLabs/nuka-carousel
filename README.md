@@ -101,7 +101,7 @@ Or on CodeSandBox at the following url: <a href="https://codesandbox.io/s/04wxlo
 | withoutControls            | `React.PropTypes.bool`                                                                  | Used to remove all controls at once. Overwrites the `render[Top, Right, Bottom, Left]CenterControls()`.                                                                                                    | `false`                                                                   |
 | wrapAround                 | `React.PropTypes.bool`                                                                  | Sets infinite wrapAround mode.                                                                                                                                                                             | `false`                                                                   |
 | zoomScale                 | `React.PropTypes.number`                                                                 | Adds a number value to set the scale of zoom when `animation === "zoom"`. The number value should be set in a range of (0,1). The default value is set to `zoomScale: 0.85`                               |
-                                                    |
+
 
 #### render\*Controls
 
