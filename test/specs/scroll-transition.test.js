@@ -84,7 +84,7 @@ describe('<ScrollTransition />', () => {
         expect(instance.getSlideStyles(2, 0).transform).toEqual(`scale(0.85)`);
       });
 
-      it('should return zoomScale of 1 for slide index 0 and `0.1` 1 & 2 when animation === zoom and zoomScale = 0.1 ', () => {
+      it('should return zoomScale of 1 for slide index 0 and zoomScale of 0.1 for index 1 & 2 when animation === zoom and zoomScale = 0.1 ', () => {
         const wrapper = mount(
           <ScrollTransition animation="zoom" zoomScale={0.1}>
             <p>Slide 1</p>
@@ -98,7 +98,7 @@ describe('<ScrollTransition />', () => {
         expect(instance.getSlideStyles(2, 0).transform).toEqual(`scale(0.1)`);
       });
 
-      it('should return zoomScale of: 1 for slide index 0 and 1 for the rest of the slides when animation === zoom and zoomScale value is over 1 ', () => {
+      it('should return zoomScale of 1 for slide index 0 and 1 for the rest of the slides when animation === zoom and zoomScale value is over 1 ', () => {
         const wrapper = mount(
           <ScrollTransition animation="zoom" zoomScale={2.5}>
             <p>Slide 1</p>
@@ -112,7 +112,7 @@ describe('<ScrollTransition />', () => {
         expect(instance.getSlideStyles(2, 0).transform).toEqual(`scale(1)`);
       });
 
-      it('should return zoomScale of: 1 for slide index 0 and 0 for the rest of the slides when animation === zoom and zoomScale value is below 0 ', () => {
+      it('should return zoomScale of 1 for slide index 0 and 0 for the rest of the slides when animation === zoom and zoomScale value is below 0 ', () => {
         const wrapper = mount(
           <ScrollTransition animation="zoom" zoomScale={-2.5}>
             <p>Slide 1</p>
@@ -126,7 +126,7 @@ describe('<ScrollTransition />', () => {
         expect(instance.getSlideStyles(2, 0).transform).toEqual(`scale(0)`);
       });
 
-      it('should return zoomScale of: 1 for all slides when animation !== zoom and zoomScale value is below 0 ', () => {
+      it('should return zoomScale of 1 for all slides when animation !== zoom and zoomScale value is below 0 ', () => {
         const wrapper = mount(
           <ScrollTransition zoomScale={0.5}>
             <p>Slide 1</p>
