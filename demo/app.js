@@ -13,7 +13,7 @@ class App extends React.Component {
       wrapAround: false,
       animation: undefined,
       underlineHeader: false,
-      zoomScale: 0.85,
+      zoomScale: 0.5,
       slidesToShow: 1,
       cellAlign: 'left',
       transitionMode: 'scroll',

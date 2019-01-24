@@ -112,8 +112,6 @@ export default class ScrollTransition extends React.Component {
             MIN_ZOOM_SCALE
           )
         : 1.0;
-    // TODO
-    // validation for `zoomScale` so the value is not over 1.0 or under 0.1
     return {
       boxSizing: 'border-box',
       display: this.props.vertical ? 'block' : 'inline-block',
