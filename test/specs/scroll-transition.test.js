@@ -56,7 +56,7 @@ describe('<ScrollTransition />', () => {
 
   describe('#getSlideStyles', () => {
     describe('calculating zoomScale', () => {
-      it('should return zoomScale of 1 for all slides when animation !== zoom , ', () => {
+      it('should return a scale of 1 for all slides when animation !== zoom , ', () => {
         const wrapper = mount(
           <ScrollTransition>
             <p>Slide 1</p>
@@ -70,7 +70,7 @@ describe('<ScrollTransition />', () => {
         expect(instance.getSlideStyles(2, 0).transform).toEqual(`scale(1)`);
       });
 
-      it('should return zoomScale of 1 for slide index 0 and 0.85 as a default for slide index 1 & 2 when animation === zoom but no zoomScale defined ', () => {
+      it('should return a scale of 1 for the current slide and 0.85 as a default for the remaining slides when animation === zoom but no zoomScale defined ', () => {
         const wrapper = mount(
           <ScrollTransition animation="zoom">
             <p>Slide 1</p>
@@ -84,7 +84,7 @@ describe('<ScrollTransition />', () => {
         expect(instance.getSlideStyles(2, 0).transform).toEqual(`scale(0.85)`);
       });
 
-      it('should return zoomScale of 1 for slide index 0 and zoomScale of 0.1 for index 1 & 2 when animation === zoom and zoomScale = 0.1 ', () => {
+      it('should return a scale of 1 for the current slide and zoomScale of 0.1 for the remaining slides when animation === zoom and zoomScale = 0.1 ', () => {
         const wrapper = mount(
           <ScrollTransition animation="zoom" zoomScale={0.1}>
             <p>Slide 1</p>
@@ -98,7 +98,7 @@ describe('<ScrollTransition />', () => {
         expect(instance.getSlideStyles(2, 0).transform).toEqual(`scale(0.1)`);
       });
 
-      it('should return zoomScale of 1 for slide index 0 and 1 for the rest of the slides when animation === zoom and zoomScale value is over 1 ', () => {
+      it('should return a scale of 1 for the current slide and 1 for the remaining slides when animation === zoom and zoomScale value is more than 1 ', () => {
         const wrapper = mount(
           <ScrollTransition animation="zoom" zoomScale={2.5}>
             <p>Slide 1</p>
@@ -112,7 +112,7 @@ describe('<ScrollTransition />', () => {
         expect(instance.getSlideStyles(2, 0).transform).toEqual(`scale(1)`);
       });
 
-      it('should return zoomScale of 1 for slide index 0 and 0 for the rest of the slides when animation === zoom and zoomScale value is below 0 ', () => {
+      it('should return a scale of 1 for the current slide and 0 for the remaining slides when animation === zoom and zoomScale value is less than 0 ', () => {
         const wrapper = mount(
           <ScrollTransition animation="zoom" zoomScale={-2.5}>
             <p>Slide 1</p>
@@ -126,7 +126,7 @@ describe('<ScrollTransition />', () => {
         expect(instance.getSlideStyles(2, 0).transform).toEqual(`scale(0)`);
       });
 
-      it('should return zoomScale of 1 for all slides when animation !== zoom and zoomScale value is below 0 ', () => {
+      it('should ignore the zoomScale value and return a scale of 1 for all slides when animation !== zoom', () => {
         const wrapper = mount(
           <ScrollTransition zoomScale={0.5}>
             <p>Slide 1</p>
