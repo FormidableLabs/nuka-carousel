@@ -52,7 +52,7 @@ export default class Carousel extends React.Component {
     this.state = {
       currentSlide: this.props.slideIndex,
       dragging: false,
-      easing: easing.easeCircleOut,
+      easing: this.props.disableAnimation ? '' : easing.easeCircleOut,
       isWrappingAround: false,
       left: 0,
       resetWrapAroundPosition: false,
@@ -865,10 +865,13 @@ export default class Carousel extends React.Component {
       vertical,
       framePadding,
       slidesToShow,
-      renderAnnounceSlideMessage
+      renderAnnounceSlideMessage,
+      disableAnimation
     } = this.props;
     const duration =
-      this.state.dragging || this.state.resetWrapAroundPosition
+      this.state.dragging ||
+      this.state.resetWrapAroundPosition ||
+      disableAnimation
         ? 0
         : this.props.speed;
 
@@ -980,6 +983,7 @@ Carousel.propTypes = {
   cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
   cellSpacing: PropTypes.number,
   enableKeyboardControls: PropTypes.bool,
+  disableAnimation: PropTypes.bool,
   dragging: PropTypes.bool,
   easing: PropTypes.string,
   edgeEasing: PropTypes.string,
@@ -1026,6 +1030,7 @@ Carousel.defaultProps = {
   cellAlign: 'left',
   cellSpacing: 0,
   enableKeyboardControls: false,
+  disableAnimation: false,
   dragging: true,
   easing: 'easeCircleOut',
   edgeEasing: 'easeElasticOut',
