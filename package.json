@@ -10,7 +10,7 @@
     "d3-ease": "^1.0.3",
     "exenv": "^1.2.0",
     "prop-types": "^15.6.0",
-    "react-move": "^2.7.0"
+    "react-move": "^4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.42",
