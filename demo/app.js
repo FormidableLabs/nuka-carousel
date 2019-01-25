@@ -22,14 +22,14 @@ class App extends React.Component {
     };
 
     this.handleImageClick = this.handleImageClick.bind(this);
-    this.handleZoomChangeChange = this.handleZoomChangeChange.bind(this);
+    this.handleZoomScaleChange = this.handleZoomScaleChange.bind(this);
   }
 
   handleImageClick() {
     this.setState({ underlineHeader: !this.state.underlineHeader });
   }
 
-  handleZoomChangeChange(event) {
+  handleZoomScaleChange(event) {
     this.setState({
       zoomScale: event.target.value
     });
@@ -176,7 +176,7 @@ class App extends React.Component {
                 <input
                   type="number"
                   value={this.state.zoomScale}
-                  onChange={this.handleZoomChangeChange}
+                  onChange={this.handleZoomScaleChange}
                 />
               )}
               <button
