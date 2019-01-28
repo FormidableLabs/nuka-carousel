@@ -45,9 +45,25 @@ export class NextButton extends React.Component {
     this.props.nextSlide();
   }
   render() {
-    const disabled =
-      this.props.currentSlide + this.props.slidesToScroll >=
-        this.props.slideCount && !this.props.wrapAround;
+    let disabled = false;
+
+    const {
+      wrapAround,
+      slidesToShow,
+      currentSlide,
+      slidesToScroll,
+      slideCount
+    } = this.props;
+
+    if (!wrapAround) {
+      if (slidesToShow > 1) {
+        disabled =
+          currentSlide + slidesToScroll >= slideCount ||
+          currentSlide + slidesToShow >= slideCount;
+      } else if (slidesToShow === 1) {
+        disabled = slidesToScroll >= 1 && currentSlide + 1 >= slideCount;
+      }
+    }
     return (
       <button
         style={defaultButtonStyles(disabled)}
