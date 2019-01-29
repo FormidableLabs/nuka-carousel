@@ -57,9 +57,7 @@ export class NextButton extends React.Component {
 
     if (!wrapAround) {
       if (slidesToShow > 1) {
-        disabled =
-          currentSlide + slidesToScroll >= slideCount ||
-          currentSlide + slidesToShow >= slideCount;
+        disabled = currentSlide + slidesToShow >= slideCount;
       } else if (slidesToShow === 1) {
         disabled = slidesToScroll >= 1 && currentSlide + 1 >= slideCount;
       }
@@ -78,12 +76,15 @@ export class NextButton extends React.Component {
 }
 
 export class PagingDots extends React.Component {
-  getIndexes(count, inc) {
-    const arr = [];
-    for (let i = 0; i < count; i += inc) {
-      arr.push(i);
+  getIndexes(slideCount, slidesToScroll, slidesToShow) {
+    const dotIndexes = [];
+    const end = slideCount - slidesToShow;
+
+    for (let i = 0; i < end; i += slidesToScroll) {
+      dotIndexes.push(i);
     }
-    return arr;
+    dotIndexes.push(end);
+    return dotIndexes;
   }
 
   getListStyles() {
@@ -117,7 +118,8 @@ export class PagingDots extends React.Component {
   render() {
     const indexes = this.getIndexes(
       this.props.slideCount,
-      this.props.slidesToScroll
+      this.props.slidesToScroll,
+      this.props.slidesToShow
     );
     return (
       <ul style={this.getListStyles()}>
