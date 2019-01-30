@@ -39,14 +39,31 @@ export class NextButton extends React.Component {
   constructor() {
     super(...arguments);
     this.handleClick = this.handleClick.bind(this);
+    this.nextButtonDisable = this.nextButtonDisable.bind(this);
   }
   handleClick(event) {
     event.preventDefault();
     this.props.nextSlide();
   }
-  render() {
-    let disabled = false;
 
+  nextButtonDisable(
+    wrapAround,
+    slidesToShow,
+    currentSlide,
+    slidesToScroll,
+    slideCount
+  ) {
+    let disabledButton = false;
+    if (!wrapAround) {
+      if (slidesToShow > 1) {
+        disabledButton = currentSlide + slidesToShow >= slideCount;
+      } else if (slidesToShow === 1) {
+        disabledButton = slidesToScroll >= 1 && currentSlide + 1 >= slideCount;
+      }
+    }
+    return disabledButton;
+  }
+  render() {
     const {
       wrapAround,
       slidesToShow,
@@ -55,13 +72,14 @@ export class NextButton extends React.Component {
       slideCount
     } = this.props;
 
-    if (!wrapAround) {
-      if (slidesToShow > 1) {
-        disabled = currentSlide + slidesToShow >= slideCount;
-      } else if (slidesToShow === 1) {
-        disabled = slidesToScroll >= 1 && currentSlide + 1 >= slideCount;
-      }
-    }
+    const disabled = this.nextButtonDisable(
+      wrapAround,
+      slidesToShow,
+      currentSlide,
+      slidesToScroll,
+      slideCount
+    );
+
     return (
       <button
         style={defaultButtonStyles(disabled)}
