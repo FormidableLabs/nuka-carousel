@@ -39,20 +39,22 @@ export class NextButton extends React.Component {
   constructor() {
     super(...arguments);
     this.handleClick = this.handleClick.bind(this);
-    this.nextButtonDisable = this.nextButtonDisable.bind(this);
+    this.nextButtonDisable = this.nextButtonDisabled.bind(this);
   }
   handleClick(event) {
     event.preventDefault();
     this.props.nextSlide();
   }
 
-  nextButtonDisable(
-    wrapAround,
-    slidesToShow,
-    currentSlide,
-    cellAlign,
-    slideCount
-  ) {
+  nextButtonDisabled(params) {
+    const {
+      wrapAround,
+      slidesToShow,
+      currentSlide,
+      cellAlign,
+      slideCount
+    } = params;
+
     let disabledButton = false;
     if (!wrapAround) {
       const lastSlideIndex = slideCount - 1;
@@ -70,7 +72,8 @@ export class NextButton extends React.Component {
       }
 
       if (slidesToShow > 1) {
-        disabledButton = currentSlide + slidesShowing > lastSlideIndex + lastSlideOffset;
+        disabledButton =
+          currentSlide + slidesShowing > lastSlideIndex + lastSlideOffset;
       } else {
         disabledButton = currentSlide + 1 > lastSlideIndex;
       }
@@ -86,13 +89,13 @@ export class NextButton extends React.Component {
       slideCount
     } = this.props;
 
-    const disabled = this.nextButtonDisable(
+    const disabled = this.nextButtonDisabled({
       wrapAround,
       slidesToShow,
       currentSlide,
       cellAlign,
       slideCount
-    );
+    });
 
     return (
       <button
