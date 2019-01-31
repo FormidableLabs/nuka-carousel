@@ -50,15 +50,29 @@ export class NextButton extends React.Component {
     wrapAround,
     slidesToShow,
     currentSlide,
-    slidesToScroll,
+    cellAlign,
     slideCount
   ) {
     let disabledButton = false;
     if (!wrapAround) {
+      const lastSlideIndex = slideCount - 1;
+      let slidesShowing = slidesToShow;
+      let lastSlideOffset = 0;
+
+      switch (cellAlign) {
+        case 'center':
+          slidesShowing = (slidesToShow - 1) * 0.5;
+          lastSlideOffset = Math.floor(slidesToShow * 0.5) - 1;
+          break;
+        case 'right':
+          slidesShowing = 1;
+          break;
+      }
+
       if (slidesToShow > 1) {
-        disabledButton = currentSlide + slidesToShow >= slideCount;
-      } else if (slidesToShow === 1) {
-        disabledButton = slidesToScroll >= 1 && currentSlide + 1 >= slideCount;
+        disabledButton = currentSlide + slidesShowing > lastSlideIndex + lastSlideOffset;
+      } else {
+        disabledButton = currentSlide + 1 > lastSlideIndex;
       }
     }
     return disabledButton;
@@ -68,7 +82,7 @@ export class NextButton extends React.Component {
       wrapAround,
       slidesToShow,
       currentSlide,
-      slidesToScroll,
+      cellAlign,
       slideCount
     } = this.props;
 
@@ -76,7 +90,7 @@ export class NextButton extends React.Component {
       wrapAround,
       slidesToShow,
       currentSlide,
-      slidesToScroll,
+      cellAlign,
       slideCount
     );
 
@@ -94,9 +108,16 @@ export class NextButton extends React.Component {
 }
 
 export class PagingDots extends React.Component {
-  getDotIndexes(slideCount, slidesToScroll, slidesToShow) {
+  getDotIndexes(slideCount, slidesToScroll, slidesToShow, cellAlign) {
     const dotIndexes = [];
-    const lastDotIndex = slideCount - slidesToShow;
+    let lastDotIndex = slideCount - slidesToShow;
+
+    switch (cellAlign) {
+      case 'center':
+      case 'right':
+        lastDotIndex += slidesToShow - 1;
+        break;
+    }
     if (lastDotIndex < 0) {
       return [0];
     }
@@ -140,7 +161,8 @@ export class PagingDots extends React.Component {
     const indexes = this.getDotIndexes(
       this.props.slideCount,
       this.props.slidesToScroll,
-      this.props.slidesToShow
+      this.props.slidesToShow,
+      this.props.cellAlign
     );
     return (
       <ul style={this.getListStyles()}>
