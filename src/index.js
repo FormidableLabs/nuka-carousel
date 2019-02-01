@@ -841,6 +841,7 @@ export default class Carousel extends React.Component {
               key={key}
             >
               {func({
+                cellAlign: this.props.cellAlign,
                 cellSpacing: this.props.cellSpacing,
                 currentSlide: this.state.currentSlide,
                 frameWidth: this.state.frameWidth,

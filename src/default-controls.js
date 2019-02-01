@@ -39,15 +39,64 @@ export class NextButton extends React.Component {
   constructor() {
     super(...arguments);
     this.handleClick = this.handleClick.bind(this);
+    this.nextButtonDisable = this.nextButtonDisabled.bind(this);
   }
   handleClick(event) {
     event.preventDefault();
     this.props.nextSlide();
   }
+
+  nextButtonDisabled(params) {
+    const {
+      wrapAround,
+      slidesToShow,
+      currentSlide,
+      cellAlign,
+      slideCount
+    } = params;
+
+    let buttonDisabled = false;
+    if (!wrapAround) {
+      const lastSlideIndex = slideCount - 1;
+      let slidesShowing = slidesToShow;
+      let lastSlideOffset = 0;
+
+      switch (cellAlign) {
+        case 'center':
+          slidesShowing = (slidesToShow - 1) * 0.5;
+          lastSlideOffset = Math.floor(slidesToShow * 0.5) - 1;
+          break;
+        case 'right':
+          slidesShowing = 1;
+          break;
+      }
+
+      if (slidesToShow > 1) {
+        buttonDisabled =
+          currentSlide + slidesShowing > lastSlideIndex + lastSlideOffset;
+      } else {
+        buttonDisabled = currentSlide + 1 > lastSlideIndex;
+      }
+    }
+    return buttonDisabled;
+  }
   render() {
-    const disabled =
-      this.props.currentSlide + this.props.slidesToScroll >=
-        this.props.slideCount && !this.props.wrapAround;
+    const {
+      wrapAround,
+      slidesToShow,
+      currentSlide,
+      cellAlign,
+      slideCount
+    } = this.props;
+
+    const disabled = this.nextButtonDisabled({
+      wrapAround,
+      slidesToShow,
+      currentSlide,
+      cellAlign,
+      slideCount
+    });
+
     return (
       <button
         style={defaultButtonStyles(disabled)}
@@ -62,12 +111,25 @@ export class NextButton extends React.Component {
 }
 
 export class PagingDots extends React.Component {
-  getIndexes(count, inc) {
-    const arr = [];
-    for (let i = 0; i < count; i += inc) {
-      arr.push(i);
+  getDotIndexes(slideCount, slidesToScroll, slidesToShow, cellAlign) {
+    const dotIndexes = [];
+    let lastDotIndex = slideCount - slidesToShow;
+
+    switch (cellAlign) {
+      case 'center':
+      case 'right':
+        lastDotIndex += slidesToShow - 1;
+        break;
     }
-    return arr;
+    if (lastDotIndex < 0) {
+      return [0];
+    }
+
+    for (let i = 0; i < lastDotIndex; i += slidesToScroll) {
+      dotIndexes.push(i);
+    }
+    dotIndexes.push(lastDotIndex);
+    return dotIndexes;
   }
 
   getListStyles() {
@@ -99,9 +161,11 @@ export class PagingDots extends React.Component {
   }
 
   render() {
-    const indexes = this.getIndexes(
+    const indexes = this.getDotIndexes(
       this.props.slideCount,
-      this.props.slidesToScroll
+      this.props.slidesToScroll,
+      this.props.slidesToShow,
+      this.props.cellAlign
     );
     return (
       <ul style={this.getListStyles()}>
