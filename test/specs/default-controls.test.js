@@ -108,7 +108,7 @@ describe('<NextButton />', () => {
     });
 
     // testing smaller number of pages
-    it('should return true for slide index >= 3', () => {
+    it('should return true and disable the `Next` button for slide index of 3', () => {
       const alignLeftIndex2 = {
         wrapAround: false,
         slidesToShow: 3,
@@ -118,7 +118,6 @@ describe('<NextButton />', () => {
       };
       expect(instance.nextButtonDisabled(alignLeftIndex2)).toEqual(false);
 
-      // past the slide 3 should return true and disable the button
       const testLeftIndex3 = {
         wrapAround: false,
         slidesToShow: 3,
@@ -139,7 +138,7 @@ describe('<NextButton />', () => {
     });
 
     // testing extreme scenarios
-    it('should return true for slide index >= 4', () => {
+    it('should return true and disable the `Next` button for slide index of 4', () => {
       const alignLeftIndex3 = {
         wrapAround: false,
         slidesToShow: 7,
@@ -192,7 +191,7 @@ describe('<NextButton />', () => {
     });
 
     // testing smaller number of pages
-    it('should return true for slide index 5', () => {
+    it('should return true and disable `Next` button for slide index of 5', () => {
       const alignCenterTest1 = {
         wrapAround: false,
         slidesToShow: 3,
@@ -213,7 +212,7 @@ describe('<NextButton />', () => {
     });
 
     // testing extreme scenarios
-    it('should return true for slide index 22', () => {
+    it('should return true and disable `Next` button for slide index of 22', () => {
       const alignCenterTest3 = {
         wrapAround: false,
         slidesToShow: 7,
@@ -234,7 +233,7 @@ describe('<NextButton />', () => {
     });
 
     // testing edge case scenarios
-    it('should return true with slide index of 4 when slideCount < slidesToShow', () => {
+    it('should return true and disable `Next` button for slide index of 4 when slideCount < slidesToShow', () => {
       const alignCenterTest5 = {
         wrapAround: false,
         slidesToShow: 6,
@@ -255,7 +254,7 @@ describe('<NextButton />', () => {
     });
 
     // testing edge case scenarios
-    it('should return true with slide index of 4 when slideCount == slidesToShow', () => {
+    it('should return true and disable `Next` button for slide index of 4 when slideCount == slidesToShow', () => {
       const alignCenterTest7 = {
         wrapAround: false,
         slidesToShow: 5,
@@ -285,7 +284,7 @@ describe('<NextButton />', () => {
     });
 
     // testing smaller number of pages
-    it('should return true for slide index 5', () => {
+    it('should return true and disable `Next` button for slide index of 5', () => {
       const alignRightTest1 = {
         wrapAround: false,
         slidesToShow: 3,
@@ -306,7 +305,7 @@ describe('<NextButton />', () => {
     });
 
     // testing extreme scenarios
-    it('should return true for slide index 22', () => {
+    it('should return true and disable `Next` button for slide index of 22', () => {
       const alignRightTest3 = {
         wrapAround: false,
         slidesToShow: 7,
@@ -327,7 +326,7 @@ describe('<NextButton />', () => {
     });
 
     // testing edge case scenarios
-    it('should return true with slide index of 4 when slideCount < slidesToShow', () => {
+    it('should return true and disable `Next` button for slide index of 4 when slideCount < slidesToShow', () => {
       const alignRightTest5 = {
         wrapAround: false,
         slidesToShow: 6,
@@ -348,7 +347,7 @@ describe('<NextButton />', () => {
     });
 
     // testing edge case scenarios
-    it('should return true with slide index of 4 when slideCount == slidesToShow', () => {
+    it('should return true and disable `Next` button for slide index of 4 when slideCount == slidesToShow', () => {
       const alignRightTest7 = {
         wrapAround: false,
         slidesToShow: 5,

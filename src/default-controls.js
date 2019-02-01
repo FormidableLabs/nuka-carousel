@@ -55,7 +55,7 @@ export class NextButton extends React.Component {
       slideCount
     } = params;
 
-    let disabledButton = false;
+    let buttonDisabled = false;
     if (!wrapAround) {
       const lastSlideIndex = slideCount - 1;
       let slidesShowing = slidesToShow;
@@ -72,13 +72,13 @@ export class NextButton extends React.Component {
       }
 
       if (slidesToShow > 1) {
-        disabledButton =
+        buttonDisabled =
           currentSlide + slidesShowing > lastSlideIndex + lastSlideOffset;
       } else {
-        disabledButton = currentSlide + 1 > lastSlideIndex;
+        buttonDisabled = currentSlide + 1 > lastSlideIndex;
       }
     }
-    return disabledButton;
+    return buttonDisabled;
   }
   render() {
     const {
