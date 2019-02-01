@@ -53,6 +53,7 @@ export default class Carousel extends React.Component {
       currentSlide: this.props.slideIndex,
       dragging: false,
       easing: this.props.disableAnimation ? '' : easing.easeCircleOut,
+      hasInteraction: false, // to remove animation from the initial slide on the page load when non-default slideIndex is used
       isWrappingAround: false,
       left: 0,
       resetWrapAroundPosition: false,
@@ -567,7 +568,7 @@ export default class Carousel extends React.Component {
       return;
     }
 
-    this.setState({ easing: easing[props.easing] });
+    this.setState({ hasInteraction: true, easing: easing[props.easing] });
     this.isTransitioning = true;
     const previousSlide = this.state.currentSlide;
 
@@ -871,7 +872,8 @@ export default class Carousel extends React.Component {
     const duration =
       this.state.dragging ||
       this.state.resetWrapAroundPosition ||
-      disableAnimation
+      disableAnimation ||
+      !this.state.hasInteraction
         ? 0
         : this.props.speed;
 
