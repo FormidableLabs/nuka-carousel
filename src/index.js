@@ -887,7 +887,12 @@ export default class Carousel extends React.Component {
     const touchEvents = this.getTouchEvents();
     const mouseEvents = this.getMouseEvents();
     const TransitionControl = Transitions[this.props.transitionMode];
-    const validChildren = getValidChildren(this.props.children);
+    const validChildren = addAccessibility(
+      getValidChildren(this.props.children),
+      slidesToShow,
+      currentSlide
+    );
+    const transitionProps = getTransitionProps(this.props, this.state);
 
     return (
       <div
@@ -903,65 +908,65 @@ export default class Carousel extends React.Component {
             message={renderAnnounceSlideMessage({ currentSlide, slideCount })}
           />
         )}
-        <Animate
-          show
-          start={{ tx: 0, ty: 0 }}
-          update={Object.assign(
-            {},
-            this.getOffsetDeltas(this.touchObject, this.props, this.state),
-            {
-              timing: {
-                duration,
-                ease: this.state.easing
-              },
-              events: {
-                end: () => {
-                  const newLeft = this.props.vertical
-                    ? 0
-                    : this.getTargetLeft();
-                  const newTop = this.props.vertical ? this.getTargetLeft() : 0;
+        <div
+          className="slider-frame"
+          ref={frame => (this.frame = frame)}
+          style={frameStyles}
+          {...touchEvents}
+          {...mouseEvents}
+          onClickCapture={this.handleClick}
+        >
+          <Animate
+            show
+            start={{ tx: 0, ty: 0 }}
+            update={() => {
+              const { tx, ty } = this.getOffsetDeltas();
 
-                  if (
-                    newLeft !== this.state.left ||
-                    newTop !== this.state.top
-                  ) {
-                    this.setState(
-                      {
-                        left: newLeft,
-                        top: newTop,
-                        isWrappingAround: false,
-                        resetWrapAroundPosition: true
-                      },
-                      () => {
-                        this.setState({
-                          resetWrapAroundPosition: false
-                        });
-                      }
-                    );
+              return {
+                tx,
+                ty,
+                timing: {
+                  duration,
+                  ease: this.state.easing
+                },
+                events: {
+                  end: () => {
+                    const newLeft = this.props.vertical
+                      ? 0
+                      : this.getTargetLeft();
+                    const newTop = this.props.vertical
+                      ? this.getTargetLeft()
+                      : 0;
+
+                    if (
+                      newLeft !== this.state.left ||
+                      newTop !== this.state.top
+                    ) {
+                      this.setState(
+                        {
+                          left: newLeft,
+                          top: newTop,
+                          isWrappingAround: false,
+                          resetWrapAroundPosition: true
+                        },
+                        () => {
+                          this.setState({
+                            resetWrapAroundPosition: false
+                          });
+                        }
+                      );
+                    }
                   }
                 }
-              }
-            }
-          )}
-          children={({ tx, ty }) => (
-            <div
-              className="slider-frame"
-              ref={frame => (this.frame = frame)}
-              style={frameStyles}
-              {...touchEvents}
-              {...mouseEvents}
-              onClickCapture={this.handleClick}
-            >
-              <TransitionControl
-                {...getTransitionProps(this.props, this.state)}
-                deltaX={tx}
-                deltaY={ty}
-              >
-                {addAccessibility(validChildren, slidesToShow, currentSlide)}
+              };
+            }}
+            children={({ tx, ty }) => (
+              <TransitionControl {...transitionProps} deltaX={tx} deltaY={ty}>
+                {validChildren}
               </TransitionControl>
-            </div>
-          )}
-        />
+            )}
+          />
+        </div>
 
         {this.renderControls()}
 
