@@ -19,6 +19,11 @@ export type CarouselSlideWidthProp = string | number;
 
 export interface CarouselSlideRenderControlProps {
   /**
+   * When displaying more than one slide, sets which position to anchor the current slide to.
+   */
+  cellAlign: CarouselCellAlignProp;
+
+  /**
    * Space between slides, as an integer, but reflected as px
    */
   cellSpacing: number;
