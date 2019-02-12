@@ -1,5 +1,16 @@
 # Nuka Changelog
 
+## 4.4.8 (2019-02-21)
+
+- [#501](https://github.com/FormidableLabs/nuka-carousel/pull/501) Add cellAlign type to CarouselSlideRenderControlProps interface
+- [#500](https://github.com/FormidableLabs/nuka-carousel/pull/500) Animation performance enhancements
+- [#496](https://github.com/FormidableLabs/nuka-carousel/pull/496) Upgrade react-move
+- [#492](https://github.com/FormidableLabs/nuka-carousel/pull/492) Fix Paging Dots sync, fix 'Next' button validation
+- [#490](https://github.com/FormidableLabs/nuka-carousel/pull/490) Disable animation for an initial slide when non-default slideIndex prop is passed
+- [#489](https://github.com/FormidableLabs/nuka-carousel/pull/489) Disable animation prop created
+- [#488](https://github.com/FormidableLabs/nuka-carousel/pull/488) Configurable zoom scale prop
+- [#487](https://github.com/FormidableLabs/nuka-carousel/pull/487) updates to README
+
 ## 4.4.7 (2019-01-21)
 
 - [#480](https://github.com/FormidableLabs/nuka-carousel/pull/480) Add Types to build
