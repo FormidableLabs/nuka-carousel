@@ -1022,7 +1022,7 @@ Carousel.propTypes = {
   slideWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   speed: PropTypes.number,
   swiping: PropTypes.bool,
-  transitionMode: PropTypes.oneOf(['scroll', 'fade']),
+  transitionMode: PropTypes.oneOf(['scroll', 'fade', 'scroll3d']),
   vertical: PropTypes.bool,
   width: PropTypes.string,
   withoutControls: PropTypes.bool,
