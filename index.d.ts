@@ -269,6 +269,11 @@ export interface CarouselProps {
   swiping?: boolean;
 
   /**
+   * Set the way slides transition from one to the next.
+   */
+  transitionMode?: 'scroll' | 'fade';
+
+  /**
    * Enable the slides to transition vertically
    */
   vertical?: boolean;
