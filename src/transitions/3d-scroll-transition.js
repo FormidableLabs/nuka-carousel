@@ -29,9 +29,10 @@ export default class ScrollTransition3D extends React.Component {
     let targetPosition = 0;
     let offset = 0;
     if (index !== this.props.currentSlide) {
+      let relativeDistanceToCurrentSlide = this.getRelativeDistanceToCurrentSlide(index);
       targetPosition =
-        (this.props.slideWidth + this.props.cellSpacing) *
-        this.getRelativeDistanceToCurrentSlide(index)
+        (this.props.slideWidth + this.props.cellSpacing) * relativeDistanceToCurrentSlide -
+        this.getZoomOffsetFor(relativeDistanceToCurrentSlide)
 
       offset = 0;
 
@@ -70,6 +71,17 @@ export default class ScrollTransition3D extends React.Component {
         </li>
       );
     });
+  }
+
+  getZoomOffsetFor(relativeDistanceToCurrent) {
+    if (relativeDistanceToCurrent === 0) {
+      return 0;
+    }
+    const marginGeneratedByZoom = (1 - (this.props.zoomScale ** Math.abs(relativeDistanceToCurrent))) * this.props.slideWidth;
+    const direction = relativeDistanceToCurrent < 0 ? -1 : 1;
+    const result = marginGeneratedByZoom * direction +
+    this.getZoomOffsetFor(relativeDistanceToCurrent < 0 ? relativeDistanceToCurrent + 1 : relativeDistanceToCurrent - 1);
+    return result;
   }
 
   getDistance(index, referenceIndex) {
@@ -127,6 +139,7 @@ export default class ScrollTransition3D extends React.Component {
     const transformScale = this.getTransformScale(index)
 
     return {
+      zIndex: this.props.slideCount - this.getDistanceToCurrentSlide(index),
       boxSizing: 'border-box',
       display: this.props.vertical ? 'block' : 'inline-block',
       height: 'auto',
