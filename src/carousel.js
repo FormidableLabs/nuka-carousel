@@ -63,7 +63,7 @@ const Carousel = createReactClass({
           'BottomRight',
         ]),
         style: PropTypes.object,
-        responsive: PropTypes.bool,
+        props: PropTypes.object,
       })
     ),
     dragging: PropTypes.bool,
@@ -202,6 +202,7 @@ const Carousel = createReactClass({
         </div>
         {this.props.decorators
           ? this.props.decorators.map(function(Decorator, index) {
+            var customProps = Decorator.props || {};
             return (
               <div
                 style={assign(
@@ -223,7 +224,7 @@ const Carousel = createReactClass({
                   nextSlide={self.nextSlide}
                   previousSlide={self.previousSlide}
                   goToSlide={self.goToSlide}
-                  responsive={Decorator.responsive}
+                  {...customProps}
                 />
               </div>
             );
