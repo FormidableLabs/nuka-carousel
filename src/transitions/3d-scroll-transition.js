@@ -26,61 +26,31 @@ export default class ScrollTransition3D extends React.Component {
 
   /* eslint-disable complexity */
   getSlideTargetPosition(index, positionValue) {
-    let targetPosition =
-      (this.props.slideWidth + this.props.cellSpacing) * index;
-    const startSlide = Math.min(
-      Math.abs(Math.floor(positionValue / this.props.slideWidth)),
-      this.props.slideCount - 1
-    );
-
+    let targetPosition = 0;
     let offset = 0;
+    if (index !== this.props.currentSlide) {
+      targetPosition =
+        (this.props.slideWidth + this.props.cellSpacing) *
+        this.getRelativeDistanceToCurrentSlide(index)
 
-    if (
-      this.props.animation === 'zoom' &&
-      (this.props.currentSlide === index + 1 ||
-        (this.props.currentSlide === 0 &&
-          index === this.props.children.length - 1))
-    ) {
-      offset = this.props.slideOffset;
-    } else if (
-      this.props.animation === 'zoom' &&
-      (this.props.currentSlide === index - 1 ||
-        (this.props.currentSlide === this.props.children.length - 1 &&
-          index === 0))
-    ) {
-      offset = -this.props.slideOffset;
-    }
+      offset = 0;
 
-    if (this.props.wrapAround && index !== startSlide) {
-      const direction = this.getSlideDirection(
-        startSlide,
-        this.props.currentSlide,
-        this.props.isWrappingAround
-      );
-      let slidesBefore = Math.floor((this.props.slideCount - 1) / 2);
-      let slidesAfter = this.props.slideCount - slidesBefore - 1;
-
-      if (direction < 0) {
-        const temp = slidesBefore;
-        slidesBefore = slidesAfter;
-        slidesAfter = temp;
-      }
-
-      const distanceFromStart = Math.abs(startSlide - index);
-      if (index < startSlide) {
-        if (distanceFromStart > slidesBefore) {
-          targetPosition =
-            (this.props.slideWidth + this.props.cellSpacing) *
-            (this.props.slideCount + index);
-        }
-      } else if (distanceFromStart > slidesAfter) {
-        targetPosition =
-          (this.props.slideWidth + this.props.cellSpacing) *
-          (this.props.slideCount - index) *
-          -1;
+      if (
+        this.props.animation === 'zoom' &&
+        (this.props.currentSlide === index + 1 ||
+          (this.props.currentSlide === 0 &&
+            index === this.props.children.length - 1))
+      ) {
+        offset = this.props.slideOffset;
+      } else if (
+        this.props.animation === 'zoom' &&
+        (this.props.currentSlide === index - 1 ||
+          (this.props.currentSlide === this.props.children.length - 1 &&
+            index === 0))
+      ) {
+        offset = -this.props.slideOffset;
       }
     }
-
     return targetPosition + offset;
   }
   /* eslint-enable complexity */
@@ -114,6 +84,20 @@ export default class ScrollTransition3D extends React.Component {
     ) : (
       this.getDistance(index, this.props.currentSlide)
     )
+  }
+
+  getRelativeDistanceToCurrentSlide(index) {
+    const distanceByLeftEge = this.getDistance(index, 0) + this.getDistance(this.props.currentSlide, this.props.slideCount);
+    const distanceByRightEdge = this.getDistance(index, this.props.slideCount) + this.getDistance(this.props.currentSlide, 0);
+    const absoluteDirectDistance = this.getDistance(index, this.props.currentSlide);
+
+    const minimumDistance = Math.min(Math.min(distanceByLeftEge, distanceByRightEdge), absoluteDirectDistance);
+
+    switch (minimumDistance) {
+      case absoluteDirectDistance: return index - this.props.currentSlide; break;
+      case distanceByLeftEge: return distanceByLeftEge; break;
+      case distanceByRightEdge: return -distanceByRightEdge; break;
+    }
   }
 
   getTransformScale(index) {
@@ -164,18 +148,13 @@ export default class ScrollTransition3D extends React.Component {
   }
 
   getListStyles(styles) {
-    const { deltaX, deltaY } = styles;
     const listWidth =
       this.props.slideWidth * React.Children.count(this.props.children);
     const spacingOffset =
       this.props.cellSpacing * React.Children.count(this.props.children);
-    const transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
     return {
-      transform,
-      WebkitTransform: transform,
-      msTransform: `translate(${deltaX}px, ${deltaY}px)`,
+      left: `calc(50% - (${this.props.slideWidth}px / 2))`,
       position: 'relative',
-      display: 'block',
       margin: this.props.vertical
         ? `${(this.props.cellSpacing / 2) * -1}px 0px`
         : `0px ${(this.props.cellSpacing / 2) * -1}px`,
