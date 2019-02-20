@@ -25,14 +25,17 @@ export default class ScrollTransition3D extends React.Component {
   }
 
   /* eslint-disable complexity */
-  getSlideTargetPosition(index, positionValue) {
+  getSlideTargetPosition(index) {
     let targetPosition = 0;
     let offset = 0;
     if (index !== this.props.currentSlide) {
-      let relativeDistanceToCurrentSlide = this.getRelativeDistanceToCurrentSlide(index);
+      const relativeDistanceToCurrentSlide = this.getRelativeDistanceToCurrentSlide(
+        index
+      );
       targetPosition =
-        (this.props.slideWidth + this.props.cellSpacing) * relativeDistanceToCurrentSlide -
-        this.getZoomOffsetFor(relativeDistanceToCurrentSlide)
+        (this.props.slideWidth + this.props.cellSpacing) *
+          relativeDistanceToCurrentSlide -
+        this.getZoomOffsetFor(relativeDistanceToCurrentSlide);
 
       offset = 0;
 
@@ -57,10 +60,10 @@ export default class ScrollTransition3D extends React.Component {
   /* eslint-enable complexity */
 
   formatChildren(children) {
-    const { top, left, currentSlide, slidesToShow } = this.props;
+    const { top, left, slidesToShow } = this.props;
     const positionValue = this.props.vertical ? top : left;
     return React.Children.map(children, (child, index) => {
-      const visible = this.getDistanceToCurrentSlide(index) <= (slidesToShow / 2);
+      const visible = this.getDistanceToCurrentSlide(index) <= slidesToShow / 2;
       return (
         <li
           className={`slider-slide${visible ? ' slide-visible' : ''}`}
@@ -77,67 +80,94 @@ export default class ScrollTransition3D extends React.Component {
     if (relativeDistanceToCurrent === 0) {
       return 0;
     }
-    const marginGeneratedByZoom = (1 - (this.props.zoomScale ** Math.abs(relativeDistanceToCurrent))) * this.props.slideWidth;
+    const marginGeneratedByZoom =
+      (1 - this.props.zoomScale ** Math.abs(relativeDistanceToCurrent)) *
+      this.props.slideWidth;
     const direction = relativeDistanceToCurrent < 0 ? -1 : 1;
-    const result = marginGeneratedByZoom * direction +
-    this.getZoomOffsetFor(relativeDistanceToCurrent < 0 ? relativeDistanceToCurrent + 1 : relativeDistanceToCurrent - 1);
+    const result =
+      marginGeneratedByZoom * direction +
+      this.getZoomOffsetFor(
+        relativeDistanceToCurrent < 0
+          ? relativeDistanceToCurrent + 1
+          : relativeDistanceToCurrent - 1
+      );
     return result;
   }
 
   getDistance(index, referenceIndex) {
-    return Math.abs(index - referenceIndex)
+    return Math.abs(index - referenceIndex);
   }
 
   getDistanceToCurrentSlide(index) {
-    return this.props.wrapAround ? (
-      Math.min(Math.min(this.getDistance(index, 0) + this.getDistance(this.props.currentSlide, this.props.slideCount),
-        this.getDistance(index, this.props.slideCount) + this.getDistance(this.props.currentSlide, 0)),
-        this.getDistance(index, this.props.currentSlide))
-    ) : (
-      this.getDistance(index, this.props.currentSlide)
-    )
+    return this.props.wrapAround
+      ? Math.min(
+          Math.min(
+            this.getDistance(index, 0) +
+              this.getDistance(this.props.currentSlide, this.props.slideCount),
+            this.getDistance(index, this.props.slideCount) +
+              this.getDistance(this.props.currentSlide, 0)
+          ),
+          this.getDistance(index, this.props.currentSlide)
+        )
+      : this.getDistance(index, this.props.currentSlide);
   }
 
   getRelativeDistanceToCurrentSlide(index) {
-    const distanceByLeftEge = this.getDistance(index, 0) + this.getDistance(this.props.currentSlide, this.props.slideCount);
-    const distanceByRightEdge = this.getDistance(index, this.props.slideCount) + this.getDistance(this.props.currentSlide, 0);
-    const absoluteDirectDistance = this.getDistance(index, this.props.currentSlide);
+    const distanceByLeftEge =
+      this.getDistance(index, 0) +
+      this.getDistance(this.props.currentSlide, this.props.slideCount);
+    const distanceByRightEdge =
+      this.getDistance(index, this.props.slideCount) +
+      this.getDistance(this.props.currentSlide, 0);
+    const absoluteDirectDistance = this.getDistance(
+      index,
+      this.props.currentSlide
+    );
 
-    const minimumDistance = Math.min(Math.min(distanceByLeftEge, distanceByRightEdge), absoluteDirectDistance);
+    const minimumDistance = Math.min(
+      Math.min(distanceByLeftEge, distanceByRightEdge),
+      absoluteDirectDistance
+    );
 
     switch (minimumDistance) {
-      case absoluteDirectDistance: return index - this.props.currentSlide; break;
-      case distanceByLeftEge: return distanceByLeftEge; break;
-      case distanceByRightEdge: return -distanceByRightEdge; break;
+      case absoluteDirectDistance:
+        return index - this.props.currentSlide;
+      case distanceByLeftEge:
+        return distanceByLeftEge;
+      case distanceByRightEdge:
+        return -distanceByRightEdge;
+      default:
+        return 0;
     }
   }
 
   getTransformScale(index) {
-    return this.props.currentSlide !== index ? (
-      Math.max(
-        Math.min(this.props.zoomScale ** this.getDistanceToCurrentSlide(index), MAX_ZOOM_SCALE),
-        MIN_ZOOM_SCALE
-      )
-    ) : (
-      1.0
-    )
+    return this.props.currentSlide !== index
+      ? Math.max(
+          Math.min(
+            this.props.zoomScale ** this.getDistanceToCurrentSlide(index),
+            MAX_ZOOM_SCALE
+          ),
+          MIN_ZOOM_SCALE
+        )
+      : 1.0;
   }
 
   getOpacityScale(index) {
-    return this.props.currentSlide !== index ? (
-      Math.max(
-        Math.min(this.props.opacityScale ** this.getDistanceToCurrentSlide(index), MAX_ZOOM_SCALE),
-        MIN_ZOOM_SCALE
-      )
-    ) : (
-      1.0
-    )
+    return this.props.currentSlide !== index
+      ? Math.max(
+          Math.min(
+            this.props.opacityScale ** this.getDistanceToCurrentSlide(index),
+            MAX_ZOOM_SCALE
+          ),
+          MIN_ZOOM_SCALE
+        )
+      : 1.0;
   }
 
   getSlideStyles(index, positionValue) {
     const targetPosition = this.getSlideTargetPosition(index, positionValue);
-    const transformScale = this.getTransformScale(index)
-
+    const transformScale = this.getTransformScale(index);
     return {
       zIndex: this.props.slideCount - this.getDistanceToCurrentSlide(index),
       boxSizing: 'border-box',
@@ -153,14 +183,15 @@ export default class ScrollTransition3D extends React.Component {
       position: 'absolute',
       top: this.props.vertical ? targetPosition : 0,
       transform: `scale(${transformScale})`,
-      transition: 'left 0.4s ease-out, transform 0.4s ease-out, opacity 0.4s ease-out',
+      transition:
+        'left 0.4s ease-out, transform 0.4s ease-out, opacity 0.4s ease-out',
       verticalAlign: 'top',
       width: this.props.vertical ? '100%' : this.props.slideWidth,
       opacity: this.getOpacityScale(index)
     };
   }
 
-  getListStyles(styles) {
+  getListStyles() {
     const listWidth =
       this.props.slideWidth * React.Children.count(this.props.children);
     const spacingOffset =
@@ -185,14 +216,8 @@ export default class ScrollTransition3D extends React.Component {
 
   render() {
     const children = this.formatChildren(this.props.children);
-    const deltaX = this.props.deltaX;
-    const deltaY = this.props.deltaY;
-
     return (
-      <ul
-        className="slider-list"
-        style={this.getListStyles({ deltaX, deltaY })}
-      >
+      <ul className="slider-list" style={this.getListStyles()}>
         {children}
       </ul>
     );
@@ -215,7 +240,7 @@ ScrollTransition3D.propTypes = {
   vertical: PropTypes.bool,
   wrapAround: PropTypes.bool,
   zoomScale: PropTypes.number,
-  opacityScale: PropTypes.number,
+  opacityScale: PropTypes.number
 };
 
 ScrollTransition3D.defaultProps = {
@@ -233,5 +258,5 @@ ScrollTransition3D.defaultProps = {
   vertical: false,
   wrapAround: true,
   zoomScale: 0.75,
-  opacityScale: 0.65,
+  opacityScale: 0.65
 };
