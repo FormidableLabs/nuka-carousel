@@ -152,7 +152,7 @@ export class PagingDots extends React.Component {
     return {
       border: 0,
       background: 'transparent',
-      color: 'black',
+      color: active ? '#6668F7' : 'white',
       cursor: 'pointer',
       padding: 10,
       fontSize: 24,
