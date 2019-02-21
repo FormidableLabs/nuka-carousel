@@ -1026,7 +1026,8 @@ Carousel.propTypes = {
   vertical: PropTypes.bool,
   width: PropTypes.string,
   withoutControls: PropTypes.bool,
-  wrapAround: PropTypes.bool
+  wrapAround: PropTypes.bool,
+  opacityScale: PropTypes.number
 };
 
 Carousel.defaultProps = {

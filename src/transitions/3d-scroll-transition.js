@@ -227,8 +227,6 @@ export default class ScrollTransition3D extends React.Component {
 ScrollTransition3D.propTypes = {
   cellSpacing: PropTypes.number,
   currentSlide: PropTypes.number,
-  deltaX: PropTypes.number,
-  deltaY: PropTypes.number,
   dragging: PropTypes.bool,
   isWrappingAround: PropTypes.bool,
   left: PropTypes.number,
@@ -240,14 +238,13 @@ ScrollTransition3D.propTypes = {
   vertical: PropTypes.bool,
   wrapAround: PropTypes.bool,
   zoomScale: PropTypes.number,
-  opacityScale: PropTypes.number
+  opacityScale: PropTypes.number,
+  slidesToShow: PropTypes.number
 };
 
 ScrollTransition3D.defaultProps = {
   cellSpacing: 0,
   currentSlide: 0,
-  deltaX: 0,
-  deltaY: 0,
   dragging: false,
   isWrappingAround: false,
   left: 0,
@@ -258,5 +255,6 @@ ScrollTransition3D.defaultProps = {
   vertical: false,
   wrapAround: true,
   zoomScale: 0.75,
-  opacityScale: 0.65
+  opacityScale: 0.65,
+  slidesToShow: 3
 };

@@ -143,6 +143,7 @@ export const getTransitionProps = (props, state) => {
     top: state.top,
     vertical: props.vertical,
     wrapAround: props.wrapAround,
-    zoomScale: props.zoomScale
+    zoomScale: props.zoomScale,
+    opacityScale: props.opacityScale
   };
 };
