@@ -60,13 +60,16 @@ export default class ScrollTransition3D extends React.Component {
   /* eslint-enable complexity */
 
   formatChildren(children) {
-    const { top, left, slidesToShow } = this.props;
+    const { top, left, currentSlide, slidesToShow } = this.props;
     const positionValue = this.props.vertical ? top : left;
     return React.Children.map(children, (child, index) => {
       const visible = this.getDistanceToCurrentSlide(index) <= slidesToShow / 2;
+      const current = currentSlide === index;
       return (
         <li
-          className={`slider-slide${visible ? ' slide-visible' : ''}`}
+          className={`slider-slide${visible ? ' slide-visible' : ''}${
+            current ? ' slide-current' :
+            ''}`}
           style={this.getSlideStyles(index, positionValue)}
           key={index}
         >
