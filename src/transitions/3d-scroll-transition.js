@@ -68,8 +68,8 @@ export default class ScrollTransition3D extends React.Component {
       return (
         <li
           className={`slider-slide${visible ? ' slide-visible' : ''}${
-            current ? ' slide-current' :
-            ''}`}
+            current ? ' slide-current' : ''
+          }`}
           style={this.getSlideStyles(index, positionValue)}
           key={index}
         >
@@ -204,7 +204,8 @@ export default class ScrollTransition3D extends React.Component {
       position: 'relative',
       margin: this.props.vertical
         ? `${(this.props.cellSpacing / 2) * -1}px 0px`
-        : `${this.props.slideListMargin}px ${(this.props.cellSpacing / 2) * -1}px`,
+        : `${this.props.slideListMargin}px ${(this.props.cellSpacing / 2) *
+            -1}px`,
       padding: 0,
       height: this.props.vertical
         ? listWidth + spacingOffset
