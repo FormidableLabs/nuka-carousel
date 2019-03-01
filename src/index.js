@@ -872,7 +872,7 @@ export default class Carousel extends React.Component {
     } = this.props;
     const duration =
       this.state.dragging ||
-      this.state.resetWrapAroundPosition ||
+      this.state.resetWrapAroundPosition && this.props.wrapAround ||
       disableAnimation ||
       !this.state.hasInteraction
         ? 0
