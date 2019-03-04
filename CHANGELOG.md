@@ -1,5 +1,9 @@
 # Nuka Changelog
 
+## 4.4.9 (2019-03-04)
+
+- [#508](https://github.com/FormidableLabs/nuka-carousel/pull/508) Fix speed slide flicker/blinking
+
 ## 4.4.8 (2019-02-21)
 
 - [#501](https://github.com/FormidableLabs/nuka-carousel/pull/501) Add cellAlign type to CarouselSlideRenderControlProps interface
