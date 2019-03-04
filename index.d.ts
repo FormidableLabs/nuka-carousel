@@ -270,8 +270,10 @@ export interface CarouselProps {
 
   /**
    * Set the way slides transition from one to the next.
+   * @example 'fade'
+   * @example 'scroll'
    */
-  transitionMode?: 'scroll' | 'fade';
+  transitionMode?: string;
 
   /**
    * Enable the slides to transition vertically
