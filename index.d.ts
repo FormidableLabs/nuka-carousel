@@ -2,8 +2,8 @@
 //                 Alex Smith <https://github.com/altaudio>
 //                 matt-sungwook <https://github.com/matt-sungwook>
 
-import * as React from 'react';
 import * as CSS from 'csstype';
+import * as React from 'react';
 
 export default class Carousel extends React.Component<
   CarouselProps,
