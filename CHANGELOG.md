@@ -1,5 +1,10 @@
 # Nuka Changelog
 
+## 4.5.0 (2019-03-06)
+
+- [#511](https://github.com/FormidableLabs/nuka-carousel/pull/511) Adds style and transitionMode types
+- [#510](https://github.com/FormidableLabs/nuka-carousel/pull/510) Adds new prop to allow autoplay in reverse
+
 ## 4.4.9 (2019-03-04)
 
 - [#508](https://github.com/FormidableLabs/nuka-carousel/pull/508) Fix speed slide flicker/blinking
