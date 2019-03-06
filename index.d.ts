@@ -104,6 +104,12 @@ export interface CarouselProps {
   autoplayInterval?: number;
 
   /**
+   * Autoplay cycles through slide indexes in reverse
+   * @default false
+   */
+  autoplayReverse?: boolean;
+
+  /**
    * Hook to be called before a slide is changed
    * @param currentSlide Index of the current slide
    * @param endSlide Index of the last slide

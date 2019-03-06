@@ -461,10 +461,20 @@ export default class Carousel extends React.Component {
 
   autoplayIterator() {
     if (this.props.wrapAround) {
-      this.nextSlide();
+      if (this.props.autoplayReverse) {
+        this.previousSlide();
+      } else {
+        this.nextSlide();
+      }
       return;
     }
-    if (
+    if (this.props.autoplayReverse) {
+      if (this.state.currentSlide !== 0) {
+        this.previousSlide();
+      } else {
+        this.stopAutoplay();
+      }
+    } else if (
       this.state.currentSlide !==
       this.state.slideCount - this.state.slidesToShow
     ) {
@@ -990,6 +1000,7 @@ Carousel.propTypes = {
   autoGenerateStyleTag: PropTypes.bool,
   autoplay: PropTypes.bool,
   autoplayInterval: PropTypes.number,
+  autoplayReverse: PropTypes.bool,
   beforeSlide: PropTypes.func,
   cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
   cellSpacing: PropTypes.number,
@@ -1037,6 +1048,7 @@ Carousel.defaultProps = {
   autoGenerateStyleTag: true,
   autoplay: false,
   autoplayInterval: 3000,
+  autoplayReverse: false,
   beforeSlide() {},
   cellAlign: 'left',
   cellSpacing: 0,
