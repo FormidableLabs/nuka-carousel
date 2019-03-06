@@ -2,6 +2,7 @@
 //                 Alex Smith <https://github.com/altaudio>
 //                 matt-sungwook <https://github.com/matt-sungwook>
 
+import * as CSS from 'csstype';
 import * as React from 'react';
 
 export default class Carousel extends React.Component<
@@ -12,6 +13,8 @@ export default class Carousel extends React.Component<
 export type CarouselCellAlignProp = 'left' | 'center' | 'right';
 
 export type CarouselHeightModeProp = 'first' | 'current' | 'max';
+
+export type CarouselTransitionModeProp = 'fade' | 'scroll';
 
 export type CarouselSlidesToScrollProp = number | 'auto';
 
@@ -83,6 +86,12 @@ export interface CarouselSlideRenderControlProps {
 export type CarouselRenderControl = (
   props: CarouselSlideRenderControlProps
 ) => React.ReactNode;
+
+/**
+ * All available DOM style properties and their types
+ * https://www.npmjs.com/package/csstype
+ */
+export interface CSSProperties extends CSS.Properties<string | number> {}
 
 export interface CarouselProps {
   /**
@@ -270,16 +279,19 @@ export interface CarouselProps {
   speed?: number;
 
   /**
+   * style object
+   */
+  style?: CSSProperties;
+
+  /**
    * Enable touch swipe/dragging
    */
   swiping?: boolean;
 
   /**
-   * Set the way slides transition from one to the next.
-   * @example 'fade'
-   * @example 'scroll'
+   * Set the way slides transition from one to the next
    */
-  transitionMode?: string;
+  transitionMode?: CarouselTransitionModeProp;
 
   /**
    * Enable the slides to transition vertically
