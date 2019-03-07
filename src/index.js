@@ -954,7 +954,8 @@ export default class Carousel extends React.Component {
                           left: newLeft,
                           top: newTop,
                           isWrappingAround: false,
-                          resetWrapAroundPosition: true
+                          resetWrapAroundPosition: true,
+                          dragging: false
                         },
                         () => {
                           this.setState({
@@ -978,7 +979,9 @@ export default class Carousel extends React.Component {
             )}
           />
         </div>
+
         {this.renderControls()}
+
         {this.props.autoGenerateStyleTag && (
           <style
             type="text/css"
