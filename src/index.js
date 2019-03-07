@@ -899,12 +899,7 @@ export default class Carousel extends React.Component {
     const touchEvents = this.getTouchEvents();
     const mouseEvents = this.getMouseEvents();
     const TransitionControl = Transitions[this.props.transitionMode];
-    const validChildren = addAccessibility(
-      getValidChildren(this.props.children),
-      slidesToShow,
-      currentSlide
-    );
-    const transitionProps = getTransitionProps(this.props, this.state);
+    const validChildren = getValidChildren(this.props.children);
 
     return (
       <div
@@ -931,12 +926,10 @@ export default class Carousel extends React.Component {
           <Animate
             show
             start={{ tx: 0, ty: 0 }}
-            update={() => {
-              const { tx, ty } = this.getOffsetDeltas();
-
-              return {
-                tx,
-                ty,
+            update={Object.assign(
+              {},
+              this.getOffsetDeltas(this.touchObject, this.props, this.state),
+              {
                 timing: {
                   duration,
                   ease: this.state.easing
@@ -959,8 +952,7 @@ export default class Carousel extends React.Component {
                           left: newLeft,
                           top: newTop,
                           isWrappingAround: false,
-                          resetWrapAroundPosition: true,
-                          dragging: false
+                          resetWrapAroundPosition: true
                         },
                         () => {
                           this.setState({
@@ -971,18 +963,20 @@ export default class Carousel extends React.Component {
                     }
                   }
                 }
-              };
-            }}
+              }
+            )}
             children={({ tx, ty }) => (
-              <TransitionControl {...transitionProps} deltaX={tx} deltaY={ty}>
-                {validChildren}
+              <TransitionControl
+                {...getTransitionProps(this.props, this.state)}
+                deltaX={tx}
+                deltaY={ty}
+              >
+                {addAccessibility(validChildren, slidesToShow, currentSlide)}
               </TransitionControl>
             )}
           />
         </div>
-
         {this.renderControls()}
-
         {this.props.autoGenerateStyleTag && (
           <style
             type="text/css"
