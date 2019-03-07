@@ -926,10 +926,12 @@ export default class Carousel extends React.Component {
           <Animate
             show
             start={{ tx: 0, ty: 0 }}
-            update={Object.assign(
-              {},
-              this.getOffsetDeltas(this.touchObject, this.props, this.state),
-              {
+            update={() => {
+              const { tx, ty } = this.getOffsetDeltas();
+
+              return {
+                tx,
+                ty,
                 timing: {
                   duration,
                   ease: this.state.easing
@@ -963,8 +965,8 @@ export default class Carousel extends React.Component {
                     }
                   }
                 }
-              }
-            )}
+              };
+            }}
             children={({ tx, ty }) => (
               <TransitionControl
                 {...getTransitionProps(this.props, this.state)}
