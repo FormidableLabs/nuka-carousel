@@ -1,6 +1,10 @@
 # Nuka Changelog
 
-## 4.5.0 (2019-03-06)
+## 4.5.2 (2019-03-08)
+
+- Fixes dragging bug
+
+## 4.5.1 (2019-03-06)
 
 - [#511](https://github.com/FormidableLabs/nuka-carousel/pull/511) Adds style and transitionMode types
 - [#510](https://github.com/FormidableLabs/nuka-carousel/pull/510) Adds new prop to allow autoplay in reverse
