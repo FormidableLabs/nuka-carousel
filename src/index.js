@@ -954,8 +954,7 @@ export default class Carousel extends React.Component {
                           left: newLeft,
                           top: newTop,
                           isWrappingAround: false,
-                          resetWrapAroundPosition: true,
-                          dragging: false
+                          resetWrapAroundPosition: true
                         },
                         () => {
                           this.setState({
