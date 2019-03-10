@@ -18,7 +18,8 @@ class App extends React.Component {
       cellAlign: 'left',
       transitionMode: 'scroll',
       heightMode: 'max',
-      withoutControls: false
+      withoutControls: false,
+      initialCellAlign: null
     };
 
     this.handleImageClick = this.handleImageClick.bind(this);
@@ -49,6 +50,7 @@ class App extends React.Component {
           wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
           heightMode={this.state.heightMode}
+          initialCellAlign={this.state.initialCellAlign}
           renderTopCenterControls={({ currentSlide }) => (
             <div
               style={{
@@ -140,6 +142,33 @@ class App extends React.Component {
                   <button onClick={() => this.setState({ cellAlign: 'right' })}>
                     Right
                   </button>
+                  {this.state.cellAlign === 'center' && (
+                    <>
+                      <br />
+                      <button
+                        onClick={() =>
+                          this.setState({
+                            initialCellAlign: this.state.initialCellAlign
+                              ? null
+                              : 'left'
+                          })
+                        }
+                      >
+                        Toggle initial cellAlign Left
+                      </button>
+                      <button
+                        onClick={() =>
+                          this.setState({
+                            initialCellAlign: this.state.initialCellAlign
+                              ? null
+                              : 'right'
+                          })
+                        }
+                      >
+                        Toggle initial cellAlign Right
+                      </button>
+                    </>
+                  )}
                 </div>
               )}
               <div style={{ marginLeft: 'auto' }}>
