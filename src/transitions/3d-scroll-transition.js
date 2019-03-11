@@ -116,31 +116,35 @@ export default class ScrollTransition3D extends React.Component {
   }
 
   getRelativeDistanceToCurrentSlide(index) {
-    const distanceByLeftEge =
-      this.getDistance(index, 0) +
-      this.getDistance(this.props.currentSlide, this.props.slideCount);
-    const distanceByRightEdge =
-      this.getDistance(index, this.props.slideCount) +
-      this.getDistance(this.props.currentSlide, 0);
-    const absoluteDirectDistance = this.getDistance(
-      index,
-      this.props.currentSlide
-    );
+    if (this.props.wrapAround) {
+      const distanceByLeftEge =
+        this.getDistance(index, 0) +
+        this.getDistance(this.props.currentSlide, this.props.slideCount);
+      const distanceByRightEdge =
+        this.getDistance(index, this.props.slideCount) +
+        this.getDistance(this.props.currentSlide, 0);
+      const absoluteDirectDistance = this.getDistance(
+        index,
+        this.props.currentSlide
+      );
 
-    const minimumDistance = Math.min(
-      Math.min(distanceByLeftEge, distanceByRightEdge),
-      absoluteDirectDistance
-    );
+      const minimumDistance = Math.min(
+        Math.min(distanceByLeftEge, distanceByRightEdge),
+        absoluteDirectDistance
+      );
 
-    switch (minimumDistance) {
-      case absoluteDirectDistance:
-        return index - this.props.currentSlide;
-      case distanceByLeftEge:
-        return distanceByLeftEge;
-      case distanceByRightEdge:
-        return -distanceByRightEdge;
-      default:
-        return 0;
+      switch (minimumDistance) {
+        case absoluteDirectDistance:
+          return index - this.props.currentSlide;
+        case distanceByLeftEge:
+          return distanceByLeftEge;
+        case distanceByRightEdge:
+          return -distanceByRightEdge;
+        default:
+          return 0;
+      }
+    } else {
+      return this.getDistance(index, this.props.currentSlide);
     }
   }
 
