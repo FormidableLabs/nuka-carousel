@@ -144,7 +144,7 @@ export default class ScrollTransition3D extends React.Component {
           return 0;
       }
     } else {
-      return this.getDistance(index, this.props.currentSlide);
+      return index - this.props.currentSlide;
     }
   }
 
