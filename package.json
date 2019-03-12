@@ -1,12 +1,13 @@
 {
   "name": "nuka-carousel",
-  "version": "4.4.8",
+  "version": "4.5.2",
   "description": "Pure React Carousel",
   "main": "index.js",
   "module": "es/index.js",
   "jsnext:main": "es/index.js",
   "types": "index.d.ts",
   "dependencies": {
+    "csstype": "^2.6.3",
     "d3-ease": "^1.0.3",
     "exenv": "^1.2.0",
     "prop-types": "^15.6.0",
