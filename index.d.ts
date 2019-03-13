@@ -101,6 +101,12 @@ export interface CarouselProps {
   afterSlide?: (prevSlide: number) => void;
 
   /**
+   * Will generate a style tag to help ensure images are displayed properly
+   * @default true
+   */
+  autoGenerateStyleTag?: boolean;
+
+  /**
    * Autoplay mode active
    * @default false
    */
