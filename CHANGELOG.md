@@ -1,5 +1,10 @@
 # Nuka Changelog
 
+## 4.5.3 (2019-03-18)
+
+- Resolve dependency vulnerabilities
+- [#506](https://github.com/FormidableLabs/nuka-carousel/pull/506) Add Scroll3D transition mode option
+
 ## 4.5.2 (2019-03-08)
 
 - Fixes dragging bug
