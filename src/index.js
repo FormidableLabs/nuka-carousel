@@ -1034,11 +1034,13 @@ Carousel.propTypes = {
   slideWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   speed: PropTypes.number,
   swiping: PropTypes.bool,
-  transitionMode: PropTypes.oneOf(['scroll', 'fade']),
+  transitionMode: PropTypes.oneOf(['scroll', 'fade', 'scroll3d']),
   vertical: PropTypes.bool,
   width: PropTypes.string,
   withoutControls: PropTypes.bool,
-  wrapAround: PropTypes.bool
+  wrapAround: PropTypes.bool,
+  opacityScale: PropTypes.number,
+  slideListMargin: PropTypes.number
 };
 
 Carousel.defaultProps = {
@@ -1076,7 +1078,8 @@ Carousel.defaultProps = {
   vertical: false,
   width: '100%',
   withoutControls: false,
-  wrapAround: false
+  wrapAround: false,
+  slideListMargin: 10
 };
 
 export { NextButton, PreviousButton, PagingDots };
