@@ -173,12 +173,8 @@ export default class Carousel extends React.Component {
   getTouchEvents() {
     if (this.props.swiping === false) {
       return {
-        onTouchStart: () => {
-          this.handleMouseOver();
-        },
-        onTouchEnd: () => {
-          this.handleMouseOut();
-        }
+        onTouchStart: this.handleMouseOver,
+        onTouchEnd: this.handleMouseOut
       };
     }
 
@@ -254,16 +250,16 @@ export default class Carousel extends React.Component {
   getMouseEvents() {
     if (this.props.dragging === false) {
       return {
-        onMouseOver: () => this.handleMouseOver(),
+        onMouseOver: this.handleMouseOver,
 
-        onMouseOut: () => this.handleMouseOut()
+        onMouseOut: this.handleMouseOut
       };
     }
 
     return {
-      onMouseOver: () => this.handleMouseOver(),
+      onMouseOver: this.handleMouseOver,
 
-      onMouseOut: () => this.handleMouseOut(),
+      onMouseOut: this.handleMouseOut,
 
       onMouseDown: e => {
         this.touchObject = {
