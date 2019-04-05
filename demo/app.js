@@ -10,7 +10,7 @@ class App extends React.Component {
     this.state = {
       slideIndex: 0,
       length: 6,
-      wrapAround: false,
+      wrapAround: true,
       animation: undefined,
       underlineHeader: false,
       zoomScale: 0.5,

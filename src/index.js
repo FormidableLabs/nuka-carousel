@@ -587,6 +587,8 @@ export default class Carousel extends React.Component {
         return;
       }
       if (index >= this.state.slideCount) {
+        // (index === this.state.slideCount - 1)
+        console.log(this.state.wrapToIndex, this.state.left);
         props.beforeSlide(this.state.currentSlide, 0);
         this.setState(
           prevState => ({
@@ -602,12 +604,14 @@ export default class Carousel extends React.Component {
                   prevState.currentSlide
                 )
               : 0,
+            // setting currentSlide to 0 causes the
             currentSlide: 0,
             isWrappingAround: true,
             wrapToIndex: index
           }),
           () => {
             setTimeout(() => {
+              console.log(this.state.wrapToIndex, this.state.left);
               this.resetAutoplay();
               this.isTransitioning = false;
               if (index !== previousSlide) {
@@ -634,6 +638,7 @@ export default class Carousel extends React.Component {
           }),
           () => {
             setTimeout(() => {
+              // console.log(this.state.wrapToIndex, this.state.left);
               this.resetAutoplay();
               this.isTransitioning = false;
               if (index !== previousSlide) {
