@@ -151,12 +151,11 @@ export class PagingDots extends React.Component {
   getButtonStyles(active) {
     return {
       border: 0,
-      background: 'transparent',
-      color: 'black',
       cursor: 'pointer',
-      padding: 10,
-      fontSize: 24,
-      opacity: active ? 1 : 0.5
+      opacity: active ? 1 : 0.5,
+      borderRadius: '3px',
+      background: 'transparent',
+      padding: '10px'
     };
   }
 
@@ -171,13 +170,30 @@ export class PagingDots extends React.Component {
       <ul style={this.getListStyles()}>
         {indexes.map(index => {
           return (
-            <li style={this.getListItemStyles()} key={index}>
+            <li
+              style={this.getListItemStyles()}
+              key={index}
+              className={
+                this.props.currentSlide === index
+                  ? 'paging-item active'
+                  : 'paging-item'
+              }
+            >
               <button
                 style={this.getButtonStyles(this.props.currentSlide === index)}
                 onClick={this.props.goToSlide.bind(null, index)}
                 aria-label={`slide ${index + 1} bullet`}
               >
-                &bull;
+                <span
+                  className="paging-dot"
+                  style={{
+                    display: 'block',
+                    borderRadius: '3px',
+                    width: '6px',
+                    height: '6px',
+                    background: 'black'
+                  }}
+                />
               </button>
             </li>
           );
