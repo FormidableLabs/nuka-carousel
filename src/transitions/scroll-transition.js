@@ -88,23 +88,65 @@ export default class ScrollTransition extends React.Component {
   formatChildren(children) {
     const { top, left, currentSlide, slidesToShow } = this.props;
     const positionValue = this.props.vertical ? top : left;
-    return React.Children.map(children, (child, index) => {
-      const visible =
-        index >= currentSlide && index < currentSlide + slidesToShow;
+
+    const renderSlide = (visible, index, key, targetPosition, child) => {
       return (
         <li
           className={`slider-slide${visible ? ' slide-visible' : ''}`}
-          style={this.getSlideStyles(index, positionValue)}
-          key={index}
+          style={this.getSlideStyles(index, targetPosition)}
+          key={`${key}${index}`}
         >
           {child}
         </li>
       );
+    };
+
+    let slides = React.Children.map(children, (child, index) => {
+      const visible =
+        index >= currentSlide && index < currentSlide + slidesToShow;
+      const targetPosition = this.getSlideTargetPosition(index, positionValue);
+      return renderSlide(visible, index, '', targetPosition, child);
     });
+
+    if (this.props.wrapAround) {
+      const carouselWidth =
+        (this.props.slideWidth + this.props.cellSpacing) *
+        this.props.slideCount;
+
+      const slidesNext = React.Children.map(children, (child, index) => {
+        const targetPosition =
+          this.getSlideTargetPosition(index, positionValue) + carouselWidth;
+
+        return renderSlide(
+          false,
+          index,
+          'N',
+          targetPosition,
+          React.cloneElement(child)
+        );
+      });
+
+      const slidesPrev = React.Children.map(children, (child, index) => {
+        const targetPosition =
+          this.getSlideTargetPosition(index, positionValue) +
+          carouselWidth * -1;
+
+        return renderSlide(
+          false,
+          index,
+          'P',
+          targetPosition,
+          React.cloneElement(child)
+        );
+      });
+
+      slides = slides.concat(slidesPrev).concat(slidesNext);
+    }
+
+    return slides;
   }
 
-  getSlideStyles(index, positionValue) {
-    const targetPosition = this.getSlideTargetPosition(index, positionValue);
+  getSlideStyles(index, targetPosition) {
     const transformScale =
       this.props.animation === 'zoom' && this.props.currentSlide !== index
         ? Math.max(
