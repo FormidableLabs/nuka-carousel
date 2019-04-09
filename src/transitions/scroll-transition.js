@@ -107,7 +107,7 @@ export default class ScrollTransition extends React.Component {
       const targetPosition = this.getSlideTargetPosition(index, positionValue);
       return renderSlide(visible, index, '', targetPosition, child);
     });
-
+    // clone slides
     if (this.props.wrapAround) {
       const carouselWidth =
         (this.props.slideWidth + this.props.cellSpacing) *
