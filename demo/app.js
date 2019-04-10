@@ -14,10 +14,10 @@ class App extends React.Component {
       animation: undefined,
       underlineHeader: false,
       zoomScale: 0.5,
-      slidesToShow: 2,
-      slidesToScroll: 2,
-      cellAlign: 'center',
-      transitionMode: 'scroll',
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      cellAlign: 'left',
+      transitionMode: 'fade',
       heightMode: 'max',
       withoutControls: false
     };

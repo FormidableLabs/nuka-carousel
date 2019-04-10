@@ -26,12 +26,17 @@ export default class ScrollTransition extends React.Component {
 
   /* eslint-disable complexity */
   getSlideTargetPosition(index, positionValue) {
-    let targetPosition =
-      (this.props.slideWidth + this.props.cellSpacing) * index;
     const startSlide = Math.min(
       Math.abs(Math.floor(positionValue / this.props.slideWidth)),
       this.props.slideCount - 1
     );
+
+    if (positionValue < 0) {
+      positionValue =
+        this.props.slideWidth * this.props.slideCount + positionValue;
+    }
+    let targetPosition =
+      (this.props.slideWidth + this.props.cellSpacing) * index;
 
     let offset = 0;
 
@@ -48,7 +53,7 @@ export default class ScrollTransition extends React.Component {
         (this.props.currentSlide === this.props.children.length - 1 &&
           index === 0))
     ) {
-      offset = -this.props.slideOffset;
+      offset = -1 * this.props.slideOffset;
     }
 
     if (this.props.wrapAround && index !== startSlide) {
@@ -57,6 +62,7 @@ export default class ScrollTransition extends React.Component {
         this.props.currentSlide,
         this.props.isWrappingAround
       );
+
       let slidesBefore = Math.floor((this.props.slideCount - 1) / 2);
       let slidesAfter = this.props.slideCount - slidesBefore - 1;
 

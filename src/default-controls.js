@@ -121,10 +121,18 @@ export class PagingDots extends React.Component {
         lastDotIndex += slidesToShow - 1;
         break;
     }
+
     if (lastDotIndex < 0) {
       return [0];
     }
 
+    if (this.props.wrapAround) {
+      if (slidesToScroll === 1) {
+        lastDotIndex = slideCount - 1;
+      } else if (slideCount % slidesToScroll !== 0) {
+        lastDotIndex = slideCount - slidesToScroll + 1;
+      }
+    }
     for (let i = 0; i < lastDotIndex; i += slidesToScroll) {
       dotIndexes.push(i);
     }
