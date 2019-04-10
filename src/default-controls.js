@@ -150,12 +150,10 @@ export class PagingDots extends React.Component {
 
   getButtonStyles(active) {
     return {
-      border: 0,
       cursor: 'pointer',
       opacity: active ? 1 : 0.5,
-      borderRadius: '3px',
       background: 'transparent',
-      padding: '10px'
+      border: 'none'
     };
   }
 
@@ -187,8 +185,8 @@ export class PagingDots extends React.Component {
                 <span
                   className="paging-dot"
                   style={{
-                    display: 'block',
-                    borderRadius: '3px',
+                    display: 'inline-block',
+                    borderRadius: '50%',
                     width: '6px',
                     height: '6px',
                     background: 'black'
