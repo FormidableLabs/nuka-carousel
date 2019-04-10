@@ -48,6 +48,7 @@ export default class Carousel extends React.Component {
       { funcName: 'renderBottomCenterControls', key: 'BottomCenter' },
       { funcName: 'renderBottomRightControls', key: 'BottomRight' }
     ];
+    this.childNodesMutationObs = null;
 
     this.state = {
       currentSlide: this.props.slideIndex,
@@ -88,6 +89,9 @@ export default class Carousel extends React.Component {
     this.setSlideHeightAndWidth = this.setSlideHeightAndWidth.bind(this);
     this.startAutoplay = this.startAutoplay.bind(this);
     this.stopAutoplay = this.stopAutoplay.bind(this);
+    this.establishChildNodesMutationObserver = this.establishChildNodesMutationObserver.bind(
+      this
+    );
   }
 
   componentDidMount() {
@@ -96,6 +100,7 @@ export default class Carousel extends React.Component {
     this.setLeft();
     this.setDimensions();
     this.bindEvents();
+    this.establishChildNodesMutationObserver();
     if (this.props.autoplay) {
       this.startAutoplay();
     }
@@ -165,9 +170,40 @@ export default class Carousel extends React.Component {
 
   componentWillUnmount() {
     this.unbindEvents();
+    this.disconnectChildNodesMutationObserver();
     this.stopAutoplay();
     // see https://github.com/facebook/react/issues/3417#issuecomment-121649937
     this.mounted = false;
+  }
+
+  establishChildNodesMutationObserver() {
+    const childNodes = this.getChildNodes();
+    if (childNodes.length && 'MutationObserver' in window) {
+      this.childNodesMutationObs = new MutationObserver(mutations => {
+        mutations.forEach(() => {
+          this.setSlideHeightAndWidth();
+        });
+      });
+
+      const observeChildNodeMutation = node => {
+        this.childNodesMutationObs.observe(node, {
+          attributeFilter: ['style'],
+          attributeOldValue: false,
+          characterData: false,
+          characterDataOldValue: false,
+          childList: false,
+          subtree: false
+        });
+      };
+
+      childNodes.forEach(observeChildNodeMutation);
+    }
+  }
+
+  disconnectChildNodesMutationObserver() {
+    if (this.childNodesMutationObs instanceof MutationObserver) {
+      this.childNodesMutationObs.disconnect();
+    }
   }
 
   getTouchEvents() {
