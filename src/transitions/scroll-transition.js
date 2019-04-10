@@ -31,10 +31,6 @@ export default class ScrollTransition extends React.Component {
       this.props.slideCount - 1
     );
 
-    if (positionValue < 0) {
-      positionValue =
-        this.props.slideWidth * this.props.slideCount + positionValue;
-    }
     let targetPosition =
       (this.props.slideWidth + this.props.cellSpacing) * index;
 

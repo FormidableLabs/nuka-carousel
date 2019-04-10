@@ -9,15 +9,15 @@ class App extends React.Component {
     super(...arguments);
     this.state = {
       slideIndex: 0,
-      length: 6,
+      length: 5,
       wrapAround: true,
       animation: undefined,
       underlineHeader: false,
       zoomScale: 0.5,
       slidesToShow: 3,
-      slidesToScroll: 1,
+      slidesToScroll: 2,
       cellAlign: 'left',
-      transitionMode: 'fade',
+      transitionMode: 'scroll',
       heightMode: 'max',
       withoutControls: false
     };
