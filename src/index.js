@@ -187,6 +187,7 @@ export default class Carousel extends React.Component {
 
       const observeChildNodeMutation = node => {
         this.childNodesMutationObs.observe(node, {
+          attributes: true,
           attributeFilter: ['style'],
           attributeOldValue: false,
           characterData: false,
@@ -196,7 +197,11 @@ export default class Carousel extends React.Component {
         });
       };
 
-      childNodes.forEach(observeChildNodeMutation);
+      const childNodesArray = Array.from(childNodes);
+
+      for (const node of childNodesArray) {
+        observeChildNodeMutation(node);
+      }
     }
   }
 
