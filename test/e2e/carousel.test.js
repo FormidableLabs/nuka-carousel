@@ -211,11 +211,12 @@ describe('Nuka Carousel', () => {
       );
       let lastSlide = await page.evaluate(
         getStyles,
-        `.slider-slide:last-child`,
+        `.slider-slide:nth-child(18)`,
         ['left']
       );
       const getWidth = parseInt(firstSlide.width, 10);
       await expect(firstSlide.left).toMatch('0px');
+      await page.waitFor(600);
       await expect(lastSlide.left).toMatch(`${getWidth * -1}px`);
       await expect(page).toClick('button', { text: 'PREV' });
       await expect(page).toMatch('Nuka Carousel: Slide 6');
