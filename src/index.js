@@ -48,6 +48,7 @@ export default class Carousel extends React.Component {
       { funcName: 'renderBottomCenterControls', key: 'BottomCenter' },
       { funcName: 'renderBottomRightControls', key: 'BottomRight' }
     ];
+    this.childNodesMutationObs = null;
 
     this.state = {
       currentSlide: this.props.slideIndex,
@@ -88,6 +89,9 @@ export default class Carousel extends React.Component {
     this.setSlideHeightAndWidth = this.setSlideHeightAndWidth.bind(this);
     this.startAutoplay = this.startAutoplay.bind(this);
     this.stopAutoplay = this.stopAutoplay.bind(this);
+    this.establishChildNodesMutationObserver = this.establishChildNodesMutationObserver.bind(
+      this
+    );
   }
 
   componentDidMount() {
@@ -96,6 +100,7 @@ export default class Carousel extends React.Component {
     this.setLeft();
     this.setDimensions();
     this.bindEvents();
+    this.establishChildNodesMutationObserver();
     if (this.props.autoplay) {
       this.startAutoplay();
     }
@@ -165,9 +170,40 @@ export default class Carousel extends React.Component {
 
   componentWillUnmount() {
     this.unbindEvents();
+    this.disconnectChildNodesMutationObserver();
     this.stopAutoplay();
     // see https://github.com/facebook/react/issues/3417#issuecomment-121649937
     this.mounted = false;
+  }
+
+  establishChildNodesMutationObserver() {
+    const childNodes = this.getChildNodes();
+    if (childNodes.length && 'MutationObserver' in window) {
+      this.childNodesMutationObs = new MutationObserver(mutations => {
+        mutations.forEach(() => {
+          this.setSlideHeightAndWidth();
+        });
+      });
+
+      const observeChildNodeMutation = node => {
+        this.childNodesMutationObs.observe(node, {
+          attributeFilter: ['style'],
+          attributeOldValue: false,
+          characterData: false,
+          characterDataOldValue: false,
+          childList: false,
+          subtree: false
+        });
+      };
+
+      childNodes.forEach(observeChildNodeMutation);
+    }
+  }
+
+  disconnectChildNodesMutationObserver() {
+    if (this.childNodesMutationObs instanceof MutationObserver) {
+      this.childNodesMutationObs.disconnect();
+    }
   }
 
   getTouchEvents() {
@@ -602,7 +638,6 @@ export default class Carousel extends React.Component {
                   prevState.currentSlide
                 )
               : 0,
-            // setting currentSlide to 0 causes the
             currentSlide: 0,
             isWrappingAround: true,
             wrapToIndex: index
@@ -619,7 +654,8 @@ export default class Carousel extends React.Component {
         );
         return;
       } else {
-        const endSlide = this.state.slideCount - this.state.slidesToScroll;
+        //if slide is negative number aka coming from previous slide, you end up here
+        const endSlide = this.state.slideCount + index;
         props.beforeSlide(this.state.currentSlide, endSlide);
         this.setState(
           prevState => ({
@@ -680,14 +716,19 @@ export default class Carousel extends React.Component {
       return;
     }
 
+    const goToIndex = this.state.currentSlide + this.state.slidesToScroll;
     if (this.props.wrapAround) {
-      this.goToSlide(this.state.currentSlide + this.state.slidesToScroll);
-    } else {
-      if (this.props.slideWidth !== 1) {
-        this.goToSlide(this.state.currentSlide + this.state.slidesToScroll);
+      if (goToIndex > childrenCount) {
+        this.goToSlide(goToIndex - childrenCount);
         return;
       }
-      const offset = this.state.currentSlide + this.state.slidesToScroll;
+      this.goToSlide(goToIndex);
+    } else {
+      if (this.props.slideWidth !== 1) {
+        this.goToSlide(goToIndex);
+        return;
+      }
+      const offset = goToIndex;
       const nextSlideIndex =
         this.props.cellAlign !== 'left'
           ? offset
@@ -701,12 +742,11 @@ export default class Carousel extends React.Component {
       return;
     }
 
+    const goToSlide = this.state.currentSlide - this.state.slidesToScroll;
     if (this.props.wrapAround) {
-      this.goToSlide(this.state.currentSlide - this.state.slidesToScroll);
+      this.goToSlide(goToSlide);
     } else {
-      this.goToSlide(
-        Math.max(0, this.state.currentSlide - this.state.slidesToScroll)
-      );
+      this.goToSlide(Math.max(0, goToSlide));
     }
   }
 
@@ -870,25 +910,40 @@ export default class Carousel extends React.Component {
       });
     }
   }
+
   render() {
-    const { currentSlide, slideCount, frameWidth } = this.state;
     const {
+      currentSlide,
+      dragging,
+      frameWidth,
+      hasInteraction,
+      resetWrapAroundPosition,
+      slideCount,
+      slideWidth
+    } = this.state;
+    const {
+      autoplay,
+      children,
+      className,
+      disableAnimation,
       frameOverflow,
-      vertical,
       framePadding,
-      slidesToShow,
       renderAnnounceSlideMessage,
-      disableAnimation
+      slidesToShow,
+      speed,
+      style,
+      transitionMode,
+      vertical,
+      width,
+      wrapAround
     } = this.props;
     const duration =
-      this.state.dragging ||
-      (!this.state.dragging &&
-        this.state.resetWrapAroundPosition &&
-        this.props.wrapAround) ||
+      dragging ||
+      (!dragging && resetWrapAroundPosition && wrapAround) ||
       disableAnimation ||
-      !this.state.hasInteraction
+      !hasInteraction
         ? 0
-        : this.props.speed;
+        : speed;
 
     const frameStyles = getFrameStyles(
       frameOverflow,
@@ -898,19 +953,15 @@ export default class Carousel extends React.Component {
     );
     const touchEvents = this.getTouchEvents();
     const mouseEvents = this.getMouseEvents();
-    const TransitionControl = Transitions[this.props.transitionMode];
-    const validChildren = getValidChildren(this.props.children);
+    const TransitionControl = Transitions[transitionMode];
+    const validChildren = getValidChildren(children);
 
     return (
       <div
-        className={['slider', this.props.className || ''].join(' ')}
-        style={Object.assign(
-          {},
-          getSliderStyles(this.props.width, this.state.slideWidth),
-          this.props.style
-        )}
+        className={['slider', className || ''].join(' ')}
+        style={Object.assign({}, getSliderStyles(width, slideWidth), style)}
       >
-        {!this.props.autoplay && (
+        {!autoplay && (
           <AnnounceSlide
             message={renderAnnounceSlideMessage({ currentSlide, slideCount })}
           />

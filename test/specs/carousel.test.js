@@ -142,13 +142,24 @@ describe('<Carousel />', () => {
     });
 
     it('should set slideHeight to max value by default', () => {
+      const firstSlideNode = document.createElement('div');
+      const secondSlideNode = document.createElement('div');
+      const thirdSlideNode = document.createElement('div');
+      Object.defineProperties(firstSlideNode, {
+        offsetHeight: { value: 100 },
+        style: {}
+      });
+      Object.defineProperties(secondSlideNode, {
+        offsetHeight: { value: 200 },
+        style: {}
+      });
+      Object.defineProperties(thirdSlideNode, {
+        offsetHeight: { value: 300 },
+        style: {}
+      });
       jest
         .spyOn(Carousel.prototype, 'getChildNodes')
-        .mockReturnValue([
-          { offsetHeight: 100, style: {} },
-          { offsetHeight: 200, style: {} },
-          { offsetHeight: 300, style: {} }
-        ]);
+        .mockReturnValue([firstSlideNode, secondSlideNode, thirdSlideNode]);
       const wrapper = mount(
         <Carousel>
           <div style={{ height: '100px' }}>Slide 1</div>
@@ -287,13 +298,24 @@ describe('<Carousel />', () => {
     });
 
     it('should set slideHeight to max value when `heightMode` is `max`', () => {
+      const firstSlideNode = document.createElement('div');
+      const secondSlideNode = document.createElement('div');
+      const thirdSlideNode = document.createElement('div');
+      Object.defineProperties(firstSlideNode, {
+        offsetHeight: { value: 100 },
+        style: {}
+      });
+      Object.defineProperties(secondSlideNode, {
+        offsetHeight: { value: 200 },
+        style: {}
+      });
+      Object.defineProperties(thirdSlideNode, {
+        offsetHeight: { value: 300 },
+        style: {}
+      });
       jest
         .spyOn(Carousel.prototype, 'getChildNodes')
-        .mockReturnValue([
-          { offsetHeight: 100, style: {} },
-          { offsetHeight: 200, style: {} },
-          { offsetHeight: 300, style: {} }
-        ]);
+        .mockReturnValue([firstSlideNode, secondSlideNode, thirdSlideNode]);
       const wrapper = mount(
         <Carousel heightMode="max">
           <div style={{ height: '100px' }}>Slide 1</div>
@@ -306,13 +328,24 @@ describe('<Carousel />', () => {
     });
 
     it("should set slideHeight to first slide's height when `heightMode` is `first`", () => {
+      const firstSlideNode = document.createElement('div');
+      const secondSlideNode = document.createElement('div');
+      const thirdSlideNode = document.createElement('div');
+      Object.defineProperties(firstSlideNode, {
+        offsetHeight: { value: 100 },
+        style: {}
+      });
+      Object.defineProperties(secondSlideNode, {
+        offsetHeight: { value: 200 },
+        style: {}
+      });
+      Object.defineProperties(thirdSlideNode, {
+        offsetHeight: { value: 300 },
+        style: {}
+      });
       jest
         .spyOn(Carousel.prototype, 'getChildNodes')
-        .mockReturnValue([
-          { offsetHeight: 100, style: {} },
-          { offsetHeight: 200, style: {} },
-          { offsetHeight: 300, style: {} }
-        ]);
+        .mockReturnValue([firstSlideNode, secondSlideNode, thirdSlideNode]);
       const wrapper = mount(
         <Carousel heightMode="first">
           <div style={{ height: '100px' }}>Slide 1</div>
@@ -325,13 +358,24 @@ describe('<Carousel />', () => {
     });
 
     it('should set height to current slide height when `heightMode` is `current`', () => {
+      const firstSlideNode = document.createElement('div');
+      const secondSlideNode = document.createElement('div');
+      const thirdSlideNode = document.createElement('div');
+      Object.defineProperties(firstSlideNode, {
+        offsetHeight: { value: 100 },
+        style: {}
+      });
+      Object.defineProperties(secondSlideNode, {
+        offsetHeight: { value: 200 },
+        style: {}
+      });
+      Object.defineProperties(thirdSlideNode, {
+        offsetHeight: { value: 300 },
+        style: {}
+      });
       jest
         .spyOn(Carousel.prototype, 'getChildNodes')
-        .mockReturnValue([
-          { offsetHeight: 100, style: {} },
-          { offsetHeight: 200, style: {} },
-          { offsetHeight: 300, style: {} }
-        ]);
+        .mockReturnValue([firstSlideNode, secondSlideNode, thirdSlideNode]);
       const wrapper = mount(
         <Carousel heightMode="current" slideIndex={1}>
           <div style={{ height: '100px' }}>Slide 1</div>
@@ -1000,6 +1044,37 @@ describe('<Carousel />', () => {
       const button = wrapper.find('#custom-goto-btn');
       button.simulate('click');
       expect(spy).toHaveBeenCalledWith(2);
+    });
+
+    it('should reset slide height and width once one of the child nodes is mutated by style attr', async () => {
+      const firstSlideNode = document.createElement('div');
+      const secondSlideNode = document.createElement('div');
+      jest
+        .spyOn(Carousel.prototype, 'getChildNodes')
+        .mockReturnValue([firstSlideNode, secondSlideNode]);
+      const wrapper = mount(
+        <Carousel>
+          <span style={{ height: '1px' }}>Slide 1</span>
+          <span style={{ height: '2px' }}>Slide 2</span>
+        </Carousel>
+      );
+      const instance = wrapper.instance();
+      const childNodesCount = instance.getChildNodes().length;
+      jest.spyOn(instance, 'setSlideHeightAndWidth');
+      expect(instance.setSlideHeightAndWidth).not.toBeCalled();
+      firstSlideNode.setAttribute('style', {});
+      // jest.advanceTimersByTime(1000);
+      await jest.setTimeout(0);
+      expect(instance.setSlideHeightAndWidth).toBeCalledTimes(childNodesCount);
+      instance.setSlideHeightAndWidth.mockClear();
+      firstSlideNode.setAttribute('style', { height: 1 });
+      await jest.setTimeout(0);
+      expect(instance.setSlideHeightAndWidth).toBeCalledTimes(childNodesCount);
+      instance.setSlideHeightAndWidth.mockClear();
+      firstSlideNode.setAttribute('data-fake-attr', '');
+      await jest.setTimeout(0);
+      expect(instance.setSlideHeightAndWidth).not.toBeCalled();
+      Carousel.prototype.getChildNodes.mockRestore();
     });
   });
 });
