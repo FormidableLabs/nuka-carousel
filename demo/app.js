@@ -9,13 +9,12 @@ class App extends React.Component {
     super(...arguments);
     this.state = {
       slideIndex: 0,
-      length: 5,
-      wrapAround: true,
+      length: 6,
+      wrapAround: undefined,
       animation: undefined,
       underlineHeader: false,
       zoomScale: 0.5,
-      slidesToShow: 3,
-      slidesToScroll: 2,
+      slidesToShow: 1,
       cellAlign: 'left',
       transitionMode: 'scroll',
       heightMode: 'max',
@@ -50,7 +49,6 @@ class App extends React.Component {
           wrapAround={this.state.wrapAround}
           slideIndex={this.state.slideIndex}
           heightMode={this.state.heightMode}
-          speed={1000}
           renderTopCenterControls={({ currentSlide }) => (
             <div
               style={{
