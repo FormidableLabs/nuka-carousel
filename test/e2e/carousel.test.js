@@ -211,7 +211,7 @@ describe('Nuka Carousel', () => {
       );
       let lastSlide = await page.evaluate(
         getStyles,
-        `.slider-slide:nth-child(18)`,
+        `.slider-slide:nth-child(6)`,
         ['left']
       );
       const getWidth = parseInt(firstSlide.width, 10);
@@ -221,10 +221,11 @@ describe('Nuka Carousel', () => {
       await expect(page).toClick('button', { text: 'PREV' });
       await expect(page).toMatch('Nuka Carousel: Slide 6');
       await page.waitFor(600); // need to let slide transition complete
+
       firstSlide = await page.evaluate(getStyles, `.slider-slide:first-child`, [
         'left'
       ]);
-      lastSlide = await page.evaluate(getStyles, `.slider-slide:last-child`, [
+      lastSlide = await page.evaluate(getStyles, `.slider-slide:nth-child(6)`, [
         'left'
       ]);
       await expect(firstSlide.left).toMatch(`${getWidth * 6}px`);
@@ -409,7 +410,7 @@ describe('Nuka Carousel', () => {
         // starts on first slide
         const styles = await page.evaluate(
           getStyles,
-          '.slider-slide:last-child',
+          '.slider-slide:nth-child(6)',
           ['left', 'width']
         );
         const correctLeft = -parseFloat(styles.width);
@@ -424,7 +425,7 @@ describe('Nuka Carousel', () => {
           '.slider-slide:first-child',
           ['left', 'width']
         );
-        const slideCount = (await page.$$('.slider-slide')).length;
+        const slideCount = (await page.$$('.slider-slide')).length / 3; // slides exist thrice for prev and next
         const correctLeft = parseFloat(styles.width) * slideCount;
         expect(`${approximately(styles.left, correctLeft)}`).toMatch('true');
       });
