@@ -88,8 +88,18 @@ export default class ScrollTransition extends React.Component {
   /* eslint-enable complexity */
 
   formatChildren(children) {
-    const { top, left, currentSlide, slidesToShow } = this.props;
-    const positionValue = this.props.vertical ? top : left;
+    const {
+      cellSpacing,
+      currentSlide,
+      left,
+      slideCount,
+      slidesToShow,
+      slideWidth,
+      top,
+      vertical,
+      wrapAround
+    } = this.props;
+    const positionValue = vertical ? top : left;
 
     const renderSlide = (visible, index, key, targetPosition, child) => {
       return (
@@ -110,10 +120,8 @@ export default class ScrollTransition extends React.Component {
       return renderSlide(visible, index, '', targetPosition, child);
     });
     // clone slides
-    if (this.props.wrapAround) {
-      const carouselWidth =
-        (this.props.slideWidth + this.props.cellSpacing) *
-        this.props.slideCount;
+    if (wrapAround) {
+      const carouselWidth = (slideWidth + cellSpacing) * slideCount;
 
       const slidesNext = React.Children.map(children, (child, index) => {
         const targetPosition =
