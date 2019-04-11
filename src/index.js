@@ -199,7 +199,7 @@ export default class Carousel extends React.Component {
 
       const childNodesArray = Array.from(childNodes);
 
-      for (var node of childNodesArray) {
+      for (let node of childNodesArray) {
         observeChildNodeMutation(node);
       }
     }
