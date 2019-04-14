@@ -2,6 +2,10 @@
 
 A Pure ReactJS Carousel Component
 
+### Maintenance Status: Active
+
+Formidable is actively working on this project, and we expect to continue for work for the foreseeable future. Bug reports, feature requests and pull requests are welcome. 
+
 Maintained by [Sarah Meyer](https://github.com/sarmeyer)
 
 ![Nuka Carousel Animated Example](https://i.imgur.com/UwP5gle.gif)
