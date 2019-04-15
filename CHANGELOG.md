@@ -1,5 +1,14 @@
 # Nuka Changelog
 
+## 4.5.4 (2019-04-15)
+
+- [#517](https://github.com/FormidableLabs/nuka-carousel/pull/517) Fix bug when changing to vertical mode, add missing prop to types
+- [#524](https://github.com/FormidableLabs/nuka-carousel/pull/524) Remove extra function wrap around handleMouse methods
+- [#525](https://github.com/FormidableLabs/nuka-carousel/pull/525) Fix calculation of dimensions
+- [#526](https://github.com/FormidableLabs/nuka-carousel/pull/526) Add classnames to paging dots to improve styling ability
+- [#529](https://github.com/FormidableLabs/nuka-carousel/pull/529) Fix IE11 error related to #525
+- [#532](https://github.com/FormidableLabs/nuka-carousel/pull/532) Update README.md with OSS status
+
 ## 4.5.3 (2019-03-18)
 
 - Resolve dependency vulnerabilities
