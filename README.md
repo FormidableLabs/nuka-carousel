@@ -1,3 +1,5 @@
+[![Maintenance Status][maintenance-image]](#maintenance-status)
+
 # nuka-carousel
 
 A Pure ReactJS Carousel Component
@@ -190,3 +192,12 @@ TypeScript type definitions are now shipped with nuka-carousel. You can use them
 ### Contributing
 
 See the [Contribution Docs](CONTRIBUTING.md).
+
+
+### Maintenance Status
+
+**Active:** Formidable is actively working on this project, and we expect to continue for work for the foreseeable future. Bug reports, feature requests and pull requests are welcome. 
+
+[maintenance-image]: https://img.shields.io/badge/maintenance-active-green.svg
+
+
