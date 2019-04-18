@@ -8,7 +8,7 @@ module.exports = {
     publicPath: '/assets/'
   },
 
-  entry: ['./demo/app.js'],
+  entry: ['./src/new-hooks/index.js'],
 
   resolve: {
     extensions: ['.js'],
@@ -16,7 +16,7 @@ module.exports = {
   },
 
   devServer: {
-    contentBase: './demo',
+    contentBase: './src/new-hooks/',
     historyApiFallback: true,
     hot: false
   },

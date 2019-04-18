@@ -9,7 +9,7 @@ module.exports = {
     libraryExport: 'default'
   },
 
-  entry: path.join(__dirname, 'src/index.js'),
+  entry: path.join(__dirname, 'src/new-hooks/index.js'),
 
   resolve: {
     extensions: ['.js'],
