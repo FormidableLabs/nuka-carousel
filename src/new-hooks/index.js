@@ -1,20 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import Slide from './slide';
+import Slides from './components/slides';
+import { Demo } from './demo';
+import PreviousButton from './components/prev-button';
+import NextButton from './components/next-button';
 
-/* eslint-disable func-style */
-function Example() {
-  const [count, setCount] = useState(1);
-
+const Carousel = () => {
+  const [slideIndex, setSlideIndex] = useState(0);
+  const sliderLength = Demo.length;
   return (
     <div>
-      <Slide>
-        <h1>Slide {count}</h1>
-      </Slide>
-      <button onClick={() => setCount(count - 1)}>prev</button>
-      <button onClick={() => setCount(count + 1)}>next</button>
+      <Slides slideIndex={slideIndex}>{Demo}</Slides>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginTop: '10px'
+        }}
+      >
+        <PreviousButton
+          onClick={() =>
+            setSlideIndex((slideIndex - 1 + sliderLength) % sliderLength)
+          }
+        />
+        <NextButton
+          onClick={() => setSlideIndex((slideIndex + 1) % sliderLength)}
+        />
+      </div>
     </div>
   );
-}
+};
 
-ReactDOM.render(<Example />, document.getElementById('content'));
+ReactDOM.render(<Carousel />, document.getElementById('content'));

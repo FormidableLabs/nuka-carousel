@@ -15,7 +15,7 @@
       "jsx": true
     }
   },
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "react-hooks"],
   "rules": {
     "prettier/prettier": "error",
     "react/no-multi-comp": 0,
@@ -26,6 +26,8 @@
     "react/sort-prop-types": 0,
     "react/no-string-refs": 0,
     "max-statements": 0,
-    "no-invalid-this": 0
+    "no-invalid-this": 0,
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }
