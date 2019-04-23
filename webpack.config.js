@@ -11,7 +11,7 @@ module.exports = {
   entry: ['./src/new-hooks/index.js'],
 
   resolve: {
-    extensions: ['.js'],
+    extensions: ['.js', '.css'],
     modules: [path.join(__dirname, 'node_modules')]
   },
 
@@ -30,7 +30,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: 'style-loader!css-loader'
+        use: [{ loader: 'style-loader!css-loader' }]
       },
       {
         test: /\.(png|jpg)$/,
