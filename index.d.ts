@@ -214,47 +214,47 @@ export interface CarouselProps {
   /**
    * Function for rendering top left control
    */
-  renderTopLeftControls?: CarouselRenderControl;
+  renderTopLeftControls?: CarouselRenderControl | null;
 
   /**
    * Function for rendering top center control
    */
-  renderTopCenterControls?: CarouselRenderControl;
+  renderTopCenterControls?: CarouselRenderControl | null;
 
   /**
    * Function for rendering top right control
    */
-  renderTopRightControls?: CarouselRenderControl;
+  renderTopRightControls?: CarouselRenderControl | null;
 
   /**
    * Function for rendering center left control
    */
-  renderCenterLeftControls?: CarouselRenderControl;
+  renderCenterLeftControls?: CarouselRenderControl | null;
 
   /**
    * Function for rendering center center control
    */
-  renderCenterCenterControls?: CarouselRenderControl;
+  renderCenterCenterControls?: CarouselRenderControl | null;
 
   /**
    * Function for rendering center right control
    */
-  renderCenterRightControls?: CarouselRenderControl;
+  renderCenterRightControls?: CarouselRenderControl | null;
 
   /**
    * Function for rendering bottom left control
    */
-  renderBottomLeftControls?: CarouselRenderControl;
+  renderBottomLeftControls?: CarouselRenderControl | null;
 
   /**
    * Function for rendering bottom center control
    */
-  renderBottomCenterControls?: CarouselRenderControl;
+  renderBottomCenterControls?: CarouselRenderControl | null;
 
   /**
    * Function for rendering bottom right control
    */
-  renderBottomRightControls?: CarouselRenderControl;
+  renderBottomRightControls?: CarouselRenderControl | null;
 
   /**
    * Manually set the index of the slide to be shown
