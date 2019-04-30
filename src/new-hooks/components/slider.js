@@ -13,14 +13,18 @@ const Slide = ({ child }) => {
   );
 };
 
-const Slider = props => {
-  const children = props.children.map((child, index) => (
+export const slides = children => {
+  return children.map((child, index) => (
     <Slide
       child={child}
       key={`${child.key}-${index}`}
       frameStyles={getFrameStyles()}
     />
   ));
+};
+
+const Slider = props => {
+  const children = slides(props.children);
 
   return (
     <div className="slider" style={getSliderStyles(props.width, '50px')}>

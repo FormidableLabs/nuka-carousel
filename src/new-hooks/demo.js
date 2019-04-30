@@ -12,5 +12,5 @@ const slides = colors.map((color, index) => (
   />
 ));
 
-const Demo = () => <Carousel>{slides}</Carousel>;
+const Demo = () => <Carousel slidesToShow={2}>{slides}</Carousel>;
 export default Demo;

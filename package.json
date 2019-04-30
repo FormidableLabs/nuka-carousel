@@ -11,6 +11,7 @@
     "d3-ease": "^1.0.3",
     "exenv": "^1.2.0",
     "file-loader": "^3.0.1",
+    "lodash": "^4.17.11",
     "prop-types": "^15.6.0",
     "react-move": "^5.0.0"
   },

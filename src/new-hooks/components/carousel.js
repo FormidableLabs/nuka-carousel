@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Slider from './slider';
 import Controls from './controls';
 import { getContainerStyle } from '../style-utils/container-styles';
+import SlideManager from '../utils/manager-api';
 
 const Carousel = props => {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -17,6 +18,7 @@ const Carousel = props => {
       className={`container ${props.carouselContainerClassName || ''}`}
       style={getContainerStyle(props)}
     >
+      <SlideManager {...props} />
       <Slider slideIndex={slideIndex}>{props.children}</Slider>
       <Controls handleNext={handleNext} handlePrev={handlePrev} />
     </div>
