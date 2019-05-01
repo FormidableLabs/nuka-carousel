@@ -12,20 +12,26 @@ const Carousel = props => {
     nextSlides,
     goToNext,
     goToPrev,
-    goToSlide
+    goToSlide,
+    slideCount
   } = useSlideManager(props);
-
+  console.log(goToSlide);
   const handlePrev = goToPrev;
-
   const handleNext = goToNext;
-
+  const handleGoTo = goToSlide;
+  console.log(handleGoTo);
   return (
     <div
       className={`container ${props.carouselContainerClassName || ''}`}
       style={getContainerStyle(props)}
     >
       <Slider slides={currentSlides} />
-      <Controls handleNext={handleNext} handlePrev={handlePrev} />
+      <Controls
+        handleNext={handleNext}
+        handlePrev={handlePrev}
+        handleGoTo={handleGoTo}
+        slideCount={slideCount}
+      />
     </div>
   );
 };

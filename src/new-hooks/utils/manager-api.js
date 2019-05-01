@@ -32,7 +32,9 @@ const useSlideManager = props => {
     return nextSlides;
   };
 
-  const goToSlide = ({ index }) => {
+  const goToSlide = index => {
+    console.log('clicked', index);
+    setSlideIndex(index);
     return children[index];
   };
 
@@ -48,6 +50,7 @@ const useSlideManager = props => {
     currentSlides: getCurrentSlides(),
     prevSlides: getPrevSlides(),
     nextSlides: getNextSlides(),
+    slideCount,
     goToNext,
     goToPrev,
     goToSlide
