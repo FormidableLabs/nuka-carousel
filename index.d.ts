@@ -14,7 +14,7 @@ export type CarouselCellAlignProp = 'left' | 'center' | 'right';
 
 export type CarouselHeightModeProp = 'first' | 'current' | 'max';
 
-export type CarouselTransitionModeProp = 'fade' | 'scroll';
+export type CarouselTransitionModeProp = 'fade' | 'scroll' | 'scroll3d';
 
 export type CarouselSlidesToScrollProp = number | 'auto';
 
