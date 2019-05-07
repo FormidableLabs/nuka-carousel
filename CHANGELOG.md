@@ -1,5 +1,12 @@
 # Nuka Changelog
 
+## 4.5.5 (2019-05-07)
+
+- [#545](https://github.com/FormidableLabs/nuka-carousel/pull/545) Add onDragStart to index.d.ts
+- [#541](https://github.com/FormidableLabs/nuka-carousel/pull/541) Adds scroll3d to types
+- [#536](https://github.com/FormidableLabs/nuka-carousel/pull/536) Add type definition for PagingDots class
+- [#535](https://github.com/FormidableLabs/nuka-carousel/pull/535) Allow null to be passed to render controls
+
 ## 4.5.4 (2019-04-15)
 
 - [#517](https://github.com/FormidableLabs/nuka-carousel/pull/517) Fix bug when changing to vertical mode, add missing prop to types
