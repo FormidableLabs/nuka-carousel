@@ -1,8 +1,5 @@
 const path = require('path');
 
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
-
 module.exports = {
   output: {
     path: __dirname,
@@ -11,7 +8,6 @@ module.exports = {
     publicPath: '/assets/'
   },
 
-  plugins: [new BundleAnalyzerPlugin()],
   entry: ['./demo/app.js'],
 
   resolve: {
