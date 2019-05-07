@@ -227,6 +227,10 @@ export default class Carousel extends React.Component {
         };
         this.handleMouseOver();
 
+        if (this.props.onDragStart) {
+          this.props.onDragStart();
+        }
+
         this.setState({
           dragging: true
         });
@@ -307,6 +311,10 @@ export default class Carousel extends React.Component {
           startX: e.clientX,
           startY: e.clientY
         };
+
+        if (this.props.onDragStart) {
+          this.props.onDragStart();
+        }
 
         this.setState({
           dragging: true
@@ -1052,6 +1060,7 @@ Carousel.propTypes = {
   heightMode: PropTypes.oneOf(['first', 'current', 'max']),
   initialSlideHeight: PropTypes.number,
   initialSlideWidth: PropTypes.number,
+  onDragStart: PropTypes.func,
   onResize: PropTypes.func,
   pauseOnHover: PropTypes.bool,
   renderAnnounceSlideMessage: PropTypes.func,
