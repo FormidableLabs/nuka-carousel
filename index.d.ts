@@ -154,6 +154,12 @@ export interface CarouselProps {
   enableKeyboardControls?: boolean;
 
   /**
+   * Disable slides animation
+   * @default false
+   */
+  disableAnimation?: boolean;
+
+  /**
    * Enable mouse swipe/dragging
    */
   dragging?: boolean;
@@ -183,6 +189,13 @@ export interface CarouselProps {
    * @example '500px'
    */
   framePadding?: string;
+
+  /**
+   * Used to hardcode the slider height
+   * @example '80%'
+   * @example '500px'
+   */
+  height?: string;
 
   /**
    * Change the height of the slides based either on the first slide,

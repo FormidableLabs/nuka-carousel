@@ -93,14 +93,13 @@ export const getDecoratorStyles = position => {
   }
 };
 
-export const getSliderStyles = (propWidth, stateSlideWidth) => {
+export const getSliderStyles = (propWidth, propHeight) => {
   return {
     boxSizing: 'border-box',
     display: 'block',
-    height: 'auto',
+    height: propHeight,
     MozBoxSizing: 'border-box',
     position: 'relative',
-    visibility: stateSlideWidth ? 'inherit' : 'hidden',
     width: propWidth
   };
 };
