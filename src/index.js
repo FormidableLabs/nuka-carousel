@@ -954,7 +954,7 @@ export default class Carousel extends React.Component {
         className={['slider', this.props.className || ''].join(' ')}
         style={Object.assign(
           {},
-          getSliderStyles(this.props.width, this.state.slideWidth),
+          getSliderStyles(this.props.width, this.props.height),
           this.props.style
         )}
       >
@@ -1057,6 +1057,7 @@ Carousel.propTypes = {
   edgeEasing: PropTypes.string,
   frameOverflow: PropTypes.string,
   framePadding: PropTypes.string,
+  height: PropTypes.string,
   heightMode: PropTypes.oneOf(['first', 'current', 'max']),
   initialSlideHeight: PropTypes.number,
   initialSlideWidth: PropTypes.number,
@@ -1108,6 +1109,7 @@ Carousel.defaultProps = {
   edgeEasing: 'easeElasticOut',
   frameOverflow: 'hidden',
   framePadding: '0px',
+  height: 'auto',
   heightMode: 'max',
   onResize() {},
   pauseOnHover: true,
