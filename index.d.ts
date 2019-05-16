@@ -160,6 +160,12 @@ export interface CarouselProps {
   disableAnimation?: boolean;
 
   /**
+   * Disable swipe before first slide and after last slide
+   * @default false
+   */
+  disableEdgeSwiping?: boolean;
+
+  /**
    * Enable mouse swipe/dragging
    */
   dragging?: boolean;
