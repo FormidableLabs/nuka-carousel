@@ -68,7 +68,7 @@ class App extends React.Component {
         >
           {colors.slice(0, this.state.length).map((color, index) => (
             <img
-              src={`http://placehold.it/1000x400/${color}/ffffff/&text=slide${index +
+              src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${index +
                 1}`}
               alt={`Slide ${index + 1}`}
               key={color}
