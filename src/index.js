@@ -615,6 +615,14 @@ export default class Carousel extends React.Component {
     };
   }
 
+  isEdgeSwiping() {
+    const { slideCount, slideWidth } = this.state;
+    const { tx } = this.getOffsetDeltas();
+
+    // returns true if tx offset is outside first or last slide
+    return tx > 0 || -tx > slideWidth * (slideCount - 1);
+  }
+
   // Action Methods
 
   goToSlide(index, props) {
@@ -977,43 +985,51 @@ export default class Carousel extends React.Component {
             update={() => {
               const { tx, ty } = this.getOffsetDeltas();
 
-              return {
-                tx,
-                ty,
-                timing: {
-                  duration,
-                  ease: this.state.easing
-                },
-                events: {
-                  end: () => {
-                    const newLeft = this.props.vertical
-                      ? 0
-                      : this.getTargetLeft();
-                    const newTop = this.props.vertical
-                      ? this.getTargetLeft()
-                      : 0;
+              if (
+                this.props.disableEdgeSwiping &&
+                !this.props.wrapAround &&
+                this.isEdgeSwiping()
+              ) {
+                return {};
+              } else {
+                return {
+                  tx,
+                  ty,
+                  timing: {
+                    duration,
+                    ease: this.state.easing
+                  },
+                  events: {
+                    end: () => {
+                      const newLeft = this.props.vertical
+                        ? 0
+                        : this.getTargetLeft();
+                      const newTop = this.props.vertical
+                        ? this.getTargetLeft()
+                        : 0;
 
-                    if (
-                      newLeft !== this.state.left ||
-                      newTop !== this.state.top
-                    ) {
-                      this.setState(
-                        {
-                          left: newLeft,
-                          top: newTop,
-                          isWrappingAround: false,
-                          resetWrapAroundPosition: true
-                        },
-                        () => {
-                          this.setState({
-                            resetWrapAroundPosition: false
-                          });
-                        }
-                      );
+                      if (
+                        newLeft !== this.state.left ||
+                        newTop !== this.state.top
+                      ) {
+                        this.setState(
+                          {
+                            left: newLeft,
+                            top: newTop,
+                            isWrappingAround: false,
+                            resetWrapAroundPosition: true
+                          },
+                          () => {
+                            this.setState({
+                              resetWrapAroundPosition: false
+                            });
+                          }
+                        );
+                      }
                     }
                   }
-                }
-              };
+                };
+              }
             }}
             children={({ tx, ty }) => (
               <TransitionControl
@@ -1052,6 +1068,7 @@ Carousel.propTypes = {
   cellSpacing: PropTypes.number,
   enableKeyboardControls: PropTypes.bool,
   disableAnimation: PropTypes.bool,
+  disableEdgeSwiping: PropTypes.bool,
   dragging: PropTypes.bool,
   easing: PropTypes.string,
   edgeEasing: PropTypes.string,
@@ -1104,6 +1121,7 @@ Carousel.defaultProps = {
   cellSpacing: 0,
   enableKeyboardControls: false,
   disableAnimation: false,
+  disableEdgeSwiping: false,
   dragging: true,
   easing: 'easeCircleOut',
   edgeEasing: 'easeElasticOut',
