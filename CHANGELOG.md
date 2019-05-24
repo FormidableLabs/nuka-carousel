@@ -1,5 +1,10 @@
 # Nuka Changelog
 
+## 4.5.8 (2019-05-23)
+
+- [#551](https://github.com/FormidableLabs/nuka-carousel/pull/551) Add disableEdgeSwiping prop to disable white space on last and first slide when swiping
+- [#549](https://github.com/FormidableLabs/nuka-carousel/pull/549) Add type=button to paging dots
+
 ## 4.5.5 (2019-05-07)
 
 - [#545](https://github.com/FormidableLabs/nuka-carousel/pull/545) Add onDragStart to index.d.ts
