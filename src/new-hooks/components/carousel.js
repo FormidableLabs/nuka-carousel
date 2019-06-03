@@ -25,7 +25,7 @@ const Carousel = props => {
       className={`container ${props.carouselContainerClassName || ''}`}
       style={getContainerStyle(props)}
     >
-      <Slider slides={currentSlides} />
+      <Slider slides={[...prevSlides, ...currentSlides, ...nextSlides]} />
       <Controls
         handleNext={handleNext}
         handlePrev={handlePrev}
