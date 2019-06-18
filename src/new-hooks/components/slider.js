@@ -1,11 +1,19 @@
 import React from 'react';
-import { getSliderStyles } from '../style-utils/slide-styles';
 
 const Slider = props => {
-  console.log(props);
+  console.log('slider props', props);
   return (
-    <div className="slider" style={getSliderStyles(props.width, '50px')}>
-      {props.slides}
+    <div
+      className="slider"
+      style={{
+        display: 'flex',
+        width: `${props.slideWidth}`,
+        height: `${props.slideHeight}`
+      }}
+    >
+      {props.prev}
+      {props.current}
+      {props.next}
     </div>
   );
 };

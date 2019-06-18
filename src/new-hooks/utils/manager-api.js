@@ -20,6 +20,7 @@ const useSlideManager = props => {
 
   const getPrevSlides = () => {
     const prevSlides = _.slice(children, slideIndex - slidesToShow, slideIndex);
+    console.log('prevSlides', prevSlides);
     return prevSlides;
   };
 
@@ -29,6 +30,7 @@ const useSlideManager = props => {
       slideIndex + 1,
       slideIndex + 1 + slidesToShow
     );
+    console.log('nextSlides', nextSlides);
     return nextSlides;
   };
 

@@ -4,7 +4,8 @@ import { getFrameStyles, getImgTagStyles } from '../style-utils/slide-styles';
 const Slide = ({ child }) => {
   return (
     <div className="slider-slide">
-      {React.cloneElement(child, { style: getImgTagStyles() })}
+      {/* {React.cloneElement(child, { style: getImgTagStyles() })} */}
+      {child}
     </div>
   );
 };
