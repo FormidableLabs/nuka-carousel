@@ -1,0 +1,19 @@
+.slider-style {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  color: blue;
+  will-change: transform, opacity;
+  text-shadow: 0px 2px 40px #00000020, 0px 2px 5px #00000030;
+}
+
+.slider-style > div {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  color: blue;
+  will-change: transform, opacity;
+  text-shadow: 0px 2px 40px #00000020, 0px 2px 5px #00000030;
+}
