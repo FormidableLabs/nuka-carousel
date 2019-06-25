@@ -164,7 +164,13 @@ export default class Carousel extends React.Component {
     if (axisChanged) {
       this.onResize();
     } else if (slideChanged || heightModeChanged) {
-      this.setSlideHeightAndWidth();
+      const image = this.getCurrentChildNodeImg();
+      if (image) {
+        image.addEventListener('load', this.setSlideHeightAndWidth);
+        image.removeEventListener('load', this.setSlideHeightAndWidth);
+      } else {
+        this.setSlideHeightAndWidth();
+      }
     }
   }
 
@@ -878,6 +884,14 @@ export default class Carousel extends React.Component {
 
   getChildNodes() {
     return this.frame.childNodes[0].childNodes;
+  }
+
+  getCurrentChildNodeImg() {
+    const childNodes = this.getChildNodes();
+    const currentChildNode = childNodes[this.props.slideIndex];
+    return currentChildNode
+      ? currentChildNode.getElementsByTagName('img')[0]
+      : null;
   }
 
   setLeft() {

@@ -1076,5 +1076,31 @@ describe('<Carousel />', () => {
       expect(instance.setSlideHeightAndWidth).not.toBeCalled();
       Carousel.prototype.getChildNodes.mockRestore();
     });
+
+    it('should update slide width and height only when current slide image is loaded on slide change', () => {
+      const image = new Image();
+      const wrapper = mount(
+        <Carousel>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>
+            <img src="/test.jpg" />
+          </p>
+        </Carousel>
+      );
+      const instance = wrapper.instance();
+      image.addEventListener = jest.fn();
+      image.removeEventListener = jest.fn();
+      instance.getCurrentChildNodeImg = jest.fn(() => image);
+      wrapper.setState({ currentSlide: 1 });
+      expect(image.addEventListener).toBeCalledWith(
+        'load',
+        instance.setSlideHeightAndWidth
+      );
+      expect(image.removeEventListener).toBeCalledWith(
+        'load',
+        instance.setSlideHeightAndWidth
+      );
+    });
   });
 });
