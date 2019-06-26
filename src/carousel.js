@@ -782,6 +782,10 @@ const Carousel = createReactClass({
   },
 
   setDimensions(props) {
+    if (Object.keys(this.refs).length === 0) {
+      return;
+    }
+    
     props = props || this.props;
 
     var self = this,
