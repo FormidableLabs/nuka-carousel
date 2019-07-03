@@ -101,6 +101,11 @@ export interface CarouselProps {
   afterSlide?: (prevSlide: number) => void;
 
   /**
+   * Adds a zoom effect on the currently visible slide.
+   */
+  animation?: 'zoom';
+
+  /**
    * Will generate a style tag to help ensure images are displayed properly
    * @default true
    */
