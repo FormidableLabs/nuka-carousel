@@ -1,5 +1,10 @@
 # Nuka Changelog
 
+## 4.5.9 (2019-07-09)
+
+- [#557](https://github.com/FormidableLabs/nuka-carousel/pull/557) Add type for animation prop
+- [#555](https://github.com/FormidableLabs/nuka-carousel/pull/555) Fix wrongly calculated height for the current slide on slide change
+
 ## 4.5.8 (2019-05-23)
 
 - [#551](https://github.com/FormidableLabs/nuka-carousel/pull/551) Add disableEdgeSwiping prop to disable white space on last and first slide when swiping
