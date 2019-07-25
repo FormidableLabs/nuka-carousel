@@ -912,28 +912,32 @@ export default class Carousel extends React.Component {
     } else {
       return this.controlsMap.map(({ funcName, key }) => {
         const func = this.props[funcName];
-        return (
+        const controlChildren =
           func &&
-          typeof func === 'function' && (
+          typeof func === 'function' &&
+          func({
+            cellAlign: this.props.cellAlign,
+            cellSpacing: this.props.cellSpacing,
+            currentSlide: this.state.currentSlide,
+            frameWidth: this.state.frameWidth,
+            goToSlide: index => this.goToSlide(index),
+            nextSlide: () => this.nextSlide(),
+            previousSlide: () => this.previousSlide(),
+            slideCount: this.state.slideCount,
+            slidesToScroll: this.state.slidesToScroll,
+            slidesToShow: this.state.slidesToShow,
+            slideWidth: this.state.slideWidth,
+            wrapAround: this.props.wrapAround
+          });
+
+        return (
+          controlChildren && (
             <div
               className={`slider-control-${key.toLowerCase()}`}
               style={getDecoratorStyles(key)}
               key={key}
             >
-              {func({
-                cellAlign: this.props.cellAlign,
-                cellSpacing: this.props.cellSpacing,
-                currentSlide: this.state.currentSlide,
-                frameWidth: this.state.frameWidth,
-                goToSlide: index => this.goToSlide(index),
-                nextSlide: () => this.nextSlide(),
-                previousSlide: () => this.previousSlide(),
-                slideCount: this.state.slideCount,
-                slidesToScroll: this.state.slidesToScroll,
-                slidesToShow: this.state.slidesToShow,
-                slideWidth: this.state.slideWidth,
-                wrapAround: this.props.wrapAround
-              })}
+              {controlChildren}
             </div>
           )
         );
