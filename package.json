@@ -2,7 +2,7 @@
   "name": "nuka-carousel",
   "version": "4.5.9",
   "description": "Pure React Carousel",
-  "main": "lib/index.js",
+  "main": "index.js",
   "module": "es/index.js",
   "jsnext:main": "es/index.js",
   "types": "index.d.ts",
