@@ -51,7 +51,7 @@ export default class Carousel extends React.Component {
     this.childNodesMutationObs = null;
 
     this.state = {
-      currentSlide: this.props.slideIndex,
+      currentSlide: this.props.rtl ? this.props.children.length - this.props.slidesToShow : this.props.slideIndex,
       dragging: false,
       easing: this.props.disableAnimation ? '' : easing.easeCircleOut,
       hasInteraction: false, // to remove animation from the initial slide on the page load when non-default slideIndex is used
@@ -92,6 +92,7 @@ export default class Carousel extends React.Component {
     this.establishChildNodesMutationObserver = this.establishChildNodesMutationObserver.bind(
       this
     );
+    this.reverseChildren = this.reverseChildren.bind()
   }
 
   componentDidMount() {
@@ -953,6 +954,11 @@ export default class Carousel extends React.Component {
       });
     }
   }
+
+  reverseChildren (children, rtl) {
+    return rtl ? [...children].reverse() : children
+  }
+
   render() {
     const { currentSlide, slideCount, frameWidth } = this.state;
     const {
@@ -961,8 +967,11 @@ export default class Carousel extends React.Component {
       framePadding,
       slidesToShow,
       renderAnnounceSlideMessage,
-      disableAnimation
+      disableAnimation,
+      rtl,
+      children,
     } = this.props;
+
     const duration =
       this.state.dragging ||
       (!this.state.dragging &&
@@ -983,7 +992,7 @@ export default class Carousel extends React.Component {
     const mouseEvents = this.getMouseEvents();
     const TransitionControl = Transitions[this.props.transitionMode];
     const validChildren = getValidChildren(this.props.children);
-
+    const orderedChildren = this.reverseChildren(children, rtl);  
     return (
       <div
         className={['slider', this.props.className || ''].join(' ')}
@@ -992,6 +1001,7 @@ export default class Carousel extends React.Component {
           getSliderStyles(this.props.width, this.props.height),
           this.props.style
         )}
+        dir='ltr'
       >
         {!this.props.autoplay && (
           <AnnounceSlide
@@ -1005,7 +1015,8 @@ export default class Carousel extends React.Component {
           {...touchEvents}
           {...mouseEvents}
           onClickCapture={this.handleClick}
-        >
+          dir='ltr'
+          >
           <Animate
             show
             start={{ tx: 0, ty: 0 }}
@@ -1064,7 +1075,7 @@ export default class Carousel extends React.Component {
                 deltaX={tx}
                 deltaY={ty}
               >
-                {addAccessibility(validChildren, slidesToShow, currentSlide)}
+                {addAccessibility(orderedChildren, slidesToShow, currentSlide)}
               </TransitionControl>
             )}
           />
