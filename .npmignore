@@ -1,5 +1,4 @@
 /*
-!/es
 **/test/
 **/*.spec.js
 !package.json
