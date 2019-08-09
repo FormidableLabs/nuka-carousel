@@ -62,7 +62,7 @@ export default class Carousel extends React.Component {
     this.childNodesMutationObs = null;
 
     this.state = {
-      currentSlide: this.props.rtl
+      currentSlide: this.props.rightToLeft
         ? this.props.children.length - this.props.slidesToShow
         : this.props.slideIndex,
       dragging: false,
@@ -1050,8 +1050,8 @@ export default class Carousel extends React.Component {
     }
   }
 
-  reverseChildren(children, rtl) {
-    return rtl ? [...children].reverse() : children;
+  reverseChildren(children, rightToLeft) {
+    return rightToLeft ? [...children].reverse() : children;
   }
 
   render() {
@@ -1063,7 +1063,7 @@ export default class Carousel extends React.Component {
       slidesToShow,
       renderAnnounceSlideMessage,
       disableAnimation,
-      rtl,
+      rightToLeft,
       children
     } = this.props;
 
@@ -1086,7 +1086,7 @@ export default class Carousel extends React.Component {
     const touchEvents = this.getTouchEvents();
     const mouseEvents = this.getMouseEvents();
     const TransitionControl = Transitions[this.props.transitionMode];
-    const validChildren = getValidChildren(this.props.children, rtl);
+    const validChildren = getValidChildren(this.props.children, rightToLeft);
     return (
       <div
         className={['slider', this.props.className || ''].join(' ').trim()}
