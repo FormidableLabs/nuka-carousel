@@ -13,9 +13,11 @@ export const addAccessibility = (children, slidesToShow) => {
   }
 };
 
-export const getValidChildren = children => {
+export const getValidChildren = (children, rtl) => {
   // .toArray automatically removes invalid React children
-  return React.Children.toArray(children);
+  return rtl
+    ? React.Children.toArray(children).reverse()
+    : React.Children.toArray(children);
 };
 
 const getMax = (a, b) => {
