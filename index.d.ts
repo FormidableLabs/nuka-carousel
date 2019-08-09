@@ -411,39 +411,13 @@ export interface CarouselState {
   wrapToIndex: boolean;
 }
 
-export interface PagingDotsProps {
-  /**
-   * The total number of slides
-   */
-  slideCount: number;
+export interface PreviousButtonProps extends CarouselSlideRenderControlProps {}
+export class PreviousButton extends React.Component<PreviousButtonProps> {}
 
-  /**
-   * Thte number of slides to scroll
-   */
-  slidesToScroll: number;
+export interface NextButtonProps extends CarouselSlideRenderControlProps {}
+export class NextButton extends React.Component<NextButtonProps> {}
 
-  /**
-   * The number of slides to show
-   */
-  slidesToShow: number;
-
-  /**
-   * The cell alignment
-   */
-  cellAlign: CarouselCellAlignProp;
-
-  /**
-   * The current slide
-   */
-  currentSlide: number;
-
-  /**
-   * Go to a new slide
-   * @param index The slide index to go to
-   */
-  goToSlide: (index: number) => void;
-}
-
+export interface PagingDotsProps extends CarouselSlideRenderControlProps {}
 export class PagingDots extends React.Component<PagingDotsProps> {
   public getButtonStyles(active: boolean): React.CSSProperties;
   public getListStyles(): React.CSSProperties;

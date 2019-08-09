@@ -4,6 +4,7 @@
   "rules": {
     "interface-name": false,
     "max-classes-per-file": false,
+    "no-empty-interface": false,
     "quotemark": false,
     "trailing-comma": false
   }
