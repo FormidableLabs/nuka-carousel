@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "module": "./es/index.js",
   "jsnext:main": "./es/index.js",
-  "types": "index.d.ts",
+  "types": "./index.d.ts",
   "dependencies": {
     "csstype": "^2.6.6",
     "d3-ease": "^1.0.3",
