@@ -1293,7 +1293,13 @@ Carousel.defaultProps = {
   vertical: false,
   width: '100%',
   withoutControls: false,
+<<<<<<< HEAD
   wrapAround: false
+=======
+  wrapAround: false,
+  slideListMargin: 10,
+  rtl: false
+>>>>>>> Added proptypes for rtl checker
 };
 
 export { NextButton, PreviousButton, PagingDots };
