@@ -1063,8 +1063,7 @@ export default class Carousel extends React.Component {
       slidesToShow,
       renderAnnounceSlideMessage,
       disableAnimation,
-      rightToLeft,
-      children
+      rtl
     } = this.props;
 
     const duration =
@@ -1086,7 +1085,7 @@ export default class Carousel extends React.Component {
     const touchEvents = this.getTouchEvents();
     const mouseEvents = this.getMouseEvents();
     const TransitionControl = Transitions[this.props.transitionMode];
-    const validChildren = getValidChildren(this.props.children, rightToLeft);
+    const validChildren = getValidChildren(this.props.children, rtl);
     return (
       <div
         className={['slider', this.props.className || ''].join(' ').trim()}
@@ -1234,6 +1233,7 @@ Carousel.propTypes = {
   renderTopCenterControls: PropTypes.func,
   renderTopLeftControls: PropTypes.func,
   renderTopRightControls: PropTypes.func,
+  rtl: PropTypes.bool,
   slideIndex: PropTypes.number,
   slideListMargin: PropTypes.number,
   slideOffset: PropTypes.number,
@@ -1279,6 +1279,7 @@ Carousel.defaultProps = {
   renderBottomCenterControls: props => <PagingDots {...props} />,
   renderCenterLeftControls: props => <PreviousButton {...props} />,
   renderCenterRightControls: props => <NextButton {...props} />,
+  rtl: false,
   slideIndex: 0,
   slideListMargin: 10,
   slideOffset: 25,
