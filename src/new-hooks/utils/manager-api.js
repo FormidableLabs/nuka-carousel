@@ -1,6 +1,6 @@
-import _ from 'lodash';
+import slice from 'lodash/slice';
 import { slides } from '../components/slide';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const useSlideManager = props => {
   const [slideIndex, setSlideIndex] = useState(props.slideIndex || 0);
@@ -10,7 +10,7 @@ const useSlideManager = props => {
   const slideCount = children.length;
 
   const getCurrentSlides = () => {
-    const currentSlides = _.slice(
+    const currentSlides = slice(
       children,
       slideIndex,
       slideIndex + slidesToShow
@@ -19,12 +19,12 @@ const useSlideManager = props => {
   };
 
   const getPrevSlides = () => {
-    const prevSlides = _.slice(children, slideIndex - slidesToShow, slideIndex);
+    const prevSlides = slice(children, slideIndex - slidesToShow, slideIndex);
     return prevSlides;
   };
 
   const getNextSlides = () => {
-    const nextSlides = _.slice(
+    const nextSlides = slice(
       children,
       slideIndex + 1,
       slideIndex + 1 + slidesToShow

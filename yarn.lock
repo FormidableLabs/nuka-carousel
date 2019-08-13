@@ -652,6 +652,13 @@
     "@babel/plugin-transform-react-jsx-self" "^7.0.0"
     "@babel/plugin-transform-react-jsx-source" "^7.0.0"
 
+"@babel/runtime@^7.3.1":
+  version "7.5.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
+  integrity sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@babel/runtime@^7.3.4":
   version "7.4.3"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.3.tgz#79888e452034223ad9609187a0ad1fe0d2ad4bdc"
@@ -860,6 +867,92 @@
   dependencies:
     "@types/istanbul-lib-coverage" "^2.0.0"
     "@types/yargs" "^12.0.9"
+
+"@react-spring/addons@^9.0.0-beta.31":
+  version "9.0.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@react-spring/addons/-/addons-9.0.0-beta.31.tgz#0a35a92369e9d380d2559f1b8dca23451863fc72"
+  integrity sha512-SZCQuN9iAubMiQvZSk4eroorD/KLsWvXjXfb8emYcLL6UGPQqyI663KczpH5UU7iwsh3QoZDwq3wYoitORtPVA==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "@react-spring/animated" "^9.0.0-beta.31"
+    "@react-spring/core" "^9.0.0-beta.31"
+    use-memo-one "^1.1.0"
+
+"@react-spring/animated@^9.0.0-beta.31":
+  version "9.0.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@react-spring/animated/-/animated-9.0.0-beta.31.tgz#d7fe8171724ee8870fd5585a58c87818690e422b"
+  integrity sha512-Zrf6VQCpXexv/NngV1c/J2gPrK3uGk/yjEi6pnrXgmUAO67rfsNxJb/9kWcI4v2U9yrUS9EYAoDqG1BZV8Jvcw==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "@react-spring/shared" "^9.0.0-beta.31"
+
+"@react-spring/core@^9.0.0-beta.31":
+  version "9.0.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@react-spring/core/-/core-9.0.0-beta.31.tgz#3ccdea75bcfb937b02ca540135383c51660e3a38"
+  integrity sha512-E0cwfnBjP6kftwfr/81LBhLsuN4wObwTlUO3eAfEuwPnyzaWfQ0QkM33uw8FUASyk+NdinmRVPfaUZNGYjdZNg==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "@react-spring/animated" "^9.0.0-beta.31"
+    "@react-spring/shared" "^9.0.0-beta.31"
+    use-memo-one "^1.1.0"
+
+"@react-spring/konva@^9.0.0-beta.31":
+  version "9.0.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@react-spring/konva/-/konva-9.0.0-beta.31.tgz#3eb9f9a12c21b2386058a348f7ff773d219f58a0"
+  integrity sha512-IezBohtc8sl6yXKkjKV80yZzypA21OiPT1vc6x/nh2iqaZcNCesDjNSwtQUZbWyWqgx/f9mQ0nCejtIw07C/NQ==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "@react-spring/animated" "^9.0.0-beta.31"
+    "@react-spring/core" "^9.0.0-beta.31"
+    "@react-spring/shared" "^9.0.0-beta.31"
+
+"@react-spring/native@^9.0.0-beta.31":
+  version "9.0.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@react-spring/native/-/native-9.0.0-beta.31.tgz#1bf3e1a93fe3eab01834c885b05adddce1d47ea1"
+  integrity sha512-hUYTJSOLGrURV5WaJojWs05GfoAZij2WVRWM0/4TrZA0Ud89BZmu+lDb8XkfRW00YWEF688bTO5B+mtyZC1A/w==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "@react-spring/animated" "^9.0.0-beta.31"
+    "@react-spring/core" "^9.0.0-beta.31"
+    "@react-spring/shared" "^9.0.0-beta.31"
+
+"@react-spring/shared@^9.0.0-beta.31":
+  version "9.0.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@react-spring/shared/-/shared-9.0.0-beta.31.tgz#417622806247fd9f676eda064baee622d608e937"
+  integrity sha512-MVCD2a8C5rQVRS67Ov4372efT8aDb6/5ZWRKwBcIeN2CrTuGqO6S3HgRZnER1LIZr7/BM4jkxA26KwTILQiaHw==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    tiny-invariant "^1.0.4"
+
+"@react-spring/three@^9.0.0-beta.31":
+  version "9.0.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@react-spring/three/-/three-9.0.0-beta.31.tgz#256b7a837a5d513a2cf52bbfb3792a283a65d6dd"
+  integrity sha512-XgkBiWnb+7IWRxrO2iO33NeCz/KWbjxwpHiOZ+VQRsXO0Goe9upWezqgg2HCgq/yh2tNYFiOUY92MGNIscWo5w==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "@react-spring/animated" "^9.0.0-beta.31"
+    "@react-spring/core" "^9.0.0-beta.31"
+    "@react-spring/shared" "^9.0.0-beta.31"
+
+"@react-spring/web@^9.0.0-beta.31":
+  version "9.0.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@react-spring/web/-/web-9.0.0-beta.31.tgz#1c16d5deaeea1b6fff2fa4fa8d8fb7b0af48d254"
+  integrity sha512-U1wAddiYDnf8u3UuKm/IwVk+5GbFlZv+hEemUWaLu+HeBnmZRORDgjWYPW1jHm25/wRW/CBJh3Yvun+XJEQ0yQ==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "@react-spring/animated" "^9.0.0-beta.31"
+    "@react-spring/core" "^9.0.0-beta.31"
+    "@react-spring/shared" "^9.0.0-beta.31"
+
+"@react-spring/zdog@^9.0.0-beta.31":
+  version "9.0.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@react-spring/zdog/-/zdog-9.0.0-beta.31.tgz#b4c440df6d600fb3690cd66844555ec4719a4691"
+  integrity sha512-BzdZ+jHY7RNfhu98w1P42yzHPkCqSzjxcea4RTqzD2x9DOYCTACUUcsl0SiOBkdRtEHWsqRdPMY3cqcegiKP8Q==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "@react-spring/animated" "^9.0.0-beta.31"
+    "@react-spring/core" "^9.0.0-beta.31"
+    "@react-spring/shared" "^9.0.0-beta.31"
 
 "@sinonjs/commons@^1", "@sinonjs/commons@^1.0.2":
   version "1.4.0"
@@ -2179,9 +2272,10 @@ css-color-names@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
 
-css-loader@^0.28.10:
+css-loader@^0.28.11:
   version "0.28.11"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-0.28.11.tgz#c3f9864a700be2711bb5a2462b2389b1a392dab7"
+  integrity sha512-wovHgjAx8ZIMGSL8pTys7edA1ClmzxHeY6n/d97gg5odgsxEgKjULPR0viqyC+FWMCL9sfqoC/QCUBo62tLvPg==
   dependencies:
     babel-code-frame "^6.26.0"
     css-selector-tokenizer "^0.7.0"
@@ -3193,6 +3287,14 @@ file-entry-cache@^2.0.0:
   dependencies:
     flat-cache "^1.2.1"
     object-assign "^4.0.1"
+
+file-loader@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-3.0.1.tgz#f8e0ba0b599918b51adfe45d66d1e771ad560faa"
+  integrity sha512-4sNIOXgtH/9WZq4NvlfU3Opn5ynUsqBwSLyM+I7UOwdGigTBYfVVQEwe/msZNX/j4pCJTIM14Fsw66Svo1oVrw==
+  dependencies:
+    loader-utils "^1.0.2"
+    schema-utils "^1.0.0"
 
 fileset@^2.0.3:
   version "2.0.3"
@@ -6252,6 +6354,20 @@ react-move@^5.0.0:
     prop-types "^15.7.2"
     react-lifecycles-compat "^3.0.4"
 
+react-spring@^9.0.0-beta.22:
+  version "9.0.0-beta.31"
+  resolved "https://registry.yarnpkg.com/react-spring/-/react-spring-9.0.0-beta.31.tgz#4c61e49319ecc05c4b8780dbe2718e433049531d"
+  integrity sha512-g4z40d+y3MtWNKsvpaGX9Qh33WtVo/qa0/78IisnUKQy7rUwLEMRd2X4HefuUZmbex0/neTbxWFDHiKMudn5Fw==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "@react-spring/addons" "^9.0.0-beta.31"
+    "@react-spring/core" "^9.0.0-beta.31"
+    "@react-spring/konva" "^9.0.0-beta.31"
+    "@react-spring/native" "^9.0.0-beta.31"
+    "@react-spring/three" "^9.0.0-beta.31"
+    "@react-spring/web" "^9.0.0-beta.31"
+    "@react-spring/zdog" "^9.0.0-beta.31"
+
 react-test-renderer@^16.0.0-0, react-test-renderer@^16.2.0:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.8.6.tgz#188d8029b8c39c786f998aa3efd3ffe7642d5ba1"
@@ -7107,9 +7223,10 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-style-loader@^0.20.2:
+style-loader@^0.20.3:
   version "0.20.3"
   resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.20.3.tgz#ebef06b89dec491bcb1fdb3452e913a6fd1c10c4"
+  integrity sha512-2I7AVP73MvK33U7B9TKlYZAqdROyMXDYSMvHLX43qy3GCOaJNiV6i0v/sv9idWIaQ42Yn2dNv79Q5mKXbKhAZg==
   dependencies:
     loader-utils "^1.1.0"
     schema-utils "^0.4.5"
@@ -7222,6 +7339,11 @@ timers-browserify@^2.0.4:
   resolved "https://registry.yarnpkg.com/timers-browserify/-/timers-browserify-2.0.10.tgz#1d28e3d2aadf1d5a5996c4e9f95601cd053480ae"
   dependencies:
     setimmediate "^1.0.4"
+
+tiny-invariant@^1.0.4:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.0.6.tgz#b3f9b38835e36a41c843a3b0907a5a7b3755de73"
+  integrity sha512-FOyLWWVjG+aC0UqG76V53yAWdXfH8bO6FNmyZOuUrzDzK8DI3/JRY25UD7+g49JWM1LXwymsKERB+DzI0dTEQA==
 
 tmp@^0.0.33:
   version "0.0.33"
@@ -7487,6 +7609,11 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
+
+use-memo-one@^1.1.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/use-memo-one/-/use-memo-one-1.1.1.tgz#39e6f08fe27e422a7d7b234b5f9056af313bd22c"
+  integrity sha512-oFfsyun+bP7RX8X2AskHNTxu+R3QdE/RC5IefMbqptmACAA/gfol1KDD5KRzPsGMa62sWxGZw+Ui43u6x4ddoQ==
 
 use@^3.1.0:
   version "3.1.1"

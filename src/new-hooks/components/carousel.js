@@ -18,7 +18,7 @@ const Carousel = props => {
 
   const handlePrev = goToPrev;
   const handleNext = goToNext;
-  const handleGoTo = goToSlide;
+  const handleGoToSlide = goToSlide;
 
   return (
     <div
@@ -34,7 +34,7 @@ const Carousel = props => {
       <Controls
         handleNext={handleNext}
         handlePrev={handlePrev}
-        handleGoTo={handleGoTo}
+        handleGoToSlide={handleGoToSlide}
         slideCount={slideCount}
       />
     </div>

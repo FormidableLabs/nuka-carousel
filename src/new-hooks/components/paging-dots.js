@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 
-const PagingDots = ({ slideCount, handleGoTo }) => {
+const PagingDots = ({ slideCount, handleGoToSlide }) => {
   return (
     <div>
       {_.fill(Array(slideCount), 1).map((i, index) => (
@@ -17,7 +17,7 @@ const PagingDots = ({ slideCount, handleGoTo }) => {
             padding: '5px',
             margin: '5px'
           }}
-          onClick={() => handleGoTo(index)}
+          onClick={() => handleGoToSlide(index)}
         />
       ))}
     </div>
