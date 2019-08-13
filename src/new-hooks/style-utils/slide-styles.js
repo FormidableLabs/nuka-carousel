@@ -11,7 +11,8 @@ export const getImgTagStyles = () => {
 export const getSliderStyles = (propWidth, stateSlideWidth) => {
   return {
     boxSizing: 'border-box',
-    display: 'block',
+    // display: 'block',
+    display: 'flex',
     height: 'inherit',
     MozBoxSizing: 'border-box',
     position: 'relative',

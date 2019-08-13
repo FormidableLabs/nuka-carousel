@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Slider from './slider';
+import './anim-style.css';
 import Controls from './controls';
 import { getContainerStyle } from '../style-utils/container-styles';
 
@@ -7,25 +8,29 @@ import useSlideManager from '../utils/manager-api';
 
 const Carousel = props => {
   const {
-    currentSlides,
-    prevSlides,
-    nextSlides,
     goToNext,
     goToPrev,
     goToSlide,
-    slideCount
+    slideCount,
+    slideIndex,
+    slideDirection
   } = useSlideManager(props);
-  console.log(goToSlide);
+
   const handlePrev = goToPrev;
   const handleNext = goToNext;
   const handleGoTo = goToSlide;
-  console.log(handleGoTo);
+
   return (
     <div
       className={`container ${props.carouselContainerClassName || ''}`}
       style={getContainerStyle(props)}
     >
-      <Slider slides={currentSlides} />
+      <Slider
+        slideIndex={slideIndex}
+        slideDirection={slideDirection}
+        {...props}
+      />
+
       <Controls
         handleNext={handleNext}
         handlePrev={handlePrev}

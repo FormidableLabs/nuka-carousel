@@ -13,7 +13,8 @@
     "file-loader": "^3.0.1",
     "lodash": "^4.17.11",
     "prop-types": "^15.6.0",
-    "react-move": "^5.0.0"
+    "react-move": "^5.0.0",
+    "react-spring": "^9.0.0-beta.22"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",

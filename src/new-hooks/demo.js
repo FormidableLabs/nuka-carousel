@@ -2,15 +2,25 @@ import React from 'react';
 import Carousel from './components/carousel';
 import './demo.css';
 
-const colors = ['7732bb', '047cc0', '00884b', 'e3bc13', 'db7c00', 'aa231f'];
-
-const slides = colors.map((color, index) => (
-  <img
-    src={`http://placehold.it/1000x400/${color}/ffffff/&text=slide${index + 1}`}
-    alt={`Slide ${index + 1}`}
-    key={color}
-  />
+const slides = [1, 2, 3, 4, 5].map(i => (
+  <div
+    key={i}
+    style={{
+      boxSizing: 'border-box',
+      height: '200px',
+      width: '500px'
+    }}
+  >
+    <img
+      key={i}
+      src={`https://via.placeholder.com/500x200/f2f2f2/c0392b/&text=slide${i}`}
+    />
+  </div>
 ));
 
-const Demo = () => <Carousel>{slides}</Carousel>;
+const Demo = () => (
+  <Carousel slideHeight="200px" slideWidth="500px">
+    {slides}
+  </Carousel>
+);
 export default Demo;

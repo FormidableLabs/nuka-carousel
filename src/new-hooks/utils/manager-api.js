@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 
 const useSlideManager = props => {
   const [slideIndex, setSlideIndex] = useState(props.slideIndex || 0);
+  const [slideDirection, setSlideDirection] = useState('next');
   const slidesToShow = props.slidesToShow || 1;
   const children = slides(props.children);
   const slideCount = children.length;
-  console.log('slideIndex', slideIndex);
 
   const getCurrentSlides = () => {
     const currentSlides = _.slice(
@@ -33,20 +33,23 @@ const useSlideManager = props => {
   };
 
   const goToSlide = index => {
-    console.log('clicked', index);
     setSlideIndex(index);
     return children[index];
   };
 
   const goToNext = () => {
+    setSlideDirection('next');
     setSlideIndex((slideIndex + 1) % slideCount);
   };
 
   const goToPrev = () => {
+    setSlideDirection('prev');
     setSlideIndex((slideIndex - 1 + slideCount) % slideCount);
   };
 
   return {
+    slideIndex,
+    slideDirection,
     currentSlides: getCurrentSlides(),
     prevSlides: getPrevSlides(),
     nextSlides: getNextSlides(),
