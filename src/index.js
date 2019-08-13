@@ -970,8 +970,7 @@ export default class Carousel extends React.Component {
       slidesToShow,
       renderAnnounceSlideMessage,
       disableAnimation,
-      rtl,
-      children
+      rtl
     } = this.props;
 
     const duration =
@@ -993,8 +992,7 @@ export default class Carousel extends React.Component {
     const touchEvents = this.getTouchEvents();
     const mouseEvents = this.getMouseEvents();
     const TransitionControl = Transitions[this.props.transitionMode];
-    const validChildren = getValidChildren(this.props.children);
-    const orderedChildren = this.reverseChildren(children, rtl);
+    const validChildren = getValidChildren(this.props.children, rtl);
     return (
       <div
         className={['slider', this.props.className || ''].join(' ')}
@@ -1077,7 +1075,7 @@ export default class Carousel extends React.Component {
                 deltaX={tx}
                 deltaY={ty}
               >
-                {addAccessibility(orderedChildren, slidesToShow, currentSlide)}
+                {addAccessibility(validChildren, slidesToShow, currentSlide)}
               </TransitionControl>
             )}
           />
@@ -1131,6 +1129,7 @@ Carousel.propTypes = {
   renderTopCenterControls: PropTypes.func,
   renderTopLeftControls: PropTypes.func,
   renderTopRightControls: PropTypes.func,
+  rtl: PropTypes.bool,
   slideIndex: PropTypes.number,
   slideOffset: PropTypes.number,
   slidesToScroll: PropTypes.oneOfType([
@@ -1147,8 +1146,7 @@ Carousel.propTypes = {
   withoutControls: PropTypes.bool,
   wrapAround: PropTypes.bool,
   opacityScale: PropTypes.number,
-  slideListMargin: PropTypes.number,
-  rtl: PropTypes.bool
+  slideListMargin: PropTypes.number
 };
 
 Carousel.defaultProps = {
@@ -1176,6 +1174,7 @@ Carousel.defaultProps = {
   renderBottomCenterControls: props => <PagingDots {...props} />,
   renderCenterLeftControls: props => <PreviousButton {...props} />,
   renderCenterRightControls: props => <NextButton {...props} />,
+  rtl: false,
   slideIndex: 0,
   slideOffset: 25,
   slidesToScroll: 1,
@@ -1189,8 +1188,7 @@ Carousel.defaultProps = {
   width: '100%',
   withoutControls: false,
   wrapAround: false,
-  slideListMargin: 10,
-  rtl: false
+  slideListMargin: 10
 };
 
 export { NextButton, PreviousButton, PagingDots };
