@@ -180,6 +180,7 @@ export default class Carousel extends React.Component {
     this.stopAutoplay();
     // see https://github.com/facebook/react/issues/3417#issuecomment-121649937
     this.mounted = false;
+    this.goToSlide();
   }
 
   establishChildNodesMutationObserver() {
