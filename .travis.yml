@@ -6,17 +6,13 @@ node_js:
 
 sudo: false
 
-services:
-  - xvfb
-
 branches:
   only:
     - master
 
 before_install:
   # GUI for real browsers.
-  - 'export DISPLAY=:99.0'
-  - 'xvfb start'
+  - export DISPLAY=:99.0
 
 script:
   - yarn run build
