@@ -40,11 +40,17 @@ export const getValidChildren = children => {
 const findMaxHeightSlide = slides => {
   let maxHeight = 0;
   for (let i = 0; i < slides.length; i++) {
-    if (slides[i].offsetHeight > maxHeight) {
-      maxHeight = slides[i].offsetHeight;
+    const currentSlideHeight = slides[i].offsetHeight;
+    if (currentSlideHeight > maxHeight) {
+      maxHeight = currentSlideHeight;
     }
   }
   return maxHeight;
+
+  // return Array.from(slides).reduce((maxHeight, currentSlide) => {
+  //   const currentSlideHeight = currentSlide.getBoundingClientRect().height;
+  //   return currentSlideHeight > maxHeight ? currentSlideHeight : maxHeight;
+  // }, 0);
 };
 
 export const getSlideHeight = (props, state, childNodes = []) => {
@@ -58,10 +64,13 @@ export const getSlideHeight = (props, state, childNodes = []) => {
       : firstSlide.offsetHeight;
   }
   if (heightMode === 'max') {
+    console.warn('1 getSlideHeight(): ', findMaxHeightSlide(childNodes));
     return findMaxHeightSlide(childNodes);
   }
   if (heightMode === 'current') {
+    console.warn('current', childNodes[currentSlide].offsetHeight);
     return childNodes[currentSlide].offsetHeight;
   }
+  console.warn('initialSlideHeight', initialSlideHeight);
   return initialSlideHeight || 100;
 };
