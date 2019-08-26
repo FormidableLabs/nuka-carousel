@@ -64,13 +64,10 @@ export const getSlideHeight = (props, state, childNodes = []) => {
       : firstSlide.offsetHeight;
   }
   if (heightMode === 'max') {
-    console.warn('1 getSlideHeight(): ', findMaxHeightSlide(childNodes));
     return findMaxHeightSlide(childNodes);
   }
   if (heightMode === 'current') {
-    console.warn('current', childNodes[currentSlide].offsetHeight);
     return childNodes[currentSlide].offsetHeight;
   }
-  console.warn('initialSlideHeight', initialSlideHeight);
   return initialSlideHeight || 100;
 };

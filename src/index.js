@@ -61,6 +61,7 @@ export default class Carousel extends React.Component {
       slideCount: getValidChildren(this.props.children).length,
       top: 0,
       wrapToIndex: null,
+      readyStateChanged: 0,
       ...calcSomeInitialState(this.props)
     };
 
@@ -189,6 +190,12 @@ export default class Carousel extends React.Component {
       } else {
         this.setSlideHeightAndWidth();
       }
+    }
+
+    const { slideHeight } = this.calcSlideHeightAndWidth();
+    const heightMismatches = slideHeight !== this.state.slideHeight;
+    if (this.mounted && heightMismatches) {
+      this.setDimensions();
     }
   }
 
@@ -817,7 +824,10 @@ export default class Carousel extends React.Component {
 
   onReadyStateChange() {
     console.log('onReadyStateChange() calling setDimensions()');
-    this.setDimensions();
+    this.setState({
+      readyStateChanged: this.state.readyStateChanged + 1
+    });
+    // this.setDimensions();
   }
 
   onVisibilityChange() {
@@ -843,8 +853,6 @@ export default class Carousel extends React.Component {
     const childNodes = this.getChildNodes();
     const slideHeight = getSlideHeight(props, this.state, childNodes);
 
-    console.log('2 CALCULATED......', slideHeight);
-
     //slide width
     const { slidesToShow } = getPropsByTransitionMode(props, ['slidesToShow']);
     const frame = this.frame;
@@ -868,7 +876,7 @@ export default class Carousel extends React.Component {
   }
 
   setSlideHeightAndWidth() {
-    console.log('0 setSlideHeightAndWidth()');
+    console.log('setSlideHeightAndWidth()');
     this.setState(this.calcSlideHeightAndWidth());
   }
 
