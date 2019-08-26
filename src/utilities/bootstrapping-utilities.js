@@ -40,17 +40,11 @@ export const getValidChildren = children => {
 const findMaxHeightSlide = slides => {
   let maxHeight = 0;
   for (let i = 0; i < slides.length; i++) {
-    const currentSlideHeight = slides[i].offsetHeight;
-    if (currentSlideHeight > maxHeight) {
-      maxHeight = currentSlideHeight;
+    if (slides[i].offsetHeight > maxHeight) {
+      maxHeight = slides[i].offsetHeight;
     }
   }
   return maxHeight;
-
-  // return Array.from(slides).reduce((maxHeight, currentSlide) => {
-  //   const currentSlideHeight = currentSlide.getBoundingClientRect().height;
-  //   return currentSlideHeight > maxHeight ? currentSlideHeight : maxHeight;
-  // }, 0);
 };
 
 export const getSlideHeight = (props, state, childNodes = []) => {

@@ -98,15 +98,7 @@ export default class Carousel extends React.Component {
   componentDidMount() {
     // see https://github.com/facebook/react/issues/3417#issuecomment-121649937
     this.mounted = true;
-
-    const image = this.getCurrentChildNodeImg();
-    if (image) {
-      image.addEventListener('load', this.setDimensions);
-      image.removeEventListener('load', this.setDimensions);
-    }
-
     this.setLeft();
-
     this.setDimensions();
     this.bindEvents();
     this.establishChildNodesMutationObserver();

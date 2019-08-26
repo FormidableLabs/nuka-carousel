@@ -117,7 +117,6 @@ export const shouldUpdate = (curr, next, keys) => {
 
   for (let i = 0; i < keys.length; i++) {
     if (curr[keys[i]] !== next[keys[i]]) {
-      console.log('shouldUpdate \n', curr[keys[i]], next[keys[i]]);
       update = true;
       break;
     }
