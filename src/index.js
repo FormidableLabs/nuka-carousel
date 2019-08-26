@@ -101,13 +101,11 @@ export default class Carousel extends React.Component {
 
     const image = this.getCurrentChildNodeImg();
     if (image) {
-      console.log('hey u found an image!!');
       image.addEventListener('load', this.setDimensions);
       image.removeEventListener('load', this.setDimensions);
     }
 
     this.setLeft();
-    console.warn('didMount calling setDimensions()');
 
     this.setDimensions();
     this.bindEvents();
@@ -147,15 +145,7 @@ export default class Carousel extends React.Component {
         'cellAlign'
       ]);
 
-    console.log(
-      'componentWillReceiveProps!!!!!!! \n',
-      nextProps.children,
-      '\n',
-      this.props.children
-    );
-
     if (updateDimensions) {
-      console.log('updating dimensions!!!');
       this.setDimensions(nextProps);
     }
 
@@ -193,8 +183,8 @@ export default class Carousel extends React.Component {
     }
 
     const { slideHeight } = this.calcSlideHeightAndWidth();
-    const heightMismatches = slideHeight !== this.state.slideHeight;
-    if (this.mounted && heightMismatches) {
+    const heightMismatches = slideHeight !== prevState.slideHeight;
+    if (this.mounted && prevState.readyStateChanged > 0 && heightMismatches) {
       this.setDimensions();
     }
   }
@@ -818,16 +808,14 @@ export default class Carousel extends React.Component {
   }
 
   onResize() {
-    console.log('onResize() calling setDimensions()');
     this.setDimensions(null, this.props.onResize);
   }
 
   onReadyStateChange() {
-    console.log('onReadyStateChange() calling setDimensions()');
     this.setState({
       readyStateChanged: this.state.readyStateChanged + 1
     });
-    // this.setDimensions();
+    this.setDimensions();
   }
 
   onVisibilityChange() {
@@ -876,7 +864,6 @@ export default class Carousel extends React.Component {
   }
 
   setSlideHeightAndWidth() {
-    console.log('setSlideHeightAndWidth()');
     this.setState(this.calcSlideHeightAndWidth());
   }
 
@@ -890,10 +877,6 @@ export default class Carousel extends React.Component {
 
     const frame = this.frame;
     const { slideHeight, slideWidth } = this.calcSlideHeightAndWidth(props);
-    console.log(
-      'setDimensions(): calc slide height & width: ',
-      this.calcSlideHeightAndWidth(props)
-    );
 
     const frameHeight = slideHeight + props.cellSpacing * (slidesToShow - 1);
     const frameWidth = props.vertical ? frameHeight : frame.offsetWidth;
