@@ -187,9 +187,7 @@ export default class extends React.Component {
 
 TypeScript type definitions are now shipped with nuka-carousel. You can use them directly from the library.
 
-### Resizing Height Issue
-
-When using dynamic content in a slide such as text, you may see an issue with resizing the height of the component when loading in an iframe, or forcing the component to load synchronously after another component such as a loading screen, or interstitial.
+### Resizing Height
 
 #### How resizing works
 
@@ -199,8 +197,6 @@ In componentDidMount, the initial dimensions are assigned to each slide:
 - Height: `initialSlideHeight`
 
 Once the component has completed mounting with the accurate width, it waits for the readyStateChange event to fire before measuring the desired height of the content (`current`, `first`, `max`). That measurement then replaces `initialSlideHeight` with the measured height in pixels.
-
-If the readyStateChange event fires before the component completes mounting, the height of the component is not measured until a resize event or a change in slide is triggered.
 
 ### Contributing
 
