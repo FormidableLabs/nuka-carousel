@@ -234,7 +234,7 @@ export default class Carousel extends React.Component {
         this.handleMouseOver();
 
         if (this.props.onDragStart) {
-          this.props.onDragStart();
+          this.props.onDragStart(e);
         }
 
         this.setState({
@@ -319,7 +319,7 @@ export default class Carousel extends React.Component {
         };
 
         if (this.props.onDragStart) {
-          this.props.onDragStart();
+          this.props.onDragStart(e);
         }
 
         this.setState({
