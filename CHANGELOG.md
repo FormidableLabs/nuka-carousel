@@ -1,5 +1,10 @@
 # Nuka Changelog
 
+## 4.5.11 (2019-09-03)
+
+- [#578](https://github.com/FormidableLabs/nuka-carousel/pull/578) update vulnerable deps, fix broken scroll animation
+- [#576](https://github.com/FormidableLabs/nuka-carousel/pull/576) Clear timeouts when component unmounts to prevent memory leak
+
 ## 4.5.10 (2019-09-02)
 
 - [#574](https://github.com/FormidableLabs/nuka-carousel/pull/574) Add event param to onDragStart method
