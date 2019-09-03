@@ -36,6 +36,7 @@ export default class Carousel extends React.Component {
     this.displayName = 'Carousel';
     this.clickDisabled = false;
     this.isTransitioning = false;
+    this.timers = [];
     this.touchObject = {};
     this.controlsMap = [
       { funcName: 'renderTopLeftControls', key: 'TopLeft' },
@@ -189,6 +190,9 @@ export default class Carousel extends React.Component {
     this.stopAutoplay();
     // see https://github.com/facebook/react/issues/3417#issuecomment-121649937
     this.mounted = false;
+    for (let i = 0; i < this.timers.length; i++) {
+      clearTimeout(this.timers[i]);
+    }
   }
 
   establishChildNodesMutationObserver() {
@@ -477,9 +481,11 @@ export default class Carousel extends React.Component {
     }
 
     // wait for `handleClick` event before resetting clickDisabled
-    setTimeout(() => {
-      this.clickDisabled = false;
-    }, 0);
+    this.timers.push(
+      setTimeout(() => {
+        this.clickDisabled = false;
+      }, 0)
+    );
     this.touchObject = {};
 
     this.setState({
@@ -688,13 +694,15 @@ export default class Carousel extends React.Component {
             wrapToIndex: index
           }),
           () => {
-            setTimeout(() => {
-              this.resetAutoplay();
-              this.isTransitioning = false;
-              if (index !== previousSlide) {
-                this.props.afterSlide(0);
-              }
-            }, props.speed);
+            this.timers.push(
+              setTimeout(() => {
+                this.resetAutoplay();
+                this.isTransitioning = false;
+                if (index !== previousSlide) {
+                  this.props.afterSlide(0);
+                }
+              }, props.speed)
+            );
           }
         );
         return;
@@ -714,13 +722,15 @@ export default class Carousel extends React.Component {
             wrapToIndex: index
           }),
           () => {
-            setTimeout(() => {
-              this.resetAutoplay();
-              this.isTransitioning = false;
-              if (index !== previousSlide) {
-                this.props.afterSlide(this.state.slideCount - 1);
-              }
-            }, props.speed);
+            this.timers.push(
+              setTimeout(() => {
+                this.resetAutoplay();
+                this.isTransitioning = false;
+                if (index !== previousSlide) {
+                  this.props.afterSlide(this.state.slideCount - 1);
+                }
+              }, props.speed)
+            );
           }
         );
         return;
@@ -734,13 +744,15 @@ export default class Carousel extends React.Component {
         currentSlide: index
       },
       () =>
-        setTimeout(() => {
-          this.resetAutoplay();
-          this.isTransitioning = false;
-          if (index !== previousSlide) {
-            this.props.afterSlide(index);
-          }
-        }, props.speed)
+        this.timers.push(
+          setTimeout(() => {
+            this.resetAutoplay();
+            this.isTransitioning = false;
+            if (index !== previousSlide) {
+              this.props.afterSlide(index);
+            }
+          }, props.speed)
+        )
     );
   }
 
