@@ -7,7 +7,7 @@
 - [#572](https://github.com/FormidableLabs/nuka-carousel/pull/572) Fix Travis configuration
 - [#571](https://github.com/FormidableLabs/nuka-carousel/pull/571) Next and Previous buttons should not be submit type buttons
 - [#565](https://github.com/FormidableLabs/nuka-carousel/pull/565) Add missing controls to the TypeScript library definition
-- [#564](https://github.com/FormidableLabs/nuka-carousel/pull/564) Export NextButton, PreviousButton, PagingDots from main entrypoint to allow for easier style targeting
+- [#564](https://github.com/FormidableLabs/nuka-carousel/pull/564) Export NextButton, PreviousButton, PagingDots from main entry point to allow for easier style targeting
 - [#562](https://github.com/FormidableLabs/nuka-carousel/pull/562) Allow isEdgeSwiping to work with vertical slider
 - [#561](https://github.com/FormidableLabs/nuka-carousel/pull/561) Avoid the empty div wrapper for null custom controls
 
