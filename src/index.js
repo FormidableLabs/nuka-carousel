@@ -631,15 +631,14 @@ export default class Carousel extends React.Component {
     }
 
     return {
-      tx: this.props.vertical ? 0 : offset,
-      ty: this.props.vertical ? offset : 0
+      tx: [this.props.vertical ? 0 : offset],
+      ty: [this.props.vertical ? offset : 0]
     };
   }
 
   isEdgeSwiping() {
     const { slideCount, slideWidth, slideHeight, slidesToShow } = this.state;
     const { tx, ty } = this.getOffsetDeltas();
-
     if (this.props.vertical) {
       const rowHeight = slideHeight / slidesToShow;
       const slidesLeftToShow = slideCount - slidesToShow;

@@ -134,6 +134,8 @@ export default class ScrollTransition extends React.Component {
 
   getListStyles(styles) {
     const { deltaX, deltaY } = styles;
+    console.log('deltaX', deltaX);
+
     const listWidth =
       this.props.slideWidth * React.Children.count(this.props.children);
     const spacingOffset =
