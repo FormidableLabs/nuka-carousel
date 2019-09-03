@@ -28,6 +28,7 @@ export class PreviousButton extends React.Component {
         disabled={disabled}
         onClick={this.handleClick}
         aria-label="previous"
+        type="button"
       >
         PREV
       </button>
@@ -103,6 +104,7 @@ export class NextButton extends React.Component {
         disabled={disabled}
         onClick={this.handleClick}
         aria-label="next"
+        type="button"
       >
         NEXT
       </button>
