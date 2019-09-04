@@ -1179,7 +1179,7 @@ Carousel.defaultProps = {
   edgeEasing: 'easeElasticOut',
   frameOverflow: 'hidden',
   framePadding: '0px',
-  height: 'auto',
+  height: 'inherit',
   heightMode: 'max',
   onResize() {},
   pauseOnHover: true,
