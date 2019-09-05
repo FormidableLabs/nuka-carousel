@@ -706,7 +706,10 @@ export default class Carousel extends React.Component {
         );
         return;
       } else {
-        const endSlide = this.state.slideCount - this.state.slidesToScroll;
+        const endSlide =
+          index < 0
+            ? this.state.slideCount + index
+            : this.state.slideCount - this.state.slidesToScroll;
         props.beforeSlide(this.state.currentSlide, endSlide);
         this.setState(
           prevState => ({
