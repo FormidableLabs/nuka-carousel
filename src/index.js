@@ -690,7 +690,7 @@ export default class Carousel extends React.Component {
               : 0,
             currentSlide: 0,
             isWrappingAround: true,
-            wrapToIndex: index
+            wrapToIndex: this.state.slideCount
           }),
           () => {
             this.timers.push(
