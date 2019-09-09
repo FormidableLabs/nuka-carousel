@@ -246,10 +246,6 @@ export default class Carousel extends React.Component {
         };
         this.handleMouseOver();
 
-        if (this.props.onDragStart) {
-          this.props.onDragStart(e);
-        }
-
         this.setState({
           dragging: true
         });
@@ -278,6 +274,11 @@ export default class Carousel extends React.Component {
                 Math.pow(e.touches[0].pageX - this.touchObject.startX, 2)
               )
             );
+
+        if (length >= 10) {
+          if (this.clickDisabled === false) this.props.onDragStart(e);
+          this.clickDisabled = true;
+        }
 
         this.touchObject = {
           startX: this.touchObject.startX,
@@ -331,10 +332,6 @@ export default class Carousel extends React.Component {
           startY: e.clientY
         };
 
-        if (this.props.onDragStart) {
-          this.props.onDragStart(e);
-        }
-
         this.setState({
           dragging: true
         });
@@ -366,7 +363,10 @@ export default class Carousel extends React.Component {
             );
 
         // prevents disabling click just because mouse moves a fraction of a pixel
-        if (length >= 10) this.clickDisabled = true;
+        if (length >= 10) {
+          if (this.clickDisabled === false) this.props.onDragStart(e);
+          this.clickDisabled = true;
+        }
 
         this.touchObject = {
           startX: this.touchObject.startX,
@@ -1181,6 +1181,7 @@ Carousel.defaultProps = {
   framePadding: '0px',
   height: 'auto',
   heightMode: 'max',
+  onDragStart() {},
   onResize() {},
   pauseOnHover: true,
   renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
