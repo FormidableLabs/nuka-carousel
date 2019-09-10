@@ -31,7 +31,5 @@ node_modules/
 bower_components/
 .tmp
 dist
-es
-lib
 yarn-error.log*
 package-lock.json
