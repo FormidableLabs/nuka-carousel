@@ -132,7 +132,7 @@ function (_React$Component) {
         transform: "scale(".concat(transformScale, ")"),
         transition: 'transform .4s linear',
         verticalAlign: 'top',
-        width: this.props.vertical ? '100%' : this.props.slideWidth
+        width: '100%'
       };
     }
   }, {
@@ -152,7 +152,7 @@ function (_React$Component) {
         margin: this.props.vertical ? "".concat(this.props.cellSpacing / 2 * -1, "px 0px") : "0px ".concat(this.props.cellSpacing / 2 * -1, "px"),
         padding: 0,
         height: this.props.vertical ? listWidth + spacingOffset : this.props.slideHeight,
-        width: this.props.vertical ? 'auto' : listWidth + spacingOffset,
+        width: 'auto',
         cursor: this.props.dragging === true ? 'pointer' : 'inherit',
         boxSizing: 'border-box',
         MozBoxSizing: 'border-box',
