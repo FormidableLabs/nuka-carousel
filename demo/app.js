@@ -9,7 +9,7 @@ class App extends React.Component {
     super(...arguments);
     this.state = {
       slideIndex: 0,
-      length: 6,
+      length: colors.length,
       wrapAround: false,
       animation: undefined,
       underlineHeader: false,
