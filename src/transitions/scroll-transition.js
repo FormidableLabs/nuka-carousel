@@ -128,7 +128,7 @@ export default class ScrollTransition extends React.Component {
       transform: `scale(${transformScale})`,
       transition: 'transform .4s linear',
       verticalAlign: 'top',
-      width: '100%'
+      width: this.props.vertical ? '100%' : 'auto'
     };
   }
 
