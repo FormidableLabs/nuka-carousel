@@ -462,7 +462,7 @@ export default class Carousel extends React.Component {
     if (this.touchObject.length > this.state.slideWidth / slidesToShow / 5) {
       if (this.touchObject.direction === 1) {
         if (
-          this.state.currentSlide >= this.state.slideCount - slidesToShow &&
+          this.state.currentSlide + 1 >= this.state.slideCount &&
           !this.props.wrapAround
         ) {
           this.setState({ easing: easing[this.props.edgeEasing] });
