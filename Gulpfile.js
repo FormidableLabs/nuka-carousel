@@ -60,14 +60,14 @@ gulp.task('lint:fix', function() {
 
 });
 
-gulp.task('karma', ['lint'], function() {
+gulp.task('karma', gulp.series('lint', function() {
   var server = new Server({
     configFile: __dirname + '/karma.conf.js',
     singleRun: true
   })
   server.start()
-});
+}));
 
-gulp.task('test', ['lint', 'karma']);
-gulp.task('build', ['babel']);
-gulp.task('default', ['webpack-dev-server', 'open']);
+gulp.task('test', gulp.series('lint', 'karma'));
+gulp.task('build', gulp.series('babel'));
+gulp.task('default', gulp.series('webpack-dev-server', 'open'));

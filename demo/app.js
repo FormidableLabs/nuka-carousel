@@ -1,19 +1,12 @@
 'use strict';
 
 import Carousel from '../src/carousel';
+import Decorators from '../src/decorators';
 import React from 'react';
 import ReactDom from 'react-dom';
 import createReactClass from 'create-react-class';
 
 window.React = React;
-
-const DummyDecorator = createReactClass({
-  render() {
-    return (
-      <div>I am decorator with these props => {Object.keys(this.props).map(k => `${k}: ${this.props[k]}`).join(', ')}</div>
-    );
-  }
-});
 
 const App = createReactClass({
   mixins: [Carousel.ControllerMixin],
@@ -21,22 +14,12 @@ const App = createReactClass({
   getInitialState() { return { slideIndex: 0 }; },
 
   render() {
-    const decorators = [
-      {
-        component: DummyDecorator,
-        position: 'TopCenter',
-        props: {
-          a: 1,
-          b: 2
-        }
-      }
-    ];
 
     return (
       <div style={{width: '50%', margin: 'auto'}}>
         <Carousel
           ref="carousel"
-          decorators={decorators}
+          decorators={Decorators}
           data={this.setCarouselData.bind(this, 'carousel')}
           slideIndex={this.state.slideIndex}
           afterSlide={newSlideIndex => this.setState({ slideIndex: newSlideIndex })}>

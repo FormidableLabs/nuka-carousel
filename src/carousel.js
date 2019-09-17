@@ -149,19 +149,27 @@ const Carousel = createReactClass({
     }
   },
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      slideCount: nextProps.children.length,
-    });
-    this.setDimensions(nextProps);
-    if (
-      this.props.slideIndex !== nextProps.slideIndex &&
-      nextProps.slideIndex !== this.state.currentSlide
+  componentDidUpdate(prevProps, prevState) {
+	if (this.props.children.length !== prevState.slideCount) {
+      this.setState({
+	    slideCount: this.props.children.length,
+      });		
+	}
+
+	if (prevProps !== this.props) {
+	  this.setDimensions();
+	}
+
+	
+	if (
+      this.props.slideIndex !== prevProps.slideIndex &&
+      this.props.slideIndex !== this.state.currentSlide
     ) {
-      this.goToSlide(nextProps.slideIndex);
+      this.goToSlide(this.props.slideIndex);
     }
-    if (this.props.autoplay !== nextProps.autoplay) {
-      if (nextProps.autoplay) {
+	
+    if (this.props.autoplay !== prevProps.autoplay) {
+      if (this.props.autoplay) {
         this.startAutoplay();
       } else {
         this.stopAutoplay();
