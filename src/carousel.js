@@ -122,20 +122,14 @@ const Carousel = createReactClass({
   },
 
   getInitialState() {
-    return {
+	var initialDimensions = this.getInitialDimensions()
+    return assign({
       currentSlide: this.props.slideIndex,
       dragging: false,
-      frameWidth: 0,
       left: 0,
-      slideCount: 0,
       slidesToScroll: this.props.slidesToScroll,
-      slideWidth: 0,
       top: 0,
-    };
-  },
-
-  componentWillMount() {
-    this.setInitialDimensions();
+    }, initialDimensions);
   },
 
   componentDidMount() {
@@ -759,9 +753,8 @@ const Carousel = createReactClass({
     });
   },
 
-  setInitialDimensions() {
-    var self = this,
-      slideWidth,
+  getInitialDimensions() {
+    var slideWidth,
       frameHeight,
       slideHeight;
 
@@ -775,18 +768,12 @@ const Carousel = createReactClass({
     frameHeight =
       slideHeight + this.props.cellSpacing * (this.props.slidesToShow - 1);
 
-    this.setState(
-      {
+	return {
         slideHeight: slideHeight,
         frameWidth: this.props.vertical ? frameHeight : '100%',
         slideCount: React.Children.count(this.props.children),
         slideWidth: slideWidth,
-      },
-      function() {
-        self.setLeft();
-        self.setExternalData();
-      }
-    );
+    };
   },
 
   setDimensions(props) {
