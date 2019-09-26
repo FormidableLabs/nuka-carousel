@@ -110,7 +110,8 @@ export default class Carousel extends React.Component {
 
   // @TODO Remove deprecated componentWillReceiveProps with getDerivedStateFromProps
   // eslint-disable-next-line react/no-deprecated
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const slideCount = getValidChildren(nextProps.children).length;
     const slideCountChanged = slideCount !== this.state.slideCount;
     this.setState(prevState => ({
