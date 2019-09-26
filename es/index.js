@@ -138,11 +138,11 @@ function (_React$Component) {
         this.startAutoplay();
       }
     } // @TODO Remove deprecated componentWillReceiveProps with getDerivedStateFromProps
-    // eslint-disable-next-line react/no-deprecated
+    // eslint-disable-next-line react/no-deprecated, camelcase
 
   }, {
-    key: "componentWillReceiveProps",
-    value: function componentWillReceiveProps(nextProps) {
+    key: "UNSAFE_componentWillReceiveProps",
+    value: function UNSAFE_componentWillReceiveProps(nextProps) {
       var slideCount = getValidChildren(nextProps.children).length;
       var slideCountChanged = slideCount !== this.state.slideCount;
       this.setState(function (prevState) {
