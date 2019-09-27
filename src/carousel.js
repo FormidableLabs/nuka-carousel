@@ -122,7 +122,7 @@ const Carousel = createReactClass({
   },
 
   getInitialState() {
-	var initialDimensions = this.getInitialDimensions()
+    var initialDimensions = this.getInitialDimensions()
     return assign({
       currentSlide: this.props.slideIndex,
       dragging: false,
@@ -144,24 +144,23 @@ const Carousel = createReactClass({
   },
 
   componentDidUpdate(prevProps, prevState) {
-	if (this.props.children.length !== prevState.slideCount) {
+    if (this.props.children.length !== prevState.slideCount) {
       this.setState({
-	    slideCount: this.props.children.length,
-      });		
-	}
+        slideCount: this.props.children.length,
+      });
+    }
 
-	if (prevProps !== this.props) {
-	  this.setDimensions();
-	}
+    if (prevProps !== this.props) {
+      this.setDimensions();
+    }
 
-	
-	if (
+    if (
       this.props.slideIndex !== prevProps.slideIndex &&
       this.props.slideIndex !== this.state.currentSlide
     ) {
       this.goToSlide(this.props.slideIndex);
     }
-	
+
     if (this.props.autoplay !== prevProps.autoplay) {
       if (this.props.autoplay) {
         this.startAutoplay();
@@ -180,10 +179,8 @@ const Carousel = createReactClass({
 
   render() {
     var self = this;
-    var children =
-      React.Children.count(this.props.children) > 1
-        ? this.formatChildren(this.props.children)
-        : this.props.children;
+    var children = this.formatChildren(this.props.children);
+
     return (
       <div
         className={['slider', this.props.className || ''].join(' ')}
@@ -768,11 +765,11 @@ const Carousel = createReactClass({
     frameHeight =
       slideHeight + this.props.cellSpacing * (this.props.slidesToShow - 1);
 
-	return {
-        slideHeight: slideHeight,
-        frameWidth: this.props.vertical ? frameHeight : '100%',
-        slideCount: React.Children.count(this.props.children),
-        slideWidth: slideWidth,
+    return {
+      slideHeight: slideHeight,
+      frameWidth: this.props.vertical ? frameHeight : '100%',
+      slideCount: React.Children.count(this.props.children),
+      slideWidth: slideWidth,
     };
   },
 
@@ -780,7 +777,7 @@ const Carousel = createReactClass({
     if (Object.keys(this.refs).length === 0) {
       return;
     }
-    
+
     props = props || this.props;
 
     var self = this,

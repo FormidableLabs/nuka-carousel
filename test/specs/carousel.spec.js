@@ -117,6 +117,20 @@ describe('Carousel', function() {
       expect(list.length).to.equal(3);
     });
 
+    it('should render a single child with the `slider-slide` class.', () => {
+      component = ReactDOM.render(
+          React.createElement(carousel, {},
+            React.createElement('p', null, 'Slide 1'),
+          ),
+          container
+        );
+      var list = TestUtils.scryRenderedDOMComponentsWithClass(
+          component,
+          'slider-slide'
+        );
+      expect(list.length).to.equal(1);
+    });
+
     it('should render decorators by default', function() {
       component = ReactDOM.render(
           React.createElement(carousel, {},
