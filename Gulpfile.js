@@ -13,17 +13,17 @@ var WebpackDevServer = require('webpack-dev-server');
 var eslint = require('gulp-eslint');
 var Server = require('karma').Server;
 
-var webpackDistConfig = require('./webpack.dist.config.js'),
-  webpackDevConfig = require('./webpack.config.js');
+var webpackDevConfig = require('./webpack.config.js');
 
 function isFixed(file) {
-	// Has ESLint fixed the file contents?
+  // has ESLint fixed the file contents?
   return file.eslint !== null && file.eslint.fixed;
 }
 
-gulp.task('open', function() {
+function openDevServer(callback) {
   open('', {url: 'http://localhost:8080/webpack-dev-server/'});
-});
+  callback();
+}
 
 gulp.task('babel', function() {
   return gulp.src('src/*.js')
@@ -31,8 +31,7 @@ gulp.task('babel', function() {
         .pipe(gulp.dest('lib'));
 });
 
-gulp.task('webpack-dev-server', function(callback) {
-
+function webpackDevServer(callback) {
   new WebpackDevServer(webpack(webpackDevConfig), {
     publicPath: '/assets/',
     contentBase: 'demo',
@@ -41,9 +40,9 @@ gulp.task('webpack-dev-server', function(callback) {
     }
   }).listen(8080, 'localhost', function(err) {
     if (err) throw new gutil.PluginError('webpack-dev-server', err);
+    callback();
   });
-
-});
+}
 
 gulp.task('lint', function() {
   return gulp.src(['src/**/*.js'])
@@ -69,5 +68,5 @@ gulp.task('karma', gulp.series('lint', function() {
 }));
 
 gulp.task('test', gulp.series('lint', 'karma'));
-gulp.task('build', gulp.series('babel'));
-gulp.task('default', gulp.series('webpack-dev-server', 'open'));
+gulp.task('build', gulp.series('lint:fix', 'babel'));
+gulp.task('default', gulp.series(webpackDevServer, openDevServer));

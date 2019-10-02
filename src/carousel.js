@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
 import tweenState from 'kw-react-tween-state';
 import decorators from './decorators';
@@ -150,14 +149,12 @@ const Carousel = createReactClass({
       });
     }
 
-    if (prevProps !== this.props) {
+    if (this.state.tweenQueue.length === 0 && prevState.tweenQueue.length > 0) {
+      // slide animation end
       this.setDimensions();
     }
 
-    if (
-      this.props.slideIndex !== prevProps.slideIndex &&
-      this.props.slideIndex !== this.state.currentSlide
-    ) {
+    if (this.props.slideIndex !== prevProps.slideIndex) {
       this.goToSlide(this.props.slideIndex);
     }
 

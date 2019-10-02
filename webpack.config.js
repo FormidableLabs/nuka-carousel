@@ -12,8 +12,8 @@ module.exports = {
   },
 
   cache: true,
-  debug: false,
-  devtool: false,
+  debug: true,
+  devtool: 'source-map',
   entry: [
     './demo/app.js'
   ],

@@ -27,6 +27,7 @@ $RECYCLE.BIN/
 
 # App specific
 
+.idea
 node_modules/
 bower_components/
 .tmp
