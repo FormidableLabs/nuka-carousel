@@ -129,6 +129,27 @@ describe('<Carousel />', () => {
   });
 
   describe('Props', () => {
+    it('should call onDragStart only when dragging occurs.', () => {
+      const onDragStart = jest.fn();
+      const wrapper = mount(
+        <Carousel onDragStart={onDragStart}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      // setup mouse events
+      const event = { clientX: 10 };
+      wrapper.instance().touchObject.startX = 0;
+      wrapper.setState({ dragging: true });
+
+      wrapper.find('div.slider-frame').simulate('click');
+      expect(onDragStart).toHaveBeenCalledTimes(0);
+
+      wrapper.find('div.slider-frame').simulate('mousemove', event);
+      expect(onDragStart).toHaveBeenCalledTimes(1);
+    });
+
     it('should render with the class `slider` when no props are supplied.', () => {
       const wrapper = mount(
         <Carousel>

@@ -110,7 +110,8 @@ export default class Carousel extends React.Component {
 
   // @TODO Remove deprecated componentWillReceiveProps with getDerivedStateFromProps
   // eslint-disable-next-line react/no-deprecated
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const slideCount = getValidChildren(nextProps.children).length;
     const slideCountChanged = slideCount !== this.state.slideCount;
     this.setState(prevState => ({
@@ -246,10 +247,6 @@ export default class Carousel extends React.Component {
         };
         this.handleMouseOver();
 
-        if (this.props.onDragStart) {
-          this.props.onDragStart(e);
-        }
-
         this.setState({
           dragging: true
         });
@@ -278,6 +275,11 @@ export default class Carousel extends React.Component {
                 Math.pow(e.touches[0].pageX - this.touchObject.startX, 2)
               )
             );
+
+        if (length >= 10) {
+          if (this.clickDisabled === false) this.props.onDragStart(e);
+          this.clickDisabled = true;
+        }
 
         this.touchObject = {
           startX: this.touchObject.startX,
@@ -331,10 +333,6 @@ export default class Carousel extends React.Component {
           startY: e.clientY
         };
 
-        if (this.props.onDragStart) {
-          this.props.onDragStart(e);
-        }
-
         this.setState({
           dragging: true
         });
@@ -366,7 +364,10 @@ export default class Carousel extends React.Component {
             );
 
         // prevents disabling click just because mouse moves a fraction of a pixel
-        if (length >= 10) this.clickDisabled = true;
+        if (length >= 10) {
+          if (this.clickDisabled === false) this.props.onDragStart(e);
+          this.clickDisabled = true;
+        }
 
         this.touchObject = {
           startX: this.touchObject.startX,
@@ -462,7 +463,7 @@ export default class Carousel extends React.Component {
     if (this.touchObject.length > this.state.slideWidth / slidesToShow / 5) {
       if (this.touchObject.direction === 1) {
         if (
-          this.state.currentSlide >= this.state.slideCount - slidesToShow &&
+          this.state.currentSlide + 1 >= this.state.slideCount &&
           !this.props.wrapAround
         ) {
           this.setState({ easing: easing[this.props.edgeEasing] });
@@ -1182,8 +1183,9 @@ Carousel.defaultProps = {
   edgeEasing: 'easeElasticOut',
   frameOverflow: 'hidden',
   framePadding: '0px',
-  height: 'auto',
+  height: 'inherit',
   heightMode: 'max',
+  onDragStart() {},
   onResize() {},
   pauseOnHover: true,
   renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
