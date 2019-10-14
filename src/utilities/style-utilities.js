@@ -129,6 +129,7 @@ export const getFrameStyles = (
 export const getTransitionProps = (props, state) => {
   return {
     animation: props.animation,
+    cellAlign: props.cellAlign,
     cellSpacing: props.cellSpacing,
     currentSlide: state.currentSlide,
     dragging: props.dragging,
@@ -137,6 +138,7 @@ export const getTransitionProps = (props, state) => {
     slideCount: state.slideCount,
     slideHeight: state.slideHeight,
     slideOffset: props.slideOffset,
+    slidesToScroll: props.slidesToScroll,
     slidesToShow: state.slidesToShow,
     slideWidth: state.slideWidth,
     top: state.top,
