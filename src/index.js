@@ -109,7 +109,8 @@ export default class Carousel extends React.Component {
   }
 
   // @TODO Remove deprecated componentWillReceiveProps with getDerivedStateFromProps
-  // eslint-disable-next-line react/no-deprecated, camelcase
+  // eslint-disable-next-line react/no-deprecated
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps) {
     const slideCount = getValidChildren(nextProps.children).length;
     const slideCountChanged = slideCount !== this.state.slideCount;
@@ -462,7 +463,7 @@ export default class Carousel extends React.Component {
     if (this.touchObject.length > this.state.slideWidth / slidesToShow / 5) {
       if (this.touchObject.direction === 1) {
         if (
-          this.state.currentSlide >= this.state.slideCount - slidesToShow &&
+          this.state.currentSlide + 1 >= this.state.slideCount &&
           !this.props.wrapAround
         ) {
           this.setState({ easing: easing[this.props.edgeEasing] });
@@ -690,7 +691,7 @@ export default class Carousel extends React.Component {
               : 0,
             currentSlide: 0,
             isWrappingAround: true,
-            wrapToIndex: index
+            wrapToIndex: this.state.slideCount
           }),
           () => {
             this.timers.push(
@@ -706,7 +707,10 @@ export default class Carousel extends React.Component {
         );
         return;
       } else {
-        const endSlide = this.state.slideCount - this.state.slidesToScroll;
+        const endSlide =
+          index < 0
+            ? this.state.slideCount + index
+            : this.state.slideCount - this.state.slidesToScroll;
         props.beforeSlide(this.state.currentSlide, endSlide);
         this.setState(
           prevState => ({
@@ -1179,7 +1183,7 @@ Carousel.defaultProps = {
   edgeEasing: 'easeElasticOut',
   frameOverflow: 'hidden',
   framePadding: '0px',
-  height: 'auto',
+  height: 'inherit',
   heightMode: 'max',
   onDragStart() {},
   onResize() {},

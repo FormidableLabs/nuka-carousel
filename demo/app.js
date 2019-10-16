@@ -71,7 +71,7 @@ class App extends React.Component {
               src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${index +
                 1}`}
               alt={`Slide ${index + 1}`}
-              key={color}
+              key={index}
               onClick={this.handleImageClick}
               style={{
                 height:
@@ -93,7 +93,8 @@ class App extends React.Component {
             <button
               onClick={() =>
                 this.setState(prevState => {
-                  const length = prevState.length === 6 ? 3 : 6;
+                  const length =
+                    prevState.length === colors.length ? 3 : colors.length;
                   return {
                     length
                   };
