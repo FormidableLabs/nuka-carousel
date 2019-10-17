@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ExecutionEnvironment from 'exenv';
-import Animate from 'react-move/Animate';
+import { Animate } from 'react-move';
 import * as easing from 'd3-ease';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import Transitions from './all-transitions';
