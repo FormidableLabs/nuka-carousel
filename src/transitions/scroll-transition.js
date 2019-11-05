@@ -28,8 +28,25 @@ export default class ScrollTransition extends React.Component {
   getSlideTargetPosition(index, positionValue) {
     let targetPosition =
       (this.props.slideWidth + this.props.cellSpacing) * index;
+
+    let cellAlignOffset = 0;
+    switch (this.props.cellAlign) {
+      case 'center':
+        cellAlignOffset =
+          (this.props.slideWidth + this.props.cellSpacing) *
+          ((this.props.slidesToShow - 1) / 2);
+        break;
+      case 'right':
+        cellAlignOffset =
+          (this.props.slideWidth + this.props.cellSpacing) *
+          (this.props.slidesToShow - 1);
+        break;
+    }
+
     const startSlide = Math.min(
-      Math.abs(Math.floor(positionValue / this.props.slideWidth)),
+      Math.floor(
+        Math.abs((positionValue - cellAlignOffset) / this.props.slideWidth)
+      ),
       this.props.slideCount - 1
     );
 
@@ -57,13 +74,55 @@ export default class ScrollTransition extends React.Component {
         this.props.currentSlide,
         this.props.isWrappingAround
       );
-      let slidesBefore = Math.floor((this.props.slideCount - 1) / 2);
-      let slidesAfter = this.props.slideCount - slidesBefore - 1;
+      let slidesBefore = 0;
+      let slidesAfter = 0;
 
-      if (direction < 0) {
-        const temp = slidesBefore;
-        slidesBefore = slidesAfter;
-        slidesAfter = temp;
+      switch (this.props.cellAlign) {
+        case 'left':
+          if (direction < 0) {
+            slidesBefore = this.props.slidesToScroll;
+            slidesAfter = this.props.slideCount - this.props.slidesToScroll - 1;
+          } else {
+            slidesBefore = 0;
+            slidesAfter = this.props.slideCount - 1;
+          }
+          break;
+
+        case 'center':
+          if (direction === 0) {
+            slidesBefore = Math.floor((this.props.slideCount - 1) / 2);
+            slidesAfter = this.props.slideCount - slidesBefore - 1;
+          } else {
+            const visibleSlidesFromCenter = Math.ceil(
+              (this.props.slidesToShow - 1) / 2
+            );
+            const slidesScrollDirection = Math.min(
+              visibleSlidesFromCenter + this.props.slidesToScroll,
+              this.props.slideCount - 1
+            );
+            const slidesOppositeDirection =
+              this.props.slideCount - slidesScrollDirection - 1;
+
+            if (direction > 0) {
+              slidesAfter = slidesScrollDirection;
+              slidesBefore = slidesOppositeDirection;
+            } else if (direction < 0) {
+              slidesBefore = slidesScrollDirection;
+              slidesAfter = slidesOppositeDirection;
+            }
+          }
+          break;
+
+        case 'right':
+          if (direction > 0) {
+            slidesBefore =
+              this.props.slideCount - this.props.slidesToScroll - 1;
+            slidesAfter = this.props.slidesToScroll;
+          } else {
+            slidesBefore = this.props.slideCount - 1;
+            slidesAfter = 0;
+          }
+          break;
       }
 
       const distanceFromStart = Math.abs(startSlide - index);
@@ -179,6 +238,7 @@ export default class ScrollTransition extends React.Component {
 
 ScrollTransition.propTypes = {
   animation: PropTypes.oneOf(['zoom']),
+  cellAlign: PropTypes.string,
   cellSpacing: PropTypes.number,
   currentSlide: PropTypes.number,
   deltaX: PropTypes.number,
@@ -188,6 +248,7 @@ ScrollTransition.propTypes = {
   left: PropTypes.number,
   slideCount: PropTypes.number,
   slideHeight: PropTypes.number,
+  slidesToScroll: PropTypes.number,
   slideOffset: PropTypes.number,
   slideWidth: PropTypes.number,
   top: PropTypes.number,
@@ -197,6 +258,7 @@ ScrollTransition.propTypes = {
 };
 
 ScrollTransition.defaultProps = {
+  cellAlign: 'left',
   cellSpacing: 0,
   currentSlide: 0,
   deltaX: 0,
@@ -206,6 +268,7 @@ ScrollTransition.defaultProps = {
   left: 0,
   slideCount: 0,
   slideHeight: 0,
+  slidesToScroll: 1,
   slideWidth: 0,
   top: 0,
   vertical: false,
