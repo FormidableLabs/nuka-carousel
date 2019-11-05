@@ -5,7 +5,8 @@ const defaultButtonStyles = disabled => ({
   background: 'rgba(0,0,0,0.4)',
   color: 'white',
   padding: 10,
-  opacity: disabled ? 0.3 : 1,
+  textTransform: 'uppercase',
+  opacity: disabled && 0.3,
   cursor: disabled ? 'not-allowed' : 'pointer'
 });
 
@@ -30,7 +31,7 @@ export class PreviousButton extends React.Component {
         aria-label="previous"
         type="button"
       >
-        PREV
+        Prev
       </button>
     );
   }
@@ -106,7 +107,7 @@ export class NextButton extends React.Component {
         aria-label="next"
         type="button"
       >
-        NEXT
+        Next
       </button>
     );
   }
@@ -137,16 +138,11 @@ export class PagingDots extends React.Component {
   getListStyles() {
     return {
       position: 'relative',
-      margin: 0,
       top: -10,
-      padding: 0
-    };
-  }
-
-  getListItemStyles() {
-    return {
-      listStyleType: 'none',
-      display: 'inline-block'
+      display: 'flex',
+      margin: 0,
+      padding: 0,
+      listStyleType: 'none'
     };
   }
 
@@ -171,7 +167,6 @@ export class PagingDots extends React.Component {
         {indexes.map(index => {
           return (
             <li
-              style={this.getListItemStyles()}
               key={index}
               className={
                 this.props.currentSlide === index
@@ -185,16 +180,16 @@ export class PagingDots extends React.Component {
                 onClick={this.props.goToSlide.bind(null, index)}
                 aria-label={`slide ${index + 1} bullet`}
               >
-                <span
-                  className="paging-dot"
-                  style={{
-                    display: 'inline-block',
-                    borderRadius: '50%',
-                    width: '6px',
-                    height: '6px',
-                    background: 'black'
-                  }}
-                />
+                <svg className="paging-dot" width="6" height="6">
+                  <circle
+                    cx="3"
+                    cy="3"
+                    r="3"
+                    style={{
+                      fill: 'black'
+                    }}
+                  />
+                </svg>
               </button>
             </li>
           );

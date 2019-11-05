@@ -1015,7 +1015,7 @@ export default class Carousel extends React.Component {
 
     return (
       <div
-        className={['slider', this.props.className || ''].join(' ')}
+        className={['slider', this.props.className || ''].join(' ').trim()}
         style={Object.assign(
           {},
           getSliderStyles(this.props.width, this.props.height),
