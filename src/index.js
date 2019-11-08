@@ -106,6 +106,7 @@ export default class Carousel extends React.Component {
     if (this.props.autoplay) {
       this.startAutoplay();
     }
+    this.getlockScrollEvents().lockTouchScroll();
   }
 
   // @TODO Remove deprecated componentWillReceiveProps with getDerivedStateFromProps
@@ -194,6 +195,7 @@ export default class Carousel extends React.Component {
     for (let i = 0; i < this.timers.length; i++) {
       clearTimeout(this.timers[i]);
     }
+    this.getlockScrollEvents().unlockTouchScroll();
   }
 
   establishChildNodesMutationObserver() {
@@ -229,6 +231,40 @@ export default class Carousel extends React.Component {
     if (this.childNodesMutationObs instanceof MutationObserver) {
       this.childNodesMutationObs.disconnect();
     }
+  }
+
+  getlockScrollEvents() {
+    const blockEvent = e => {
+      if (this.state.dragging) {
+        const direction = swipeDirection(
+          this.touchObject.startX,
+          e.touches[0].pageX,
+          this.touchObject.startY,
+          e.touches[0].pageY,
+          this.props.vertical
+        );
+        if (direction !== 0) {
+          e.preventDefault();
+        }
+      }
+    };
+
+    const lockTouchScroll = () => {
+      document.addEventListener('touchmove', blockEvent, {
+        passive: false
+      });
+    };
+
+    const unlockTouchScroll = () => {
+      document.addEventListener('touchmove', blockEvent, {
+        passive: false
+      });
+    };
+
+    return {
+      lockTouchScroll,
+      unlockTouchScroll
+    };
   }
 
   getTouchEvents() {
