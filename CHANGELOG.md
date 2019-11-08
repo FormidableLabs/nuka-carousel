@@ -1,5 +1,20 @@
 # Nuka Changelog
 
+## 4.5.13 (2019-11-08)
+
+- [#592](https://github.com/FormidableLabs/nuka-carousel/pull/592) change componentWillReceiveProps to UNSAFE_componentWillReceiveProps
+- [#600](https://github.com/FormidableLabs/nuka-carousel/pull/600) Fix wraparound logic to account for cellAlign property
+- [#601](https://github.com/FormidableLabs/nuka-carousel/pull/601) Change dot styling
+- [#608](https://github.com/FormidableLabs/nuka-carousel/pull/608) Fix dragging issue in Safari
+- [#609](https://github.com/FormidableLabs/nuka-carousel/pull/609) Prevent scroll when dragging on iOS
+
+## 4.5.12 (2019-09-13)
+
+- [#582](https://github.com/FormidableLabs/nuka-carousel/pull/582) Another attempt to fix the height issue by changing the default prop value for height
+- [#584](https://github.com/FormidableLabs/nuka-carousel/pull/584) Fix multi-slide wraparound
+- [#585](https://github.com/FormidableLabs/nuka-carousel/pull/585) Fix onDragStart, should only happen with dragging/swiping
+- [#588](https://github.com/FormidableLabs/nuka-carousel/pull/588) Impossible to select last images when swiping, this fixes that
+
 ## 4.5.11 (2019-09-03)
 
 - [#578](https://github.com/FormidableLabs/nuka-carousel/pull/578) update vulnerable deps, fix broken scroll animation
