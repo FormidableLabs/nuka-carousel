@@ -917,7 +917,10 @@ export default class Carousel extends React.Component {
   setSlideHeightAndWidth() {
     const { slideHeight, slideWidth } = this.calcSlideHeightAndWidth();
 
-    if (slideHeight !== this.state.slideHeight || slideWidth !== this.state.slideWidth) {
+    if (
+      slideHeight !== this.state.slideHeight ||
+      slideWidth !== this.state.slideWidth
+    ) {
       this.setState({ slideHeight, slideWidth });
     }
   }
