@@ -49,6 +49,14 @@ export default class Carousel extends React.Component {
       { funcName: 'renderBottomCenterControls', key: 'BottomCenter' },
       { funcName: 'renderBottomRightControls', key: 'BottomRight' }
     ];
+    this.keyCodeConfig = {
+      nextSlide: [39, 68, 38, 87],
+      previousSlide: [37, 65, 40, 83],
+      firstSlide: [81],
+      lastSlide: [69],
+      pause: [32]
+    };
+
     this.childNodesMutationObs = null;
 
     this.state = {
@@ -106,6 +114,12 @@ export default class Carousel extends React.Component {
     if (this.props.autoplay) {
       this.startAutoplay();
     }
+    const keyCodeConfig = Object.assign(
+      {},
+      this.keyCodeConfig,
+      this.props.keyCodeConfig
+    );
+    this.keyCodeMap = this.getKeyCodeMap(keyCodeConfig);
     this.getlockScrollEvents().lockTouchScroll();
   }
 
@@ -536,26 +550,21 @@ export default class Carousel extends React.Component {
   // eslint-disable-next-line complexity
   handleKeyPress(e) {
     if (this.props.enableKeyboardControls) {
-      switch (e.keyCode) {
-        case 39:
-        case 68:
-        case 38:
-        case 87:
+      const actionName = this.keyCodeMap[e.keyCode];
+      switch (actionName) {
+        case 'nextSlide':
           this.nextSlide();
           break;
-        case 37:
-        case 65:
-        case 40:
-        case 83:
+        case 'previousSlide':
           this.previousSlide();
           break;
-        case 81:
+        case 'firstSlide':
           this.goToSlide(0, this.props);
           break;
-        case 69:
+        case 'lastSlide':
           this.goToSlide(this.state.slideCount - 1, this.props);
           break;
-        case 32:
+        case 'pause':
           if (this.state.pauseOnHover && this.props.autoplay) {
             this.setState({ pauseOnHover: false });
             this.pauseAutoplay();
@@ -567,6 +576,16 @@ export default class Carousel extends React.Component {
           }
       }
     }
+  }
+
+  getKeyCodeMap(keyCodeConfig) {
+    const keyCodeMap = {};
+    Object.keys(keyCodeConfig).forEach(actionName => {
+      keyCodeConfig[actionName].forEach(
+        keyCode => (keyCodeMap[keyCode] = actionName)
+      );
+    });
+    return keyCodeMap;
   }
 
   autoplayIterator() {
@@ -1163,6 +1182,13 @@ Carousel.propTypes = {
   cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
   cellSpacing: PropTypes.number,
   enableKeyboardControls: PropTypes.bool,
+  keyCodeConfig: PropTypes.exact({
+    previousSlide: PropTypes.arrayOf(PropTypes.number),
+    nextSlide: PropTypes.arrayOf(PropTypes.number),
+    firstSlide: PropTypes.arrayOf(PropTypes.number),
+    lastSlide: PropTypes.arrayOf(PropTypes.number),
+    pause: PropTypes.arrayOf(PropTypes.number)
+  }),
   disableAnimation: PropTypes.bool,
   disableEdgeSwiping: PropTypes.bool,
   dragging: PropTypes.bool,
@@ -1216,6 +1242,7 @@ Carousel.defaultProps = {
   cellAlign: 'left',
   cellSpacing: 0,
   enableKeyboardControls: false,
+  keyCodeConfig: {},
   disableAnimation: false,
   disableEdgeSwiping: false,
   dragging: true,

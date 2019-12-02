@@ -578,6 +578,33 @@ describe('<Carousel />', () => {
         map.keydown({ keyCode: 39 });
         expect(wrapper).toHaveState({ currentSlide: 0 });
       });
+
+      describe('keyCodeConfig', () => {
+        it('should take custom keyCode config and replace the default keyCode config', () => {
+          const map = {};
+          document.addEventListener = jest.fn((event, cb) => {
+            map[event] = cb;
+          });
+
+          const wrapper = mount(
+            <Carousel
+              enableKeyboardControls
+              keyCodeConfig={{
+                nextSlide: [39] // setting nextSlide keyCode config to only RIGHT arrow and replacing UP arrow, D, W
+              }}
+            >
+              <p>Slide1</p>
+              <p>Slide2</p>
+              <p>Slide3</p>
+            </Carousel>
+          );
+          expect(wrapper).toHaveState({ currentSlide: 0 });
+          map.keydown({ keyCode: 38 });
+          expect(wrapper).toHaveState({ currentSlide: 0 });
+          map.keydown({ keyCode: 39 });
+          expect(wrapper).toHaveState({ currentSlide: 1 });
+        });
+      });
     });
   });
 
