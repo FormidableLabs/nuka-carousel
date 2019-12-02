@@ -215,10 +215,8 @@ export default class Carousel extends React.Component {
   establishChildNodesMutationObserver() {
     const childNodes = this.getChildNodes();
     if (childNodes.length && 'MutationObserver' in window) {
-      this.childNodesMutationObs = new MutationObserver(mutations => {
-        mutations.forEach(() => {
-          this.setSlideHeightAndWidth();
-        });
+      this.childNodesMutationObs = new MutationObserver(() => {
+        this.setSlideHeightAndWidth();
       });
 
       const observeChildNodeMutation = node => {
