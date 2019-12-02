@@ -426,7 +426,6 @@ export interface PagingDotsProps extends CarouselSlideRenderControlProps {}
 export class PagingDots extends React.Component<PagingDotsProps> {
   public getButtonStyles(active: boolean): React.CSSProperties;
   public getListStyles(): React.CSSProperties;
-  public getListItemStyles(): React.CSSProperties;
   public getDotIndexes(
     slideCount: number,
     slidesToScroll: number,
