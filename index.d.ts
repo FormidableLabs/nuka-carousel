@@ -286,6 +286,11 @@ export interface CarouselProps {
   renderBottomRightControls?: CarouselRenderControl | null;
 
   /**
+   * Function for rendering aria-live announcement messages
+   */
+  renderAnnounceSlideMessage?: ({ currentSlide, slideCount }) => string;
+
+  /**
    * Manually set the index of the slide to be shown
    */
   slideIndex?: number;
