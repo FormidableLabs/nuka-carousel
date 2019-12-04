@@ -70,7 +70,6 @@ export default class Carousel extends React.Component {
       slideCount: getValidChildren(this.props.children).length,
       top: 0,
       wrapToIndex: null,
-      readyStateChanged: 0,
       ...calcSomeInitialState(this.props)
     };
 
@@ -88,7 +87,6 @@ export default class Carousel extends React.Component {
     this.handleMouseOver = this.handleMouseOver.bind(this);
     this.handleSwipe = this.handleSwipe.bind(this);
     this.nextSlide = this.nextSlide.bind(this);
-    this.onReadyStateChange = this.onReadyStateChange.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onVisibilityChange = this.onVisibilityChange.bind(this);
     this.previousSlide = this.previousSlide.bind(this);
@@ -121,6 +119,28 @@ export default class Carousel extends React.Component {
     );
     this.keyCodeMap = this.getKeyCodeMap(keyCodeConfig);
     this.getlockScrollEvents().lockTouchScroll();
+
+    const heightCheckDelay = 200;
+    const initializeHeight = delay => {
+      this.timers.push(
+        setTimeout(() => {
+          // If slideHeight is greater than zero, then
+          // assume the app has been initialized.  If not,
+          // keep trying to set dimensions until things work.
+          if (this.state.slideHeight > 0) {
+            return;
+          }
+
+          this.setDimensions();
+
+          // Increase delay per attempt so the checks
+          // slowly decrease if content is taking forever to load.
+          initializeHeight(delay + heightCheckDelay);
+        }, delay)
+      );
+    };
+
+    initializeHeight(heightCheckDelay);
   }
 
   // @TODO Remove deprecated componentWillReceiveProps with getDerivedStateFromProps
@@ -193,9 +213,8 @@ export default class Carousel extends React.Component {
 
     const { slideHeight } = this.calcSlideHeightAndWidth();
     const heightMismatches = slideHeight !== prevState.slideHeight;
-    // When using dynamic content in a slide, it is possible for the slide height to be inaccurate. Here, double check that the height is correct once the component has mounted and the `readyStateChange` event has fired.
-    // See #521 and https://github.com/FormidableLabs/nuka-carousel/blob/fea63242a8b2fb69c65689efe615d0feb9b2d1ff/README.md#resizing-height-issue
-    if (this.mounted && prevState.readyStateChanged > 0 && heightMismatches) {
+
+    if (this.mounted && heightMismatches) {
       this.setDimensions();
     }
   }
@@ -867,7 +886,6 @@ export default class Carousel extends React.Component {
   bindEvents() {
     if (ExecutionEnvironment.canUseDOM) {
       addEvent(window, 'resize', this.onResize);
-      addEvent(document, 'readystatechange', this.onReadyStateChange);
       addEvent(document, 'visibilitychange', this.onVisibilityChange);
       addEvent(document, 'keydown', this.handleKeyPress);
     }
@@ -875,15 +893,6 @@ export default class Carousel extends React.Component {
 
   onResize() {
     this.setDimensions(null, this.props.onResize);
-  }
-
-  onReadyStateChange() {
-    // When using dynamic content in a slide, it is possible that `readystatechange` will fire before the component has finished mounting, which means `this.state.slideHeight` remains 0, instead of the correct height. Tracking this in state will trigger `componentDidUpdate` which can set the correct height.
-    // See #521 and https://github.com/FormidableLabs/nuka-carousel/blob/fea63242a8b2fb69c65689efe615d0feb9b2d1ff/README.md#resizing-height-issue
-    this.setState({
-      readyStateChanged: this.state.readyStateChanged + 1
-    });
-    this.setDimensions();
   }
 
   onVisibilityChange() {
@@ -897,7 +906,6 @@ export default class Carousel extends React.Component {
   unbindEvents() {
     if (ExecutionEnvironment.canUseDOM) {
       removeEvent(window, 'resize', this.onResize);
-      removeEvent(document, 'readystatechange', this.onReadyStateChange);
       removeEvent(document, 'visibilitychange', this.onVisibilityChange);
       removeEvent(document, 'keydown', this.handleKeyPress);
     }

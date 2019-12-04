@@ -198,7 +198,7 @@ In componentDidMount, the initial dimensions are assigned to each slide:
 - Width: `initialSlidewidth` || `slideWidth` || (`slidesToShow` / width of container)
 - Height: `initialSlideHeight`
 
-Once the component has completed mounting with the accurate width, it waits for the readyStateChange event to fire before measuring the desired height of the content (`current`, `first`, `max`). That measurement then replaces `initialSlideHeight` with the measured height in pixels.
+After the component completes mounting with the accurate width, it tries to calculate the desired height of the content (`current`, `first`, `max`). If that calculation fails (perhaps because slide images are still loading), it'll wait a bit and try again. Once successful, that measurement then replaces `initialSlideHeight` with the measured height in pixels.
 
 ### Contributing
 
