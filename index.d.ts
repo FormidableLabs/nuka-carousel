@@ -159,6 +159,17 @@ export interface CarouselProps {
   enableKeyboardControls?: boolean;
 
   /**
+   * When enableKeyboardControls is enabled, Configure keyCodes for corresponding slide actions as array of keyCodes
+   */
+  keyCodeConfig?: {
+    nextSlide: number[];
+    previousSlide: number[];
+    firstSlide: number[];
+    lastSlide: number[];
+    pause: number[];
+  };
+
+  /**
    * Disable slides animation
    * @default false
    */
