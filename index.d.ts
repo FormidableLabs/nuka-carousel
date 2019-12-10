@@ -20,6 +20,13 @@ export type CarouselSlidesToScrollProp = number | 'auto';
 
 export type CarouselSlideWidthProp = string | number;
 
+export type CarouselSlideActions =
+  | 'nextSlide'
+  | 'previousSlide'
+  | 'firstSlide'
+  | 'lastSlide'
+  | 'pause';
+
 export interface CarouselSlideRenderControlProps {
   /**
    * When displaying more than one slide, sets which position to anchor the current slide to.
@@ -162,11 +169,7 @@ export interface CarouselProps {
    * When enableKeyboardControls is enabled, Configure keyCodes for corresponding slide actions as array of keyCodes
    */
   keyCodeConfig?: {
-    nextSlide: number[];
-    previousSlide: number[];
-    firstSlide: number[];
-    lastSlide: number[];
-    pause: number[];
+    [slideAction in CarouselSlideActions]?: number[];
   };
 
   /**
