@@ -160,7 +160,7 @@ describe('<NextButton />', () => {
 
     // testing edge case scenarios
     it('should return valid true or false value in edge cases', () => {
-      // when slideCount < slidesToShow and slideCount < slidesToShow
+      // when slideCount < slidesToShow
       const alignLeftEdgeCase1 = {
         wrapAround: false,
         slidesToShow: 6,

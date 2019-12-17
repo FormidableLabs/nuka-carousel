@@ -69,9 +69,13 @@ export class NextButton extends React.Component {
           lastSlideOffset = Math.floor(slidesToShow * 0.5) - 1;
           break;
         case 'right':
-        case 'left':
           slidesShowing = 1;
           break;
+      }
+
+      //  this handles the case for left align with partially visible slides
+      if (!Number.isInteger(slidesShowing) && cellAlign === 'left') {
+        slidesShowing = 1;
       }
 
       if (slidesToShow > 1) {
