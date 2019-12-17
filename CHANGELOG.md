@@ -1,5 +1,17 @@
 # Nuka Changelog
 
+## 4.6.0 (2019-12-17)
+
+- Fixes for `leftAlign` added for heightMode="current" and heightMode="max"
+- [#614](https://github.com/FormidableLabs/nuka-carousel/pull/614) Remove getListItemStyles() from type definitions
+- [#619](https://github.com/FormidableLabs/nuka-carousel/pull/619) Configure keyboard keyCodes so default ones can be overridden
+- [#620](https://github.com/FormidableLabs/nuka-carousel/pull/620) Avoid redundant dimension calculations after a DOM mutation
+- [#621](https://github.com/FormidableLabs/nuka-carousel/pull/621) Add TS definition for renderAnnounceSlideMessage
+- [#625](https://github.com/FormidableLabs/nuka-carousel/pull/625) Fixes Issue 521: Initial height calculations will be repeated until successful.
+- [#626](https://github.com/FormidableLabs/nuka-carousel/pull/626) Height mode 'current' uses tallest visible slide
+- [#628](https://github.com/FormidableLabs/nuka-carousel/pull/628) Adding missing Type For keyCodeConfig prop
+
+
 ## 4.5.13 (2019-11-08)
 
 - [#592](https://github.com/FormidableLabs/nuka-carousel/pull/592) change componentWillReceiveProps to UNSAFE_componentWillReceiveProps
