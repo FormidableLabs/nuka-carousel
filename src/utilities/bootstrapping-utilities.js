@@ -84,6 +84,10 @@ export const findCurrentHeightSlide = (
         startIndex = Math.floor(currentSlide - offset);
         lastIndex = currentSlide + 1;
         break;
+      case 'left':
+        startIndex = Math.floor(currentSlide + offset);
+        lastIndex = Math.ceil(currentSlide + offset) + 1;
+        break;
     }
 
     // inclusive
@@ -97,7 +101,6 @@ export const findCurrentHeightSlide = (
       wrapAround && lastIndex > slides.length
         ? lastIndex - slides.length
         : Math.min(lastIndex, slides.length);
-
     return findMaxHeightSlideInRange(slides, startIndex, lastIndex);
   } else {
     return slides[currentSlide].offsetHeight;

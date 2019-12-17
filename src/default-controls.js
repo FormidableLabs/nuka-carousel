@@ -69,6 +69,7 @@ export class NextButton extends React.Component {
           lastSlideOffset = Math.floor(slidesToShow * 0.5) - 1;
           break;
         case 'right':
+        case 'left':
           slidesShowing = 1;
           break;
       }
