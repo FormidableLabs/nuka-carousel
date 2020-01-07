@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getSlideHeight } from '../utilities/style-utilities';
 
 const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
@@ -140,16 +141,17 @@ export default class ScrollTransition extends React.Component {
       }
     }
 
-    return targetPosition + offset;
+    return targetPosition + offset || 0;
   }
   /* eslint-enable complexity */
-
   formatChildren(children) {
     const { top, left, currentSlide, slidesToShow } = this.props;
     const positionValue = this.props.vertical ? top : left;
+
     return React.Children.map(children, (child, index) => {
       const visible =
         index >= currentSlide && index < currentSlide + slidesToShow;
+
       return (
         <li
           className={`slider-slide${visible ? ' slide-visible' : ''}`}
@@ -171,10 +173,11 @@ export default class ScrollTransition extends React.Component {
             MIN_ZOOM_SCALE
           )
         : 1.0;
+
     return {
       boxSizing: 'border-box',
       display: this.props.vertical ? 'block' : 'inline-block',
-      height: 'auto',
+      height: getSlideHeight(this.props),
       left: this.props.vertical ? 0 : targetPosition,
       listStyleType: 'none',
       marginBottom: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
@@ -199,6 +202,7 @@ export default class ScrollTransition extends React.Component {
     const spacingOffset =
       this.props.cellSpacing * React.Children.count(this.props.children);
     const transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
+
     return {
       transform,
       WebkitTransform: transform,
@@ -244,6 +248,7 @@ ScrollTransition.propTypes = {
   deltaX: PropTypes.number,
   deltaY: PropTypes.number,
   dragging: PropTypes.bool,
+  heightMode: PropTypes.oneOf(['first', 'current', 'max']),
   isWrappingAround: PropTypes.bool,
   left: PropTypes.number,
   slideCount: PropTypes.number,
@@ -264,6 +269,7 @@ ScrollTransition.defaultProps = {
   deltaX: 0,
   deltaY: 0,
   dragging: false,
+  heightMode: 'max',
   isWrappingAround: false,
   left: 0,
   slideCount: 0,

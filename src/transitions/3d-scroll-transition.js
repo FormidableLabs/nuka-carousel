@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getSlideHeight } from '../utilities/style-utilities';
 
 const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
@@ -175,11 +176,12 @@ export default class ScrollTransition3D extends React.Component {
   getSlideStyles(index, positionValue) {
     const targetPosition = this.getSlideTargetPosition(index, positionValue);
     const transformScale = this.getTransformScale(index);
+
     return {
       zIndex: this.props.slideCount - this.getDistanceToCurrentSlide(index),
       boxSizing: 'border-box',
       display: this.props.vertical ? 'block' : 'inline-block',
-      height: 'auto',
+      height: getSlideHeight(this.props),
       left: this.props.vertical ? 0 : targetPosition,
       listStyleType: 'none',
       marginBottom: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
@@ -236,6 +238,7 @@ ScrollTransition3D.propTypes = {
   cellSpacing: PropTypes.number,
   currentSlide: PropTypes.number,
   dragging: PropTypes.bool,
+  heightMode: PropTypes.oneOf(['first', 'current', 'max']),
   isWrappingAround: PropTypes.bool,
   left: PropTypes.number,
   slideCount: PropTypes.number,
@@ -255,6 +258,7 @@ ScrollTransition3D.defaultProps = {
   cellSpacing: 0,
   currentSlide: 0,
   dragging: false,
+  heightMode: 'max',
   isWrappingAround: false,
   left: 0,
   slideCount: 0,

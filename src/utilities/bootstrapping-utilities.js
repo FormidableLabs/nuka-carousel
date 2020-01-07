@@ -22,6 +22,24 @@ const getMax = (a, b) => {
   return a > b ? a : b;
 };
 
+const getHeightOfSlide = slide => {
+  if (!slide) {
+    return 0;
+  }
+
+  if (slide.children && slide.children.length > 0) {
+    // Need to convert slide.children from HTMLCollection
+    // to an array
+    const children = [...slide.children];
+    return children.reduce(
+      (totalHeight, child) => totalHeight + child.offsetHeight,
+      0
+    );
+  } else {
+    return slide.offsetHeight;
+  }
+};
+
 // end - is exclusive
 export const findMaxHeightSlideInRange = (slides, start, end) => {
   let maxHeight = 0;
@@ -38,20 +56,20 @@ export const findMaxHeightSlideInRange = (slides, start, end) => {
 
   if (start < end) {
     for (let i = start; i < end; i++) {
-      maxHeight = getMax(slides[i].offsetHeight, maxHeight);
+      maxHeight = getMax(getHeightOfSlide(slides[i]), maxHeight);
     }
   } else if (start > end) {
     // Finding max in a wrap around
     for (let i = start; i < slides.length; i++) {
-      maxHeight = getMax(slides[i].offsetHeight, maxHeight);
+      maxHeight = getMax(getHeightOfSlide(slides[i]), maxHeight);
     }
 
     for (let i = 0; i < end; i++) {
-      maxHeight = getMax(slides[i].offsetHeight, maxHeight);
+      maxHeight = getMax(getHeightOfSlide(slides[i]), maxHeight);
     }
   } else {
     // start === end
-    maxHeight = slides[start].offsetHeight;
+    maxHeight = getHeightOfSlide(slides[start]);
   }
 
   return maxHeight;
@@ -101,9 +119,10 @@ export const findCurrentHeightSlide = (
       wrapAround && lastIndex > slides.length
         ? lastIndex - slides.length
         : Math.min(lastIndex, slides.length);
+
     return findMaxHeightSlideInRange(slides, startIndex, lastIndex);
   } else {
-    return slides[currentSlide].offsetHeight;
+    return getHeightOfSlide(slides[currentSlide]);
   }
 };
 
@@ -114,8 +133,8 @@ export const getSlideHeight = (props, state, childNodes = []) => {
 
   if (firstSlide && heightMode === 'first') {
     return vertical
-      ? firstSlide.offsetHeight * slidesToShow
-      : firstSlide.offsetHeight;
+      ? getHeightOfSlide(firstSlide) * slidesToShow
+      : getHeightOfSlide(firstSlide);
   }
 
   if (heightMode === 'max') {

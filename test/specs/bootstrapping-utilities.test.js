@@ -4,44 +4,89 @@ import {
 } from '../../src/utilities/bootstrapping-utilities';
 
 describe('Bootstrapping Utilties', () => {
-  const slides = [
-    { offsetHeight: 100 }, // 0
-    { offsetHeight: 200 }, // 1
-    { offsetHeight: 800 }, // 2
-    { offsetHeight: 400 }, // 3
-    { offsetHeight: 500 } // 4
-  ];
-
   describe('#findMaxHeightSlideInRange', () => {
-    it('should find slide with max height', () => {
-      // start < end
-      expect(findMaxHeightSlideInRange(slides, 0, slides.length)).toBe(800);
-      expect(findMaxHeightSlideInRange(slides, 0, 2)).toBe(200);
+    const sharedFindMaxHeightTests = slides => {
+      it('should find slide with max height', () => {
+        // start < end
+        expect(findMaxHeightSlideInRange(slides, 0, slides.length)).toBe(800);
+        expect(findMaxHeightSlideInRange(slides, 0, 2)).toBe(200);
 
-      // start > end
-      expect(findMaxHeightSlideInRange(slides, 4, 3)).toBe(800);
-      expect(findMaxHeightSlideInRange(slides, 3, 2)).toBe(500);
+        // start > end
+        expect(findMaxHeightSlideInRange(slides, 4, 3)).toBe(800);
+        expect(findMaxHeightSlideInRange(slides, 3, 2)).toBe(500);
 
-      // start === end
-      expect(findMaxHeightSlideInRange(slides, 3, 3)).toBe(400);
-      expect(findMaxHeightSlideInRange(slides, 3, 3)).toBe(400);
+        // start === end
+        expect(findMaxHeightSlideInRange(slides, 3, 3)).toBe(400);
+        expect(findMaxHeightSlideInRange(slides, 3, 3)).toBe(400);
+      });
+
+      it('should return 0 if start/end are out of bounds', () => {
+        // start out of bounds
+        expect(findMaxHeightSlideInRange(slides, -1, 3)).toBe(0);
+        expect(findMaxHeightSlideInRange(slides, slides.length, 3)).toBe(0);
+
+        // end out of bounds
+        expect(findMaxHeightSlideInRange(slides, 0, slides.length + 1)).toBe(0);
+        expect(findMaxHeightSlideInRange(slides, 0, -3)).toBe(0);
+
+        // both out of bounds
+        expect(findMaxHeightSlideInRange(slides, -1, -1)).toBe(0);
+      });
+    };
+
+    describe('when slides do not have children', () => {
+      const noChildrenSlides = [
+        { offsetHeight: 100 }, // 0
+        { offsetHeight: 200 }, // 1
+        { offsetHeight: 800 }, // 2
+        { offsetHeight: 400 }, // 3
+        { offsetHeight: 500 } // 4
+      ];
+
+      sharedFindMaxHeightTests(noChildrenSlides);
     });
 
-    it('should return 0 if start/end are out of bounds', () => {
-      // start out of bounds
-      expect(findMaxHeightSlideInRange(slides, -1, 3)).toBe(0);
-      expect(findMaxHeightSlideInRange(slides, slides.length, 3)).toBe(0);
+    describe('when slides have children', () => {
+      const slidesWithChildren = [
+        {
+          offsetHeight: 0,
+          children: [{ offsetHeight: 100 }]
+        }, // 0
+        {
+          offsetHeight: 0,
+          children: [{ offsetHeight: 200 }]
+        }, // 1
+        {
+          offsetHeight: 0,
+          children: [{ offsetHeight: 400 }, { offsetHeight: 400 }]
+        }, // 2
+        {
+          offsetHeight: 0,
+          children: [{ offsetHeight: 300 }, { offsetHeight: 100 }]
+        }, // 3
+        {
+          offsetHeight: 0,
+          children: [
+            { offsetHeight: 100 },
+            { offsetHeight: 100 },
+            { offsetHeight: 300 }
+          ]
+        } // 4
+      ];
 
-      // end out of bounds
-      expect(findMaxHeightSlideInRange(slides, 0, slides.length + 1)).toBe(0);
-      expect(findMaxHeightSlideInRange(slides, 0, -3)).toBe(0);
-
-      // both out of bounds
-      expect(findMaxHeightSlideInRange(slides, -1, -1)).toBe(0);
+      sharedFindMaxHeightTests(slidesWithChildren);
     });
   });
 
   describe('#findCurrentHeightSlide', () => {
+    const slides = [
+      { offsetHeight: 100 }, // 0
+      { offsetHeight: 200 }, // 1
+      { offsetHeight: 800 }, // 2
+      { offsetHeight: 400 }, // 3
+      { offsetHeight: 500 } // 4
+    ];
+
     it('should return height of current slide if slidesToShow less than equal to one', () => {
       expect(findCurrentHeightSlide(0, 1, 'left', false, slides)).toBe(100);
       expect(findCurrentHeightSlide(3, 1, 'right', true, slides)).toBe(400);

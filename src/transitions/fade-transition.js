@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getSlideHeight } from '../utilities/style-utilities';
 
 export default class FadeTransition extends React.Component {
   constructor(props) {
@@ -67,7 +68,7 @@ export default class FadeTransition extends React.Component {
     return {
       boxSizing: 'border-box',
       display: 'block',
-      height: 'auto',
+      height: getSlideHeight(this.props),
       left: data[index] ? data[index].left : 0,
       listStyleType: 'none',
       marginBottom: 'auto',
@@ -135,6 +136,7 @@ FadeTransition.propTypes = {
   deltaX: PropTypes.number,
   deltaY: PropTypes.number,
   dragging: PropTypes.bool,
+  heightMode: PropTypes.oneOf(['first', 'current', 'max']),
   isWrappingAround: PropTypes.bool,
   left: PropTypes.number,
   slideCount: PropTypes.number,
@@ -152,6 +154,7 @@ FadeTransition.defaultProps = {
   deltaX: 0,
   deltaY: 0,
   dragging: false,
+  heightMode: 'max',
   isWrappingAround: false,
   left: 0,
   slideCount: 0,
