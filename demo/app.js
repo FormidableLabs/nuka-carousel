@@ -15,6 +15,7 @@ class App extends React.Component {
       underlineHeader: false,
       zoomScale: 0.5,
       slidesToShow: 1,
+      slidesToScroll: 1,
       cellAlign: 'left',
       transitionMode: 'scroll',
       heightMode: 'max',
