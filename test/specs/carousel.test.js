@@ -865,6 +865,7 @@ describe('<Carousel />', () => {
       );
       expect(wrapper).toHaveProp({ withoutControls: false });
     });
+
     it('should render with no controls when set to true.', () => {
       const wrapper = mount(
         <Carousel withoutControls>
@@ -877,6 +878,7 @@ describe('<Carousel />', () => {
       const { renderControls } = wrapper.instance();
       expect(renderControls().every(element => element === null));
     });
+
     it('should render a custom top left control.', () => {
       const wrapper = mount(
         <Carousel renderTopLeftControls={() => <div>Top Left</div>}>
