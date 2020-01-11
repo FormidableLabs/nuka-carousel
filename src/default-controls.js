@@ -1,4 +1,5 @@
 import React from 'react';
+import { getAlignmentOffset } from './utilities/style-utilities';
 
 const defaultButtonStyles = disabled => ({
   border: 0,
@@ -43,6 +44,7 @@ export class NextButton extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.nextButtonDisable = this.nextButtonDisabled.bind(this);
   }
+
   handleClick(event) {
     event.preventDefault();
     this.props.nextSlide();
@@ -51,57 +53,67 @@ export class NextButton extends React.Component {
   nextButtonDisabled(params) {
     const {
       wrapAround,
-      slidesToShow,
-      currentSlide,
       cellAlign,
-      slideCount
+      cellSpacing,
+      currentSlide,
+      frameWidth,
+      slideCount,
+      slidesToShow,
+      slideWidth,
+      positionValue
     } = params;
 
     let buttonDisabled = false;
+
     if (!wrapAround) {
-      const lastSlideIndex = slideCount - 1;
-      let slidesShowing = slidesToShow;
-      let lastSlideOffset = 0;
+      const alignmentOffset = getAlignmentOffset(currentSlide, {
+        cellAlign,
+        cellSpacing,
+        frameWidth,
+        slideWidth
+      });
 
-      switch (cellAlign) {
-        case 'center':
-          slidesShowing = (slidesToShow - 1) * 0.5;
-          lastSlideOffset = Math.floor(slidesToShow * 0.5) - 1;
-          break;
-        case 'right':
-          slidesShowing = 1;
-          break;
-      }
+      const relativePosition = positionValue - alignmentOffset;
 
-      //  this handles the case for left align with partially visible slides
-      if (!Number.isInteger(slidesShowing) && cellAlign === 'left') {
-        slidesShowing = 1;
-      }
+      const width = slideWidth + cellSpacing;
+      const endOffset =
+        cellAlign === 'center' ? 2 * alignmentOffset : alignmentOffset;
+      const endPosition =
+        -width * slideCount + width * slidesToShow - endOffset;
 
-      if (slidesToShow > 1) {
-        buttonDisabled =
-          currentSlide + slidesShowing > lastSlideIndex + lastSlideOffset;
-      } else {
-        buttonDisabled = currentSlide + 1 > lastSlideIndex;
-      }
+      buttonDisabled =
+        relativePosition < endPosition ||
+        Math.abs(relativePosition - endPosition) < 0.01;
     }
+
     return buttonDisabled;
   }
+
   render() {
     const {
+      top,
+      left,
       wrapAround,
       slidesToShow,
-      currentSlide,
       cellAlign,
-      slideCount
+      cellSpacing,
+      currentSlide,
+      frameWidth,
+      slideCount,
+      slideWidth,
+      vertical
     } = this.props;
 
     const disabled = this.nextButtonDisabled({
       wrapAround,
       slidesToShow,
-      currentSlide,
       cellAlign,
-      slideCount
+      cellSpacing,
+      currentSlide,
+      frameWidth,
+      slideCount,
+      slideWidth,
+      positionValue: vertical ? top : left
     });
 
     return (
@@ -129,6 +141,7 @@ export class PagingDots extends React.Component {
         lastDotIndex += slidesToShow - 1;
         break;
     }
+
     if (lastDotIndex < 0) {
       return [0];
     }
@@ -136,6 +149,7 @@ export class PagingDots extends React.Component {
     for (let i = 0; i < lastDotIndex; i += slidesToScroll) {
       dotIndexes.push(i);
     }
+
     dotIndexes.push(lastDotIndex);
     return dotIndexes;
   }

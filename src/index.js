@@ -847,7 +847,10 @@ export default class Carousel extends React.Component {
         this.props.cellAlign !== 'left'
           ? offset
           : Math.min(offset, childrenCount - slidesToShow);
-      this.goToSlide(nextSlideIndex);
+
+      // If nextSlideIndex is larger than last index, then
+      // just navigate to last index
+      this.goToSlide(Math.min(nextSlideIndex, childrenCount - 1));
     }
   }
 
@@ -1000,6 +1003,8 @@ export default class Carousel extends React.Component {
           func &&
           typeof func === 'function' &&
           func({
+            top: this.state.top,
+            left: this.state.left,
             cellAlign: this.props.cellAlign,
             cellSpacing: this.props.cellSpacing,
             currentSlide: this.state.currentSlide,
@@ -1011,7 +1016,8 @@ export default class Carousel extends React.Component {
             slidesToScroll: this.state.slidesToScroll,
             slidesToShow: this.state.slidesToShow,
             slideWidth: this.state.slideWidth,
-            wrapAround: this.props.wrapAround
+            wrapAround: this.props.wrapAround,
+            vertical: this.props.vertical
           });
 
         return (

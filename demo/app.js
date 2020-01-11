@@ -60,7 +60,7 @@ class App extends React.Component {
                   : 'none'
               }}
             >
-              Nuka Carousel: Slide {currentSlide + 1}
+              Nuka Carousel: Slide {Math.ceil(currentSlide) + 1}
             </div>
           )}
           renderAnnounceSlideMessage={({ currentSlide, slideCount }) => {
