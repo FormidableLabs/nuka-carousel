@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getSlideHeight } from '../utilities/style-utilities';
+import {
+  getSlideHeight,
+  getAlignmentOffset
+} from '../utilities/style-utilities';
 
 const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
@@ -26,123 +29,86 @@ export default class ScrollTransition extends React.Component {
   }
 
   /* eslint-disable complexity */
-  getSlideTargetPosition(index, positionValue) {
-    let targetPosition =
-      (this.props.slideWidth + this.props.cellSpacing) * index;
-
-    let cellAlignOffset = 0;
-    switch (this.props.cellAlign) {
-      case 'center':
-        cellAlignOffset =
-          (this.props.slideWidth + this.props.cellSpacing) *
-          ((this.props.slidesToShow - 1) / 2);
-        break;
-      case 'right':
-        cellAlignOffset =
-          (this.props.slideWidth + this.props.cellSpacing) *
-          (this.props.slidesToShow - 1);
-        break;
-    }
-
-    const startSlide = Math.min(
-      Math.floor(
-        Math.abs((positionValue - cellAlignOffset) / this.props.slideWidth)
-      ),
-      this.props.slideCount - 1
-    );
-
+  getSlideTargetPosition(currentSlideIndex, positionValue) {
     let offset = 0;
 
     if (
       this.props.animation === 'zoom' &&
-      (this.props.currentSlide === index + 1 ||
+      (this.props.currentSlide === currentSlideIndex + 1 ||
         (this.props.currentSlide === 0 &&
-          index === this.props.children.length - 1))
+          currentSlideIndex === this.props.children.length - 1))
     ) {
       offset = this.props.slideOffset;
     } else if (
       this.props.animation === 'zoom' &&
-      (this.props.currentSlide === index - 1 ||
+      (this.props.currentSlide === currentSlideIndex - 1 ||
         (this.props.currentSlide === this.props.children.length - 1 &&
-          index === 0))
+          currentSlideIndex === 0))
     ) {
       offset = -this.props.slideOffset;
     }
 
-    if (this.props.wrapAround && index !== startSlide) {
+    let targetPosition =
+      (this.props.slideWidth + this.props.cellSpacing) * currentSlideIndex;
+
+    const alignmentOffset = getAlignmentOffset(currentSlideIndex, this.props);
+    const relativePosition = positionValue - alignmentOffset;
+    const startSlideIndex = Math.min(
+      Math.abs(Math.floor(relativePosition / this.props.slideWidth)),
+      this.props.slideCount - 1
+    );
+
+    if (this.props.wrapAround && currentSlideIndex !== startSlideIndex) {
+      const slidesOutOfView = Math.max(
+        this.props.slideCount -
+          Math.ceil(this.props.frameWidth / this.props.slideWidth), // Total slides in view
+        0
+      );
+
+      let slidesOutOfViewBefore = Math.floor(slidesOutOfView / 2);
+      let slidesOutOfViewAfter = slidesOutOfView - slidesOutOfViewBefore;
+
       const direction = this.getSlideDirection(
-        startSlide,
+        startSlideIndex,
         this.props.currentSlide,
         this.props.isWrappingAround
       );
-      let slidesBefore = 0;
-      let slidesAfter = 0;
 
-      switch (this.props.cellAlign) {
-        case 'left':
-          if (direction < 0) {
-            slidesBefore = this.props.slidesToScroll;
-            slidesAfter = this.props.slideCount - this.props.slidesToScroll - 1;
-          } else {
-            slidesBefore = 0;
-            slidesAfter = this.props.slideCount - 1;
-          }
-          break;
-
-        case 'center':
-          if (direction === 0) {
-            slidesBefore = Math.floor((this.props.slideCount - 1) / 2);
-            slidesAfter = this.props.slideCount - slidesBefore - 1;
-          } else {
-            const visibleSlidesFromCenter = Math.ceil(
-              (this.props.slidesToShow - 1) / 2
-            );
-            const slidesScrollDirection = Math.min(
-              visibleSlidesFromCenter + this.props.slidesToScroll,
-              this.props.slideCount - 1
-            );
-            const slidesOppositeDirection =
-              this.props.slideCount - slidesScrollDirection - 1;
-
-            if (direction > 0) {
-              slidesAfter = slidesScrollDirection;
-              slidesBefore = slidesOppositeDirection;
-            } else if (direction < 0) {
-              slidesBefore = slidesScrollDirection;
-              slidesAfter = slidesOppositeDirection;
-            }
-          }
-          break;
-
-        case 'right':
-          if (direction > 0) {
-            slidesBefore =
-              this.props.slideCount - this.props.slidesToScroll - 1;
-            slidesAfter = this.props.slidesToScroll;
-          } else {
-            slidesBefore = this.props.slideCount - 1;
-            slidesAfter = 0;
-          }
-          break;
+      if (direction < 0) {
+        const temp = slidesOutOfViewBefore;
+        slidesOutOfViewBefore = slidesOutOfViewAfter;
+        slidesOutOfViewAfter = temp;
       }
 
-      const distanceFromStart = Math.abs(startSlide - index);
-      if (index < startSlide) {
+      const slidesInViewBefore = Math.ceil(
+        alignmentOffset / this.props.slideWidth
+      );
+      const slidesBefore = slidesInViewBefore + slidesOutOfViewBefore;
+
+      const slidesInViewAfter =
+        Math.ceil(
+          (this.props.frameWidth - alignmentOffset) / this.props.slideWidth
+        ) - 1;
+      const slidesAfter = slidesInViewAfter + slidesOutOfViewAfter;
+
+      const distanceFromStart = Math.abs(startSlideIndex - currentSlideIndex);
+      if (currentSlideIndex < startSlideIndex) {
         if (distanceFromStart > slidesBefore) {
           targetPosition =
             (this.props.slideWidth + this.props.cellSpacing) *
-            (this.props.slideCount + index);
+            (this.props.slideCount + currentSlideIndex);
         }
       } else if (distanceFromStart > slidesAfter) {
         targetPosition =
           (this.props.slideWidth + this.props.cellSpacing) *
-          (this.props.slideCount - index) *
+          (this.props.slideCount - currentSlideIndex) *
           -1;
       }
     }
 
     return targetPosition + offset || 0;
   }
+
   /* eslint-enable complexity */
   formatChildren(children) {
     const { top, left, currentSlide, slidesToShow } = this.props;
@@ -248,6 +214,7 @@ ScrollTransition.propTypes = {
   deltaX: PropTypes.number,
   deltaY: PropTypes.number,
   dragging: PropTypes.bool,
+  frameWidth: PropTypes.number,
   heightMode: PropTypes.oneOf(['first', 'current', 'max']),
   isWrappingAround: PropTypes.bool,
   left: PropTypes.number,
@@ -269,6 +236,7 @@ ScrollTransition.defaultProps = {
   deltaX: 0,
   deltaY: 0,
   dragging: false,
+  frameWidth: 0,
   heightMode: 'max',
   isWrappingAround: false,
   left: 0,

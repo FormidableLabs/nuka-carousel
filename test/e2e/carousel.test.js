@@ -215,9 +215,13 @@ describe('Nuka Carousel', () => {
         ['left']
       );
       const getWidth = parseInt(firstSlide.width, 10);
-      const slideCount = (await page.$$('.slider-slide')).length;
+
+      // first slide in first position
       await expect(firstSlide.left).toMatch('0px');
-      await expect(lastSlide.left).toMatch(`${getWidth * (slideCount - 1)}px`);
+
+      // last slide, positioned right behind first slide
+      await expect(lastSlide.left).toMatch(`-${getWidth}px`);
+
       await expect(page).toClick('button', { text: 'Prev' });
       await expect(page).toMatch('Nuka Carousel: Slide 6');
       await page.waitFor(600); // need to let slide transition complete

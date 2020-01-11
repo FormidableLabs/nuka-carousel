@@ -19,6 +19,30 @@ export const getSlideHeight = props => {
     : 'auto';
 };
 
+export const getAlignmentOffset = (slideIndex, config) => {
+  let offset = 0;
+
+  switch (config.cellAlign) {
+    case 'left': {
+      offset = 0;
+      offset -= config.cellSpacing * slideIndex;
+      break;
+    }
+    case 'center': {
+      offset = (config.frameWidth - config.slideWidth) / 2;
+      offset -= config.cellSpacing * slideIndex;
+      break;
+    }
+    case 'right': {
+      offset = config.frameWidth - config.slideWidth;
+      offset -= config.cellSpacing * slideIndex;
+      break;
+    }
+  }
+
+  return offset;
+};
+
 export const getDecoratorStyles = position => {
   switch (position) {
     case 'TopLeft': {
@@ -149,6 +173,7 @@ export const getTransitionProps = (props, state) => {
     cellSpacing: props.cellSpacing,
     currentSlide: state.currentSlide,
     dragging: props.dragging,
+    frameWidth: parseInt(state.frameWidth),
     heightMode: props.heightMode,
     isWrappingAround: state.isWrappingAround,
     left: state.left,
