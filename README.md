@@ -4,7 +4,7 @@
 
 A Pure ReactJS Carousel Component
 
-Maintained by [Sarah Meyer](https://github.com/sarmeyer)
+Maintained by [Sarah Egan](https://github.com/sarmeyer)
 
 ![Nuka Carousel Animated Example](https://i.imgur.com/UwP5gle.gif)
 
@@ -50,7 +50,7 @@ yarn start
 
 You can access the application on your localhost at the following url: <a href="http://localhost:8080/demo" target="_blank">Local Demo</a>
 
-Or on CodeSandBox at the following url: <a href="https://codesandbox.io/s/04wxloyyp" target="_blank">CodeSandBox Demo</a>
+Or on CodeSandBox at the following url: <a href="https://codesandbox.io/s/currying-smoke-c8v2n" target="_blank">CodeSandBox Demo</a>
 
 ### Keyboard Controls
 
