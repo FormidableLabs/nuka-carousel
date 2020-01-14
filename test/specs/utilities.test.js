@@ -1,6 +1,6 @@
 import { getSlideDirection } from '../../src/utilities/utilities';
 
-describe('Utilties', () => {
+describe('Utilities', () => {
   describe('#getSlideDirection', () => {
     it('should return zero if start and end slide are the same regardless of isWrapping', () => {
       expect(getSlideDirection(2, 2, true)).toEqual(0);
