@@ -112,6 +112,19 @@ export const swipeDirection = (x1, x2, y1, y2, vertical) => {
   return 0;
 };
 
+export const getSlideDirection = (start, end, isWrapping) => {
+  let direction = 0;
+
+  if (start === end) return direction;
+  if (isWrapping) {
+    direction = start < end ? -1 : 1;
+  } else {
+    direction = start < end ? 1 : -1;
+  }
+
+  return direction;
+};
+
 export const shouldUpdate = (curr, next, keys) => {
   let update = false;
 

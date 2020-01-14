@@ -4,6 +4,7 @@ import {
   getSlideHeight,
   getAlignmentOffset
 } from '../utilities/style-utilities';
+import { getSlideDirection } from '../utilities/utilities';
 
 const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
@@ -11,21 +12,7 @@ const MAX_ZOOM_SCALE = 1;
 export default class ScrollTransition extends React.Component {
   constructor(props) {
     super(props);
-
     this.getListStyles = this.getListStyles.bind(this);
-  }
-
-  getSlideDirection(start, end, isWrapping) {
-    let direction = 0;
-    if (start === end) return direction;
-
-    if (isWrapping) {
-      direction = start < end ? -1 : 1;
-    } else {
-      direction = start < end ? 1 : -1;
-    }
-
-    return direction;
   }
 
   /* eslint-disable complexity */
@@ -68,7 +55,7 @@ export default class ScrollTransition extends React.Component {
       let slidesOutOfViewBefore = Math.floor(slidesOutOfView / 2);
       let slidesOutOfViewAfter = slidesOutOfView - slidesOutOfViewBefore;
 
-      const direction = this.getSlideDirection(
+      const direction = getSlideDirection(
         startSlideIndex,
         this.props.currentSlide,
         this.props.isWrappingAround
@@ -111,13 +98,12 @@ export default class ScrollTransition extends React.Component {
 
   /* eslint-enable complexity */
   formatChildren(children) {
-    const { top, left, currentSlide, slidesToShow } = this.props;
-    const positionValue = this.props.vertical ? top : left;
+    const { top, left, currentSlide, slidesToShow, vertical } = this.props;
+    const positionValue = vertical ? top : left;
 
     return React.Children.map(children, (child, index) => {
       const visible =
         index >= currentSlide && index < currentSlide + slidesToShow;
-
       return (
         <li
           className={`slider-slide${visible ? ' slide-visible' : ''}`}
@@ -220,8 +206,8 @@ ScrollTransition.propTypes = {
   left: PropTypes.number,
   slideCount: PropTypes.number,
   slideHeight: PropTypes.number,
-  slidesToScroll: PropTypes.number,
   slideOffset: PropTypes.number,
+  slidesToScroll: PropTypes.number,
   slideWidth: PropTypes.number,
   top: PropTypes.number,
   vertical: PropTypes.bool,

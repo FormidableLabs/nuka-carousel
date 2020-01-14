@@ -1174,7 +1174,18 @@ Carousel.propTypes = {
   beforeSlide: PropTypes.func,
   cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
   cellSpacing: PropTypes.number,
+  disableAnimation: PropTypes.bool,
+  disableEdgeSwiping: PropTypes.bool,
+  dragging: PropTypes.bool,
+  easing: PropTypes.string,
+  edgeEasing: PropTypes.string,
   enableKeyboardControls: PropTypes.bool,
+  frameOverflow: PropTypes.string,
+  framePadding: PropTypes.string,
+  height: PropTypes.string,
+  heightMode: PropTypes.oneOf(['first', 'current', 'max']),
+  initialSlideHeight: PropTypes.number,
+  initialSlideWidth: PropTypes.number,
   keyCodeConfig: PropTypes.exact({
     previousSlide: PropTypes.arrayOf(PropTypes.number),
     nextSlide: PropTypes.arrayOf(PropTypes.number),
@@ -1182,19 +1193,9 @@ Carousel.propTypes = {
     lastSlide: PropTypes.arrayOf(PropTypes.number),
     pause: PropTypes.arrayOf(PropTypes.number)
   }),
-  disableAnimation: PropTypes.bool,
-  disableEdgeSwiping: PropTypes.bool,
-  dragging: PropTypes.bool,
-  easing: PropTypes.string,
-  edgeEasing: PropTypes.string,
-  frameOverflow: PropTypes.string,
-  framePadding: PropTypes.string,
-  height: PropTypes.string,
-  heightMode: PropTypes.oneOf(['first', 'current', 'max']),
-  initialSlideHeight: PropTypes.number,
-  initialSlideWidth: PropTypes.number,
   onDragStart: PropTypes.func,
   onResize: PropTypes.func,
+  opacityScale: PropTypes.number,
   pauseOnHover: PropTypes.bool,
   renderAnnounceSlideMessage: PropTypes.func,
   renderBottomCenterControls: PropTypes.func,
@@ -1207,6 +1208,7 @@ Carousel.propTypes = {
   renderTopLeftControls: PropTypes.func,
   renderTopRightControls: PropTypes.func,
   slideIndex: PropTypes.number,
+  slideListMargin: PropTypes.number,
   slideOffset: PropTypes.number,
   slidesToScroll: PropTypes.oneOfType([
     PropTypes.number,
@@ -1220,9 +1222,7 @@ Carousel.propTypes = {
   vertical: PropTypes.bool,
   width: PropTypes.string,
   withoutControls: PropTypes.bool,
-  wrapAround: PropTypes.bool,
-  opacityScale: PropTypes.number,
-  slideListMargin: PropTypes.number
+  wrapAround: PropTypes.bool
 };
 
 Carousel.defaultProps = {
@@ -1234,17 +1234,17 @@ Carousel.defaultProps = {
   beforeSlide() {},
   cellAlign: 'left',
   cellSpacing: 0,
-  enableKeyboardControls: false,
-  keyCodeConfig: {},
   disableAnimation: false,
   disableEdgeSwiping: false,
   dragging: true,
   easing: 'easeCircleOut',
   edgeEasing: 'easeElasticOut',
+  enableKeyboardControls: false,
   frameOverflow: 'hidden',
   framePadding: '0px',
   height: 'inherit',
   heightMode: 'max',
+  keyCodeConfig: {},
   onDragStart() {},
   onResize() {},
   pauseOnHover: true,
@@ -1253,6 +1253,7 @@ Carousel.defaultProps = {
   renderCenterLeftControls: props => <PreviousButton {...props} />,
   renderCenterRightControls: props => <NextButton {...props} />,
   slideIndex: 0,
+  slideListMargin: 10,
   slideOffset: 25,
   slidesToScroll: 1,
   slidesToShow: 1,
@@ -1264,8 +1265,7 @@ Carousel.defaultProps = {
   vertical: false,
   width: '100%',
   withoutControls: false,
-  wrapAround: false,
-  slideListMargin: 10
+  wrapAround: false
 };
 
 export { NextButton, PreviousButton, PagingDots };
