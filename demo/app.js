@@ -17,7 +17,7 @@ class App extends React.Component {
       slidesToShow: 1,
       slidesToScroll: 1,
       cellAlign: 'left',
-      transitionMode: 'scroll3d',
+      transitionMode: 'scroll',
       heightMode: 'max',
       withoutControls: false
     };
