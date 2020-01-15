@@ -163,3 +163,9 @@ export const calcSomeInitialState = props => {
     cellAlign
   };
 };
+
+export const handleSelfFocus = e => {
+  if (e && e.currentTarget) {
+    e.currentTarget.focus();
+  }
+};

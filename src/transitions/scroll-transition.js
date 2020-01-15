@@ -4,7 +4,7 @@ import {
   getSlideHeight,
   getAlignmentOffset
 } from '../utilities/style-utilities';
-import { getSlideDirection } from '../utilities/utilities';
+import { getSlideDirection, handleSelfFocus } from '../utilities/utilities';
 
 const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
@@ -109,6 +109,8 @@ export default class ScrollTransition extends React.Component {
           className={`slider-slide${visible ? ' slide-visible' : ''}`}
           style={this.getSlideStyles(index, positionValue)}
           key={index}
+          onClick={handleSelfFocus}
+          tabIndex={-1}
         >
           {child}
         </li>

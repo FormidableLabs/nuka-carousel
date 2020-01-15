@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getSlideHeight } from '../utilities/style-utilities';
+import { handleSelfFocus } from '../utilities/utilities';
 
 const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
@@ -60,6 +61,8 @@ export default class ScrollTransition3D extends React.Component {
           }`}
           style={this.getSlideStyles(index, positionValue)}
           key={index}
+          onClick={handleSelfFocus}
+          tabIndex={-1}
         >
           {child}
         </li>

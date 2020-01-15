@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getSlideHeight } from '../utilities/style-utilities';
+import { handleSelfFocus } from '../utilities/utilities';
 
 export default class FadeTransition extends React.Component {
   constructor(props) {
@@ -18,6 +19,8 @@ export default class FadeTransition extends React.Component {
           className={`slider-slide${visible ? ' slide-visible' : ''}`}
           style={this.getSlideStyles(index, opacity)}
           key={index}
+          onClick={handleSelfFocus}
+          tabIndex={-1}
         >
           {child}
         </li>
