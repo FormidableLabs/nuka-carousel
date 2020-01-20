@@ -62,7 +62,7 @@ export default class Carousel extends React.Component {
     this.childNodesMutationObs = null;
 
     this.state = {
-      currentSlide: this.props.rightToLeft
+      currentSlide: this.props.rtl
         ? this.props.children.length - this.props.slidesToShow
         : this.props.slideIndex,
       dragging: false,
@@ -1050,8 +1050,8 @@ export default class Carousel extends React.Component {
     }
   }
 
-  reverseChildren(children, rightToLeft) {
-    return rightToLeft ? [...children].reverse() : children;
+  reverseChildren(children, rtl) {
+    return rtl ? [...children].reverse() : children;
   }
 
   render() {
@@ -1097,7 +1097,7 @@ export default class Carousel extends React.Component {
           getSliderStyles(this.props.width, this.props.height),
           this.props.style
         )}
-        dir="ltr"
+        dir={rtl ? 'ltr' : 'auto'}
       >
         {!this.props.autoplay && (
           <AnnounceSlide
@@ -1111,7 +1111,6 @@ export default class Carousel extends React.Component {
           {...touchEvents}
           {...mouseEvents}
           onClickCapture={this.handleClick}
-          dir="ltr"
         >
           <Animate
             show
