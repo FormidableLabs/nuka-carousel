@@ -1,5 +1,13 @@
 # Nuka Changelog
 
+## 4.6.1 (2020-01-20)
+
+- [#632](https://github.com/FormidableLabs/nuka-carousel/pull/632) Dependency vulnerability fixed, upgrade handlebars from 4.1.2 to 4.5.3
+- [#633](https://github.com/FormidableLabs/nuka-carousel/pull/633) Fixes #618 max (and first) height mode calculations
+- [#635](https://github.com/FormidableLabs/nuka-carousel/pull/635) Fixes #494 Updates scroll transition logic to fix wraparound flash
+- [#636](https://github.com/FormidableLabs/nuka-carousel/pull/636) Fixes #503 updates logic so Next button enables/disables correctly
+- [#638](https://github.com/FormidableLabs/nuka-carousel/pull/638) Fixes #531 styling issue in Demo and some minor cleanup of the code
+
 ## 4.6.0 (2019-12-17)
 
 - Fixes for `leftAlign` added for heightMode="current" and heightMode="max"
