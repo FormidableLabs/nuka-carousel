@@ -556,6 +556,10 @@ describe('<Carousel />', () => {
             <p>Slide3</p>
           </Carousel>
         );
+
+        // Setting carousel focus
+        wrapper.find('div.slider').simulate('focus');
+
         expect(wrapper).toHaveState({ currentSlide: 0 });
         map.keydown({ keyCode: 39 });
         expect(wrapper).toHaveState({ currentSlide: 1 });
@@ -574,6 +578,10 @@ describe('<Carousel />', () => {
             <p>Slide3</p>
           </Carousel>
         );
+
+        // Setting carousel focus
+        wrapper.find('div.slider').simulate('focus');
+
         expect(wrapper).toHaveState({ currentSlide: 0 });
         map.keydown({ keyCode: 39 });
         expect(wrapper).toHaveState({ currentSlide: 0 });
@@ -598,6 +606,10 @@ describe('<Carousel />', () => {
               <p>Slide3</p>
             </Carousel>
           );
+
+          // Setting carousel focus
+          wrapper.find('div.slider').simulate('focus');
+
           expect(wrapper).toHaveState({ currentSlide: 0 });
           map.keydown({ keyCode: 38 });
           expect(wrapper).toHaveState({ currentSlide: 0 });

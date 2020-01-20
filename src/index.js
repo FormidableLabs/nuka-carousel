@@ -71,6 +71,7 @@ export default class Carousel extends React.Component {
       slideCount: getValidChildren(this.props.children).length,
       top: 0,
       wrapToIndex: null,
+      hasFocus: false,
       ...calcSomeInitialState(this.props)
     };
 
@@ -82,6 +83,8 @@ export default class Carousel extends React.Component {
     this.getTargetLeft = this.getTargetLeft.bind(this);
     this.getTouchEvents = this.getTouchEvents.bind(this);
     this.goToSlide = this.goToSlide.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
@@ -512,6 +515,14 @@ export default class Carousel extends React.Component {
     }
   }
 
+  handleFocus() {
+    this.setState({ hasFocus: true });
+  }
+
+  handleBlur() {
+    this.setState({ hasFocus: false });
+  }
+
   handleClick(event) {
     if (this.clickDisabled === true) {
       if (event.metaKey || event.shiftKey || event.altKey || event.ctrlKey) {
@@ -567,7 +578,7 @@ export default class Carousel extends React.Component {
   }
   // eslint-disable-next-line complexity
   handleKeyPress(e) {
-    if (this.props.enableKeyboardControls) {
+    if (this.state.hasFocus && this.props.enableKeyboardControls) {
       const actionName = this.keyCodeMap[e.keyCode];
       switch (actionName) {
         case 'nextSlide':
@@ -1068,6 +1079,9 @@ export default class Carousel extends React.Component {
     return (
       <div
         className={['slider', this.props.className || ''].join(' ').trim()}
+        onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
+        tabIndex={0}
         style={Object.assign(
           {},
           getSliderStyles(this.props.width, this.props.height),
