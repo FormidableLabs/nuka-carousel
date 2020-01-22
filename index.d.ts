@@ -93,7 +93,7 @@ export interface CarouselSlideRenderControlProps {
    * Right To Left Translation
    */
 
-  rightToLeft: boolean;
+  rtl: boolean;
 }
 
 export type CarouselRenderControl = (
@@ -382,7 +382,7 @@ export interface CarouselProps {
    * @default false
    */
 
-  rightToLeft?: boolean | false;
+  rtl?: boolean | false;
 }
 
 export interface CarouselState {
@@ -446,7 +446,7 @@ export interface CarouselState {
    * Is RTL
    */
 
-  rightToLeft: boolean;
+  rtl: boolean;
 }
 
 export interface PreviousButtonProps extends CarouselSlideRenderControlProps {}
