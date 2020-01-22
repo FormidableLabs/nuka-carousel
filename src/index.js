@@ -1015,6 +1015,7 @@ export default class Carousel extends React.Component {
           func &&
           typeof func === 'function' &&
           func({
+            defaultControlsConfig: this.props.defaultControlsConfig,
             top: this.state.top,
             left: this.state.left,
             cellAlign: this.props.cellAlign,
@@ -1190,6 +1191,17 @@ Carousel.propTypes = {
   beforeSlide: PropTypes.func,
   cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
   cellSpacing: PropTypes.number,
+  defaultControlsConfig: PropTypes.shape({
+    nextButtonClassName: PropTypes.string,
+    nextButtonStyle: PropTypes.object,
+    nextButtonText: PropTypes.string,
+    prevButtonClassName: PropTypes.string,
+    prevButtonStyle: PropTypes.object,
+    prevButtonText: PropTypes.string,
+    pagingDotsContainerClassName: PropTypes.string,
+    pagingDotsClassName: PropTypes.string,
+    pagingDotsStyle: PropTypes.object
+  }),
   disableAnimation: PropTypes.bool,
   disableEdgeSwiping: PropTypes.bool,
   dragging: PropTypes.bool,
@@ -1250,6 +1262,7 @@ Carousel.defaultProps = {
   beforeSlide() {},
   cellAlign: 'left',
   cellSpacing: 0,
+  defaultControlsConfig: {},
   disableAnimation: false,
   disableEdgeSwiping: false,
   dragging: true,

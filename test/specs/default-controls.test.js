@@ -5,7 +5,9 @@ describe('<PagingDots />', () => {
     let instance;
 
     beforeEach(async () => {
-      const wrapper = mount(<PagingDots goToSlide={() => null} />);
+      const wrapper = mount(
+        <PagingDots defaultControlsConfig={{}} goToSlide={() => null} />
+      );
       instance = wrapper.instance();
     });
 
@@ -115,7 +117,9 @@ describe('<NextButton />', () => {
     let instance;
 
     beforeEach(async () => {
-      const wrapper = mount(<NextButton buttonDisable={() => null} />);
+      const wrapper = mount(
+        <NextButton defaultControlsConfig={{}} buttonDisable={() => null} />
+      );
       instance = wrapper.instance();
     });
 

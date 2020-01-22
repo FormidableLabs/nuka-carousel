@@ -16,23 +16,36 @@ export class PreviousButton extends React.Component {
     super(...arguments);
     this.handleClick = this.handleClick.bind(this);
   }
+
   handleClick(event) {
     event.preventDefault();
     this.props.previousSlide();
   }
+
   render() {
+    const {
+      prevButtonClassName,
+      prevButtonStyle = {},
+      prevButtonText
+    } = this.props.defaultControlsConfig;
+
     const disabled =
       (this.props.currentSlide === 0 && !this.props.wrapAround) ||
       this.props.slideCount === 0;
+
     return (
       <button
-        style={defaultButtonStyles(disabled)}
+        className={prevButtonClassName}
+        style={{
+          ...defaultButtonStyles(disabled),
+          ...prevButtonStyle
+        }}
         disabled={disabled}
         onClick={this.handleClick}
         aria-label="previous"
         type="button"
       >
-        Prev
+        {prevButtonText || 'Prev'}
       </button>
     );
   }
@@ -104,6 +117,12 @@ export class NextButton extends React.Component {
       vertical
     } = this.props;
 
+    const {
+      nextButtonClassName,
+      nextButtonStyle = {},
+      nextButtonText
+    } = this.props.defaultControlsConfig;
+
     const disabled = this.nextButtonDisabled({
       wrapAround,
       slidesToShow,
@@ -118,13 +137,17 @@ export class NextButton extends React.Component {
 
     return (
       <button
-        style={defaultButtonStyles(disabled)}
+        className={nextButtonClassName}
+        style={{
+          ...defaultButtonStyles(disabled),
+          ...nextButtonStyle
+        }}
         disabled={disabled}
         onClick={this.handleClick}
         aria-label="next"
         type="button"
       >
-        Next
+        {nextButtonText || 'Next'}
       </button>
     );
   }
@@ -170,7 +193,8 @@ export class PagingDots extends React.Component {
       cursor: 'pointer',
       opacity: active ? 1 : 0.5,
       background: 'transparent',
-      border: 'none'
+      border: 'none',
+      fill: 'black'
     };
   }
 
@@ -181,33 +205,35 @@ export class PagingDots extends React.Component {
       this.props.slidesToShow,
       this.props.cellAlign
     );
+
+    const {
+      pagingDotsContainerClassName,
+      pagingDotsClassName,
+      pagingDotsStyle = {}
+    } = this.props.defaultControlsConfig;
+
     return (
-      <ul style={this.getListStyles()}>
+      <ul className={pagingDotsContainerClassName} style={this.getListStyles()}>
         {indexes.map(index => {
+          const isActive = this.props.currentSlide === index;
+
           return (
             <li
               key={index}
-              className={
-                this.props.currentSlide === index
-                  ? 'paging-item active'
-                  : 'paging-item'
-              }
+              className={isActive ? 'paging-item active' : 'paging-item'}
             >
               <button
+                className={pagingDotsClassName}
                 type="button"
-                style={this.getButtonStyles(this.props.currentSlide === index)}
+                style={{
+                  ...this.getButtonStyles(isActive),
+                  ...pagingDotsStyle
+                }}
                 onClick={this.props.goToSlide.bind(null, index)}
                 aria-label={`slide ${index + 1} bullet`}
               >
                 <svg className="paging-dot" width="6" height="6">
-                  <circle
-                    cx="3"
-                    cy="3"
-                    r="3"
-                    style={{
-                      fill: 'black'
-                    }}
-                  />
+                  <circle cx="3" cy="3" r="3" />
                 </svg>
               </button>
             </li>
