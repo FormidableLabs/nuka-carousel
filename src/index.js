@@ -544,7 +544,9 @@ export default class Carousel extends React.Component {
       slidesToShow = this.state.slidesToScroll;
     }
 
-    if (this.touchObject.length > this.state.slideWidth / slidesToShow / 5) {
+    const touchLength = this.touchObject.length || 0;
+
+    if (touchLength > this.state.slideWidth / slidesToShow / 5) {
       if (this.touchObject.direction === 1) {
         if (
           this.state.currentSlide + 1 >= this.state.slideCount &&
@@ -561,7 +563,7 @@ export default class Carousel extends React.Component {
           this.previousSlide();
         }
       }
-    } else {
+    } else if (touchLength > 0) {
       this.goToSlide(this.state.currentSlide);
     }
 
