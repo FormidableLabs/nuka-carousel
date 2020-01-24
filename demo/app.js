@@ -19,7 +19,8 @@ class App extends React.Component {
       cellAlign: 'left',
       transitionMode: 'scroll',
       heightMode: 'max',
-      withoutControls: false
+      withoutControls: false,
+      autoplay: false
     };
 
     this.handleImageClick = this.handleImageClick.bind(this);
@@ -51,6 +52,7 @@ class App extends React.Component {
           withoutControls={this.state.withoutControls}
           wrapAround={this.state.wrapAround}
           zoomScale={Number(this.state.zoomScale || 0)}
+          autoplay={this.state.autoplay}
           renderTopCenterControls={({ currentSlide }) => (
             <div
               style={{
@@ -123,6 +125,15 @@ class App extends React.Component {
               }
             >
               Toggle Wrap Around
+            </button>
+            <button
+              onClick={() =>
+                this.setState(prevState => ({
+                  autoplay: !prevState.autoplay
+                }))
+              }
+            >
+              Toggle Autoplay {this.state.autoplay === true ? 'Off' : 'On'}
             </button>
           </div>
         </div>
