@@ -108,8 +108,8 @@ export default class FadeTransition extends React.Component {
 
   render() {
     const fade =
-      -(this.props.deltaX || this.props.deltaY) / this.props.slideWidth;
-
+      (-(this.props.deltaX || this.props.deltaY) / this.props.slideWidth) %
+      this.props.slideCount;
     if (parseInt(fade) === fade) {
       this.fadeFromSlide = fade;
     }
