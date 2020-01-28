@@ -166,23 +166,23 @@ export default class ScrollTransition extends React.Component {
     const transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
 
     return {
-      transform,
-      WebkitTransform: transform,
-      msTransform: `translate(${deltaX}px, ${deltaY}px)`,
-      position: 'relative',
+      boxSizing: 'border-box',
+      cursor: this.props.dragging === true ? 'pointer' : 'inherit',
       display: 'block',
+      height: this.props.vertical
+        ? listWidth + spacingOffset
+        : this.props.slideHeight,
       margin: this.props.vertical
         ? `${(this.props.cellSpacing / 2) * -1}px 0px`
         : `0px ${(this.props.cellSpacing / 2) * -1}px`,
       padding: 0,
-      height: this.props.vertical
-        ? listWidth + spacingOffset
-        : this.props.slideHeight,
-      width: this.props.vertical ? 'auto' : listWidth + spacingOffset,
-      cursor: this.props.dragging === true ? 'pointer' : 'inherit',
-      boxSizing: 'border-box',
+      position: 'relative',
       MozBoxSizing: 'border-box',
-      touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`
+      msTransform: `translate(${deltaX}px, ${deltaY}px)`,
+      touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`,
+      transform,
+      WebkitTransform: transform,
+      width: this.props.vertical ? 'auto' : listWidth + spacingOffset
     };
   }
 

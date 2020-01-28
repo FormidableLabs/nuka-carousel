@@ -8,23 +8,24 @@ class App extends React.Component {
   constructor() {
     super(...arguments);
     this.state = {
-      slideIndex: 0,
-      length: 6,
-      wrapAround: false,
       animation: undefined,
-      underlineHeader: false,
-      zoomScale: 0.5,
-      slidesToShow: 1,
-      slidesToScroll: 1,
+      autoplay: false,
       cellAlign: 'left',
-      transitionMode: 'scroll',
       heightMode: 'max',
+      length: 6,
+      slideIndex: 0,
+      slidesToScroll: 1,
+      slidesToShow: 1,
+      transitionMode: 'scroll',
+      underlineHeader: false,
       withoutControls: false,
-      autoplay: false
+      wrapAround: false,
+      zoomScale: 0.5
     };
 
     this.handleImageClick = this.handleImageClick.bind(this);
     this.handleZoomScaleChange = this.handleZoomScaleChange.bind(this);
+    this.renderTopControls = this.renderTopControls.bind(this);
   }
 
   handleImageClick() {
@@ -37,11 +38,39 @@ class App extends React.Component {
     });
   }
 
+  renderTopControls(currentSlide) {
+    return (
+      <div
+        style={{
+          fontFamily: 'Helvetica',
+          color: '#fff',
+          textDecoration: this.state.underlineHeader ? 'underline' : 'none'
+        }}
+      >
+        Nuka Carousel: Slide {Math.ceil(currentSlide) + 1}
+      </div>
+    );
+  }
+
   render() {
+    const slides = colors.slice(0, this.state.length).map((color, index) => (
+      <img
+        src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${index +
+          1}`}
+        alt={`Slide ${index + 1}`}
+        key={color}
+        onClick={this.handleImageClick}
+        style={{
+          height: this.state.heightMode === 'current' ? 100 * (index + 1) : 400
+        }}
+      />
+    ));
+
     return (
       <div style={{ width: '50%', margin: 'auto' }}>
         <Carousel
           animation={this.state.animation}
+          autoplay={this.state.autoplay}
           cellAlign={this.state.cellAlign}
           heightMode={this.state.heightMode}
           slideIndex={this.state.slideIndex}
@@ -52,37 +81,14 @@ class App extends React.Component {
           withoutControls={this.state.withoutControls}
           wrapAround={this.state.wrapAround}
           zoomScale={Number(this.state.zoomScale || 0)}
-          autoplay={this.state.autoplay}
-          renderTopCenterControls={({ currentSlide }) => (
-            <div
-              style={{
-                fontFamily: 'Helvetica',
-                color: '#fff',
-                textDecoration: this.state.underlineHeader
-                  ? 'underline'
-                  : 'none'
-              }}
-            >
-              Nuka Carousel: Slide {Math.ceil(currentSlide) + 1}
-            </div>
-          )}
           renderAnnounceSlideMessage={({ currentSlide, slideCount }) => {
             return `Showing slide ${currentSlide + 1} of ${slideCount}`;
           }}
+          renderTopCenterControls={({ currentSlide }) =>
+            this.renderTopControls(currentSlide)
+          }
         >
-          {colors.slice(0, this.state.length).map((color, index) => (
-            <img
-              src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${index +
-                1}`}
-              alt={`Slide ${index + 1}`}
-              key={color}
-              onClick={this.handleImageClick}
-              style={{
-                height:
-                  this.state.heightMode === 'current' ? 100 * (index + 1) : 400
-              }}
-            />
-          ))}
+          {slides}
         </Carousel>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
