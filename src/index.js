@@ -245,9 +245,9 @@ export default class Carousel extends React.Component {
 
       const observeChildNodeMutation = node => {
         this.childNodesMutationObs.observe(node, {
-          attributes: true,
           attributeFilter: ['style'],
           attributeOldValue: false,
+          attributes: true,
           characterData: false,
           characterDataOldValue: false,
           childList: false,
@@ -389,16 +389,13 @@ export default class Carousel extends React.Component {
     if (this.props.dragging === false) {
       return {
         onMouseOver: this.handleMouseOver,
-
         onMouseOut: this.handleMouseOut
       };
     }
 
     return {
       onMouseOver: this.handleMouseOver,
-
       onMouseOut: this.handleMouseOut,
-
       onMouseDown: e => {
         if (e.preventDefault) {
           e.preventDefault();
@@ -1017,22 +1014,22 @@ export default class Carousel extends React.Component {
           func &&
           typeof func === 'function' &&
           func({
-            defaultControlsConfig: this.props.defaultControlsConfig,
-            top: this.state.top,
-            left: this.state.left,
             cellAlign: this.props.cellAlign,
             cellSpacing: this.props.cellSpacing,
             currentSlide: this.state.currentSlide,
+            defaultControlsConfig: this.props.defaultControlsConfig,
             frameWidth: this.state.frameWidth,
             goToSlide: index => this.goToSlide(index),
+            left: this.state.left,
             nextSlide: () => this.nextSlide(),
             previousSlide: () => this.previousSlide(),
             slideCount: this.state.slideCount,
             slidesToScroll: this.state.slidesToScroll,
             slidesToShow: this.state.slidesToShow,
             slideWidth: this.state.slideWidth,
-            wrapAround: this.props.wrapAround,
-            vertical: this.props.vertical
+            top: this.state.top,
+            vertical: this.props.vertical,
+            wrapAround: this.props.wrapAround
           });
 
         return (
@@ -1053,12 +1050,12 @@ export default class Carousel extends React.Component {
   render() {
     const { currentSlide, slideCount, frameWidth } = this.state;
     const {
+      disableAnimation,
       frameOverflow,
-      vertical,
       framePadding,
-      slidesToShow,
       renderAnnounceSlideMessage,
-      disableAnimation
+      slidesToShow,
+      vertical
     } = this.props;
     const duration =
       this.state.dragging ||

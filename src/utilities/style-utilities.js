@@ -177,8 +177,10 @@ export const getTransitionProps = (props, state) => {
     heightMode: props.heightMode,
     isWrappingAround: state.isWrappingAround,
     left: state.left,
+    opacityScale: props.opacityScale,
     slideCount: state.slideCount,
     slideHeight: state.slideHeight,
+    slideListMargin: props.slideListMargin,
     slideOffset: props.slideOffset,
     slidesToScroll: props.slidesToScroll,
     slidesToShow: state.slidesToShow,
@@ -186,8 +188,6 @@ export const getTransitionProps = (props, state) => {
     top: state.top,
     vertical: props.vertical,
     wrapAround: props.wrapAround,
-    zoomScale: props.zoomScale,
-    opacityScale: props.opacityScale,
-    slideListMargin: props.slideListMargin
+    zoomScale: props.zoomScale
   };
 };

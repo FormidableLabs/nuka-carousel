@@ -173,11 +173,11 @@ export const handleSelfFocus = e => {
 
 export const isFullyVisible = (slideIndex, config) => {
   const {
-    currentSlide,
     cellSpacing,
+    currentSlide,
+    frameWidth,
     slideCount,
     slideWidth,
-    frameWidth,
     wrapAround
   } = config;
 

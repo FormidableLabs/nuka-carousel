@@ -65,15 +65,15 @@ export class NextButton extends React.Component {
 
   nextButtonDisabled(params) {
     const {
-      wrapAround,
       cellAlign,
       cellSpacing,
       currentSlide,
       frameWidth,
+      positionValue,
       slideCount,
       slidesToShow,
       slideWidth,
-      positionValue
+      wrapAround
     } = params;
 
     let buttonDisabled = false;
@@ -104,17 +104,17 @@ export class NextButton extends React.Component {
 
   render() {
     const {
-      top,
-      left,
-      wrapAround,
-      slidesToShow,
       cellAlign,
       cellSpacing,
       currentSlide,
       frameWidth,
+      left,
       slideCount,
+      slidesToShow,
       slideWidth,
-      vertical
+      top,
+      vertical,
+      wrapAround
     } = this.props;
 
     const {
@@ -124,15 +124,15 @@ export class NextButton extends React.Component {
     } = this.props.defaultControlsConfig;
 
     const disabled = this.nextButtonDisabled({
-      wrapAround,
-      slidesToShow,
       cellAlign,
       cellSpacing,
       currentSlide,
       frameWidth,
+      positionValue: vertical ? top : left,
       slideCount,
+      slidesToShow,
       slideWidth,
-      positionValue: vertical ? top : left
+      wrapAround
     });
 
     return (

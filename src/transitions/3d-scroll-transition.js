@@ -194,21 +194,21 @@ export default class ScrollTransition3D extends React.Component {
     const spacingOffset =
       this.props.cellSpacing * React.Children.count(this.props.children);
     return {
+      boxSizing: 'border-box',
+      cursor: this.props.dragging === true ? 'pointer' : 'inherit',
+      height: this.props.vertical
+        ? listWidth + spacingOffset
+        : this.props.slideHeight,
       left: `calc(50% - (${this.props.slideWidth}px / 2))`,
-      position: 'relative',
       margin: this.props.vertical
         ? `${(this.props.cellSpacing / 2) * -1}px 0px`
         : `${this.props.slideListMargin}px ${(this.props.cellSpacing / 2) *
             -1}px`,
-      padding: 0,
-      height: this.props.vertical
-        ? listWidth + spacingOffset
-        : this.props.slideHeight,
-      width: this.props.vertical ? 'auto' : '100%',
-      cursor: this.props.dragging === true ? 'pointer' : 'inherit',
-      boxSizing: 'border-box',
       MozBoxSizing: 'border-box',
-      touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`
+      padding: 0,
+      position: 'relative',
+      touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`,
+      width: this.props.vertical ? 'auto' : '100%'
     };
   }
 
