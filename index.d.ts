@@ -302,7 +302,7 @@ export interface CarouselProps {
   /**
    * Function for rendering aria-live announcement messages
    */
-  renderAnnounceSlideMessage?: ({ currentSlide, slideCount }) => string;
+  renderAnnounceSlideMessage?: ({ currentSlide, slideCount }: CarouselSlideRenderControlProps) => string;
 
   /**
    * Manually set the index of the slide to be shown
