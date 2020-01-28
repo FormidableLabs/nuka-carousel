@@ -76,10 +76,11 @@ Or on CodeSandBox at the following url: <a href="https://codesandbox.io/s/curryi
 | autoplayInterval           | `React.PropTypes.number`                                                                                                                                                                                                                                               | Interval for autoplay iteration.                                                                                                                                                                                                                                                            | `3000 milliseconds`                                                                                                |
 | autoplayReverse            | `React.PropTypes.bool`                                                                                                                                                                                                                                                 | Only meaningful when `autoplay` is already true. When `autoplayReverse` is also true, autorotation cycles through slides indexes from high to low.                                                                                                                                          | `false`                                                                                                            |
 | beforeSlide                | `React.PropTypes.func`                                                                                                                                                                                                                                                 | Hook to be called before a slide is changed                                                                                                                                                                                                                                                 |                                                                                                                    |
-| cellAlign                  | `React.PropTypes.oneOf(['left', 'center', 'right'])`                                                                                                                                                                                                                   | When displaying more than one slide, sets which position to anchor the current slide to. **Is overridden to `left` when `transitionMode="fade"`**                                               |                                                                                                                    |
+| cellAlign                  | `React.PropTypes.oneOf(['left', 'center', 'right'])`                                                                                                                                                                                                                   | When displaying more than one slide, sets which position to anchor the current slide to. **Is overridden to `left` when `transitionMode="fade"`**                                                                                                                                           |                                                                                                                    |
 | cellSpacing                | `React.PropTypes.number`                                                                                                                                                                                                                                               | Space between slides, as an integer, but reflected as `px`                                                                                                                                                                                                                                  |                                                                                                                    |
-| enableKeyboardControls     | `React.PropTypes.bool`                                                                                                                                                                                                                                                 | When set to `true` will enable keyboard controls when the carousel has focus.  If the carousel does not have focus, keyboard controls will be ignored.                                                                                                                                                                                                                                           | `false`                                                                                                            |
+| enableKeyboardControls     | `React.PropTypes.bool`                                                                                                                                                                                                                                                 | When set to `true` will enable keyboard controls when the carousel has focus.  If the carousel does not have focus, keyboard controls will be ignored.                                                                                                                                      | `false`                                                                                                            |
 | keyCodeConfig              | `PropTypes.exact({ previousSlide: PropTypes.arrayOf(PropTypes.number), nextSlide: PropTypes.arrayOf(PropTypes.number), firstSlide: PropTypes.arrayOf(PropTypes.number), lastSlide: PropTypes.arrayOf(PropTypes.number), pause: PropTypes.arrayOf(PropTypes.number) })` | If `enableKeyboardControls` prop is true, you can pass configuration for the keyCode so you can override the default keyboard keys configured.                                                                                                                                              | `{ nextSlide: [39, 68, 38, 87], previousSlide: [37, 65, 40, 83], firstSlide: [81], lastSlide: [69], pause: [32] }` |
+| defaultControlsConfig      | `React.PropTypes.shape({ nextButtonClassName: PropTypes.string, nextButtonStyle: Proptypes.object, nextButtonText: PropTypes.string, prevButtonClassName: PropTypes.string, prevButtonStyle: PropTypes.object, prevButtonText: PropTypes.string, pagingDotsContainerClassName: PropTypes.string, pagingDotsClassName: PropTypes.string, pagingDotsStyle: PropTypes.object })`  | This prop lets you apply custom classes and styles to the default `Next`, `Previous`, and `Paging Dots` controls.  More information on how to customize these controls can be found below.  | `{}`                                                                                                 |
 | disableAnimation           | `React.PropTypes.bool`                                                                                                                                                                                                                                                 | When set to `true`, will disable animation.                                                                                                                                                                                                                                                 | `false`                                                                                                            |
 | disableEdgeSwiping         | `React.PropTypes.bool`                                                                                                                                                                                                                                                 | When set to `true`, will disable swiping before first slide and after last slide.                                                                                                                                                                                                           | `false`                                                                                                            |
 | dragging                   | `React.PropTypes.bool`                                                                                                                                                                                                                                                 | Enable mouse swipe/dragging.                                                                                                                                                                                                                                                                | `true`                                                                                                             |
@@ -152,6 +153,40 @@ A set of eight render props for rendering controls in different positions around
 >
   {/* Carousel Content */}
 </Carousel>
+```
+
+#### defaultControlsConfig
+
+```
+React.PropTypes.shape({
+  nextButtonClassName: PropTypes.string,
+  nextButtonStyle: PropTypes.object,
+  nextButtonText: PropTypes.string,
+  prevButtonClassName: PropTypes.string,
+  prevButtonStyle: PropTypes.object,
+  prevButtonText: PropTypes.string,
+  pagingDotsContainerClassName: PropTypes.string,
+  pagingDotsClassName: PropTypes.string,
+  pagingDotsStyle: PropTypes.object
+})
+```
+
+The default controls used by Nuka are the `Previous` button, `Next` button, and `PagingDots` control.  The visual look and text of these controls can be modified with props as described below:
+
+- The props ending with `ClassName` let you apply a custom css class to its respective control.
+- The props ending with `Style` let you apply inline styles to its respective control.
+- The text label for the `Previous` button and `Next` button can be customized using `prevButtonText` and `nextButtonText`, respectively.
+
+Example, you can change the text of the `Previous` and `Next` buttons, and change the paging dots to red by passing in the following configuration:
+
+```
+defaultControlsConfig={{
+  nextButtonText: 'Custom Next',
+  prevButtonText: 'Customn Prev',
+  pagingDotsStyle: {
+    fill: 'red'
+  }
+}}
 ```
 
 ### External Control of Carousel State
