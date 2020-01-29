@@ -22,11 +22,13 @@ export default function App() {
     setUnderlineHeader(prevUnderlineHeader => !prevUnderlineHeader);
   }, []);
 
+  console.log(underlineHeader);
+
   const handleZoomScaleChange = useCallback(event => {
     setZoomScale(event.target.value);
   }, []);
 
-  const renderTopControls = useCallback(currentSlide => {
+  const renderTopControls = currentSlide => {
     return (
       <div
         style={{
@@ -38,7 +40,7 @@ export default function App() {
         Nuka Carousel: Slide {Math.ceil(currentSlide) + 1}
       </div>
     );
-  }, []);
+  };
 
   const slides = colors.slice(0, length).map((color, index) => (
     <img
@@ -46,7 +48,7 @@ export default function App() {
         1}`}
       alt={`Slide ${index + 1}`}
       key={color}
-      onClick={handleImageClick}
+      onClick={() => handleImageClick()}
       style={{
         height: heightMode === 'current' ? 100 * (index + 1) : 400
       }}
