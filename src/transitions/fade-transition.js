@@ -101,7 +101,7 @@ export default class FadeTransition extends React.Component {
         : `0px ${(this.props.cellSpacing / 2) * -1}px`,
       MozBoxSizing: 'border-box',
       padding: 0,
-      touchAction: 'none',
+      touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`,
       width
     };
   }
