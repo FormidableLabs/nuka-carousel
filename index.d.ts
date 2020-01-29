@@ -72,7 +72,7 @@ export interface CarouselSlideRenderControlProps {
   /**
    * Slides to scroll at once
    */
-  slidesToScroll: number;
+  slidesToScroll: CarouselSlidesToScrollProp;
 
   /**
    * Slides to show at once
@@ -412,7 +412,7 @@ export interface CarouselState {
   /**
    * Slides to scroll at once
    */
-  slidesToScroll: number;
+  slidesToScroll: CarouselSlidesToScrollProp;
 
   /**
    * Current slide width
@@ -442,7 +442,7 @@ export class PagingDots extends React.Component<PagingDotsProps> {
   public getListStyles(): React.CSSProperties;
   public getDotIndexes(
     slideCount: number,
-    slidesToScroll: number,
+    slidesToScroll: CarouselSlidesToScrollProp,
     slidesToShow: number,
     cellAlign: CarouselCellAlignProp
   ): number[];
