@@ -22,8 +22,6 @@ export default function App() {
     setUnderlineHeader(prevUnderlineHeader => !prevUnderlineHeader);
   }, []);
 
-  console.log(underlineHeader);
-
   const handleZoomScaleChange = useCallback(event => {
     setZoomScale(event.target.value);
   }, []);
