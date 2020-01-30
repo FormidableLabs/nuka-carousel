@@ -1,5 +1,21 @@
 # Nuka Changelog
 
+## 4.6.2 (2020-01-29)
+
+- [#656](https://github.com/FormidableLabs/nuka-carousel/pull/656)
+- [#655](https://github.com/FormidableLabs/nuka-carousel/pull/655)
+- [#653](https://github.com/FormidableLabs/nuka-carousel/pull/653)
+        Minor clean up and fixes - update demo to use hooks, add demo title, fix slidesToScroll typing, cleaning up prop names, minor perf improvement
+- [#652](https://github.com/FormidableLabs/nuka-carousel/pull/652) fix: add missing type annotation
+- [#651](https://github.com/FormidableLabs/nuka-carousel/pull/651) Fix typo
+- [#650](https://github.com/FormidableLabs/nuka-carousel/pull/650) Change touchAction for fade-transition to pinch-zoom
+- [#648](https://github.com/FormidableLabs/nuka-carousel/pull/648) Add autoplay toggle to demo
+- [#647](https://github.com/FormidableLabs/nuka-carousel/pull/647) Prevent fade and fadeFromSlide from reaching/equalling slideCount to solve opacity issue
+- [#645](https://github.com/FormidableLabs/nuka-carousel/pull/645) Prevent swipe logic from taking over when no swipe was made
+- [#644](https://github.com/FormidableLabs/nuka-carousel/pull/644) Add prop to allow for customization of defaultControls elements
+- [#643](https://github.com/FormidableLabs/nuka-carousel/pull/643) Slides that are not fully visible cannot receive focus
+- [#639](https://github.com/FormidableLabs/nuka-carousel/pull/639) Keyboard controls will only work when keyboard is in focus
+
 ## 4.6.1 (2020-01-20)
 
 - [#632](https://github.com/FormidableLabs/nuka-carousel/pull/632) Dependency vulnerability fixed, upgrade handlebars from 4.1.2 to 4.5.3
