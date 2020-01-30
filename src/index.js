@@ -1,5 +1,4 @@
 import React from 'react';
-import 'wicg-inert';
 import PropTypes from 'prop-types';
 import ExecutionEnvironment from 'exenv';
 import Animate from 'react-move/Animate';
@@ -110,6 +109,9 @@ export default class Carousel extends React.Component {
   componentDidMount() {
     // see https://github.com/facebook/react/issues/3417#issuecomment-121649937
     this.mounted = true;
+
+    // Polyfills are dynamically loaded in componentDidMount to fix issues when SSR
+    this.loadPolyfills();
     this.setLeft();
     this.setDimensions();
     this.bindEvents();
@@ -234,6 +236,12 @@ export default class Carousel extends React.Component {
       clearTimeout(this.timers[i]);
     }
     this.getlockScrollEvents().unlockTouchScroll();
+  }
+
+  loadPolyfills() {
+    if (typeof Element !== 'undefined') {
+      import('wicg-inert');
+    }
   }
 
   establishChildNodesMutationObserver() {
