@@ -173,6 +173,21 @@ export interface CarouselProps {
   };
 
   /**
+   * This prop lets you apply custom classes and styles to the default Next, Previous, and Paging Dots controls
+   */
+  defaultControlsConfig?: {
+    nextButtonClassName?: string;
+    nextButtonStyle?: CSSProperties;
+    nextButtonText?: string;
+    prevButtonClassName?: string;
+    prevButtonStyle?: CSSProperties;
+    prevButtonText?: string;
+    pagingDotsContainerClassName: string;
+    pagingDotsClassName?: string;
+    pagingDotsStyle?: CSSProperties;
+  };
+
+  /**
    * Disable slides animation
    * @default false
    */
