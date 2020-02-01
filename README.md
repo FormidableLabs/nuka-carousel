@@ -80,7 +80,8 @@ Or on CodeSandBox at the following url: <a href="https://codesandbox.io/s/curryi
 | cellSpacing                | `React.PropTypes.number`                                                                                                                                                                                                                                               | Space between slides, as an integer, but reflected as `px`                                                                                                                                                                                                                                  |                                                                                                                    |
 | enableKeyboardControls     | `React.PropTypes.bool`                                                                                                                                                                                                                                                 | When set to `true` will enable keyboard controls when the carousel has focus.  If the carousel does not have focus, keyboard controls will be ignored.                                                                                                                                      | `false`                                                                                                            |
 | keyCodeConfig              | `PropTypes.exact({ previousSlide: PropTypes.arrayOf(PropTypes.number), nextSlide: PropTypes.arrayOf(PropTypes.number), firstSlide: PropTypes.arrayOf(PropTypes.number), lastSlide: PropTypes.arrayOf(PropTypes.number), pause: PropTypes.arrayOf(PropTypes.number) })` | If `enableKeyboardControls` prop is true, you can pass configuration for the keyCode so you can override the default keyboard keys configured.                                                                                                                                              | `{ nextSlide: [39, 68, 38, 87], previousSlide: [37, 65, 40, 83], firstSlide: [81], lastSlide: [69], pause: [32] }` |
-| defaultControlsConfig      | `React.PropTypes.shape({ nextButtonClassName: PropTypes.string, nextButtonStyle: Proptypes.object, nextButtonText: PropTypes.string, prevButtonClassName: PropTypes.string, prevButtonStyle: PropTypes.object, prevButtonText: PropTypes.string, pagingDotsContainerClassName: PropTypes.string, pagingDotsClassName: PropTypes.string, pagingDotsStyle: PropTypes.object })`  | This prop lets you apply custom classes and styles to the default `Next`, `Previous`, and `Paging Dots` controls.  More information on how to customize these controls can be found below.  | `{}`                                                                                                 |
+| getControlsContainerStyles | `React.PropTypes.func` | callback function to provide style to controls containers | |
+| defaultControlsConfig      | `React.PropTypes.shape({ containerClassName: PropTypes.string, nextButtonClassName: PropTypes.string, nextButtonStyle: Proptypes.object, nextButtonText: PropTypes.string, prevButtonClassName: PropTypes.string, prevButtonStyle: PropTypes.object, prevButtonText: PropTypes.string, pagingDotsContainerClassName: PropTypes.string, pagingDotsClassName: PropTypes.string, pagingDotsStyle: PropTypes.object })`  | This prop lets you apply custom classes and styles to the default `Container`. `Next`, `Previous`, and `Paging Dots` controls.  More information on how to customize these controls can be found below.  | `{}`                                                                                                 |
 | disableAnimation           | `React.PropTypes.bool`                                                                                                                                                                                                                                                 | When set to `true`, will disable animation.                                                                                                                                                                                                                                                 | `false`                                                                                                            |
 | disableEdgeSwiping         | `React.PropTypes.bool`                                                                                                                                                                                                                                                 | When set to `true`, will disable swiping before first slide and after last slide.                                                                                                                                                                                                           | `false`                                                                                                            |
 | dragging                   | `React.PropTypes.bool`                                                                                                                                                                                                                                                 | Enable mouse swipe/dragging.                                                                                                                                                                                                                                                                | `true`                                                                                                             |
@@ -150,6 +151,32 @@ A set of eight render props for rendering controls in different positions around
   renderAnnounceSlideMessage={({ currentSlide, slideCount }) =>
     `Slide ${currentSlide + 1} of ${slideCount}`
   }
+>
+  {/* Carousel Content */}
+</Carousel>
+```
+
+#### getControlsContainerStyles
+
+`React.PropTypes.func`
+
+`getControlsContainerStyles` is a function props that will be call with key argument being one of the following: `TopLeft` | `TopCenter` | `TopRight` | `CenterLeft` | `CenterCenter` | `CenterRight` | `BottomLeft` | `BottomCenter` | `BottomRight`. the function expect to return CSS Properties Ex:
+
+```jsx
+<Carousel
+  getControlsContainerStyles={(key) => {
+     switch (key) {
+        case 'TopLeft':
+          return {
+            backgroundColor: "red",
+          };
+        default:
+          // will apply all other keys
+          return {
+            backgroundColor: "blue",
+          };
+      }
+  }} />
 >
   {/* Carousel Content */}
 </Carousel>

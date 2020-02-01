@@ -1042,9 +1042,17 @@ export default class Carousel extends React.Component {
         return (
           controlChildren && (
             <div
-              className={`slider-control-${key.toLowerCase()}`}
-              style={getDecoratorStyles(key)}
               key={key}
+              className={[
+                `slider-control-${key.toLowerCase()}`,
+                this.props.defaultControlsConfig.containerClassName || ''
+              ]
+                .join(' ')
+                .trim()}
+              style={{
+                ...getDecoratorStyles(key),
+                ...this.props.getControlsContainerStyles(key)
+              }}
             >
               {controlChildren}
             </div>
@@ -1197,7 +1205,9 @@ Carousel.propTypes = {
   beforeSlide: PropTypes.func,
   cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
   cellSpacing: PropTypes.number,
+  getControlsContainerStyles: PropTypes.func,
   defaultControlsConfig: PropTypes.shape({
+    containerClassName: PropTypes.string,
     nextButtonClassName: PropTypes.string,
     nextButtonStyle: PropTypes.object,
     nextButtonText: PropTypes.string,
@@ -1268,6 +1278,7 @@ Carousel.defaultProps = {
   beforeSlide() {},
   cellAlign: 'left',
   cellSpacing: 0,
+  getControlsContainerStyles() {},
   defaultControlsConfig: {},
   disableAnimation: false,
   disableEdgeSwiping: false,
