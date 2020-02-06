@@ -216,6 +216,18 @@ describe('<Carousel />', () => {
       expect(slider).toHaveLength(1);
     });
 
+    it('should render with the className `test` append to slider-control-bottomcenter', () => {
+      const wrapper = mount(
+        <Carousel defaultControlsConfig={{ containerClassName: 'test' }}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const slider = wrapper.find('div.slider-control-bottomcenter');
+      expect(slider).toHaveClassName('test');
+    });
+
     it('should merge provided styles with default styles.', () => {
       const wrapper = mount(
         <Carousel style={{ backgroundColor: 'black' }}>
@@ -227,6 +239,33 @@ describe('<Carousel />', () => {
       const slider = wrapper.find('div.slider');
       expect(slider).toHaveStyle('backgroundColor', 'black');
       expect(slider).toHaveStyle('display', 'block');
+    });
+
+    it('should merge provided defaultControlsConfig.containerStyle with default styles.', () => {
+      const wrapper = mount(
+        <Carousel
+          getControlsContainerStyles={key => {
+            switch (key) {
+              case 'BottomCenter':
+                return {
+                  bottom: '50%',
+                  top: '0'
+                };
+
+              default:
+                return {};
+            }
+          }}
+        >
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const slider = wrapper.find('div.slider-control-bottomcenter');
+      expect(slider).toHaveStyle('position', 'absolute');
+      expect(slider).toHaveStyle('top', '0');
+      expect(slider).toHaveStyle('bottom', '50%');
     });
 
     it('should align to 0 when `cellAlign` is `left`.', () => {

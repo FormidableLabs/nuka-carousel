@@ -27,6 +27,17 @@ export type CarouselSlideActions =
   | 'lastSlide'
   | 'pause';
 
+export type CarouselControlContainerProp =
+  | 'TopLeft'
+  | 'TopCenter'
+  | 'TopRight'
+  | 'CenterLeft'
+  | 'CenterCenter'
+  | 'CenterRight'
+  | 'BottomLeft'
+  | 'BottomCenter'
+  | 'BottomRight';
+
 export interface CarouselSlideRenderControlProps {
   /**
    * When displaying more than one slide, sets which position to anchor the current slide to.
@@ -173,6 +184,29 @@ export interface CarouselProps {
   };
 
   /**
+   * Optional callback to apply styles to the container of a control.
+   */
+  getControlContainerStyle?: (
+    key: CarouselControlContainerProp
+  ) => CSSProperties;
+
+  /**
+   * This prop lets you apply custom classes and styles to the default Next, Previous, and Paging Dots controls
+   */
+  defaultControlsConfig?: {
+    containerClassName?: string;
+    nextButtonClassName?: string;
+    nextButtonStyle?: CSSProperties;
+    nextButtonText?: string;
+    prevButtonClassName?: string;
+    prevButtonStyle?: CSSProperties;
+    prevButtonText?: string;
+    pagingDotsContainerClassName?: string;
+    pagingDotsClassName?: string;
+    pagingDotsStyle?: CSSProperties;
+  };
+
+  /**
    * Disable slides animation
    * @default false
    */
@@ -302,7 +336,10 @@ export interface CarouselProps {
   /**
    * Function for rendering aria-live announcement messages
    */
-  renderAnnounceSlideMessage?: ({ currentSlide, slideCount }: CarouselSlideRenderControlProps) => string;
+  renderAnnounceSlideMessage?: ({
+    currentSlide,
+    slideCount
+  }: CarouselSlideRenderControlProps) => string;
 
   /**
    * Manually set the index of the slide to be shown
