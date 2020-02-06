@@ -160,7 +160,8 @@ A set of eight render props for rendering controls in different positions around
 
 `React.PropTypes.func`
 
-`getControlsContainerStyles` is a function props that will be call with key argument being one of the following: `TopLeft` | `TopCenter` | `TopRight` | `CenterLeft` | `CenterCenter` | `CenterRight` | `BottomLeft` | `BottomCenter` | `BottomRight`. the function expect to return CSS Properties Ex:
+`getControlsContainerStyles` is a function prop that will be called with a key argument being one of the following: `TopLeft` | `TopCenter` | `TopRight` | `CenterLeft` | `CenterCenter` | `CenterRight` | `BottomLeft` | `BottomCenter` | `BottomRight`. 
+The function will then return CSS Properties.
 
 ```jsx
 <Carousel
