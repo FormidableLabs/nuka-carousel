@@ -1,5 +1,4 @@
 import React from 'react';
-import 'wicg-inert';
 import PropTypes from 'prop-types';
 import ExecutionEnvironment from 'exenv';
 import Animate from 'react-move/Animate';
@@ -1061,7 +1060,6 @@ export default class Carousel extends React.Component {
       });
     }
   }
-
   render() {
     const { currentSlide, slideCount, frameWidth } = this.state;
     const {
