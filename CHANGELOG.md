@@ -1,5 +1,9 @@
 # Nuka Changelog
 
+## 4.6.3 (2020-02-12)
+
+- [#665](https://github.com/FormidableLabs/nuka-carousel/pull/665) Revert wicg-inert changes as part of PR #643
+
 ## 4.6.2 (2020-01-29)
 
 - [#656](https://github.com/FormidableLabs/nuka-carousel/pull/656)
