@@ -1,5 +1,4 @@
 import React from 'react';
-import 'wicg-inert';
 import PropTypes from 'prop-types';
 import ExecutionEnvironment from 'exenv';
 import Animate from 'react-move/Animate';
@@ -28,7 +27,7 @@ import {
 import {
   addAccessibility,
   getValidChildren,
-  calculateSlideHeight
+  getSlideHeight
 } from './utilities/bootstrapping-utilities';
 
 export default class Carousel extends React.Component {
@@ -913,7 +912,7 @@ export default class Carousel extends React.Component {
     // slide height
     props = props || this.props;
     const childNodes = this.getChildNodes();
-    const slideHeight = calculateSlideHeight(props, this.state, childNodes);
+    const slideHeight = getSlideHeight(props, this.state, childNodes);
 
     //slide width
     const { slidesToShow } = getPropsByTransitionMode(props, ['slidesToShow']);
@@ -1061,7 +1060,6 @@ export default class Carousel extends React.Component {
       });
     }
   }
-
   render() {
     const { currentSlide, slideCount, frameWidth } = this.state;
     const {

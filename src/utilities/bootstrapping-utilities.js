@@ -126,7 +126,7 @@ export const findCurrentHeightSlide = (
   }
 };
 
-export const calculateSlideHeight = (props, state, childNodes = []) => {
+export const getSlideHeight = (props, state, childNodes = []) => {
   const { heightMode, vertical, initialSlideHeight, wrapAround } = props;
   const { slidesToShow, currentSlide, cellAlign } = state;
   const firstSlide = childNodes[0];
