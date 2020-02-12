@@ -27,7 +27,7 @@ import {
 import {
   addAccessibility,
   getValidChildren,
-  getSlideHeight
+  calculateSlideHeight
 } from './utilities/bootstrapping-utilities';
 
 export default class Carousel extends React.Component {
@@ -912,7 +912,7 @@ export default class Carousel extends React.Component {
     // slide height
     props = props || this.props;
     const childNodes = this.getChildNodes();
-    const slideHeight = getSlideHeight(props, this.state, childNodes);
+    const slideHeight = calculateSlideHeight(props, this.state, childNodes);
 
     //slide width
     const { slidesToShow } = getPropsByTransitionMode(props, ['slidesToShow']);
