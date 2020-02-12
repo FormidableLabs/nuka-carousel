@@ -17,7 +17,7 @@
 - [#647](https://github.com/FormidableLabs/nuka-carousel/pull/647) Prevent fade and fadeFromSlide from reaching/equalling slideCount to solve opacity issue
 - [#645](https://github.com/FormidableLabs/nuka-carousel/pull/645) Prevent swipe logic from taking over when no swipe was made
 - [#644](https://github.com/FormidableLabs/nuka-carousel/pull/644) Add prop to allow for customization of defaultControls elements
-- [#643](https://github.com/FormidableLabs/nuka-carousel/pull/643) Slides that are not fully visible cannot receive focus
+- [#643](https://github.com/FormidableLabs/nuka-carousel/pull/643) Slides that are not fully visible cannot receive focus (REVERTED in 4.6.3)
 - [#639](https://github.com/FormidableLabs/nuka-carousel/pull/639) Keyboard controls will only work when keyboard is in focus
 
 ## 4.6.1 (2020-01-20)
