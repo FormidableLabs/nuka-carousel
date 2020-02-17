@@ -3,22 +3,12 @@ import Carousel from '../src/index';
 import ReactDom from 'react-dom';
 
 export default function App() {
-  const colors = [
-    '7732bb',
-    '047cc0',
-    '00884b',
-    'e3bc13',
-    'db7c00',
-    'aa231f',
-    'e3bc13',
-    'db7c00',
-    'aa231f'
-  ];
+  const colors = ['7732bb', '047cc0', '00884b', 'e3bc13', 'db7c00', 'aa231f'];
   const [animation, setAnimation] = useState(undefined);
   const [autoplay, setAutoplay] = useState(false);
   const [cellAlign, setCellAlign] = useState('left');
   const [heightMode, setHeightMode] = useState('max');
-  const [length, setLength] = useState(9);
+  const [length, setLength] = useState(6);
   const [slideIndex, setSlideIndex] = useState(0);
   const [slidesToScroll, setSlidesToScroll] = useState('auto');
   const [slidesToShow, setSlidesToShow] = useState(3);
