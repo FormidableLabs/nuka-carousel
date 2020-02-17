@@ -384,6 +384,32 @@ describe('Nuka Carousel', () => {
       textDecoration = await page.evaluate(getTextDecoration);
       expect(textDecoration).toMatch('none');
     });
+
+    it('should show the next slide when swiped to the left and slidesToScroll is set to auto.', async () => {
+      const slide = await page.$('.slider-slide');
+      const metrics = await slide.boundingBox();
+      const startX = metrics.x + metrics.width / 2.0;
+      const startY = metrics.y + metrics.height / 2.0;
+      await expect(page).toClick('button', { text: 'Toggle Drag Scroll' });
+      await page.mouse.move(startX, startY);
+      await page.mouse.down();
+      await page.mouse.move(startX - metrics.width / 3.0, startY);
+      await page.mouse.up();
+      await expect(page).toMatch('Nuka Carousel: Slide 2');
+    });
+
+    it('should show the 4th slide when swiped to the left and slidesToScroll is set to auto.', async () => {
+      const slide = await page.$('.slider-list');
+      const metrics = await slide.boundingBox();
+      const startX = metrics.x + metrics.width - 30;
+      const startY = metrics.y + metrics.height / 1.5;
+      await expect(page).toClick('button', { text: 'Toggle Drag Scroll' });
+      await page.mouse.move(startX, startY);
+      await page.mouse.down();
+      await page.mouse.move(metrics.x + 30, startY);
+      await page.mouse.up();
+      await expect(page).toMatch('Nuka Carousel: Slide 4');
+    });
   });
 
   describe('Neighboring Slide Visibility and Slide Alignment', () => {

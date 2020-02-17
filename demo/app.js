@@ -11,7 +11,7 @@ export default function App() {
   const [length, setLength] = useState(6);
   const [slideIndex, setSlideIndex] = useState(0);
   const [slidesToScroll, setSlidesToScroll] = useState(1);
-  const [slidesToShow, setSlidesToShow] = useState(3);
+  const [slidesToShow, setSlidesToShow] = useState(1);
   const [transitionMode, setTransitionMode] = useState('scroll');
   const [underlineHeader, setUnderlineHeader] = useState(false);
   const [withoutControls, setWithoutControls] = useState(false);
@@ -89,10 +89,11 @@ export default function App() {
         <div>
           <button
             onClick={() => {
+              setSlidesToShow(slidesToShow === 3 ? 1 : 3);
               setSlidesToScroll(slidesToScroll === 'auto' ? 1 : 'auto');
             }}
           >
-            Toggle drag scroll
+            Toggle Drag Scroll
           </button>
           <button
             onClick={() => setLength(prevLength => (prevLength === 6 ? 3 : 6))}
