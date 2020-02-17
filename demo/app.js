@@ -88,6 +88,13 @@ export default function App() {
         </div>
         <div>
           <button
+            onClick={() => {
+              setSlidesToScroll(slidesToScroll === 'auto' ? 1 : 'auto');
+            }}
+          >
+            Toggle drag scroll
+          </button>
+          <button
             onClick={() => setLength(prevLength => (prevLength === 6 ? 3 : 6))}
           >
             Toggle Show 3 Slides Only
