@@ -10,7 +10,7 @@ export default function App() {
   const [heightMode, setHeightMode] = useState('max');
   const [length, setLength] = useState(6);
   const [slideIndex, setSlideIndex] = useState(0);
-  const [slidesToScroll, setSlidesToScroll] = useState('auto');
+  const [slidesToScroll, setSlidesToScroll] = useState(1);
   const [slidesToShow, setSlidesToShow] = useState(3);
   const [transitionMode, setTransitionMode] = useState('scroll');
   const [underlineHeader, setUnderlineHeader] = useState(false);
