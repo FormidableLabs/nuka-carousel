@@ -831,10 +831,13 @@ export default class Carousel extends React.Component {
 
   nextSlide() {
     const childrenCount = this.state.slideCount;
-    let slidesToShow = this.state.slidesToShow;
+    let { slidesToShow, slidesToScroll } = this.state;
 
     if (this.props.slidesToScroll === 'auto') {
       slidesToShow = this.state.slidesToScroll;
+      const { length } = this.touchObject;
+      slidesToScroll =
+        Math.ceil(length / this.state.slideWidth) || slidesToScroll;
     }
 
     if (
@@ -846,13 +849,13 @@ export default class Carousel extends React.Component {
     }
 
     if (this.props.wrapAround) {
-      this.goToSlide(this.state.currentSlide + this.state.slidesToScroll);
+      this.goToSlide(this.state.currentSlide + slidesToScroll);
     } else {
       if (this.props.slideWidth !== 1) {
-        this.goToSlide(this.state.currentSlide + this.state.slidesToScroll);
+        this.goToSlide(this.state.currentSlide + slidesToScroll);
         return;
       }
-      const offset = this.state.currentSlide + this.state.slidesToScroll;
+      const offset = this.state.currentSlide + slidesToScroll;
       const nextSlideIndex =
         this.props.cellAlign !== 'left'
           ? offset
@@ -865,16 +868,20 @@ export default class Carousel extends React.Component {
   }
 
   previousSlide() {
+    let { slidesToScroll } = this.state;
+    if (this.props.slidesToScroll === 'auto') {
+      const { length } = this.touchObject;
+      slidesToScroll =
+        Math.ceil(Math.abs(length / this.state.slideWidth)) || slidesToScroll;
+    }
     if (this.state.currentSlide <= 0 && !this.props.wrapAround) {
       return;
     }
 
     if (this.props.wrapAround) {
-      this.goToSlide(this.state.currentSlide - this.state.slidesToScroll);
+      this.goToSlide(this.state.currentSlide - slidesToScroll);
     } else {
-      this.goToSlide(
-        Math.max(0, this.state.currentSlide - this.state.slidesToScroll)
-      );
+      this.goToSlide(Math.max(0, this.state.currentSlide - slidesToScroll));
     }
   }
 
