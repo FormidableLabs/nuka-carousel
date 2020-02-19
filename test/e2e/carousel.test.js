@@ -1,7 +1,7 @@
 /* eslint-disable max-nested-callbacks */
 
 describe('Nuka Carousel', () => {
-  jest.setTimeout(30000);
+  // jest.setTimeout(30000);
   const getStyles = (selector, keys) => {
     const e = document.querySelector(selector);
     const styles = window.getComputedStyle(e);
