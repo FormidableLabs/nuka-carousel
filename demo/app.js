@@ -113,15 +113,6 @@ export default function App() {
       <div className="wrapper">
         <div style={{ textAlign: 'center' }}>
           <button
-            onClick={() => {
-              setSlidesToShow(slidesToShow === 3 ? 1 : 3);
-              setSlidesToScroll(slidesToScroll === 'auto' ? 1 : 'auto');
-            }}
-          >
-            Toggle Drag Multiple{' '}
-            {slidesToShow > 1 && slidesToScroll === 'auto' ? 'Off' : 'On'}
-          </button>
-          <button
             onClick={() => setLength(prevLength => (prevLength === 6 ? 3 : 6))}
           >
             Toggle Show 3 Slides Only
@@ -149,6 +140,15 @@ export default function App() {
           <>
             <div style={{ textAlign: 'center' }}>
               <div style={{ marginLeft: 'auto' }}>
+                <button
+                  onClick={() => {
+                    setSlidesToShow(slidesToShow === 3 ? 1 : 3);
+                    setSlidesToScroll(slidesToScroll === 'auto' ? 1 : 'auto');
+                  }}
+                >
+                  Toggle Drag Multiple{' '}
+                  {slidesToShow > 1 && slidesToScroll === 'auto' ? 'Off' : 'On'}
+                </button>
                 <button
                   onClick={() =>
                     setSlidesToShow(prevSlidesToShow =>
