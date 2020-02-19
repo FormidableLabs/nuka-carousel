@@ -101,6 +101,9 @@ export default function App() {
           <button onClick={() => setSlideIndex(3)}>4</button>
           <button onClick={() => setSlideIndex(4)}>5</button>
           <button onClick={() => setSlideIndex(5)}>6</button>
+          <button onClick={() => setSlideIndex(6)}>7</button>
+          <button onClick={() => setSlideIndex(7)}>8</button>
+          <button onClick={() => setSlideIndex(8)}>9</button>
         </div>
         {slidesToShow > 1.0 && (
           <div>
@@ -113,7 +116,7 @@ export default function App() {
       <div className="wrapper">
         <div style={{ textAlign: 'center' }}>
           <button
-            onClick={() => setLength(prevLength => (prevLength === 6 ? 3 : 6))}
+            onClick={() => setLength(prevLength => (prevLength === 9 ? 3 : 9))}
           >
             Toggle Show 3 Slides Only
           </button>

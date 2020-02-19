@@ -402,7 +402,7 @@ describe('Nuka Carousel', () => {
       const metrics = await slide.boundingBox();
       const startX = metrics.x + metrics.width / 2.0;
       const startY = metrics.y + metrics.height / 2.0;
-      await expect(page).toClick('button', { text: 'Toggle Drag Scroll' });
+      await expect(page).toClick('button', { text: 'Toggle Drag Multiple On' });
       await page.mouse.move(startX, startY);
       await page.mouse.down();
       await page.mouse.move(startX - metrics.width / 3.0, startY);
@@ -415,7 +415,7 @@ describe('Nuka Carousel', () => {
       const metrics = await slide.boundingBox();
       const startX = metrics.x + metrics.width - 30;
       const startY = metrics.y + metrics.height / 1.5;
-      await expect(page).toClick('button', { text: 'Toggle Drag Scroll' });
+      await expect(page).toClick('button', { text: 'Toggle Drag Multiple On' });
       await page.mouse.move(startX, startY);
       await page.mouse.down();
       await page.mouse.move(metrics.x + 30, startY);
