@@ -3,12 +3,22 @@ import Carousel from '../src/index';
 import ReactDom from 'react-dom';
 
 export default function App() {
-  const colors = ['7732bb', '047cc0', '00884b', 'e3bc13', 'db7c00', 'aa231f'];
+  const colors = [
+    '7732bb',
+    '047cc0',
+    '00884b',
+    'e3bc13',
+    'db7c00',
+    'aa231f',
+    'e3bc13',
+    'db7c00',
+    'aa231f'
+  ];
   const [animation, setAnimation] = useState(undefined);
   const [autoplay, setAutoplay] = useState(false);
   const [cellAlign, setCellAlign] = useState('left');
   const [heightMode, setHeightMode] = useState('max');
-  const [length, setLength] = useState(6);
+  const [length, setLength] = useState(colors.length);
   const [slideIndex, setSlideIndex] = useState(0);
   const [slidesToScroll, setSlidesToScroll] = useState(1);
   const [slidesToShow, setSlidesToShow] = useState(1);
@@ -77,7 +87,13 @@ export default function App() {
       >
         {slides}
       </Carousel>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          margin: '10px 0'
+        }}
+      >
         <div>
           <button onClick={() => setSlideIndex(0)}>1</button>
           <button onClick={() => setSlideIndex(1)}>2</button>
@@ -86,14 +102,24 @@ export default function App() {
           <button onClick={() => setSlideIndex(4)}>5</button>
           <button onClick={() => setSlideIndex(5)}>6</button>
         </div>
-        <div>
+        {slidesToShow > 1.0 && (
+          <div>
+            <button onClick={() => setCellAlign('left')}>Left</button>
+            <button onClick={() => setCellAlign('center')}>Center</button>
+            <button onClick={() => setCellAlign('right')}>Right</button>
+          </div>
+        )}
+      </div>
+      <div className="wrapper">
+        <div style={{ textAlign: 'center' }}>
           <button
             onClick={() => {
               setSlidesToShow(slidesToShow === 3 ? 1 : 3);
               setSlidesToScroll(slidesToScroll === 'auto' ? 1 : 'auto');
             }}
           >
-            Toggle Drag Scroll
+            Toggle Drag Multiple{' '}
+            {slidesToShow > 1 && slidesToScroll === 'auto' ? 'Off' : 'On'}
           </button>
           <button
             onClick={() => setLength(prevLength => (prevLength === 6 ? 3 : 6))}
@@ -118,78 +144,72 @@ export default function App() {
             Toggle Autoplay {autoplay === true ? 'Off' : 'On'}
           </button>
         </div>
-      </div>
-      {transitionMode !== 'fade' && (
-        <>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {slidesToShow > 1.0 && (
-              <div>
-                <button onClick={() => setCellAlign('left')}>Left</button>
-                <button onClick={() => setCellAlign('center')}>Center</button>
-                <button onClick={() => setCellAlign('right')}>Right</button>
+
+        {transitionMode !== 'fade' && (
+          <>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ marginLeft: 'auto' }}>
+                <button
+                  onClick={() =>
+                    setSlidesToShow(prevSlidesToShow =>
+                      prevSlidesToShow > 1.0 ? 1.0 : 1.25
+                    )
+                  }
+                >
+                  Toggle Partially Visible Slides
+                </button>
+                <button
+                  onClick={() =>
+                    setHeightMode(prevHeightMode =>
+                      prevHeightMode === 'current' ? 'max' : 'current'
+                    )
+                  }
+                >
+                  Toggle Height Mode Current
+                </button>
+                <button
+                  onClick={() =>
+                    setWithoutControls(
+                      prevWithoutControls => !prevWithoutControls
+                    )
+                  }
+                >
+                  Toggle Controls
+                </button>
               </div>
-            )}
-            <div style={{ marginLeft: 'auto' }}>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              {animation === 'zoom' && (
+                <input
+                  type="number"
+                  value={zoomScale}
+                  onChange={handleZoomScaleChange}
+                />
+              )}
               <button
-                onClick={() =>
-                  setSlidesToShow(prevSlidesToShow =>
-                    prevSlidesToShow > 1.0 ? 1.0 : 1.25
-                  )
-                }
+                onClick={() => {
+                  setAnimation(prevAnimation =>
+                    prevAnimation === 'zoom' ? undefined : 'zoom'
+                  );
+                  setCellAlign('center');
+                }}
               >
-                Toggle Partially Visible Slides
+                Toggle Zoom Animation {animation === 'zoom' ? 'Off' : 'On'}
               </button>
               <button
-                onClick={() =>
-                  setHeightMode(prevHeightMode =>
-                    prevHeightMode === 'current' ? 'max' : 'current'
-                  )
-                }
+                onClick={() => {
+                  setSlidesToScroll(prevSlidesToScroll =>
+                    prevSlidesToScroll === 1 ? 2 : 1
+                  );
+                  setCellAlign('center');
+                }}
               >
-                Toggle Height Mode Current
-              </button>
-              <button
-                onClick={() =>
-                  setWithoutControls(
-                    prevWithoutControls => !prevWithoutControls
-                  )
-                }
-              >
-                Toggle Controls
+                Toggle SlidesToScroll {slidesToScroll === 1 ? 2 : 1}
               </button>
             </div>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            {animation === 'zoom' && (
-              <input
-                type="number"
-                value={zoomScale}
-                onChange={handleZoomScaleChange}
-              />
-            )}
-            <button
-              onClick={() => {
-                setAnimation(prevAnimation =>
-                  prevAnimation === 'zoom' ? undefined : 'zoom'
-                );
-                setCellAlign('center');
-              }}
-            >
-              Toggle Zoom Animation {animation === 'zoom' ? 'Off' : 'On'}
-            </button>
-            <button
-              onClick={() => {
-                setSlidesToScroll(prevSlidesToScroll =>
-                  prevSlidesToScroll === 1 ? 2 : 1
-                );
-                setCellAlign('center');
-              }}
-            >
-              Toggle SlidesToScroll {slidesToScroll === 1 ? 2 : 1}
-            </button>
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </div>
     </div>
   );
 }

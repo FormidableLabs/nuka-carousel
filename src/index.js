@@ -830,18 +830,24 @@ export default class Carousel extends React.Component {
   }
 
   nextSlide() {
-    const childrenCount = this.state.slideCount;
-    let { slidesToShow, slidesToScroll } = this.state;
+    const {
+      slidesToShow,
+      slidesToScroll,
+      currentSlide,
+      slideWidth,
+      slideCount: childrenCount
+    } = this.state;
 
     if (this.props.slidesToScroll === 'auto') {
-      slidesToShow = this.state.slidesToScroll;
       const { length } = this.touchObject;
-      slidesToScroll =
-        Math.ceil(length / this.state.slideWidth) || slidesToScroll;
+      this.setState({
+        slidesToScroll: Math.ceil(length / slideWidth) || slidesToScroll,
+        slidesToShow: slidesToScroll
+      });
     }
 
     if (
-      this.state.currentSlide >= childrenCount - slidesToShow &&
+      currentSlide >= childrenCount - slidesToShow &&
       !this.props.wrapAround &&
       this.props.cellAlign === 'left'
     ) {
@@ -849,39 +855,41 @@ export default class Carousel extends React.Component {
     }
 
     if (this.props.wrapAround) {
-      this.goToSlide(this.state.currentSlide + slidesToScroll);
+      this.goToSlide(currentSlide + slidesToScroll);
     } else {
       if (this.props.slideWidth !== 1) {
-        this.goToSlide(this.state.currentSlide + slidesToScroll);
+        this.goToSlide(currentSlide + slidesToScroll);
         return;
       }
-      const offset = this.state.currentSlide + slidesToScroll;
+      const offset = currentSlide + slidesToScroll;
       const nextSlideIndex =
         this.props.cellAlign !== 'left'
           ? offset
           : Math.min(offset, childrenCount - slidesToShow);
 
-      // If nextSlideIndex is larger than last index, then
-      // just navigate to last index
+      // If nextSlideIndex is larger than last index,
+      // then just navigate to last index
       this.goToSlide(Math.min(nextSlideIndex, childrenCount - 1));
     }
   }
 
   previousSlide() {
-    let { slidesToScroll } = this.state;
+    const { slidesToScroll, slideWidth, currentSlide } = this.state;
     if (this.props.slidesToScroll === 'auto') {
       const { length } = this.touchObject;
-      slidesToScroll =
-        Math.ceil(Math.abs(length / this.state.slideWidth)) || slidesToScroll;
+      this.setState({
+        slidesToScroll:
+          Math.ceil(Math.abs(length / slideWidth)) || slidesToScroll
+      });
     }
-    if (this.state.currentSlide <= 0 && !this.props.wrapAround) {
+    if (currentSlide <= 0 && !this.props.wrapAround) {
       return;
     }
 
     if (this.props.wrapAround) {
-      this.goToSlide(this.state.currentSlide - slidesToScroll);
+      this.goToSlide(currentSlide - slidesToScroll);
     } else {
-      this.goToSlide(Math.max(0, this.state.currentSlide - slidesToScroll));
+      this.goToSlide(Math.max(0, currentSlide - slidesToScroll));
     }
   }
 
