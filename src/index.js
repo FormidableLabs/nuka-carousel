@@ -708,19 +708,32 @@ export default class Carousel extends React.Component {
   }
 
   isEdgeSwiping() {
-    const { slideCount, slideWidth, slideHeight, slidesToShow } = this.state;
+    const {
+      currentSlide,
+      slideCount,
+      slideWidth,
+      slideHeight,
+      slidesToShow
+    } = this.state;
     const { tx, ty } = this.getOffsetDeltas();
+    const offset = getAlignmentOffset(currentSlide, {
+      ...this.props,
+      ...this.state
+    });
+
     if (this.props.vertical) {
       const rowHeight = slideHeight / slidesToShow;
       const slidesLeftToShow = slideCount - slidesToShow;
       const lastSlideLimit = rowHeight * slidesLeftToShow;
 
+      const offsetTy = ty[0] - offset;
       // returns true if ty offset is outside first or last slide
-      return ty > 0 || -ty > lastSlideLimit;
+      return offsetTy > 0 || -offsetTy > lastSlideLimit;
     }
 
+    const offsetTx = tx[0] - offset;
     // returns true if tx offset is outside first or last slide
-    return tx > 0 || -tx > slideWidth * (slideCount - 1);
+    return offsetTx > 0 || -offsetTx > slideWidth * (slideCount - 1);
   }
 
   // Action Methods
