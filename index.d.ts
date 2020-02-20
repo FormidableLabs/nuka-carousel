@@ -186,7 +186,7 @@ export interface CarouselProps {
   /**
    * Optional callback to apply styles to the container of a control.
    */
-  getControlContainerStyle?: (
+  getControlsContainerStyle?: (
     key: CarouselControlContainerProp
   ) => CSSProperties;
 
