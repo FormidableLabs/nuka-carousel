@@ -209,7 +209,7 @@ ScrollTransition.propTypes = {
   slideCount: PropTypes.number,
   slideHeight: PropTypes.number,
   slideOffset: PropTypes.number,
-  slidesToScroll: PropTypes.number,
+  slidesToScroll: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   slideWidth: PropTypes.number,
   top: PropTypes.number,
   vertical: PropTypes.bool,
