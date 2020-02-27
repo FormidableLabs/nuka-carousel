@@ -4,7 +4,7 @@
 
 A Pure ReactJS Carousel Component
 
-Maintained by @sarmeyer(https://github.com/sarmeyer)
+Maintained by [@sarmeyer](https://twitter.com/sarmeyer)
 
 ![Nuka Carousel Animated Example](https://i.imgur.com/UwP5gle.gif)
 
