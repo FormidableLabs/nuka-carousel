@@ -259,6 +259,11 @@ export interface CarouselProps {
   height?: string;
 
   /**
+   * Ref to pass to carousel element
+   */
+  innerRef?: React.RefObject<HTMLInputElement>;
+
+  /**
    * Change the height of the slides based either on the first slide,
    * the current slide, or the maximum height of all slides.
    */
