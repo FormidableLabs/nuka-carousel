@@ -182,7 +182,8 @@ export const getTransitionProps = (props, state) => {
     slideHeight: state.slideHeight,
     slideListMargin: props.slideListMargin,
     slideOffset: props.slideOffset,
-    slidesToScroll: props.slidesToScroll,
+    slidesToScroll:
+      props.scrollMode === 'page' ? state.slidesToShow : props.slidesToScroll,
     slidesToShow: state.slidesToShow,
     slideWidth: state.slideWidth,
     top: state.top,
