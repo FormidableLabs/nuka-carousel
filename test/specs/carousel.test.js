@@ -1,4 +1,5 @@
 /*eslint max-nested-callbacks: ["error", 5]*/
+import { createRef } from 'react';
 import Carousel from '../../src';
 
 describe('<Carousel />', () => {
@@ -125,6 +126,18 @@ describe('<Carousel />', () => {
       showSlide = false;
       wrapper = mount(<Carousel>{showSlide && <p>Slide 1</p>}</Carousel>);
       expect(wrapper.find('.slider-list').children()).toHaveLength(0);
+    });
+
+    it('should reference the carousel element', () => {
+      const ref = createRef();
+      const wrapper = mount(
+        <Carousel innerRef={ref}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      expect(wrapper.find('div.slider').instance()).toEqual(ref.current);
     });
   });
 

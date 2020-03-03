@@ -1126,6 +1126,7 @@ export default class Carousel extends React.Component {
         className={['slider', this.props.className || ''].join(' ').trim()}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
+        ref={this.props.innerRef}
         tabIndex={0}
         style={Object.assign(
           {},
@@ -1256,6 +1257,10 @@ Carousel.propTypes = {
   framePadding: PropTypes.string,
   height: PropTypes.string,
   heightMode: PropTypes.oneOf(['first', 'current', 'max']),
+  innerRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.elementType })
+  ]),
   initialSlideHeight: PropTypes.number,
   initialSlideWidth: PropTypes.number,
   keyCodeConfig: PropTypes.exact({
