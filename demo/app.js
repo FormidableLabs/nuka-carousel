@@ -19,6 +19,7 @@ export default function App() {
   const [cellAlign, setCellAlign] = useState('left');
   const [heightMode, setHeightMode] = useState('max');
   const [length, setLength] = useState(colors.length);
+  const [scrollMode, setScrollMode] = useState('remainder');
   const [slideIndex, setSlideIndex] = useState(0);
   const [slidesToScroll, setSlidesToScroll] = useState(1);
   const [slidesToShow, setSlidesToShow] = useState(1);
@@ -70,6 +71,7 @@ export default function App() {
         autoplay={autoplay}
         cellAlign={cellAlign}
         heightMode={heightMode}
+        scrollMode={scrollMode}
         slideIndex={slideIndex}
         slideListMargin={0}
         slidesToScroll={slidesToScroll}
@@ -136,6 +138,15 @@ export default function App() {
           </button>
           <button onClick={() => setAutoplay(prevAutoPlay => !prevAutoPlay)}>
             Toggle Autoplay {autoplay === true ? 'Off' : 'On'}
+          </button>
+          <button
+            onClick={() =>
+              setScrollMode(prevScrollMode =>
+                prevScrollMode === 'remainder' ? 'page' : 'remainder'
+              )
+            }
+          >
+            Toggle ScrollMode: {scrollMode}
           </button>
         </div>
 

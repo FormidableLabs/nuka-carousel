@@ -154,7 +154,13 @@ export class NextButton extends React.Component {
 }
 
 export class PagingDots extends React.Component {
-  getDotIndexes(slideCount, slidesToScroll, slidesToShow, cellAlign) {
+  getDotIndexes(
+    slideCount,
+    slidesToScroll,
+    slidesToShow,
+    cellAlign,
+    scrollMode
+  ) {
     const dotIndexes = [];
     let lastDotIndex = slideCount - slidesToShow;
 
@@ -171,6 +177,12 @@ export class PagingDots extends React.Component {
 
     for (let i = 0; i < lastDotIndex; i += slidesToScroll) {
       dotIndexes.push(i);
+    }
+
+    if (cellAlign === 'left' && scrollMode === 'page') {
+      lastDotIndex = Math.floor(
+        slideCount - (slideCount % slidesToShow || slidesToShow)
+      );
     }
 
     dotIndexes.push(lastDotIndex);
@@ -203,7 +215,8 @@ export class PagingDots extends React.Component {
       this.props.slideCount,
       this.props.slidesToScroll,
       this.props.slidesToShow,
-      this.props.cellAlign
+      this.props.cellAlign,
+      this.props.scrollMode
     );
 
     const {

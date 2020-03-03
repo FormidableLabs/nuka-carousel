@@ -175,7 +175,8 @@ export default class Carousel extends React.Component {
         'slidesToScroll',
         'slidesToShow',
         'transitionMode',
-        'cellAlign'
+        'cellAlign',
+        'scrollMode'
       ]);
 
     if (updateDimensions) {
@@ -756,6 +757,7 @@ export default class Carousel extends React.Component {
         this.isTransitioning = false;
         return;
       }
+
       if (index >= this.state.slideCount) {
         props.beforeSlide(this.state.currentSlide, 0);
         this.setState(
@@ -876,13 +878,16 @@ export default class Carousel extends React.Component {
       }
 
       const offset = targetSlideIndex;
-      const nextSlideIndex =
-        this.props.cellAlign !== 'left'
+      const leftAlignSlideIndex =
+        this.props.scrollMode === 'page'
           ? offset
           : Math.min(offset, slideCount - slidesToShow);
 
-      // If nextSlideIndex is larger than last index,
-      // then just navigate to last index
+      const nextSlideIndex =
+        this.props.cellAlign !== 'left' ? offset : leftAlignSlideIndex;
+
+      // If nextSlideIndex is larger than last index, then
+      // just navigate to last index
       this.goToSlide(Math.min(nextSlideIndex, slideCount - 1));
     }
   }
@@ -980,10 +985,10 @@ export default class Carousel extends React.Component {
   setDimensions(props, stateCb = () => {}) {
     props = props || this.props;
 
-    const { slidesToShow, cellAlign } = getPropsByTransitionMode(props, [
-      'slidesToShow',
-      'cellAlign'
-    ]);
+    const { slidesToShow, cellAlign, scrollMode } = getPropsByTransitionMode(
+      props,
+      ['slidesToShow', 'cellAlign', 'scrollMode']
+    );
 
     const frame = this.frame;
     const { slideHeight, slideWidth } = this.calcSlideHeightAndWidth(props);
@@ -995,7 +1000,7 @@ export default class Carousel extends React.Component {
       'slidesToScroll'
     ]);
 
-    if (slidesToScroll === 'auto') {
+    if (slidesToScroll === 'auto' || scrollMode === 'page') {
       slidesToScroll = Math.floor(
         frameWidth / (slideWidth + props.cellSpacing)
       );
@@ -1059,6 +1064,7 @@ export default class Carousel extends React.Component {
             left: this.state.left,
             nextSlide: () => this.nextSlide(),
             previousSlide: () => this.previousSlide(),
+            scrollMode: this.props.scrollMode,
             slideCount: this.state.slideCount,
             slidesToScroll: this.state.slidesToScroll,
             slidesToShow: this.state.slidesToShow,
@@ -1090,6 +1096,7 @@ export default class Carousel extends React.Component {
       });
     }
   }
+
   render() {
     const { currentSlide, slideCount, frameWidth } = this.state;
     const {
@@ -1279,6 +1286,7 @@ Carousel.propTypes = {
   renderTopCenterControls: PropTypes.func,
   renderTopLeftControls: PropTypes.func,
   renderTopRightControls: PropTypes.func,
+  scrollMode: PropTypes.oneOf(['page', 'remainder']),
   slideIndex: PropTypes.number,
   slideListMargin: PropTypes.number,
   slideOffset: PropTypes.number,
@@ -1326,6 +1334,7 @@ Carousel.defaultProps = {
   renderBottomCenterControls: props => <PagingDots {...props} />,
   renderCenterLeftControls: props => <PreviousButton {...props} />,
   renderCenterRightControls: props => <NextButton {...props} />,
+  scrollMode: 'remainder',
   slideIndex: 0,
   slideListMargin: 10,
   slideOffset: 25,

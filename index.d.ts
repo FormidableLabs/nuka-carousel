@@ -10,6 +10,8 @@ export default class Carousel extends React.Component<
   CarouselState
 > {}
 
+export type CarouselScrollModeProp = 'page' | 'remainder';
+
 export type CarouselCellAlignProp = 'left' | 'center' | 'right';
 
 export type CarouselHeightModeProp = 'first' | 'current' | 'max';
@@ -340,6 +342,12 @@ export interface CarouselProps {
     currentSlide,
     slideCount
   }: CarouselSlideRenderControlProps) => string;
+
+  /**
+   * Supports 'page' and 'remainder' scroll modes.
+   * Defaults to 'remainder'.
+   */
+  scrollMode?: CarouselScrollModeProp;
 
   /**
    * Manually set the index of the slide to be shown
