@@ -363,6 +363,7 @@ describe('<Carousel />', () => {
       expect(wrapper).toHaveState('currentSlide', 2);
       wrapper.setProps({ children: [] });
       expect(wrapper).toHaveState('currentSlide', 0);
+      wrapper.update();
 
       const previousButton = wrapper.find('.slider-control-centerleft button');
       const nextButton = wrapper.find('.slider-control-centerright button');

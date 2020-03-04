@@ -147,63 +147,12 @@ export default class Carousel extends React.Component {
     initializeHeight(heightCheckDelay);
   }
 
-  // @TODO Remove deprecated componentWillReceiveProps with getDerivedStateFromProps
-  // eslint-disable-next-line react/no-deprecated
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const slideCount = getValidChildren(nextProps.children).length;
-    const slideCountChanged = slideCount !== this.state.slideCount;
-    this.setState(prevState => ({
-      slideCount,
-      currentSlide: slideCountChanged
-        ? nextProps.slideIndex
-        : prevState.currentSlide
-    }));
-
-    if (slideCount <= this.state.currentSlide) {
-      this.goToSlide(Math.max(slideCount - 1, 0), nextProps);
-    }
-
-    const updateDimensions =
-      slideCountChanged ||
-      shouldUpdate(this.props, nextProps, [
-        'cellSpacing',
-        'vertical',
-        'slideWidth',
-        'slideHeight',
-        'heightMode',
-        'slidesToScroll',
-        'slidesToShow',
-        'transitionMode',
-        'cellAlign',
-        'scrollMode'
-      ]);
-
-    if (updateDimensions) {
-      this.setDimensions(nextProps);
-    }
-
-    if (
-      this.props.slideIndex !== nextProps.slideIndex &&
-      nextProps.slideIndex !== this.state.currentSlide &&
-      !this.state.isWrappingAround
-    ) {
-      this.goToSlide(nextProps.slideIndex, this.props);
-    }
-
-    if (this.props.autoplay !== nextProps.autoplay) {
-      if (nextProps.autoplay) {
-        this.startAutoplay();
-      } else {
-        this.stopAutoplay();
-      }
-    }
-  }
-
+  // eslint-disable-next-line complexity
   componentDidUpdate(prevProps, prevState) {
     const slideChanged = prevState.currentSlide !== this.state.currentSlide;
     const heightModeChanged = prevProps.heightMode !== this.props.heightMode;
     const axisChanged = prevProps.vertical !== this.props.vertical;
+
     if (axisChanged) {
       this.onResize();
     } else if (slideChanged || heightModeChanged) {
@@ -216,11 +165,58 @@ export default class Carousel extends React.Component {
       }
     }
 
+    const prevSlideCount = getValidChildren(prevProps.children).length;
+    const slideCount = getValidChildren(this.props.children).length;
+    const slideCountChanged = prevSlideCount !== slideCount;
+
+    if (slideCountChanged) {
+      this.setState({
+        slideCount,
+        currentSlide: this.props.slideIndex
+      });
+    }
+
     const { slideHeight } = this.calcSlideHeightAndWidth();
     const heightMismatches = slideHeight !== prevState.slideHeight;
 
     if (this.mounted && heightMismatches) {
       this.setDimensions();
+    } else {
+      const updateDimensions =
+        slideCountChanged ||
+        shouldUpdate(prevProps, this.props, [
+          'cellSpacing',
+          'vertical',
+          'slideWidth',
+          'slideHeight',
+          'heightMode',
+          'slidesToScroll',
+          'slidesToShow',
+          'transitionMode',
+          'cellAlign'
+        ]);
+
+      if (updateDimensions) {
+        this.setDimensions(this.props);
+      }
+    }
+
+    if (slideCountChanged && slideCount <= this.state.currentSlide) {
+      this.goToSlide(Math.max(slideCount - 1, 0), this.props);
+    } else if (
+      prevProps.slideIndex !== this.props.slideIndex &&
+      this.props.slideIndex !== this.state.currentSlide &&
+      !this.state.isWrappingAround
+    ) {
+      this.goToSlide(this.props.slideIndex, this.props);
+    }
+
+    if (prevProps.autoplay !== this.props.autoplay) {
+      if (this.props.autoplay) {
+        this.startAutoplay();
+      } else {
+        this.stopAutoplay();
+      }
     }
   }
 
