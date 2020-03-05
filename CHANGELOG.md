@@ -1,5 +1,19 @@
 # Nuka Changelog
 
+## 4.6.5 (2020-03-05)
+
+- [#674](https://github.com/FormidableLabs/nuka-carousel/pull/674) Upgrade react-move to reduce bundle size
+- [#673](https://github.com/FormidableLabs/nuka-carousel/pull/673) Remove deprecated UNSAFE_componentWillReceiveProps
+
+## 4.6.4 (2020-03-03)
+
+- [#672](https://github.com/FormidableLabs/nuka-carousel/pull/672) Add innerRef to type definitions
+- [#671](https://github.com/FormidableLabs/nuka-carousel/pull/671) Add innerRef prop
+- [#670](https://github.com/FormidableLabs/nuka-carousel/pull/670) Add scrollMode prop
+- [#669](https://github.com/FormidableLabs/nuka-carousel/pull/669) Fix getControlsContainerStyle prop name type in type definitions
+- [#668](https://github.com/FormidableLabs/nuka-carousel/pull/668) Fix edge swipe bug
+- [#666](https://github.com/FormidableLabs/nuka-carousel/pull/666) Add ability to drag to scroll multiple slides
+
 ## 4.6.3 (2020-02-12)
 
 - [#665](https://github.com/FormidableLabs/nuka-carousel/pull/665) Revert wicg-inert changes as part of PR #643
