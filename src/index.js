@@ -165,6 +165,10 @@ export default class Carousel extends React.Component {
       }
     }
 
+    if (this.state.isWrappingAround) {
+      this.isWrapped = true;
+    }
+
     const prevSlideCount = getValidChildren(prevProps.children).length;
     const slideCount = getValidChildren(this.props.children).length;
     const slideCountChanged = prevSlideCount !== slideCount;
@@ -972,8 +976,10 @@ export default class Carousel extends React.Component {
 
     if (
       slideHeight !== this.state.slideHeight ||
-      slideWidth !== this.state.slideWidth
+      slideWidth !== this.state.slideWidth ||
+      this.isWrapped
     ) {
+      this.isWrapped = false;
       this.setState({ slideHeight, slideWidth });
     }
   }
