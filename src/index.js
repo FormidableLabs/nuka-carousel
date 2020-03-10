@@ -59,6 +59,7 @@ export default class Carousel extends React.Component {
     };
 
     this.childNodesMutationObs = null;
+    this.denormalizedSlideIndex = this.props.slideIndex;
 
     this.state = {
       currentSlide: this.props.slideIndex,
@@ -205,8 +206,8 @@ export default class Carousel extends React.Component {
       this.goToSlide(Math.max(slideCount - 1, 0), this.props);
     } else if (
       prevProps.slideIndex !== this.props.slideIndex &&
-      this.props.slideIndex !== this.state.currentSlide &&
-      !this.state.isWrappingAround
+      this.props.slideIndex !== this.state.currentSlide
+      // !this.state.isWrappingAround
     ) {
       this.goToSlide(this.props.slideIndex, this.props);
     }
@@ -661,7 +662,7 @@ export default class Carousel extends React.Component {
   // Animation Method
 
   getTargetLeft(touchOffset, slide) {
-    const target = slide || this.state.currentSlide;
+    const target = slide || this.denormalizedSlideIndex;
 
     let offset = getAlignmentOffset(target, { ...this.props, ...this.state });
     let left = this.state.slideWidth * target;
@@ -683,11 +684,12 @@ export default class Carousel extends React.Component {
     }
 
     offset -= touchOffset || 0;
-
+    // console.log('denorm: ', this.denormalizedSlideIndex, 'slide: ', slide, 'left:', left, ' offset: ', offset);
     return (left - offset) * -1;
   }
 
   getOffsetDeltas() {
+    // console.log('getOffsetDeltas', this.state.isWrappingAround);
     let offset = 0;
 
     if (this.state.isWrappingAround) {
@@ -743,36 +745,45 @@ export default class Carousel extends React.Component {
     if (this.isTransitioning) {
       return;
     }
-
+    const normalizedIndex = index % this.state.slideCount;
     this.setState({ hasInteraction: true, easing: easing[props.easing] });
     this.isTransitioning = true;
     const previousSlide = this.state.currentSlide;
-
-    if (index >= this.state.slideCount || index < 0) {
+    console.log(
+      'Denorm Index: ', this.denormalizedSlideIndex,
+      ' Previous Slide: ', this.state.currentSlide,
+      ' Norm Slide: ', normalizedIndex,
+      ' Index: ', index
+    );
+    if (normalizedIndex >= this.state.slideCount || normalizedIndex < 0) {
       if (!props.wrapAround) {
         this.isTransitioning = false;
         return;
       }
 
-      if (index >= this.state.slideCount) {
+      if (normalizedIndex >= this.state.slideCount) {
         props.beforeSlide(this.state.currentSlide, 0);
+        const targetLeft = this.getTargetLeft(
+          this.state.slideWidth,
+          this.denormalizedSlideIndex
+        );
         this.setState(
           prevState => ({
             left: props.vertical
               ? 0
               : this.getTargetLeft(
                   this.state.slideWidth,
-                  prevState.currentSlide
+                  this.denormalizedSlideIndex
                 ),
             top: props.vertical
               ? this.getTargetLeft(
                   this.state.slideWidth,
-                  prevState.currentSlide
+                  this.denormalizedSlideIndex
                 )
               : 0,
-            currentSlide: 0,
-            isWrappingAround: true,
-            wrapToIndex: this.state.slideCount
+            currentSlide: normalizedIndex,
+            // isWrappingAround: true,
+            // wrapToIndex: this.state.slideCount
           }),
           () => {
             this.timers.push(
@@ -793,17 +804,18 @@ export default class Carousel extends React.Component {
             ? this.state.slideCount + index
             : this.state.slideCount - this.state.slidesToScroll;
         props.beforeSlide(this.state.currentSlide, endSlide);
+        const targetLeft = this.getTargetLeft(0, this.denormalizedSlideIndex);
         this.setState(
           prevState => ({
             left: props.vertical
               ? 0
-              : this.getTargetLeft(0, prevState.currentSlide),
+              : targetLeft,
             top: props.vertical
-              ? this.getTargetLeft(0, prevState.currentSlide)
+              ? targetLeft
               : 0,
-            currentSlide: endSlide,
-            isWrappingAround: true,
-            wrapToIndex: index
+            currentSlide: normalizedIndex,
+            // isWrappingAround: true,
+            // wrapToIndex: index
           }),
           () => {
             this.timers.push(
@@ -825,7 +837,7 @@ export default class Carousel extends React.Component {
 
     this.setState(
       {
-        currentSlide: index
+        currentSlide: normalizedIndex
       },
       () =>
         this.timers.push(
@@ -843,7 +855,7 @@ export default class Carousel extends React.Component {
   nextSlide() {
     const { slidesToScroll, currentSlide, slideWidth, slideCount } = this.state;
 
-    let targetSlideIndex = currentSlide + slidesToScroll;
+    let targetSlideIndex = this.denormalizedSlideIndex + slidesToScroll;
     let slidesToShow = this.state.slidesToShow;
 
     if (this.props.slidesToScroll === 'auto') {
@@ -851,7 +863,7 @@ export default class Carousel extends React.Component {
 
       if (swipeDistance > 0) {
         targetSlideIndex =
-          Math.round(swipeDistance / slideWidth) + currentSlide;
+          Math.round(swipeDistance / slideWidth) + this.denormalizedSlideIndex;
       } else {
         slidesToShow = slidesToScroll;
       }
@@ -864,6 +876,8 @@ export default class Carousel extends React.Component {
     ) {
       return;
     }
+
+    this.denormalizedSlideIndex = targetSlideIndex;
 
     if (this.props.wrapAround) {
       this.goToSlide(targetSlideIndex);
@@ -884,28 +898,33 @@ export default class Carousel extends React.Component {
 
       // If nextSlideIndex is larger than last index, then
       // just navigate to last index
-      this.goToSlide(Math.min(nextSlideIndex, slideCount - 1));
+      this.denormalizedSlideIndex = Math.min(nextSlideIndex, slideCount - 1);
+      this.goToSlide(this.denormalizedSlideIndex);
     }
   }
 
   previousSlide() {
     const { slidesToScroll, slideWidth, currentSlide } = this.state;
 
-    let targetSlideIndex = currentSlide - slidesToScroll;
+    let targetSlideIndex = this.denormalizedSlideIndex - slidesToScroll;
     const { length: swipeDistance } = this.touchObject;
 
     if (this.props.slidesToScroll === 'auto' && swipeDistance > 0) {
-      targetSlideIndex = currentSlide - Math.round(swipeDistance / slideWidth);
+      targetSlideIndex =
+        this.denormalizedSlideIndex - Math.round(swipeDistance / slideWidth);
     }
 
     if (currentSlide <= 0 && !this.props.wrapAround) {
       return;
     }
 
+    this.denormalizedSlideIndex = targetSlideIndex;
+
     if (this.props.wrapAround) {
       this.goToSlide(targetSlideIndex);
     } else {
-      this.goToSlide(Math.max(0, targetSlideIndex));
+      this.denormalizedSlideIndex = Math.max(0, targetSlideIndex);
+      this.goToSlide(this.denormalizedSlideIndex);
     }
   }
 
@@ -1172,12 +1191,9 @@ export default class Carousel extends React.Component {
                   },
                   events: {
                     end: () => {
-                      const newLeft = this.props.vertical
-                        ? 0
-                        : this.getTargetLeft();
-                      const newTop = this.props.vertical
-                        ? this.getTargetLeft()
-                        : 0;
+                      const targetLeft = this.getTargetLeft();
+                      const newLeft = this.props.vertical ? 0 : targetLeft;
+                      const newTop = this.props.vertical ? targetLeft : 0;
 
                       if (
                         newLeft !== this.state.left ||
@@ -1187,12 +1203,12 @@ export default class Carousel extends React.Component {
                           {
                             left: newLeft,
                             top: newTop,
-                            isWrappingAround: false,
-                            resetWrapAroundPosition: true
+                            // isWrappingAround: false,
+                            // resetWrapAroundPosition: true
                           },
                           () => {
                             this.setState({
-                              resetWrapAroundPosition: false
+                              // resetWrapAroundPosition: false
                             });
                           }
                         );

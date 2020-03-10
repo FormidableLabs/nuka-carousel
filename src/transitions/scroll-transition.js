@@ -40,26 +40,29 @@ export default class ScrollTransition extends React.Component {
 
     const alignmentOffset = getAlignmentOffset(currentSlideIndex, this.props);
     const relativePosition = positionValue - alignmentOffset;
-    const startSlideIndex = Math.min(
-      Math.abs(Math.floor(relativePosition / this.props.slideWidth)),
-      this.props.slideCount - 1
+    const startSlideIndex = Math.abs(
+      Math.floor(relativePosition / this.props.slideWidth)
     );
 
     if (this.props.wrapAround && currentSlideIndex !== startSlideIndex) {
+      const slidePage = Math.floor(startSlideIndex / this.props.slideCount);
       const slidesOutOfView = Math.max(
         this.props.slideCount -
           Math.ceil(this.props.frameWidth / this.props.slideWidth), // Total slides in view
         0
       );
-
+      const offsetCurrentSlideIndex = currentSlideIndex + (slidePage * this.props.slideCount);
+      console.log('startSlideIndex: ', startSlideIndex, ' currentSlideIndex:', offsetCurrentSlideIndex, 'slidePage: ', slidePage);
       let slidesOutOfViewBefore = Math.floor(slidesOutOfView / 2);
       let slidesOutOfViewAfter = slidesOutOfView - slidesOutOfViewBefore;
 
-      const direction = getSlideDirection(
-        startSlideIndex,
-        this.props.currentSlide,
-        this.props.isWrappingAround
-      );
+      const direction = startSlideIndex < offsetCurrentSlideIndex ? -1 : 1;
+
+      // const direction = getSlideDirection(
+      //   startSlideIndex,
+      //   offsetCurrentSlideIndex,
+      //   this.props.isWrappingAround
+      // );
 
       if (direction < 0) {
         const temp = slidesOutOfViewBefore;
@@ -71,15 +74,16 @@ export default class ScrollTransition extends React.Component {
         alignmentOffset / this.props.slideWidth
       );
       const slidesBefore = slidesInViewBefore + slidesOutOfViewBefore;
-
       const slidesInViewAfter =
         Math.ceil(
           (this.props.frameWidth - alignmentOffset) / this.props.slideWidth
         ) - 1;
       const slidesAfter = slidesInViewAfter + slidesOutOfViewAfter;
+      const distanceFromStart = Math.abs(
+        startSlideIndex - offsetCurrentSlideIndex
+      );
 
-      const distanceFromStart = Math.abs(startSlideIndex - currentSlideIndex);
-      if (currentSlideIndex < startSlideIndex) {
+      if (offsetCurrentSlideIndex < startSlideIndex) {
         if (distanceFromStart > slidesBefore) {
           targetPosition =
             (this.props.slideWidth + this.props.cellSpacing) *
@@ -95,8 +99,8 @@ export default class ScrollTransition extends React.Component {
 
     return targetPosition + offset || 0;
   }
-
   /* eslint-enable complexity */
+
   formatChildren(children) {
     const { top, left, currentSlide, slidesToShow, vertical } = this.props;
     const positionValue = vertical ? top : left;
