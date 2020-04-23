@@ -36,7 +36,7 @@ export default class Carousel extends React.Component {
 
     this.displayName = 'Carousel';
     this.clickDisabled = false;
-    this.isTransitioning = false;
+    this.latestTransitioningIndex = null;
     this.timers = [];
     this.touchObject = {};
     this.controlsMap = [
@@ -743,18 +743,13 @@ export default class Carousel extends React.Component {
     if (props === undefined) {
       props = this.props;
     }
-
-    if (this.isTransitioning) {
-      return;
-    }
+    this.latestTransitioningIndex = index;
 
     this.setState({ hasInteraction: true, easing: easing[props.easing] });
-    this.isTransitioning = true;
     const previousSlide = this.state.currentSlide;
 
     if (index >= this.state.slideCount || index < 0) {
       if (!props.wrapAround) {
-        this.isTransitioning = false;
         return;
       }
 
@@ -781,10 +776,11 @@ export default class Carousel extends React.Component {
           () => {
             this.timers.push(
               setTimeout(() => {
-                this.resetAutoplay();
-                this.isTransitioning = false;
-                if (index !== previousSlide) {
-                  this.props.afterSlide(0);
+                if (index === this.latestTransitioningIndex) {
+                  this.resetAutoplay();
+                  if (index !== previousSlide) {
+                    this.props.afterSlide(0);
+                  }
                 }
               }, props.speed)
             );
@@ -812,10 +808,11 @@ export default class Carousel extends React.Component {
           () => {
             this.timers.push(
               setTimeout(() => {
-                this.resetAutoplay();
-                this.isTransitioning = false;
-                if (index !== previousSlide) {
-                  this.props.afterSlide(this.state.slideCount - 1);
+                if (index === this.latestTransitioningIndex) {
+                  this.resetAutoplay();
+                  if (index !== previousSlide) {
+                    this.props.afterSlide(this.state.slideCount - 1);
+                  }
                 }
               }, props.speed)
             );
@@ -831,16 +828,18 @@ export default class Carousel extends React.Component {
       {
         currentSlide: index
       },
-      () =>
+      () => {
         this.timers.push(
           setTimeout(() => {
-            this.resetAutoplay();
-            this.isTransitioning = false;
-            if (index !== previousSlide) {
-              this.props.afterSlide(index);
+            if (index === this.latestTransitioningIndex) {
+              this.resetAutoplay();
+              if (index !== previousSlide) {
+                this.props.afterSlide(index);
+              }
             }
           }, props.speed)
-        )
+        );
+      }
     );
   }
 
