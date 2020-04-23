@@ -28,13 +28,11 @@ const getHeightOfSlide = slide => {
   }
 
   if (slide.children && slide.children.length > 0) {
-    // Need to convert slide.children from HTMLCollection
-    // to an array
-    const children = [...slide.children];
-    return children.reduce(
-      (totalHeight, child) => totalHeight + child.offsetHeight,
-      0
-    );
+    let totalHeight = 0;
+    for (let i = 0; i < slide.children.length; ++i) {
+      totalHeight += slide.children[i].offsetHeight;
+    }
+    return totalHeight;
   } else {
     return slide.offsetHeight;
   }
