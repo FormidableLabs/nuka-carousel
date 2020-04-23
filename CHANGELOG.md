@@ -1,5 +1,12 @@
 # Nuka Changelog
 
+## 4.6.7 (2020-04-23)
+
+- [#687](https://github.com/FormidableLabs/nuka-carousel/pull/687) Fix Edge issue
+- [#683](https://github.com/FormidableLabs/nuka-carousel/pull/683) Rename param of afterSlide callback
+- [#680](https://github.com/FormidableLabs/nuka-carousel/pull/680) Fixes bug #586 - changing slide too quickly doesn't behave as expected 
+- [#677](https://github.com/FormidableLabs/nuka-carousel/pull/677) Update incorrect prop `getControlsContainerStyle`
+
 ## 4.6.6 (2020-03-10)
 
 - [#676](https://github.com/FormidableLabs/nuka-carousel/pull/676) hot-fix: flash after wraparound
