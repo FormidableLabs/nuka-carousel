@@ -1,5 +1,10 @@
 # Nuka Changelog
 
+## 4.7.0 (2020-05-20)
+
+- [#695](https://github.com/FormidableLabs/nuka-carousel/pull/695) Add `slide-current` className to current 'active' slide, cleanup some utility functions
+- [#667](https://github.com/FormidableLabs/nuka-carousel/pull/667) Fixes Issue 622: Only fully visible slides are interactable. update wicg-inert version
+
 ## 4.6.7 (2020-04-23)
 
 - [#687](https://github.com/FormidableLabs/nuka-carousel/pull/687) Fix Edge issue
