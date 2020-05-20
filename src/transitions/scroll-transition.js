@@ -7,6 +7,7 @@ import {
 import {
   getSlideDirection,
   handleSelfFocus,
+  getSlideClassName,
   isFullyVisible
 } from '../utilities/utilities';
 
@@ -106,14 +107,15 @@ export default class ScrollTransition extends React.Component {
     const positionValue = vertical ? top : left;
 
     return React.Children.map(children, (child, index) => {
-      const visible =
-        index >= currentSlide && index < currentSlide + slidesToShow;
       const isVisible = isFullyVisible(index, this.props);
       const inert = isVisible ? {} : { inert: 'true' };
-
       return (
         <li
-          className={`slider-slide${visible ? ' slide-visible' : ''}`}
+          className={`slider-slide${getSlideClassName(
+            index,
+            currentSlide,
+            slidesToShow
+          )}`}
           style={this.getSlideStyles(index, positionValue)}
           key={index}
           onClick={handleSelfFocus}

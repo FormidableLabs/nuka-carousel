@@ -1,5 +1,16 @@
 # Nuka Changelog
 
+## 4.6.7 (2020-04-23)
+
+- [#687](https://github.com/FormidableLabs/nuka-carousel/pull/687) Fix Edge issue
+- [#683](https://github.com/FormidableLabs/nuka-carousel/pull/683) Rename param of afterSlide callback
+- [#680](https://github.com/FormidableLabs/nuka-carousel/pull/680) Fixes bug #586 - changing slide too quickly doesn't behave as expected 
+- [#677](https://github.com/FormidableLabs/nuka-carousel/pull/677) Update incorrect prop `getControlsContainerStyle`
+
+## 4.6.6 (2020-03-10)
+
+- [#676](https://github.com/FormidableLabs/nuka-carousel/pull/676) hot-fix: flash after wraparound
+
 ## 4.6.5 (2020-03-05)
 
 - [#674](https://github.com/FormidableLabs/nuka-carousel/pull/674) Upgrade react-move to reduce bundle size
@@ -22,8 +33,8 @@
 
 - [#656](https://github.com/FormidableLabs/nuka-carousel/pull/656)
 - [#655](https://github.com/FormidableLabs/nuka-carousel/pull/655)
-- [#653](https://github.com/FormidableLabs/nuka-carousel/pull/653)
-        Minor clean up and fixes - update demo to use hooks, add demo title, fix slidesToScroll typing, cleaning up prop names, minor perf improvement
+- [#653](https://github.com/FormidableLabs/nuka-carousel/pull/653) Minor clean up and fixes - update demo to use hooks, add demo title,
+  fix slidesToScroll typing, cleaning up prop names, minor perf improvement
 - [#652](https://github.com/FormidableLabs/nuka-carousel/pull/652) fix: add missing type annotation
 - [#651](https://github.com/FormidableLabs/nuka-carousel/pull/651) Fix typo
 - [#650](https://github.com/FormidableLabs/nuka-carousel/pull/650) Change touchAction for fade-transition to pinch-zoom
@@ -52,7 +63,6 @@
 - [#625](https://github.com/FormidableLabs/nuka-carousel/pull/625) Fixes Issue 521: Initial height calculations will be repeated until successful.
 - [#626](https://github.com/FormidableLabs/nuka-carousel/pull/626) Height mode 'current' uses tallest visible slide
 - [#628](https://github.com/FormidableLabs/nuka-carousel/pull/628) Adding missing Type For keyCodeConfig prop
-
 
 ## 4.5.13 (2019-11-08)
 

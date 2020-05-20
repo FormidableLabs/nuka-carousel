@@ -10,6 +10,7 @@ import AnnounceSlide, {
   defaultRenderAnnounceSlideMessage
 } from './announce-slide';
 import {
+  addAccessibility,
   addEvent,
   removeEvent,
   getPropsByTransitionMode,
@@ -26,7 +27,6 @@ import {
   getTransitionProps
 } from './utilities/style-utilities';
 import {
-  addAccessibility,
   getValidChildren,
   calculateSlideHeight
 } from './utilities/bootstrapping-utilities';
@@ -37,7 +37,7 @@ export default class Carousel extends React.Component {
 
     this.displayName = 'Carousel';
     this.clickDisabled = false;
-    this.isTransitioning = false;
+    this.latestTransitioningIndex = null;
     this.timers = [];
     this.touchObject = {};
     this.controlsMap = [
@@ -123,7 +123,7 @@ export default class Carousel extends React.Component {
       this.props.keyCodeConfig
     );
     this.keyCodeMap = this.getKeyCodeMap(keyCodeConfig);
-    this.getlockScrollEvents().lockTouchScroll();
+    this.getLockScrollEvents().lockTouchScroll();
 
     const heightCheckDelay = 200;
     const initializeHeight = delay => {
@@ -164,6 +164,10 @@ export default class Carousel extends React.Component {
       } else {
         this.setSlideHeightAndWidth();
       }
+    }
+
+    if (this.state.isWrappingAround) {
+      this.isWrapped = true;
     }
 
     const prevSlideCount = getValidChildren(prevProps.children).length;
@@ -230,7 +234,7 @@ export default class Carousel extends React.Component {
     for (let i = 0; i < this.timers.length; i++) {
       clearTimeout(this.timers[i]);
     }
-    this.getlockScrollEvents().unlockTouchScroll();
+    this.getLockScrollEvents().unlockTouchScroll();
   }
 
   establishChildNodesMutationObserver() {
@@ -266,7 +270,7 @@ export default class Carousel extends React.Component {
     }
   }
 
-  getlockScrollEvents() {
+  getLockScrollEvents() {
     const blockEvent = e => {
       if (this.state.dragging) {
         const direction = swipeDirection(
@@ -539,7 +543,8 @@ export default class Carousel extends React.Component {
     }
 
     const touchLength = this.touchObject.length || 0;
-
+    // touchLength must be longer than 1/5 the slideWidth / slidesToShow
+    // for swiping to be initiated
     if (touchLength > this.state.slideWidth / slidesToShow / 5) {
       if (this.touchObject.direction === 1) {
         if (
@@ -740,18 +745,13 @@ export default class Carousel extends React.Component {
     if (props === undefined) {
       props = this.props;
     }
-
-    if (this.isTransitioning) {
-      return;
-    }
+    this.latestTransitioningIndex = index;
 
     this.setState({ hasInteraction: true, easing: easing[props.easing] });
-    this.isTransitioning = true;
     const previousSlide = this.state.currentSlide;
 
     if (index >= this.state.slideCount || index < 0) {
       if (!props.wrapAround) {
-        this.isTransitioning = false;
         return;
       }
 
@@ -778,10 +778,11 @@ export default class Carousel extends React.Component {
           () => {
             this.timers.push(
               setTimeout(() => {
-                this.resetAutoplay();
-                this.isTransitioning = false;
-                if (index !== previousSlide) {
-                  this.props.afterSlide(0);
+                if (index === this.latestTransitioningIndex) {
+                  this.resetAutoplay();
+                  if (index !== previousSlide) {
+                    this.props.afterSlide(0);
+                  }
                 }
               }, props.speed)
             );
@@ -809,10 +810,11 @@ export default class Carousel extends React.Component {
           () => {
             this.timers.push(
               setTimeout(() => {
-                this.resetAutoplay();
-                this.isTransitioning = false;
-                if (index !== previousSlide) {
-                  this.props.afterSlide(this.state.slideCount - 1);
+                if (index === this.latestTransitioningIndex) {
+                  this.resetAutoplay();
+                  if (index !== previousSlide) {
+                    this.props.afterSlide(this.state.slideCount - 1);
+                  }
                 }
               }, props.speed)
             );
@@ -828,16 +830,18 @@ export default class Carousel extends React.Component {
       {
         currentSlide: index
       },
-      () =>
+      () => {
         this.timers.push(
           setTimeout(() => {
-            this.resetAutoplay();
-            this.isTransitioning = false;
-            if (index !== previousSlide) {
-              this.props.afterSlide(index);
+            if (index === this.latestTransitioningIndex) {
+              this.resetAutoplay();
+              if (index !== previousSlide) {
+                this.props.afterSlide(index);
+              }
             }
           }, props.speed)
-        )
+        );
+      }
     );
   }
 
@@ -973,8 +977,10 @@ export default class Carousel extends React.Component {
 
     if (
       slideHeight !== this.state.slideHeight ||
-      slideWidth !== this.state.slideWidth
+      slideWidth !== this.state.slideWidth ||
+      this.isWrapped
     ) {
+      this.isWrapped = false;
       this.setState({ slideHeight, slideWidth });
     }
   }

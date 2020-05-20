@@ -56,6 +56,20 @@ export const addAccessibility = (children, slidesToShow, currentSlide) => {
   }
 };
 
+export const getSlideClassName = (index, currentSlide, slidesToShow) => {
+  let className = '';
+  const visible = index >= currentSlide && index < currentSlide + slidesToShow;
+  const current = index === currentSlide;
+
+  if (visible) {
+    className = ' slide-visible';
+    if (current) {
+      className = className.concat(' slide-current');
+    }
+  }
+  return className;
+};
+
 export const getPropsByTransitionMode = (props, keys) => {
   const { slidesToShow, transitionMode } = props;
   const updatedDefaults = {};

@@ -50,7 +50,7 @@ yarn start
 
 You can access the application on your localhost at the following url: <a href="http://localhost:8080/demo" target="_blank">Local Demo</a>
 
-Or on CodeSandBox at the following url: <a href="https://codesandbox.io/s/currying-smoke-c8v2n" target="_blank">CodeSandBox Demo</a>
+Or on CodeSandBox: [![Edit currying-smoke-c8v2n](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/currying-smoke-c8v2n?fontsize=14&hidenavigation=1&theme=dark)
 
 ### Keyboard Controls
 
@@ -140,7 +140,7 @@ A set of eight render props for rendering controls in different positions around
 
 - The function returns the props for `goToSlide`, `nextSlide` and `previousSlide` functions in addition to `slideCount` and `currentSlide` values. Can also remove all render controls using `withoutControls`.
 
-- NOTE: The className `slide-visible` is added to the currently visible slide.
+- NOTE: The className `slide-visible` is added to the currently visible slide or slides (when slidesToShow > 1). The className `slide-current` is added to the currently "active" slide.
 
 #### renderAnnounceSlideMessage
 

@@ -1,18 +1,5 @@
 import React from 'react';
 
-export const addAccessibility = (children, slidesToShow) => {
-  if (slidesToShow > 1) {
-    return React.Children.map(children, child => {
-      return React.cloneElement(child, child.props);
-    });
-  } else {
-    // when slidesToshow is 1
-    return React.Children.map(children, child => {
-      return React.cloneElement(child, child.props);
-    });
-  }
-};
-
 export const getValidChildren = children => {
   // .toArray automatically removes invalid React children
   return React.Children.toArray(children);
@@ -28,13 +15,11 @@ const getHeightOfSlide = slide => {
   }
 
   if (slide.children && slide.children.length > 0) {
-    // Need to convert slide.children from HTMLCollection
-    // to an array
-    const children = [...slide.children];
-    return children.reduce(
-      (totalHeight, child) => totalHeight + child.offsetHeight,
-      0
-    );
+    let totalHeight = 0;
+    for (let i = 0; i < slide.children.length; ++i) {
+      totalHeight += slide.children[i].offsetHeight;
+    }
+    return totalHeight;
   } else {
     return slide.offsetHeight;
   }

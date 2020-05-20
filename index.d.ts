@@ -116,9 +116,9 @@ export interface CSSProperties extends CSS.Properties<string | number> {}
 export interface CarouselProps {
   /**
    * Hook to be called after a slide is changed
-   * @param prevSlide Index of the previous slide
+   * @param index Index of the current slide
    */
-  afterSlide?: (prevSlide: number) => void;
+  afterSlide?: (index: number) => void;
 
   /**
    * Adds a zoom effect on the currently visible slide.
@@ -188,7 +188,7 @@ export interface CarouselProps {
   /**
    * Optional callback to apply styles to the container of a control.
    */
-  getControlsContainerStyle?: (
+  getControlsContainerStyles?: (
     key: CarouselControlContainerProp
   ) => CSSProperties;
 
