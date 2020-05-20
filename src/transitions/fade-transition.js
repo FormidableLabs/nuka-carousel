@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getSlideHeight } from '../utilities/style-utilities';
-import { handleSelfFocus } from '../utilities/utilities';
+import { handleSelfFocus, getSlideClassName } from '../utilities/utilities';
 
 export default class FadeTransition extends React.Component {
   constructor(props) {
@@ -11,21 +11,21 @@ export default class FadeTransition extends React.Component {
 
   formatChildren(children, opacity) {
     const { currentSlide, slidesToShow } = this.props;
-    return React.Children.map(children, (child, index) => {
-      const visible =
-        index >= currentSlide && index < currentSlide + slidesToShow;
-      return (
-        <li
-          className={`slider-slide${visible ? ' slide-visible' : ''}`}
-          style={this.getSlideStyles(index, opacity)}
-          key={index}
-          onClick={handleSelfFocus}
-          tabIndex={-1}
-        >
-          {child}
-        </li>
-      );
-    });
+    return React.Children.map(children, (child, index) => (
+      <li
+        className={`slider-slide${getSlideClassName(
+          index,
+          currentSlide,
+          slidesToShow
+        )}`}
+        style={this.getSlideStyles(index, opacity)}
+        key={index}
+        onClick={handleSelfFocus}
+        tabIndex={-1}
+      >
+        {child}
+      </li>
+    ));
   }
 
   getSlideOpacityAndLeftMap(fadeFrom, fadeTo, fade) {

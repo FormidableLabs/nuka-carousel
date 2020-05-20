@@ -9,6 +9,7 @@ import AnnounceSlide, {
   defaultRenderAnnounceSlideMessage
 } from './announce-slide';
 import {
+  addAccessibility,
   addEvent,
   removeEvent,
   getPropsByTransitionMode,
@@ -25,7 +26,6 @@ import {
   getTransitionProps
 } from './utilities/style-utilities';
 import {
-  addAccessibility,
   getValidChildren,
   calculateSlideHeight
 } from './utilities/bootstrapping-utilities';
@@ -122,7 +122,7 @@ export default class Carousel extends React.Component {
       this.props.keyCodeConfig
     );
     this.keyCodeMap = this.getKeyCodeMap(keyCodeConfig);
-    this.getlockScrollEvents().lockTouchScroll();
+    this.getLockScrollEvents().lockTouchScroll();
 
     const heightCheckDelay = 200;
     const initializeHeight = delay => {
@@ -233,7 +233,7 @@ export default class Carousel extends React.Component {
     for (let i = 0; i < this.timers.length; i++) {
       clearTimeout(this.timers[i]);
     }
-    this.getlockScrollEvents().unlockTouchScroll();
+    this.getLockScrollEvents().unlockTouchScroll();
   }
 
   establishChildNodesMutationObserver() {
@@ -269,7 +269,7 @@ export default class Carousel extends React.Component {
     }
   }
 
-  getlockScrollEvents() {
+  getLockScrollEvents() {
     const blockEvent = e => {
       if (this.state.dragging) {
         const direction = swipeDirection(
@@ -542,7 +542,8 @@ export default class Carousel extends React.Component {
     }
 
     const touchLength = this.touchObject.length || 0;
-
+    // touchLength must be longer than 1/5 the slideWidth / slidesToShow
+    // for swiping to be initiated
     if (touchLength > this.state.slideWidth / slidesToShow / 5) {
       if (this.touchObject.direction === 1) {
         if (

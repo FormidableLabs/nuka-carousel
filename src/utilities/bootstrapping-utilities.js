@@ -1,18 +1,5 @@
 import React from 'react';
 
-export const addAccessibility = (children, slidesToShow) => {
-  if (slidesToShow > 1) {
-    return React.Children.map(children, child => {
-      return React.cloneElement(child, child.props);
-    });
-  } else {
-    // when slidesToshow is 1
-    return React.Children.map(children, child => {
-      return React.cloneElement(child, child.props);
-    });
-  }
-};
-
 export const getValidChildren = children => {
   // .toArray automatically removes invalid React children
   return React.Children.toArray(children);
