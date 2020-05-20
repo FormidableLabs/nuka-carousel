@@ -1,4 +1,5 @@
 import React from 'react';
+import { getAlignmentOffset } from './style-utilities';
 
 export const addEvent = function(elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
@@ -182,4 +183,50 @@ export const handleSelfFocus = e => {
   if (e && e.currentTarget) {
     e.currentTarget.focus();
   }
+};
+
+export const isFullyVisible = (slideIndex, config) => {
+  const {
+    currentSlide,
+    cellSpacing,
+    slideCount,
+    slideWidth,
+    frameWidth,
+    wrapAround
+  } = config;
+
+  // Slide width can't be 0
+  const fullSlideWidth = slideWidth || 1;
+  // Calculate offset without cellSpacing
+  const offsetWidth =
+    getAlignmentOffset(currentSlide, config) + cellSpacing * currentSlide;
+  const remainingWidth = frameWidth - offsetWidth;
+
+  const fullSlidesBefore = Math.max(
+    Math.floor(offsetWidth / fullSlideWidth),
+    0
+  );
+
+  const fullSlidesAfter = Math.max(
+    Math.floor(remainingWidth / fullSlideWidth) - 1,
+    0
+  );
+
+  const currentSlideIndex = Math.ceil(currentSlide);
+  const fullyVisibleSlides = [];
+
+  for (
+    let i = currentSlideIndex - fullSlidesBefore;
+    i < currentSlideIndex + fullSlidesAfter + 1;
+    i++
+  ) {
+    if (i < 0) {
+      // -1 won't match a slide index
+      fullyVisibleSlides.push(wrapAround ? slideCount + i : -1);
+    } else {
+      fullyVisibleSlides.push(i > slideCount - 1 ? i - slideCount : i);
+    }
+  }
+
+  return fullyVisibleSlides.includes(slideIndex);
 };

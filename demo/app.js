@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import Carousel from '../src/index';
 import ReactDom from 'react-dom';
 
+// eslint-disable-next-line complexity
 export default function App() {
   const colors = [
     '7732bb',
@@ -17,6 +18,7 @@ export default function App() {
   const [animation, setAnimation] = useState(undefined);
   const [autoplay, setAutoplay] = useState(false);
   const [cellAlign, setCellAlign] = useState('left');
+  const [cellSpacing, setCellSpacing] = useState(0);
   const [heightMode, setHeightMode] = useState('max');
   const [length, setLength] = useState(colors.length);
   const [scrollMode, setScrollMode] = useState('remainder');
@@ -67,6 +69,7 @@ export default function App() {
   return (
     <div style={{ width: '50%', margin: 'auto' }}>
       <Carousel
+        cellSpacing={cellSpacing}
         animation={animation}
         autoplay={autoplay}
         cellAlign={cellAlign}
@@ -147,6 +150,13 @@ export default function App() {
             }
           >
             Toggle ScrollMode: {scrollMode}
+          </button>
+          <button
+            onClick={() =>
+              setCellSpacing(prevCellSpacing => (prevCellSpacing > 0 ? 0 : 5))
+            }
+          >
+            Toggle Cellspacing {cellSpacing > 0 ? 'Off' : 'On'}
           </button>
         </div>
 

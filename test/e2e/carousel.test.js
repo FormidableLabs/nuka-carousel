@@ -411,6 +411,47 @@ describe('Nuka Carousel', () => {
       await page.mouse.up();
       await expect(page).toMatch('Nuka Carousel: Slide 4');
     });
+
+    it('should handle click events when cellspacing is greater than 0', async () => {
+      const slide = await page.$('.slider-slide');
+      const metrics = await slide.boundingBox();
+      const pointX = metrics.x + metrics.width / 2.0;
+      const pointY = metrics.y + metrics.height / 2.0;
+
+      await expect(page).toClick('button', { text: 'Toggle Cellspacing On' });
+
+      const getTextDecoration = () => {
+        const e = document.querySelector('.slider-control-topcenter div');
+        return window.getComputedStyle(e).textDecorationLine;
+      };
+
+      await expect(page).toMatch('Nuka Carousel: Slide 1');
+
+      // Make sure link works on first slide
+      let textDecoration = await page.evaluate(getTextDecoration);
+      expect(textDecoration).toMatch('none');
+      await page.mouse.click(pointX, pointY);
+      textDecoration = await page.evaluate(getTextDecoration);
+      expect(textDecoration).toMatch('underline');
+      await page.mouse.click(pointX, pointY);
+      textDecoration = await page.evaluate(getTextDecoration);
+      expect(textDecoration).toMatch('none');
+
+      await expect(page).toClick('button', { text: 'Next' });
+      await page.waitFor(600); // need to let slide transition complete
+
+      await expect(page).toMatch('Nuka Carousel: Slide 2');
+
+      // It should work on this slide too
+      textDecoration = await page.evaluate(getTextDecoration);
+      expect(textDecoration).toMatch('none');
+      await page.mouse.click(pointX, pointY);
+      textDecoration = await page.evaluate(getTextDecoration);
+      expect(textDecoration).toMatch('underline');
+      await page.mouse.click(pointX, pointY);
+      textDecoration = await page.evaluate(getTextDecoration);
+      expect(textDecoration).toMatch('none');
+    });
   });
 
   describe('Neighboring Slide Visibility and Slide Alignment', () => {
