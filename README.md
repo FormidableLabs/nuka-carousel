@@ -140,7 +140,7 @@ A set of eight render props for rendering controls in different positions around
 
 - The function returns the props for `goToSlide`, `nextSlide` and `previousSlide` functions in addition to `slideCount` and `currentSlide` values. Can also remove all render controls using `withoutControls`.
 
-- NOTE: The className `slide-visible` is added to the currently visible slide.
+- NOTE: The className `slide-visible` is added to the currently visible slide or slides (when slidesToShow > 1). The className `slide-current` is added to the currently "active" slide.
 
 #### renderAnnounceSlideMessage
 

@@ -45,8 +45,8 @@ export default class ScrollTransition3D extends React.Component {
     }
     return targetPosition + offset;
   }
-  /* eslint-enable complexity */
 
+  /* eslint-enable complexity */
   formatChildren(children) {
     const { top, left, currentSlide, slidesToShow, vertical } = this.props;
     const positionValue = vertical ? top : left;

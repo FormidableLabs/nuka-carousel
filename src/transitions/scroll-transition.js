@@ -4,7 +4,11 @@ import {
   getSlideHeight,
   getAlignmentOffset
 } from '../utilities/style-utilities';
-import { getSlideDirection, handleSelfFocus } from '../utilities/utilities';
+import {
+  getSlideDirection,
+  handleSelfFocus,
+  getSlideClassName
+} from '../utilities/utilities';
 
 const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
@@ -101,21 +105,21 @@ export default class ScrollTransition extends React.Component {
     const { top, left, currentSlide, slidesToShow, vertical } = this.props;
     const positionValue = vertical ? top : left;
 
-    return React.Children.map(children, (child, index) => {
-      const visible =
-        index >= currentSlide && index < currentSlide + slidesToShow;
-      return (
-        <li
-          className={`slider-slide${visible ? ' slide-visible' : ''}`}
-          style={this.getSlideStyles(index, positionValue)}
-          key={index}
-          onClick={handleSelfFocus}
-          tabIndex={-1}
-        >
-          {child}
-        </li>
-      );
-    });
+    return React.Children.map(children, (child, index) => (
+      <li
+        className={`slider-slide${getSlideClassName(
+          index,
+          currentSlide,
+          slidesToShow
+        )}`}
+        style={this.getSlideStyles(index, positionValue)}
+        key={index}
+        onClick={handleSelfFocus}
+        tabIndex={-1}
+      >
+        {child}
+      </li>
+    ));
   }
 
   getSlideStyles(index, positionValue) {
