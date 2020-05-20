@@ -43,49 +43,46 @@ export const PreviousButton = props => {
   );
 };
 
+export const nextButtonDisabled = ({
+  cellAlign,
+  cellSpacing,
+  currentSlide,
+  frameWidth,
+  positionValue,
+  slideCount,
+  slidesToShow,
+  slideWidth,
+  wrapAround
+}) => {
+  let buttonDisabled = false;
+
+  if (!wrapAround) {
+    const alignmentOffset = getAlignmentOffset(currentSlide, {
+      cellAlign,
+      cellSpacing,
+      frameWidth,
+      slideWidth
+    });
+
+    const relativePosition = positionValue - alignmentOffset;
+
+    const width = slideWidth + cellSpacing;
+    const endOffset =
+      cellAlign === 'center' ? 2 * alignmentOffset : alignmentOffset;
+    const endPosition = -width * slideCount + width * slidesToShow - endOffset;
+
+    buttonDisabled =
+      relativePosition < endPosition ||
+      Math.abs(relativePosition - endPosition) < 0.01;
+  }
+
+  return buttonDisabled;
+};
+
 export const NextButton = props => {
   const handleClick = event => {
     event.preventDefault();
     props.nextSlide();
-  };
-
-  const nextButtonDisabled = params => {
-    const {
-      cellAlign,
-      cellSpacing,
-      currentSlide,
-      frameWidth,
-      positionValue,
-      slideCount,
-      slidesToShow,
-      slideWidth,
-      wrapAround
-    } = params;
-
-    let buttonDisabled = false;
-
-    if (!wrapAround) {
-      const alignmentOffset = getAlignmentOffset(currentSlide, {
-        cellAlign,
-        cellSpacing,
-        frameWidth,
-        slideWidth
-      });
-
-      const relativePosition = positionValue - alignmentOffset;
-
-      const width = slideWidth + cellSpacing;
-      const endOffset =
-        cellAlign === 'center' ? 2 * alignmentOffset : alignmentOffset;
-      const endPosition =
-        -width * slideCount + width * slidesToShow - endOffset;
-
-      buttonDisabled =
-        relativePosition < endPosition ||
-        Math.abs(relativePosition - endPosition) < 0.01;
-    }
-
-    return buttonDisabled;
   };
 
   const {
@@ -138,42 +135,42 @@ export const NextButton = props => {
   );
 };
 
+export const getDotIndexes = (
+  slideCount,
+  slidesToScroll,
+  slidesToShow,
+  cellAlign,
+  scrollMode
+) => {
+  const dotIndexes = [];
+  let lastDotIndex = slideCount - slidesToShow;
+
+  switch (cellAlign) {
+    case 'center':
+    case 'right':
+      lastDotIndex += slidesToShow - 1;
+      break;
+  }
+
+  if (lastDotIndex < 0) {
+    return [0];
+  }
+
+  for (let i = 0; i < lastDotIndex; i += slidesToScroll) {
+    dotIndexes.push(i);
+  }
+
+  if (cellAlign === 'left' && scrollMode === 'page') {
+    lastDotIndex = Math.floor(
+      slideCount - (slideCount % slidesToShow || slidesToShow)
+    );
+  }
+
+  dotIndexes.push(lastDotIndex);
+  return dotIndexes;
+};
+
 export const PagingDots = props => {
-  const getDotIndexes = (
-    slideCount,
-    slidesToScroll,
-    slidesToShow,
-    cellAlign,
-    scrollMode
-  ) => {
-    const dotIndexes = [];
-    let lastDotIndex = slideCount - slidesToShow;
-
-    switch (cellAlign) {
-      case 'center':
-      case 'right':
-        lastDotIndex += slidesToShow - 1;
-        break;
-    }
-
-    if (lastDotIndex < 0) {
-      return [0];
-    }
-
-    for (let i = 0; i < lastDotIndex; i += slidesToScroll) {
-      dotIndexes.push(i);
-    }
-
-    if (cellAlign === 'left' && scrollMode === 'page') {
-      lastDotIndex = Math.floor(
-        slideCount - (slideCount % slidesToShow || slidesToShow)
-      );
-    }
-
-    dotIndexes.push(lastDotIndex);
-    return dotIndexes;
-  };
-
   const getListStyles = () => ({
     position: 'relative',
     top: -10,
