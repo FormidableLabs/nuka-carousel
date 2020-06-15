@@ -89,7 +89,7 @@
     "test": "jest test --config jest.unit.config.js",
     "test-e2e": "jest test --config jest.e2e.config.js",
     "version": "npm run build",
-    "prepare": "npm run build-dist"
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
