@@ -83,13 +83,13 @@
     "lint-dts": "tslint index.d.ts --format verbose",
     "lint-fix": "npm run lint-js -- --fix && npm run lint-dts -- --fix",
     "lint-js": "eslint .",
+    "prepare": "npm run build",
     "prettier": "prettier \"**/*.{js,json,ts,css,md}\"",
     "preversion": "npm run check",
     "start": "webpack-dev-server --mode development",
     "test": "jest test --config jest.unit.config.js",
     "test-e2e": "jest test --config jest.e2e.config.js",
-    "version": "npm run build",
-    "prepare": "npm run build"
+    "version": "npm run build"
   },
   "repository": {
     "type": "git",
