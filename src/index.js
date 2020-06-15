@@ -553,12 +553,14 @@ export default class Carousel extends React.Component {
         ) {
           this.setState({ easing: easing[this.props.edgeEasing] });
         } else {
+          this.pauseAutoplay();
           this.nextSlide();
         }
       } else if (this.touchObject.direction === -1) {
         if (this.state.currentSlide <= 0 && !this.props.wrapAround) {
           this.setState({ easing: easing[this.props.edgeEasing] });
         } else {
+          this.pauseAutoplay();
           this.previousSlide();
         }
       }
@@ -584,15 +586,19 @@ export default class Carousel extends React.Component {
       const actionName = this.keyCodeMap[e.keyCode];
       switch (actionName) {
         case 'nextSlide':
+          this.pauseAutoplay();
           this.nextSlide();
           break;
         case 'previousSlide':
+          this.pauseAutoplay();
           this.previousSlide();
           break;
         case 'firstSlide':
+          this.pauseAutoplay();
           this.goToSlide(0, this.props);
           break;
         case 'lastSlide':
+          this.pauseAutoplay();
           this.goToSlide(this.state.slideCount - 1, this.props);
           break;
         case 'pause':
@@ -1063,10 +1069,19 @@ export default class Carousel extends React.Component {
             currentSlide: this.state.currentSlide,
             defaultControlsConfig: this.props.defaultControlsConfig,
             frameWidth: this.state.frameWidth,
-            goToSlide: index => this.goToSlide(index),
+            goToSlide: index => {
+              this.pauseAutoplay();
+              this.goToSlide(index);
+            },
             left: this.state.left,
-            nextSlide: () => this.nextSlide(),
-            previousSlide: () => this.previousSlide(),
+            nextSlide: () => {
+              this.pauseAutoplay();
+              this.nextSlide();
+            },
+            previousSlide: () => {
+              this.pauseAutoplay();
+              this.previousSlide();
+            },
             scrollMode: this.props.scrollMode,
             slideCount: this.state.slideCount,
             slidesToScroll: this.state.slidesToScroll,
