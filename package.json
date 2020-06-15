@@ -88,7 +88,8 @@
     "start": "webpack-dev-server --mode development",
     "test": "jest test --config jest.unit.config.js",
     "test-e2e": "jest test --config jest.e2e.config.js",
-    "version": "npm run build"
+    "version": "npm run build",
+    "prepare": "npm run build-dist"
   },
   "repository": {
     "type": "git",
