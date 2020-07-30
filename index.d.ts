@@ -360,7 +360,8 @@ export interface CarouselProps {
   slideIndex?: number;
   
   /** 
-   * While using prop animation = "zoom", you can configure space around current slide with slideOffset.
+   * While using prop animation = "zoom", you can 
+   * configure space around current slide with slideOffset.
    */
   slideOffset?: number; 
   
