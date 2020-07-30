@@ -426,6 +426,13 @@ export interface CarouselProps {
    * @default false
    */
   withoutControls?: boolean;
+  
+  /**
+   * Adds a number value to set the scale of zoom when animation === "zoom". 
+   * The number value should be set in a range of (0,1). 
+   * @default 0.85
+   */
+  zoomScale?: number;
 }
 
 export interface CarouselState {
