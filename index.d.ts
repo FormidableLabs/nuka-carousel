@@ -358,7 +358,12 @@ export interface CarouselProps {
    * Manually set the index of the slide to be shown
    */
   slideIndex?: number;
-
+  
+  /** 
+   * While using prop animation = "zoom", you can configure space around current slide with slideOffset.
+   */
+  slideOffset?: number; 
+  
   /**
    * Slides to scroll at once. Set to "auto"
    * to always scroll the current number of visible slides
