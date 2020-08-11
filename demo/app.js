@@ -137,7 +137,7 @@ export default function App() {
           <button
             onClick={() => setWrapAround(prevWrapAround => !prevWrapAround)}
           >
-            Toggle Wrap Around
+            Toggle Wrap Around: {wrapAround.toString()}
           </button>
           <button onClick={() => setAutoplay(prevAutoPlay => !prevAutoPlay)}>
             Toggle Autoplay {autoplay === true ? 'Off' : 'On'}
@@ -189,7 +189,7 @@ export default function App() {
                     )
                   }
                 >
-                  Toggle Height Mode Current
+                  Toggle Height Mode: {heightMode}
                 </button>
                 <button
                   onClick={() =>
@@ -229,6 +229,15 @@ export default function App() {
                 }}
               >
                 Toggle SlidesToScroll {slidesToScroll === 1 ? 2 : 1}
+              </button>
+              <button
+                onClick={() => {
+                  setSlidesToShow(prevSlidesToShow =>
+                    prevSlidesToShow >= 3.0 ? 1.0 : prevSlidesToShow + 0.25
+                  );
+                }}
+              >
+                Increase Slides to Show: {slidesToShow}
               </button>
             </div>
           </>
