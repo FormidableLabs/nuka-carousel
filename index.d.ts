@@ -358,13 +358,13 @@ export interface CarouselProps {
    * Manually set the index of the slide to be shown
    */
   slideIndex?: number;
-  
-  /** 
-   * While using prop animation = "zoom", you can 
+
+  /**
+   * While using prop animation = "zoom", you can
    * configure space around current slide with slideOffset.
    */
-  slideOffset?: number; 
-  
+  slideOffset?: number;
+
   /**
    * Slides to scroll at once. Set to "auto"
    * to always scroll the current number of visible slides
@@ -426,10 +426,10 @@ export interface CarouselProps {
    * @default false
    */
   withoutControls?: boolean;
-  
+
   /**
-   * Adds a number value to set the scale of zoom when animation === "zoom". 
-   * The number value should be set in a range of (0,1). 
+   * Adds a number value to set the scale of zoom when animation === "zoom".
+   * The number value should be set in a range of (0,1).
    * @default 0.85
    */
   zoomScale?: number;

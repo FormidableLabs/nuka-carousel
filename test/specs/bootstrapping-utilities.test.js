@@ -110,6 +110,9 @@ describe('Bootstrapping Utilties', () => {
       // wrapAround = true
       const wrapHeight = findCurrentHeightSlide(4, 1.25, 'left', true, slides);
       expect(wrapHeight).toBe(500);
+
+      const wrapHeight2 = findCurrentHeightSlide(4, 4, 'left', true, slides);
+      expect(wrapHeight2).toBe(800);
     });
 
     describe('aligned center', () => {
