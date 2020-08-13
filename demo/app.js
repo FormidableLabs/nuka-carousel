@@ -68,6 +68,7 @@ export default function App() {
 
   return (
     <div style={{ width: '50%', margin: 'auto' }}>
+      <h2 style={{ textAlign: 'center' }}>Nuka Carousel Demo</h2>
       <Carousel
         cellSpacing={cellSpacing}
         animation={animation}
@@ -95,20 +96,17 @@ export default function App() {
       <div
         style={{
           display: 'flex',
+          alignItems: 'center',
           flexDirection: 'column',
           margin: '10px 0'
         }}
       >
         <div>
-          <button onClick={() => setSlideIndex(0)}>1</button>
-          <button onClick={() => setSlideIndex(1)}>2</button>
-          <button onClick={() => setSlideIndex(2)}>3</button>
-          <button onClick={() => setSlideIndex(3)}>4</button>
-          <button onClick={() => setSlideIndex(4)}>5</button>
-          <button onClick={() => setSlideIndex(5)}>6</button>
-          <button onClick={() => setSlideIndex(6)}>7</button>
-          <button onClick={() => setSlideIndex(7)}>8</button>
-          <button onClick={() => setSlideIndex(8)}>9</button>
+          {slides.map((slide, idx) => (
+            <button key={idx} onClick={() => setSlideIndex(idx)}>
+              {idx + 1}
+            </button>
+          ))}
         </div>
         {slidesToShow > 1.0 && (
           <div>
@@ -118,8 +116,15 @@ export default function App() {
           </div>
         )}
       </div>
-      <div className="wrapper">
-        <div style={{ textAlign: 'center' }}>
+      <div className="wrapper" style={{ padding: '0 40px' }}>
+        <div
+          style={{
+            marginBottom: '10px',
+            display: 'flex',
+            justifyContent: 'space-around',
+            height: '36px'
+          }}
+        >
           <button
             onClick={() => setLength(prevLength => (prevLength === 9 ? 3 : 9))}
           >
@@ -142,67 +147,62 @@ export default function App() {
           <button onClick={() => setAutoplay(prevAutoPlay => !prevAutoPlay)}>
             Toggle Autoplay {autoplay === true ? 'Off' : 'On'}
           </button>
-          <button
-            onClick={() =>
-              setScrollMode(prevScrollMode =>
-                prevScrollMode === 'remainder' ? 'page' : 'remainder'
-              )
-            }
-          >
-            Toggle ScrollMode: {scrollMode}
-          </button>
-          <button
-            onClick={() =>
-              setCellSpacing(prevCellSpacing => (prevCellSpacing > 0 ? 0 : 5))
-            }
-          >
-            Toggle Cellspacing {cellSpacing > 0 ? 'Off' : 'On'}
-          </button>
         </div>
 
         {transitionMode !== 'fade' && (
           <>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ marginLeft: 'auto' }}>
-                <button
-                  onClick={() => {
-                    setSlidesToShow(slidesToShow === 3 ? 1 : 3);
-                    setSlidesToScroll(slidesToScroll === 'auto' ? 1 : 'auto');
-                  }}
-                >
-                  Toggle Drag Multiple{' '}
-                  {slidesToShow > 1 && slidesToScroll === 'auto' ? 'Off' : 'On'}
-                </button>
-                <button
-                  onClick={() =>
-                    setSlidesToShow(prevSlidesToShow =>
-                      prevSlidesToShow > 1.0 ? 1.0 : 1.25
-                    )
-                  }
-                >
-                  Toggle Partially Visible Slides
-                </button>
-                <button
-                  onClick={() =>
-                    setHeightMode(prevHeightMode =>
-                      prevHeightMode === 'current' ? 'max' : 'current'
-                    )
-                  }
-                >
-                  Toggle Height Mode: {heightMode}
-                </button>
-                <button
-                  onClick={() =>
-                    setWithoutControls(
-                      prevWithoutControls => !prevWithoutControls
-                    )
-                  }
-                >
-                  Toggle Controls
-                </button>
-              </div>
+            <div
+              style={{
+                marginBottom: '10px',
+                display: 'flex',
+                justifyContent: 'space-around',
+                height: '36px'
+              }}
+            >
+              <button
+                onClick={() => {
+                  setSlidesToShow(slidesToShow === 3 ? 1 : 3);
+                  setSlidesToScroll(slidesToScroll === 'auto' ? 1 : 'auto');
+                }}
+              >
+                Toggle Drag Multiple{' '}
+                {slidesToShow > 1 && slidesToScroll === 'auto' ? 'Off' : 'On'}
+              </button>
+              <button
+                onClick={() =>
+                  setSlidesToShow(prevSlidesToShow =>
+                    prevSlidesToShow > 1.0 ? 1.0 : 1.25
+                  )
+                }
+              >
+                Toggle Partially Visible Slides
+              </button>
+              <button
+                onClick={() =>
+                  setHeightMode(prevHeightMode =>
+                    prevHeightMode === 'current' ? 'max' : 'current'
+                  )
+                }
+              >
+                Toggle Height Mode: {heightMode}
+              </button>
+              <button
+                onClick={() =>
+                  setWithoutControls(
+                    prevWithoutControls => !prevWithoutControls
+                  )
+                }
+              >
+                Toggle Controls
+              </button>
             </div>
-            <div style={{ textAlign: 'center' }}>
+            <div
+              style={{
+                marginBottom: '10px',
+                display: 'flex',
+                justifyContent: 'space-around'
+              }}
+            >
               {animation === 'zoom' && (
                 <input
                   type="number"
@@ -238,6 +238,24 @@ export default function App() {
                 }}
               >
                 Increase Slides to Show: {slidesToShow}
+              </button>
+              <button
+                onClick={() =>
+                  setScrollMode(prevScrollMode =>
+                    prevScrollMode === 'remainder' ? 'page' : 'remainder'
+                  )
+                }
+              >
+                Toggle ScrollMode: {scrollMode}
+              </button>
+              <button
+                onClick={() =>
+                  setCellSpacing(prevCellSpacing =>
+                    prevCellSpacing > 0 ? 0 : 5
+                  )
+                }
+              >
+                Toggle Cellspacing {cellSpacing > 0 ? 'Off' : 'On'}
               </button>
             </div>
           </>
