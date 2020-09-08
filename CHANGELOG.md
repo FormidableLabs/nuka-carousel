@@ -1,9 +1,18 @@
 # Nuka Changelog
 
+## 4.7.1 (2020-09-08)
+
+- [#706](https://github.com/FormidableLabs/nuka-carousel/pull/706) Add a more descriptive explanation about wrapAround
+- [#707](https://github.com/FormidableLabs/nuka-carousel/pull/707) Push fresh yarn.lock
+- [#716](https://github.com/FormidableLabs/nuka-carousel/pull/716) Update types for missing slideOffset, zoomScale
+- [#717](https://github.com/FormidableLabs/nuka-carousel/pull/717) fixes #709 - Carousel collapsing with certain prop config
+- [#723](https://github.com/FormidableLabs/nuka-carousel/pull/723) Cleanup dev dependencies, fix vulnerabilities, eslint fixes
+- [#698, #714, #722](https://github.com/FormidableLabs/nuka-carousel/pull/698, https://github.com/FormidableLabs/nuka-carousel/pull/714, https://github.com/FormidableLabs/nuka-carousel/pull/722) Dependency bumps
+
 ## 4.7.0 (2020-05-20)
 
 - [#695](https://github.com/FormidableLabs/nuka-carousel/pull/695) Add `slide-current` className to current 'active' slide, cleanup some utility functions
-- [#667](https://github.com/FormidableLabs/nuka-carousel/pull/667) Fixes Issue 622: Only fully visible slides are interactable. update wicg-inert version
+- [#667](https://github.com/FormidableLabs/nuka-carousel/pull/667) Fixes Issue 622: Only fully visible slides are interactive. update wicg-inert version
 
 ## 4.6.7 (2020-04-23)
 
