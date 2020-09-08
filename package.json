@@ -9,6 +9,7 @@
   "dependencies": {
     "csstype": "^2.6.6",
     "d3-ease": "^1.0.3",
+    "enzyme-adapter-react-16": "^1.15.4",
     "exenv": "^1.2.0",
     "prop-types": "^15.6.0",
     "react-move": "^6.1.0",
