@@ -1,7 +1,7 @@
 import React from 'react';
 import { getAlignmentOffset } from './utilities/style-utilities';
 
-const defaultButtonStyles = disabled => ({
+const defaultButtonStyles = (disabled) => ({
   border: 0,
   background: 'rgba(0,0,0,0.4)',
   color: 'white',
@@ -11,8 +11,8 @@ const defaultButtonStyles = disabled => ({
   cursor: disabled ? 'not-allowed' : 'pointer'
 });
 
-export const PreviousButton = props => {
-  const handleClick = event => {
+export const PreviousButton = (props) => {
+  const handleClick = (event) => {
     event.preventDefault();
     props.previousSlide();
   };
@@ -79,8 +79,8 @@ export const nextButtonDisabled = ({
   return buttonDisabled;
 };
 
-export const NextButton = props => {
-  const handleClick = event => {
+export const NextButton = (props) => {
+  const handleClick = (event) => {
     event.preventDefault();
     props.nextSlide();
   };
@@ -170,7 +170,7 @@ export const getDotIndexes = (
   return dotIndexes;
 };
 
-export const PagingDots = props => {
+export const PagingDots = (props) => {
   const getListStyles = () => ({
     position: 'relative',
     top: -10,
@@ -180,7 +180,7 @@ export const PagingDots = props => {
     listStyleType: 'none'
   });
 
-  const getButtonStyles = active => ({
+  const getButtonStyles = (active) => ({
     cursor: 'pointer',
     opacity: active ? 1 : 0.5,
     background: 'transparent',
@@ -204,7 +204,7 @@ export const PagingDots = props => {
 
   return (
     <ul className={pagingDotsContainerClassName} style={getListStyles()}>
-      {indexes.map(index => {
+      {indexes.map((index) => {
         const isActive = props.currentSlide === index;
 
         return (

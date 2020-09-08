@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const getValidChildren = children => {
+export const getValidChildren = (children) => {
   // .toArray automatically removes invalid React children
   return React.Children.toArray(children);
 };
@@ -9,7 +9,7 @@ const getMax = (a, b) => {
   return a > b ? a : b;
 };
 
-const getHeightOfSlide = slide => {
+const getHeightOfSlide = (slide) => {
   if (!slide) {
     return 0;
   }

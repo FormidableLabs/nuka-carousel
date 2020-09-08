@@ -202,8 +202,9 @@ export default class ScrollTransition3D extends React.Component {
       left: `calc(50% - (${this.props.slideWidth}px / 2))`,
       margin: this.props.vertical
         ? `${(this.props.cellSpacing / 2) * -1}px 0px`
-        : `${this.props.slideListMargin}px ${(this.props.cellSpacing / 2) *
-            -1}px`,
+        : `${this.props.slideListMargin}px ${
+            (this.props.cellSpacing / 2) * -1
+          }px`,
       MozBoxSizing: 'border-box',
       padding: 0,
       position: 'relative',

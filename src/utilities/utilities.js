@@ -1,7 +1,7 @@
 import React from 'react';
 import { getAlignmentOffset } from './style-utilities';
 
-export const addEvent = function(elem, type, eventHandle) {
+export const addEvent = function (elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
     return;
   }
@@ -14,7 +14,7 @@ export const addEvent = function(elem, type, eventHandle) {
   }
 };
 
-export const removeEvent = function(elem, type, eventHandle) {
+export const removeEvent = function (elem, type, eventHandle) {
   if (elem === null || typeof elem === 'undefined') {
     return;
   }
@@ -74,7 +74,7 @@ export const getPropsByTransitionMode = (props, keys) => {
   const { slidesToShow, transitionMode } = props;
   const updatedDefaults = {};
   if (transitionMode === 'fade') {
-    keys.forEach(key => {
+    keys.forEach((key) => {
       switch (key) {
         case 'slidesToShow':
           updatedDefaults[key] = Math.max(parseInt(slidesToShow), 1);
@@ -91,7 +91,7 @@ export const getPropsByTransitionMode = (props, keys) => {
       }
     });
   } else {
-    keys.forEach(key => {
+    keys.forEach((key) => {
       updatedDefaults[key] = props[key];
     });
   }
@@ -153,11 +153,16 @@ export const shouldUpdate = (curr, next, keys) => {
   return update;
 };
 
-export const calcSomeInitialState = props => {
-  const { slidesToScroll, slidesToShow, cellAlign } = getPropsByTransitionMode(
-    props,
-    ['slidesToScroll', 'slidesToShow', 'cellAlign']
-  );
+export const calcSomeInitialState = (props) => {
+  const {
+    slidesToScroll,
+    slidesToShow,
+    cellAlign
+  } = getPropsByTransitionMode(props, [
+    'slidesToScroll',
+    'slidesToShow',
+    'cellAlign'
+  ]);
 
   const slideWidth = props.vertical
     ? props.initialSlideHeight || 0
@@ -179,7 +184,7 @@ export const calcSomeInitialState = props => {
   };
 };
 
-export const handleSelfFocus = e => {
+export const handleSelfFocus = (e) => {
   if (e && e.currentTarget) {
     e.currentTarget.focus();
   }

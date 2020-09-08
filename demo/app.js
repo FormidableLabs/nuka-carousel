@@ -32,14 +32,14 @@ export default function App() {
   const [zoomScale, setZoomScale] = useState(0.5);
 
   const handleImageClick = useCallback(() => {
-    setUnderlineHeader(prevUnderlineHeader => !prevUnderlineHeader);
+    setUnderlineHeader((prevUnderlineHeader) => !prevUnderlineHeader);
   }, []);
 
-  const handleZoomScaleChange = useCallback(event => {
+  const handleZoomScaleChange = useCallback((event) => {
     setZoomScale(event.target.value);
   }, []);
 
-  const renderTopControls = currentSlide => {
+  const renderTopControls = (currentSlide) => {
     return (
       <div
         style={{
@@ -55,8 +55,9 @@ export default function App() {
 
   const slides = colors.slice(0, length).map((color, index) => (
     <img
-      src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${index +
-        1}`}
+      src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${
+        index + 1
+      }`}
       alt={`Slide ${index + 1}`}
       key={color}
       onClick={() => handleImageClick()}
@@ -126,13 +127,15 @@ export default function App() {
           }}
         >
           <button
-            onClick={() => setLength(prevLength => (prevLength === 9 ? 3 : 9))}
+            onClick={() =>
+              setLength((prevLength) => (prevLength === 9 ? 3 : 9))
+            }
           >
             Toggle Show 3 Slides Only
           </button>
           <button
             onClick={() =>
-              setTransitionMode(prevTransitionMode =>
+              setTransitionMode((prevTransitionMode) =>
                 prevTransitionMode === 'fade' ? 'scroll' : 'fade'
               )
             }
@@ -140,11 +143,11 @@ export default function App() {
             Toggle Fade {transitionMode === 'fade' ? 'Off' : 'On'}
           </button>
           <button
-            onClick={() => setWrapAround(prevWrapAround => !prevWrapAround)}
+            onClick={() => setWrapAround((prevWrapAround) => !prevWrapAround)}
           >
             Toggle Wrap Around: {wrapAround.toString()}
           </button>
-          <button onClick={() => setAutoplay(prevAutoPlay => !prevAutoPlay)}>
+          <button onClick={() => setAutoplay((prevAutoPlay) => !prevAutoPlay)}>
             Toggle Autoplay {autoplay === true ? 'Off' : 'On'}
           </button>
         </div>
@@ -170,7 +173,7 @@ export default function App() {
               </button>
               <button
                 onClick={() =>
-                  setSlidesToShow(prevSlidesToShow =>
+                  setSlidesToShow((prevSlidesToShow) =>
                     prevSlidesToShow > 1.0 ? 1.0 : 1.25
                   )
                 }
@@ -179,7 +182,7 @@ export default function App() {
               </button>
               <button
                 onClick={() =>
-                  setHeightMode(prevHeightMode =>
+                  setHeightMode((prevHeightMode) =>
                     prevHeightMode === 'current' ? 'max' : 'current'
                   )
                 }
@@ -189,7 +192,7 @@ export default function App() {
               <button
                 onClick={() =>
                   setWithoutControls(
-                    prevWithoutControls => !prevWithoutControls
+                    (prevWithoutControls) => !prevWithoutControls
                   )
                 }
               >
@@ -212,7 +215,7 @@ export default function App() {
               )}
               <button
                 onClick={() => {
-                  setAnimation(prevAnimation =>
+                  setAnimation((prevAnimation) =>
                     prevAnimation === 'zoom' ? undefined : 'zoom'
                   );
                   setCellAlign('center');
@@ -222,7 +225,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => {
-                  setSlidesToScroll(prevSlidesToScroll =>
+                  setSlidesToScroll((prevSlidesToScroll) =>
                     prevSlidesToScroll === 1 ? 2 : 1
                   );
                   setCellAlign('center');
@@ -232,7 +235,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => {
-                  setSlidesToShow(prevSlidesToShow =>
+                  setSlidesToShow((prevSlidesToShow) =>
                     prevSlidesToShow >= 3.0 ? 1.0 : prevSlidesToShow + 0.25
                   );
                 }}
@@ -241,7 +244,7 @@ export default function App() {
               </button>
               <button
                 onClick={() =>
-                  setScrollMode(prevScrollMode =>
+                  setScrollMode((prevScrollMode) =>
                     prevScrollMode === 'remainder' ? 'page' : 'remainder'
                   )
                 }
@@ -250,7 +253,7 @@ export default function App() {
               </button>
               <button
                 onClick={() =>
-                  setCellSpacing(prevCellSpacing =>
+                  setCellSpacing((prevCellSpacing) =>
                     prevCellSpacing > 0 ? 0 : 5
                   )
                 }

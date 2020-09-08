@@ -257,7 +257,7 @@ describe('<Carousel />', () => {
     it('should merge provided defaultControlsConfig.containerStyle with default styles.', () => {
       const wrapper = mount(
         <Carousel
-          getControlsContainerStyles={key => {
+          getControlsContainerStyles={(key) => {
             switch (key) {
               case 'BottomCenter':
                 return {
@@ -499,7 +499,7 @@ describe('<Carousel />', () => {
       const wrapper = mount(
         <Carousel>
           <p key="Static Slide">Static Slide</p>
-          {elems.map(e => (
+          {elems.map((e) => (
             <p key={e}>{e}</p>
           ))}
         </Carousel>
@@ -941,7 +941,7 @@ describe('<Carousel />', () => {
       );
       expect(wrapper).toHaveProp({ withoutControls: true });
       const { renderControls } = wrapper.instance();
-      expect(renderControls().every(element => element === null));
+      expect(renderControls().every((element) => element === null));
     });
 
     it('should render a custom top left control.', () => {
@@ -1048,7 +1048,7 @@ describe('<Carousel />', () => {
       const wrapper = mount(
         <Carousel
           wrapAround
-          renderCenterCenterControls={props => <CustomControls {...props} />}
+          renderCenterCenterControls={(props) => <CustomControls {...props} />}
         >
           <p>Slide 1</p>
           <p>Slide 2</p>

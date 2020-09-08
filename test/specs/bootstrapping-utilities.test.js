@@ -5,7 +5,7 @@ import {
 
 describe('Bootstrapping Utilties', () => {
   describe('#findMaxHeightSlideInRange', () => {
-    const sharedFindMaxHeightTests = slides => {
+    const sharedFindMaxHeightTests = (slides) => {
       it('should find slide with max height', () => {
         // start < end
         expect(findMaxHeightSlideInRange(slides, 0, slides.length)).toBe(800);
