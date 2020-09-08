@@ -9,11 +9,9 @@
   "dependencies": {
     "csstype": "^2.6.6",
     "d3-ease": "^1.0.3",
-    "enzyme-adapter-react-16": "^1.15.4",
     "exenv": "^1.2.0",
     "prop-types": "^15.6.0",
     "react-move": "^6.1.0",
-    "webpack-cli": "^3.3.12",
     "wicg-inert": "^3.0.3"
   },
   "devDependencies": {
@@ -29,6 +27,7 @@
     "babel-loader": "8.1.0",
     "builder": "^5.0.0",
     "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.15.4",
     "eslint": "^4.8.0",
     "eslint-config-formidable": "^3.0.0",
     "eslint-config-jest-enzyme": "^6.0.0",
@@ -48,6 +47,7 @@
     "typescript": "^3.6.2",
     "url-loader": "^4.1.0",
     "webpack": "4.44.1",
+    "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.0.0"
   },
   "peerDependencies": {
