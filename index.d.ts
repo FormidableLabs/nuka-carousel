@@ -290,6 +290,12 @@ export interface CarouselProps {
   onResize?: () => void;
 
   /**
+   * Adds a number value to set the scale of the opacity for the 'scroll3d' transition mode.
+   * @default 0.65
+   */
+  opacityScale?: number;
+
+  /**
    * Pause autoPlay when mouse is over carousel
    * @default true
    */
