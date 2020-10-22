@@ -282,7 +282,7 @@ export interface CarouselProps {
   /**
    * optional callback function
    */
-  onDragStart?: () => void;
+  onDragStart?: (e?: Event) => void;
 
   /**
    * Window onResize callback
