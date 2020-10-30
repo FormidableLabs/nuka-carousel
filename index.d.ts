@@ -500,13 +500,13 @@ export interface CarouselState {
 }
 
 export interface PreviousButtonProps extends CarouselSlideRenderControlProps {}
-export class PreviousButton extends React.Component<PreviousButtonProps> {}
+export class PreviousButton extends React.FunctionalComponent<PreviousButtonProps> {}
 
 export interface NextButtonProps extends CarouselSlideRenderControlProps {}
-export class NextButton extends React.Component<NextButtonProps> {}
+export class NextButton extends React.FunctionalComponent<NextButtonProps> {}
 
 export interface PagingDotsProps extends CarouselSlideRenderControlProps {}
-export class PagingDots extends React.Component<PagingDotsProps> {
+export class PagingDots extends React.FunctionalComponent<PagingDotsProps> {
   public getButtonStyles(active: boolean): React.CSSProperties;
   public getListStyles(): React.CSSProperties;
   public getDotIndexes(
