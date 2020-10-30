@@ -282,12 +282,18 @@ export interface CarouselProps {
   /**
    * optional callback function
    */
-  onDragStart?: () => void;
+  onDragStart?: (e?: Event) => void;
 
   /**
    * Window onResize callback
    */
   onResize?: () => void;
+
+  /**
+   * Adds a number value to set the scale of the opacity for the 'scroll3d' transition mode.
+   * @default 0.65
+   */
+  opacityScale?: number;
 
   /**
    * Pause autoPlay when mouse is over carousel
@@ -360,6 +366,12 @@ export interface CarouselProps {
   slideIndex?: number;
 
   /**
+   * While using prop animation = "zoom", you can
+   * configure space around current slide with slideOffset.
+   */
+  slideOffset?: number;
+
+  /**
    * Slides to scroll at once. Set to "auto"
    * to always scroll the current number of visible slides
    */
@@ -420,6 +432,13 @@ export interface CarouselProps {
    * @default false
    */
   withoutControls?: boolean;
+
+  /**
+   * Adds a number value to set the scale of zoom when animation === "zoom".
+   * The number value should be set in a range of (0,1).
+   * @default 0.85
+   */
+  zoomScale?: number;
 }
 
 export interface CarouselState {
@@ -481,13 +500,13 @@ export interface CarouselState {
 }
 
 export interface PreviousButtonProps extends CarouselSlideRenderControlProps {}
-export class PreviousButton extends React.Component<PreviousButtonProps> {}
+export class PreviousButton extends React.FunctionalComponent<PreviousButtonProps> {}
 
 export interface NextButtonProps extends CarouselSlideRenderControlProps {}
-export class NextButton extends React.Component<NextButtonProps> {}
+export class NextButton extends React.FunctionalComponent<NextButtonProps> {}
 
 export interface PagingDotsProps extends CarouselSlideRenderControlProps {}
-export class PagingDots extends React.Component<PagingDotsProps> {
+export class PagingDots extends React.FunctionalComponent<PagingDotsProps> {
   public getButtonStyles(active: boolean): React.CSSProperties;
   public getListStyles(): React.CSSProperties;
   public getDotIndexes(

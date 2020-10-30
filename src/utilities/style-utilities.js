@@ -5,7 +5,7 @@ export const getImgTagStyles = () => {
           .slider-slide > img:focus { margin: auto; }`;
 };
 
-export const getSlideHeight = props => {
+export const getSlideHeight = (props) => {
   const childCount = React.Children.count(props.children);
   const listWidth = props.slideWidth * childCount;
   const spacingOffset = props.cellSpacing * childCount;
@@ -43,7 +43,7 @@ export const getAlignmentOffset = (slideIndex, config) => {
   return offset;
 };
 
-export const getDecoratorStyles = position => {
+export const getDecoratorStyles = (position) => {
   switch (position) {
     case 'TopLeft': {
       return {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const getValidChildren = children => {
+export const getValidChildren = (children) => {
   // .toArray automatically removes invalid React children
   return React.Children.toArray(children);
 };
@@ -9,7 +9,7 @@ const getMax = (a, b) => {
   return a > b ? a : b;
 };
 
-const getHeightOfSlide = slide => {
+const getHeightOfSlide = (slide) => {
   if (!slide) {
     return 0;
   }
@@ -60,6 +60,17 @@ export const findMaxHeightSlideInRange = (slides, start, end) => {
   return maxHeight;
 };
 
+const ensureIndexInBounds = (index, slideCount) => {
+  let newIndex = index;
+  while (newIndex < 0) {
+    newIndex += slideCount;
+  }
+  while (newIndex > slideCount) {
+    newIndex -= slideCount;
+  }
+  return newIndex;
+};
+
 export const findCurrentHeightSlide = (
   currentSlide,
   slidesToShow,
@@ -88,22 +99,20 @@ export const findCurrentHeightSlide = (
         lastIndex = currentSlide + 1;
         break;
       case 'left':
-        startIndex = Math.floor(currentSlide + offset);
+        startIndex = currentSlide;
         lastIndex = Math.ceil(currentSlide + offset) + 1;
         break;
     }
 
     // inclusive
-    startIndex =
-      wrapAround && startIndex < 0
-        ? slides.length + startIndex
-        : Math.max(startIndex, 0);
+    startIndex = wrapAround
+      ? ensureIndexInBounds(startIndex, slides.length)
+      : Math.max(startIndex, 0);
 
     // exclusive
-    lastIndex =
-      wrapAround && lastIndex > slides.length
-        ? lastIndex - slides.length
-        : Math.min(lastIndex, slides.length);
+    lastIndex = wrapAround
+      ? ensureIndexInBounds(lastIndex, slides.length)
+      : Math.min(lastIndex, slides.length);
 
     return findMaxHeightSlideInRange(slides, startIndex, lastIndex);
   } else {

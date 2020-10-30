@@ -32,14 +32,14 @@ export default function App() {
   const [zoomScale, setZoomScale] = useState(0.5);
 
   const handleImageClick = useCallback(() => {
-    setUnderlineHeader(prevUnderlineHeader => !prevUnderlineHeader);
+    setUnderlineHeader((prevUnderlineHeader) => !prevUnderlineHeader);
   }, []);
 
-  const handleZoomScaleChange = useCallback(event => {
+  const handleZoomScaleChange = useCallback((event) => {
     setZoomScale(event.target.value);
   }, []);
 
-  const renderTopControls = currentSlide => {
+  const renderTopControls = (currentSlide) => {
     return (
       <div
         style={{
@@ -55,8 +55,9 @@ export default function App() {
 
   const slides = colors.slice(0, length).map((color, index) => (
     <img
-      src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${index +
-        1}`}
+      src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${
+        index + 1
+      }`}
       alt={`Slide ${index + 1}`}
       key={color}
       onClick={() => handleImageClick()}
@@ -68,6 +69,7 @@ export default function App() {
 
   return (
     <div style={{ width: '50%', margin: 'auto' }}>
+      <h2 style={{ textAlign: 'center' }}>Nuka Carousel Demo</h2>
       <Carousel
         cellSpacing={cellSpacing}
         animation={animation}
@@ -95,20 +97,17 @@ export default function App() {
       <div
         style={{
           display: 'flex',
+          alignItems: 'center',
           flexDirection: 'column',
           margin: '10px 0'
         }}
       >
         <div>
-          <button onClick={() => setSlideIndex(0)}>1</button>
-          <button onClick={() => setSlideIndex(1)}>2</button>
-          <button onClick={() => setSlideIndex(2)}>3</button>
-          <button onClick={() => setSlideIndex(3)}>4</button>
-          <button onClick={() => setSlideIndex(4)}>5</button>
-          <button onClick={() => setSlideIndex(5)}>6</button>
-          <button onClick={() => setSlideIndex(6)}>7</button>
-          <button onClick={() => setSlideIndex(7)}>8</button>
-          <button onClick={() => setSlideIndex(8)}>9</button>
+          {slides.map((slide, idx) => (
+            <button key={idx} onClick={() => setSlideIndex(idx)}>
+              {idx + 1}
+            </button>
+          ))}
         </div>
         {slidesToShow > 1.0 && (
           <div>
@@ -118,16 +117,25 @@ export default function App() {
           </div>
         )}
       </div>
-      <div className="wrapper">
-        <div style={{ textAlign: 'center' }}>
+      <div className="wrapper" style={{ padding: '0 40px' }}>
+        <div
+          style={{
+            marginBottom: '10px',
+            display: 'flex',
+            justifyContent: 'space-around',
+            height: '36px'
+          }}
+        >
           <button
-            onClick={() => setLength(prevLength => (prevLength === 9 ? 3 : 9))}
+            onClick={() =>
+              setLength((prevLength) => (prevLength === 9 ? 3 : 9))
+            }
           >
             Toggle Show 3 Slides Only
           </button>
           <button
             onClick={() =>
-              setTransitionMode(prevTransitionMode =>
+              setTransitionMode((prevTransitionMode) =>
                 prevTransitionMode === 'fade' ? 'scroll' : 'fade'
               )
             }
@@ -135,74 +143,69 @@ export default function App() {
             Toggle Fade {transitionMode === 'fade' ? 'Off' : 'On'}
           </button>
           <button
-            onClick={() => setWrapAround(prevWrapAround => !prevWrapAround)}
+            onClick={() => setWrapAround((prevWrapAround) => !prevWrapAround)}
           >
-            Toggle Wrap Around
+            Toggle Wrap Around: {wrapAround.toString()}
           </button>
-          <button onClick={() => setAutoplay(prevAutoPlay => !prevAutoPlay)}>
+          <button onClick={() => setAutoplay((prevAutoPlay) => !prevAutoPlay)}>
             Toggle Autoplay {autoplay === true ? 'Off' : 'On'}
-          </button>
-          <button
-            onClick={() =>
-              setScrollMode(prevScrollMode =>
-                prevScrollMode === 'remainder' ? 'page' : 'remainder'
-              )
-            }
-          >
-            Toggle ScrollMode: {scrollMode}
-          </button>
-          <button
-            onClick={() =>
-              setCellSpacing(prevCellSpacing => (prevCellSpacing > 0 ? 0 : 5))
-            }
-          >
-            Toggle Cellspacing {cellSpacing > 0 ? 'Off' : 'On'}
           </button>
         </div>
 
         {transitionMode !== 'fade' && (
           <>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ marginLeft: 'auto' }}>
-                <button
-                  onClick={() => {
-                    setSlidesToShow(slidesToShow === 3 ? 1 : 3);
-                    setSlidesToScroll(slidesToScroll === 'auto' ? 1 : 'auto');
-                  }}
-                >
-                  Toggle Drag Multiple{' '}
-                  {slidesToShow > 1 && slidesToScroll === 'auto' ? 'Off' : 'On'}
-                </button>
-                <button
-                  onClick={() =>
-                    setSlidesToShow(prevSlidesToShow =>
-                      prevSlidesToShow > 1.0 ? 1.0 : 1.25
-                    )
-                  }
-                >
-                  Toggle Partially Visible Slides
-                </button>
-                <button
-                  onClick={() =>
-                    setHeightMode(prevHeightMode =>
-                      prevHeightMode === 'current' ? 'max' : 'current'
-                    )
-                  }
-                >
-                  Toggle Height Mode Current
-                </button>
-                <button
-                  onClick={() =>
-                    setWithoutControls(
-                      prevWithoutControls => !prevWithoutControls
-                    )
-                  }
-                >
-                  Toggle Controls
-                </button>
-              </div>
+            <div
+              style={{
+                marginBottom: '10px',
+                display: 'flex',
+                justifyContent: 'space-around',
+                height: '36px'
+              }}
+            >
+              <button
+                onClick={() => {
+                  setSlidesToShow(slidesToShow === 3 ? 1 : 3);
+                  setSlidesToScroll(slidesToScroll === 'auto' ? 1 : 'auto');
+                }}
+              >
+                Toggle Drag Multiple{' '}
+                {slidesToShow > 1 && slidesToScroll === 'auto' ? 'Off' : 'On'}
+              </button>
+              <button
+                onClick={() =>
+                  setSlidesToShow((prevSlidesToShow) =>
+                    prevSlidesToShow > 1.0 ? 1.0 : 1.25
+                  )
+                }
+              >
+                Toggle Partially Visible Slides
+              </button>
+              <button
+                onClick={() =>
+                  setHeightMode((prevHeightMode) =>
+                    prevHeightMode === 'current' ? 'max' : 'current'
+                  )
+                }
+              >
+                Toggle Height Mode: {heightMode}
+              </button>
+              <button
+                onClick={() =>
+                  setWithoutControls(
+                    (prevWithoutControls) => !prevWithoutControls
+                  )
+                }
+              >
+                Toggle Controls
+              </button>
             </div>
-            <div style={{ textAlign: 'center' }}>
+            <div
+              style={{
+                marginBottom: '10px',
+                display: 'flex',
+                justifyContent: 'space-around'
+              }}
+            >
               {animation === 'zoom' && (
                 <input
                   type="number"
@@ -212,7 +215,7 @@ export default function App() {
               )}
               <button
                 onClick={() => {
-                  setAnimation(prevAnimation =>
+                  setAnimation((prevAnimation) =>
                     prevAnimation === 'zoom' ? undefined : 'zoom'
                   );
                   setCellAlign('center');
@@ -222,13 +225,40 @@ export default function App() {
               </button>
               <button
                 onClick={() => {
-                  setSlidesToScroll(prevSlidesToScroll =>
+                  setSlidesToScroll((prevSlidesToScroll) =>
                     prevSlidesToScroll === 1 ? 2 : 1
                   );
                   setCellAlign('center');
                 }}
               >
                 Toggle SlidesToScroll {slidesToScroll === 1 ? 2 : 1}
+              </button>
+              <button
+                onClick={() => {
+                  setSlidesToShow((prevSlidesToShow) =>
+                    prevSlidesToShow >= 3.0 ? 1.0 : prevSlidesToShow + 0.25
+                  );
+                }}
+              >
+                Increase Slides to Show: {slidesToShow}
+              </button>
+              <button
+                onClick={() =>
+                  setScrollMode((prevScrollMode) =>
+                    prevScrollMode === 'remainder' ? 'page' : 'remainder'
+                  )
+                }
+              >
+                Toggle ScrollMode: {scrollMode}
+              </button>
+              <button
+                onClick={() =>
+                  setCellSpacing((prevCellSpacing) =>
+                    prevCellSpacing > 0 ? 0 : 5
+                  )
+                }
+              >
+                Toggle Cellspacing {cellSpacing > 0 ? 'Off' : 'On'}
               </button>
             </div>
           </>
