@@ -124,28 +124,7 @@ export default class Carousel extends React.Component {
     );
     this.keyCodeMap = this.getKeyCodeMap(keyCodeConfig);
     this.getLockScrollEvents().lockTouchScroll();
-
-    const heightCheckDelay = 200;
-    const initializeHeight = (delay) => {
-      this.timers.push(
-        setTimeout(() => {
-          // If slideHeight is greater than zero, then
-          // assume the app has been initialized.  If not,
-          // keep trying to set dimensions until things work.
-          if (this.state.slideHeight > 0) {
-            return;
-          }
-
-          this.setDimensions();
-
-          // Increase delay per attempt so the checks
-          // slowly decrease if content is taking forever to load.
-          initializeHeight(delay + heightCheckDelay);
-        }, delay)
-      );
-    };
-
-    initializeHeight(heightCheckDelay);
+    this.initializeCarouselHeight();
   }
 
   // eslint-disable-next-line complexity
@@ -153,6 +132,7 @@ export default class Carousel extends React.Component {
     const slideChanged = prevState.currentSlide !== this.state.currentSlide;
     const heightModeChanged = prevProps.heightMode !== this.props.heightMode;
     const axisChanged = prevProps.vertical !== this.props.vertical;
+    const childrenChanged = prevProps.children !== this.props.children;
 
     if (axisChanged) {
       this.onResize();
@@ -205,6 +185,9 @@ export default class Carousel extends React.Component {
         this.setDimensions(this.props);
       }
     }
+    if (childrenChanged) {
+      this.initializeCarouselHeight();
+    }
 
     if (slideCountChanged && slideCount <= this.state.currentSlide) {
       this.goToSlide(Math.max(slideCount - 1, 0), this.props);
@@ -235,6 +218,30 @@ export default class Carousel extends React.Component {
       clearTimeout(this.timers[i]);
     }
     this.getLockScrollEvents().unlockTouchScroll();
+  }
+
+  initializeCarouselHeight() {
+    const heightCheckDelay = 200;
+    const initializeHeight = delay => {
+      this.timers.push(
+        setTimeout(() => {
+          // If slideHeight is greater than zero, then
+          // assume the app has been initialized.  If not,
+          // keep trying to set dimensions until things work.
+          if (this.state.slideHeight > 0) {
+            return;
+          }
+
+          this.setDimensions();
+
+          // Increase delay per attempt so the checks
+          // slowly decrease if content is taking forever to load.
+          initializeHeight(delay + heightCheckDelay);
+        }, delay)
+      );
+    };
+
+    initializeHeight(heightCheckDelay);
   }
 
   establishChildNodesMutationObserver() {
