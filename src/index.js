@@ -222,7 +222,7 @@ export default class Carousel extends React.Component {
 
   initializeCarouselHeight() {
     const heightCheckDelay = 200;
-    const initializeHeight = delay => {
+    const initializeHeight = (delay) => {
       this.timers.push(
         setTimeout(() => {
           // If slideHeight is greater than zero, then
@@ -265,8 +265,8 @@ export default class Carousel extends React.Component {
 
       const childNodesArray = Array.from(childNodes);
 
-      for (const node of childNodesArray) {
-        observeChildNodeMutation(node);
+      for (const childNode of childNodesArray) {
+        observeChildNodeMutation(childNode);
       }
     }
   }
