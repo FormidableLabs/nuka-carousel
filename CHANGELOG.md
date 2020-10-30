@@ -1,5 +1,12 @@
 # Nuka Changelog
 
+## 4.7.2 (2020-10-30)
+
+- [#733](https://github.com/FormidableLabs/nuka-carousel/pull/733) Fix package vulnerability
+- [#731](https://github.com/FormidableLabs/nuka-carousel/pull/731) Update onDragStart type
+- [#729](https://github.com/FormidableLabs/nuka-carousel/pull/729) Type def updates
+- [#728](https://github.com/FormidableLabs/nuka-carousel/pull/728) Add opacityScale to type defs
+
 ## 4.7.1 (2020-09-08)
 
 - [#706](https://github.com/FormidableLabs/nuka-carousel/pull/706) Add a more descriptive explanation about wrapAround
