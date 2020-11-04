@@ -163,8 +163,8 @@ export const getDotIndexes = (
     dotIndexes.push(i);
   }
 
-  if (cellAlign === 'left' && scrollMode === 'page') {
-    lastDotIndex = slideCount - (slideCount % Math.round(slidesToShow) || Math.round(slidesToShow))
+  if (cellAlign === 'left' && scrollMode === 'page' && slidesToShow % 1 == 0) {
+    lastDotIndex = slideCount - (slideCount % slidesToShow || slidesToShow)
   }
 
   dotIndexes.push(lastDotIndex);
@@ -196,7 +196,6 @@ export const PagingDots = (props) => {
     props.cellAlign,
     props.scrollMode
   );
-
   const {
     pagingDotsContainerClassName,
     pagingDotsClassName,
