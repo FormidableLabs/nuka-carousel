@@ -7,7 +7,14 @@ describe('getDotIndexes', () => {
     expect(getDotIndexes(6, 2, 1, 'left', 'page')).toEqual([0, 2, 4, 5]);
     expect(getDotIndexes(6, 2, 2, 'left', 'page')).toEqual([0, 2, 4]);
     expect(getDotIndexes(6, 2, 1.5, 'left', 'page')).toEqual([0, 2, 4, 5]);
-    expect(getDotIndexes(6, 1, 1.5, 'left', 'page')).toEqual([0, 1, 2, 3, 4, 5]);
+    expect(getDotIndexes(6, 1, 1.5, 'left', 'page')).toEqual([
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]);
     expect(getDotIndexes(6, 3, 5, 'left', 'page')).toEqual([0, 5]);
     expect(getDotIndexes(6, 1, 3, 'left', 'page')).toEqual([0, 1, 2, 3]);
     expect(getDotIndexes(6, 5, 3, 'left', 'page')).toEqual([0, 3]);
@@ -31,7 +38,7 @@ describe('getDotIndexes', () => {
     expect(getDotIndexes(6, 1, 3, 'left')).toEqual([0, 1, 2, 3]);
     expect(getDotIndexes(6, 2, 1.5, 'left')).toEqual([0, 2, 4, 5]);
     expect(getDotIndexes(6, 1, 1.5, 'left')).toEqual([0, 1, 2, 3, 4, 5]);
-    expect(getDotIndexes(6, 5, 3, 'left', 'page')).toEqual([0, 3]);
+    expect(getDotIndexes(6, 5, 3, 'left')).toEqual([0, 3]);
 
     // testing extreme scenarios on number of pages
     expect(getDotIndexes(11, 5, 3, 'left')).toEqual([0, 5, 8]);
@@ -85,24 +92,59 @@ describe('getDotIndexes', () => {
     // testing smaller number of pages when cellAlign = `center`
     expect(getDotIndexes(6, 2, 2, 'center', 'page')).toEqual([0, 2, 4, 5]);
     expect(getDotIndexes(6, 3, 5, 'center', 'page')).toEqual([0, 3, 5]);
-    expect(getDotIndexes(6, 1, 3, 'center', 'page')).toEqual([0, 1, 2, 3, 4, 5]);
+    expect(getDotIndexes(6, 1, 3, 'center', 'page')).toEqual([
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]);
     expect(getDotIndexes(6, 2, 1.5, 'center', 'page')).toEqual([0, 2, 4, 5]);
-    expect(getDotIndexes(6, 1, 1.5, 'center', 'page')).toEqual([0, 1, 2, 3, 4, 5]);
+    expect(getDotIndexes(6, 1, 1.5, 'center', 'page')).toEqual([
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]);
 
     // testing smaller number of pages cellAlign = `right`
     expect(getDotIndexes(6, 2, 2, 'right', 'page')).toEqual([0, 2, 4, 5]);
     expect(getDotIndexes(6, 3, 5, 'right', 'page')).toEqual([0, 3, 5]);
     expect(getDotIndexes(6, 1, 3, 'right', 'page')).toEqual([0, 1, 2, 3, 4, 5]);
     expect(getDotIndexes(6, 2, 1.5, 'right', 'page')).toEqual([0, 2, 4, 5]);
-    expect(getDotIndexes(6, 1, 1.5, 'right', 'page')).toEqual([0, 1, 2, 3, 4, 5]);
+    expect(getDotIndexes(6, 1, 1.5, 'right', 'page')).toEqual([
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]);
 
     // testing extreme scenarios on number of pages when cellAlign = `center`
     expect(getDotIndexes(11, 5, 3, 'center', 'page')).toEqual([0, 5, 10]);
-    expect(getDotIndexes(11, 2, 7, 'center', 'page')).toEqual([0, 2, 4, 6, 8, 10]);
+    expect(getDotIndexes(11, 2, 7, 'center', 'page')).toEqual([
+      0,
+      2,
+      4,
+      6,
+      8,
+      10
+    ]);
 
     // testing extreme scenarios on number of pages when cellAlign = `right`
     expect(getDotIndexes(11, 5, 3, 'right', 'page')).toEqual([0, 5, 10]);
-    expect(getDotIndexes(11, 2, 7, 'right', 'page')).toEqual([0, 2, 4, 6, 8, 10]);
+    expect(getDotIndexes(11, 2, 7, 'right', 'page')).toEqual([
+      0,
+      2,
+      4,
+      6,
+      8,
+      10
+    ]);
 
     // testing edge case scenarios when cellAlign = `center`
     expect(getDotIndexes(5, 2, 6, 'center', 'page')).toEqual([0, 2, 4]);
