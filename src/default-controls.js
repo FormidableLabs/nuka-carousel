@@ -144,6 +144,7 @@ export const getDotIndexes = (
 ) => {
   const dotIndexes = [];
   let lastDotIndex = slideCount - slidesToShow;
+  const slidesToShowIsDecimal = slidesToShow % 1 !== 0;
 
   switch (cellAlign) {
     case 'center':
@@ -152,7 +153,7 @@ export const getDotIndexes = (
       break;
   }
   // the below condition includes the last index if slidesToShow is decimal
-  if (cellAlign === 'left' && slidesToShow % 1 !== 0) {
+  if (cellAlign === 'left' && slidesToShowIsDecimal) {
     lastDotIndex += slidesToShow - 1;
   }
 
@@ -165,7 +166,7 @@ export const getDotIndexes = (
   }
 
   // the below condition includes the last index if slidesToShow is not decimal and cellAlign = left and mode = page
-  if (cellAlign === 'left' && scrollMode === 'page' && slidesToShow % 1 === 0) {
+  if (cellAlign === 'left' && scrollMode === 'page' && !slidesToShowIsDecimal) {
     lastDotIndex = slideCount - (slideCount % slidesToShow || slidesToShow);
   }
 

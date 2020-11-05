@@ -88,7 +88,7 @@ describe('getDotIndexes', () => {
     expect(getDotIndexes(6, 2, 1, 'right')).toEqual([0, 2, 4, 5]);
   });
 
-  it('should return valid array of paging dot indexes when cellAlign = `center` || `right` and scrolMode=page', () => {
+  it('should return valid array of paging dot indexes when cellAlign = `center` || `right` and scrollMode=page', () => {
     // testing smaller number of pages when cellAlign = `center`
     expect(getDotIndexes(6, 2, 2, 'center', 'page')).toEqual([0, 2, 4, 5]);
     expect(getDotIndexes(6, 3, 5, 'center', 'page')).toEqual([0, 3, 5]);
