@@ -144,12 +144,17 @@ export const getDotIndexes = (
 ) => {
   const dotIndexes = [];
   let lastDotIndex = slideCount - slidesToShow;
+  const slidesToShowIsDecimal = slidesToShow % 1 !== 0;
 
   switch (cellAlign) {
     case 'center':
     case 'right':
       lastDotIndex += slidesToShow - 1;
       break;
+  }
+  // the below condition includes the last index if slidesToShow is decimal
+  if (cellAlign === 'left' && slidesToShowIsDecimal) {
+    lastDotIndex += slidesToShow - 1;
   }
 
   if (lastDotIndex < 0) {
@@ -160,10 +165,9 @@ export const getDotIndexes = (
     dotIndexes.push(i);
   }
 
-  if (cellAlign === 'left' && scrollMode === 'page') {
-    lastDotIndex = Math.floor(
-      slideCount - (slideCount % slidesToShow || slidesToShow)
-    );
+  // the below condition includes the last index if slidesToShow is not decimal and cellAlign = left and mode = page
+  if (cellAlign === 'left' && scrollMode === 'page' && !slidesToShowIsDecimal) {
+    lastDotIndex = slideCount - (slideCount % slidesToShow || slidesToShow);
   }
 
   dotIndexes.push(lastDotIndex);
@@ -195,18 +199,19 @@ export const PagingDots = (props) => {
     props.cellAlign,
     props.scrollMode
   );
-
   const {
     pagingDotsContainerClassName,
     pagingDotsClassName,
     pagingDotsStyle = {}
   } = props.defaultControlsConfig;
-
   return (
     <ul className={pagingDotsContainerClassName} style={getListStyles()}>
-      {indexes.map((index) => {
-        const isActive = props.currentSlide === index;
-
+      {indexes.map((index, i) => {
+        let isActive = props.currentSlide === index;
+        // the below condition checks and sets navigation dots active if the current slide falls in the current index range
+        if (props.currentSlide < index && props.currentSlide > indexes[i - 1]) {
+          isActive = true;
+        }
         return (
           <li
             key={index}
