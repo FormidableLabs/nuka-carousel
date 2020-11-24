@@ -24,7 +24,7 @@ describe('Nuka Carousel', () => {
     it('should show the previous slide when the Previous button is clicked.', async () => {
       await expect(page).toClick('button', { text: 'Next' });
       await expect(page).toMatch('Nuka Carousel: Slide 2');
-      await page.waitFor(600); // need to let slide transition complete
+      await page.waitForTimeout(600); // need to let slide transition complete
       await expect(page).toClick('button', { text: 'Prev' });
       await expect(page).toMatch('Nuka Carousel: Slide 1');
     });
@@ -59,23 +59,23 @@ describe('Nuka Carousel', () => {
       });
 
       it('should navigate to the first slide from the last.', async () => {
-        await page.waitFor(600); // need to let slide transition complete
+        await page.waitForTimeout(600); // need to let slide transition complete
         await expect(page).toClick('button', { text: '9' });
         await expect(page).toMatch('Nuka Carousel: Slide 9');
-        await page.waitFor(600); // need to let slide transition complete
+        await page.waitForTimeout(600); // need to let slide transition complete
         await expect(page).toClick('button', { text: 'Next' });
         await expect(page).toMatch('Nuka Carousel: Slide 1');
       });
 
       it('should navigate to the first slide from the second with only 3 slides.', async () => {
-        await page.waitFor(600); // need to let slide transition complete
+        await page.waitForTimeout(600); // need to let slide transition complete
         await expect(page).toClick('button', {
           text: 'Toggle Show 3 Slides Only'
         });
-        await page.waitFor(600); // need to let slide transition complete
+        await page.waitForTimeout(600); // need to let slide transition complete
         await expect(page).toClick('button', { text: '3' });
         await expect(page).toMatch('Nuka Carousel: Slide 3');
-        await page.waitFor(600); // need to let slide transition complete
+        await page.waitForTimeout(600); // need to let slide transition complete
         await expect(page).toClick('button', { text: 'Next' });
         await expect(page).toMatch('Nuka Carousel: Slide 1');
       });
@@ -87,31 +87,31 @@ describe('Nuka Carousel', () => {
 
     await expect(page).toClick('button', { text: 'Next' });
     await expect(page).toMatch('Nuka Carousel: Slide 2');
-    await page.waitFor(600);
+    await page.waitForTimeout(600);
 
     await expect(page).toClick('button', { text: 'Next' });
     await expect(page).toMatch('Nuka Carousel: Slide 3');
-    await page.waitFor(600);
+    await page.waitForTimeout(600);
 
     await expect(page).toClick('button', { text: 'Next' });
     await expect(page).toMatch('Nuka Carousel: Slide 4');
-    await page.waitFor(600);
+    await page.waitForTimeout(600);
 
     await expect(page).toClick('button', { text: 'Next' });
     await expect(page).toMatch('Nuka Carousel: Slide 5');
-    await page.waitFor(600);
+    await page.waitForTimeout(600);
 
     await expect(page).toClick('button', { text: 'Next' });
     await expect(page).toMatch('Nuka Carousel: Slide 6');
-    await page.waitFor(600);
+    await page.waitForTimeout(600);
 
     await expect(page).toClick('button', { text: 'Next' });
     await expect(page).toMatch('Nuka Carousel: Slide 7');
-    await page.waitFor(600);
+    await page.waitForTimeout(600);
 
     await expect(page).toClick('button', { text: 'Next' });
     await expect(page).toMatch('Nuka Carousel: Slide 8');
-    await page.waitFor(600);
+    await page.waitForTimeout(600);
 
     await expect(page).toClick('button', { text: 'Next' });
     await expect(page).toMatch('Nuka Carousel: Slide 9');
@@ -131,7 +131,7 @@ describe('Nuka Carousel', () => {
             text: 'Toggle Partially Visible Slides'
           });
           await expect(page).toClick('button', { text: 'Left' });
-          await page.waitFor(600); // need to let slide transition complete
+          await page.waitForTimeout(600); // need to let slide transition complete
 
           await nextThroughAllSlides();
         });
@@ -141,7 +141,7 @@ describe('Nuka Carousel', () => {
             text: 'Toggle Partially Visible Slides'
           });
           await expect(page).toClick('button', { text: 'Center' });
-          await page.waitFor(600); // need to let slide transition complete
+          await page.waitForTimeout(600); // need to let slide transition complete
 
           await nextThroughAllSlides();
         });
@@ -151,7 +151,7 @@ describe('Nuka Carousel', () => {
             text: 'Toggle Partially Visible Slides'
           });
           await expect(page).toClick('button', { text: 'Right' });
-          await page.waitFor(600); // need to let slide transition complete
+          await page.waitForTimeout(600); // need to let slide transition complete
 
           await nextThroughAllSlides();
         });
@@ -168,7 +168,7 @@ describe('Nuka Carousel', () => {
       it('should set currentSlide opacity to 1 and visibility to inherit', async () => {
         const activeSlide = 3;
         await expect(page).toClick('button', { text: `${activeSlide}` });
-        await page.waitFor(600); // need to let slide transition complete
+        await page.waitForTimeout(600); // need to let slide transition complete
 
         const styles = await page.evaluate(
           getStyles,
@@ -184,7 +184,7 @@ describe('Nuka Carousel', () => {
         const activeSlide = 4;
         const slideCount = 6;
         await expect(page).toClick('button', { text: `${activeSlide}` });
-        await page.waitFor(600); // need to let slide transition complete
+        await page.waitForTimeout(600); // need to let slide transition complete
 
         for (let i = 0; i < slideCount; i++) {
           if (i !== activeSlide - 1) {
@@ -233,7 +233,7 @@ describe('Nuka Carousel', () => {
       await page.mouse.move(startX - metrics.width / 3.0, startY);
       await page.mouse.up();
       await expect(page).toMatch('Nuka Carousel: Slide 2');
-      await page.waitFor(600); // need to let slide transition complete
+      await page.waitForTimeout(600); // need to let slide transition complete
       await page.mouse.move(startX, startY);
       await page.mouse.down();
       await page.mouse.move(startX + metrics.width / 3.0, startY);
@@ -265,7 +265,7 @@ describe('Nuka Carousel', () => {
       await page.mouse.move(startX + metrics.width / 3.0, startY);
       await page.mouse.up();
       await expect(page).toMatch('Nuka Carousel: Slide 9');
-      await page.waitFor(600); // need to let slide transition complete
+      await page.waitForTimeout(600); // need to let slide transition complete
       await page.mouse.move(startX, startY);
       await page.mouse.down();
       await page.mouse.move(startX - metrics.width / 3.0, startY);
@@ -296,7 +296,7 @@ describe('Nuka Carousel', () => {
 
       await expect(page).toClick('button', { text: 'Prev' });
       await expect(page).toMatch('Nuka Carousel: Slide 9');
-      await page.waitFor(600); // need to let slide transition complete
+      await page.waitForTimeout(600); // need to let slide transition complete
       firstSlide = await page.evaluate(getStyles, `.slider-slide:first-child`, [
         'left'
       ]);
@@ -315,7 +315,7 @@ describe('Nuka Carousel', () => {
       await expect(page).toClick('button', { text: 'Toggle Wrap Around' });
       await expect(page).toClick('button', { text: 'Prev' });
       await expect(page).toMatch('Nuka Carousel: Slide 9');
-      await page.waitFor(600); // need to let slide transition complete
+      await page.waitForTimeout(600); // need to let slide transition complete
       const getComputedStyleLeft = () => {
         const e = document.querySelector('.slider-slide:last-child');
         return window.getComputedStyle(e).left;
@@ -335,10 +335,10 @@ describe('Nuka Carousel', () => {
       await expect(page).toClick('button', { text: 'Toggle Wrap Around' });
       await expect(page).toClick('button', { text: '9' });
       await expect(page).toMatch('Nuka Carousel: Slide 9');
-      await page.waitFor(600); // need to let slide transition complete
+      await page.waitForTimeout(600); // need to let slide transition complete
       await expect(page).toClick('button', { text: 'Next' });
       await expect(page).toMatch('Nuka Carousel: Slide 1');
-      await page.waitFor(600); // need to let slide transition complete
+      await page.waitForTimeout(600); // need to let slide transition complete
       const getComputedStyleLeft = () => {
         const e = document.querySelector('.slider-slide:first-child');
         return window.getComputedStyle(e).left;
@@ -358,7 +358,7 @@ describe('Nuka Carousel', () => {
       await expect(page).toClick('button', { text: 'Toggle Wrap Around' });
       await expect(page).toClick('button', { text: 'Prev' });
       await expect(page).toMatch('Nuka Carousel: Slide 9');
-      await page.waitFor(600); // need to let slide transition complete
+      await page.waitForTimeout(600); // need to let slide transition complete
       const getTextDecoration = () => {
         const e = document.querySelector('.slider-control-topcenter div');
         return window.getComputedStyle(e).textDecorationLine;
@@ -381,10 +381,10 @@ describe('Nuka Carousel', () => {
       await expect(page).toClick('button', { text: 'Toggle Wrap Around' });
       await expect(page).toClick('button', { text: '9' });
       await expect(page).toMatch('Nuka Carousel: Slide 9');
-      await page.waitFor(600); // need to let slide transition complete
+      await page.waitForTimeout(600); // need to let slide transition complete
       await expect(page).toClick('button', { text: 'Next' });
       await expect(page).toMatch('Nuka Carousel: Slide 1');
-      await page.waitFor(600); // need to let slide transition complete
+      await page.waitForTimeout(600); // need to let slide transition complete
       const getTextDecoration = () => {
         const e = document.querySelector('.slider-control-topcenter div');
         return window.getComputedStyle(e).textDecorationLine;
@@ -438,7 +438,7 @@ describe('Nuka Carousel', () => {
       expect(textDecoration).toMatch('none');
 
       await expect(page).toClick('button', { text: 'Next' });
-      await page.waitFor(600); // need to let slide transition complete
+      await page.waitForTimeout(600); // need to let slide transition complete
 
       await expect(page).toMatch('Nuka Carousel: Slide 2');
 
@@ -491,7 +491,7 @@ describe('Nuka Carousel', () => {
 
       it('should not partially show first slide when on last slide.', async () => {
         await expect(page).toClick('button', { text: '6' });
-        await page.waitFor(transitionSpeed); // need to let slide transition complete
+        await page.waitForTimeout(transitionSpeed); // need to let slide transition complete
         const styles = await page.evaluate(
           getStyles,
           '.slider-slide:first-child',
@@ -503,7 +503,7 @@ describe('Nuka Carousel', () => {
       it('should partially show previous and next slide when on a middle slide.', async () => {
         const slide = 3;
         await expect(page).toClick('button', { text: `${slide}` });
-        await page.waitFor(transitionSpeed); // need to let slide transition complete
+        await page.waitForTimeout(transitionSpeed); // need to let slide transition complete
 
         const prevSlide = slide - 1;
         const prevStyles = await page.evaluate(
@@ -548,7 +548,7 @@ describe('Nuka Carousel', () => {
 
       it('should partially show first slide when on last slide.', async () => {
         await expect(page).toClick('button', { text: '6' });
-        await page.waitFor(transitionSpeed); // need to let slide transition complete
+        await page.waitForTimeout(transitionSpeed); // need to let slide transition complete
         const styles = await page.evaluate(
           getStyles,
           '.slider-slide:first-child',
@@ -562,7 +562,7 @@ describe('Nuka Carousel', () => {
       it('should partially show previous and next slide when on a middle slide.', async () => {
         const slide = 3;
         await expect(page).toClick('button', { text: `${slide}` });
-        await page.waitFor(transitionSpeed); // need to let slide transition complete
+        await page.waitForTimeout(transitionSpeed); // need to let slide transition complete
 
         const prevSlide = slide - 1;
         const prevStyles = await page.evaluate(
