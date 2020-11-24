@@ -282,7 +282,7 @@ export interface CarouselProps {
   /**
    * optional callback function
    */
-  onDragStart?: () => void;
+  onDragStart?: (e?: Event) => void;
 
   /**
    * Window onResize callback
@@ -500,19 +500,10 @@ export interface CarouselState {
 }
 
 export interface PreviousButtonProps extends CarouselSlideRenderControlProps {}
-export class PreviousButton extends React.Component<PreviousButtonProps> {}
+export const PreviousButton: React.FC<PreviousButtonProps>;
 
 export interface NextButtonProps extends CarouselSlideRenderControlProps {}
-export class NextButton extends React.Component<NextButtonProps> {}
+export const NextButton: React.FC<NextButtonProps>;
 
 export interface PagingDotsProps extends CarouselSlideRenderControlProps {}
-export class PagingDots extends React.Component<PagingDotsProps> {
-  public getButtonStyles(active: boolean): React.CSSProperties;
-  public getListStyles(): React.CSSProperties;
-  public getDotIndexes(
-    slideCount: number,
-    slidesToScroll: CarouselSlidesToScrollProp,
-    slidesToShow: number,
-    cellAlign: CarouselCellAlignProp
-  ): number[];
-}
+export const PagingDots: React.FC<PagingDotsProps>;

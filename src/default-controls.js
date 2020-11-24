@@ -155,7 +155,6 @@ export const getDotIndexes = (
       lastDotIndex += slidesToShow - 1;
       break;
   }
-
   // the below condition includes the last index if slidesToShow is decimal
   if (cellAlign === 'left' && slidesToShowIsDecimal) {
     lastDotIndex += slidesToShow - 1;
