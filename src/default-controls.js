@@ -76,8 +76,11 @@ export const nextButtonDisabled = ({
       relativePosition < endPosition ||
       Math.abs(relativePosition - endPosition) < 0.01;
   }
-  // return true if its last slide
-  if (slideCount - 1 - currentSlide === 0 && !wrapAround) {
+  // return true if its last slide or slideCount =0
+  if (
+    (slideCount - 1 - currentSlide === 0 && !wrapAround) ||
+    slideCount === 0
+  ) {
     return (buttonDisabled = true);
   }
   return buttonDisabled;
