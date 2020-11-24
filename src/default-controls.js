@@ -53,8 +53,7 @@ export const nextButtonDisabled = ({
   slideCount,
   slidesToShow,
   slideWidth,
-  wrapAround,
-  slidesToScroll
+  wrapAround
 }) => {
   let buttonDisabled = false;
 
@@ -77,16 +76,10 @@ export const nextButtonDisabled = ({
       relativePosition < endPosition ||
       Math.abs(relativePosition - endPosition) < 0.01;
   }
-  if (slidesToScroll === 'auto') {
-    const slidesToScrollAuto = Math.floor(
-      frameWidth / (slideWidth + cellSpacing)
-    );
-    console.log("slidesToScrollInitialauto",slidesToScrollAuto)
-    if (currentSlide + slidesToScrollAuto >= slideCount-1 && cellAlign === 'left') {
-      return (buttonDisabled = true);
-    }
+  // return true if its last slide
+  if (slideCount - 1 - currentSlide === 0 && !wrapAround) {
+    return (buttonDisabled = true);
   }
-
   return buttonDisabled;
 };
 
@@ -108,8 +101,7 @@ export const NextButton = (props) => {
     slideWidth,
     top,
     vertical,
-    wrapAround,
-    slidesToScroll
+    wrapAround
   } = props;
 
   const {
@@ -127,8 +119,7 @@ export const NextButton = (props) => {
     slideCount,
     slidesToShow,
     slideWidth,
-    wrapAround,
-    slidesToScroll
+    wrapAround
   });
 
   return (
@@ -150,15 +141,11 @@ export const NextButton = (props) => {
 
 export const getDotIndexes = (
   slideCount,
-  slidesToScrollInitial,
   slidesToScroll,
   slidesToShow,
-  cellAlign,
-  scrollMode,
-  slideWidth
+  cellAlign
 ) => {
   const dotIndexes = [];
-  console.log("slidesToscrollfor real",slidesToScrollInitial,slidesToScroll,slidesToShow)
   let lastDotIndex = slideCount - slidesToShow;
   const slidesToShowIsDecimal = slidesToShow % 1 !== 0;
 
@@ -168,6 +155,7 @@ export const getDotIndexes = (
       lastDotIndex += slidesToShow - 1;
       break;
   }
+
   // the below condition includes the last index if slidesToShow is decimal
   if (cellAlign === 'left' && slidesToShowIsDecimal) {
     lastDotIndex += slidesToShow - 1;
@@ -181,25 +169,13 @@ export const getDotIndexes = (
     dotIndexes.push(i);
   }
 
-  // the below condition includes the last index if slidesToShow is not decimal and cellAlign = left and mode = page
-  if (cellAlign === 'left' && scrollMode === 'page' && !slidesToShowIsDecimal) {
+  // the below condition includes the last index if slidesToShow is not decimal and cellAlign = left
+  if (cellAlign === 'left' && !slidesToShowIsDecimal) {
     lastDotIndex = slideCount - (slideCount % slidesToShow || slidesToShow);
-  }
-  
-  console.log("slidesToScrollAuto",slidesToScrollInitial)
-  if (slidesToScrollInitial === 'auto' && slideWidth === 1 && cellAlign === 'left') {
-    // if ((slideCount / slidesToScroll) % 1 !== 0 &&
-    //     frameWidth / slideWidth) {
-    //   dotIndexes.push(lastDotIndex);
-    //   return dotIndexes;
-    // } else {
-    return dotIndexes;
-    // }
   }
   if (!dotIndexes.includes(lastDotIndex)) {
     dotIndexes.push(lastDotIndex);
   }
-
   return dotIndexes;
 };
 
@@ -220,26 +196,13 @@ export const PagingDots = (props) => {
     border: 'none',
     fill: 'black'
   });
-  let slidesToScrollCalc;
-
-  if (props.slidesToScroll === 'auto' || props.slideWidth !== 1) {
-    slidesToScrollCalc = Math.floor(
-      props.frameWidth / (props.slideWidth + props.cellSpacing)
-    );
-  } else {
-    slidesToScrollCalc = props.slidesToScroll;
-  }
 
   const indexes = getDotIndexes(
     props.slideCount,
     props.slidesToScroll,
-    slidesToScrollCalc,
     props.slidesToShow,
-    props.cellAlign,
-    props.scrollMode,
-    props.slideWidth
+    props.cellAlign
   );
-  console.log('dotIndexes', indexes);
   const {
     pagingDotsContainerClassName,
     pagingDotsClassName,

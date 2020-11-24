@@ -198,7 +198,6 @@ export const isFullyVisible = (slideIndex, config) => {
     slideWidth,
     frameWidth,
     wrapAround,
-    slidesToScroll,
     cellAlign
   } = config;
 
@@ -208,43 +207,30 @@ export const isFullyVisible = (slideIndex, config) => {
     getAlignmentOffset(currentSlide, config) + cellSpacing * currentSlide;
   const remainingWidth = frameWidth - offsetWidth;
 
-  let fullSlidesBefore = Math.max(Math.floor(offsetWidth / fullSlideWidth), 0);
+  let fullSlidesBefore = 0;
 
-  if (cellAlign === 'center') {
+  if (cellAlign !== 'left') {
     fullSlidesBefore = Math.max(
       Math.floor(offsetWidth / fullSlideWidth) + 1,
       0
     );
+  } else {
+    fullSlidesBefore = Math.max(Math.floor(offsetWidth / fullSlideWidth), 0);
   }
 
   let fullSlidesAfter = Math.max(
     Math.floor(remainingWidth / fullSlideWidth),
     0
   );
-  //console.log('FullSlidesBefore', fullSlidesBefore);
-   //console.log('fullslidesAfter', fullSlidesAfter);
   // when slidesToScroll is auto enable clicking of all fully visible slides
   if (
-    //(slidesToScroll === 'auto' || scrollMode === 'page') &&
-    fullSlidesAfter + fullSlidesBefore + currentSlide >= slideCount - 1  &&
+    fullSlidesAfter + fullSlidesBefore + currentSlide >= slideCount &&
     !wrapAround
   ) {
-    console.log("added")
     const fullSlidesAuto = fullSlidesBefore + fullSlidesAfter;
     fullSlidesAfter = fullSlidesAuto;
     fullSlidesBefore = fullSlidesAuto;
   }
-  // console.log('currenSlide', currentSlide);
-  // console.log('cellSpacing', cellSpacing);
-  // console.log('frameWidth', frameWidth);
-  // console.log('offsetWidth', offsetWidth);
-  // console.log('fullSlideWidth', fullSlideWidth);
-  // console.log('remainingWidth', remainingWidth);
-  // console.log('FullSlidesBefore', fullSlidesBefore);
-  // console.log('fullslidesAfter', fullSlidesAfter);
-  // console.log('slidesToScroll', slidesToScroll);
-  // console.log('currentSlide', currentSlide);
-  // console.log('config', config);
   const currentSlideIndex = Math.ceil(currentSlide);
   const fullyVisibleSlides = [];
 
@@ -260,6 +246,5 @@ export const isFullyVisible = (slideIndex, config) => {
       fullyVisibleSlides.push(i > slideCount - 1 ? i - slideCount : i);
     }
   }
-  //console.log('visible', fullyVisibleSlides);
   return fullyVisibleSlides.includes(slideIndex);
 };

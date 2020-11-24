@@ -678,9 +678,8 @@ export default class Carousel extends React.Component {
 
     if (
       lastSlide &&
-      this.props.slideWidth !== 1 &&
       !this.props.wrapAround &&
-      this.props.slidesToScroll === 'auto'
+      this.props.scrollMode === 'remainder'
     ) {
       left =
         this.state.slideWidth * this.state.slideCount - this.state.frameWidth;
@@ -882,7 +881,7 @@ export default class Carousel extends React.Component {
       const leftAlignSlideIndex =
         this.props.scrollMode === 'page'
           ? offset
-          : Math.min(offset, slideCount - slidesToShow);
+          : Math.min(offset, slideCount - Math.floor(slidesToShow));
 
       const nextSlideIndex =
         this.props.cellAlign !== 'left' ? offset : leftAlignSlideIndex;
@@ -985,6 +984,7 @@ export default class Carousel extends React.Component {
     }
   }
 
+  // eslint-disable-next-line complexity
   setDimensions(props, stateCb = () => {}) {
     props = props || this.props;
 
@@ -1009,18 +1009,21 @@ export default class Carousel extends React.Component {
     let { slidesToScroll } = getPropsByTransitionMode(props, [
       'slidesToScroll'
     ]);
-
+    // slidesToScroll /slidesToShow changes if slidewidth and cellspacing are provided.
     if (
       slidesToScroll === 'auto' ||
       scrollMode === 'page' ||
-      slideWidth !== 1
+      props.slideWidth !== 1 ||
+      (props.cellSpacing > 0 && cellAlign === 'left')
     ) {
       slidesToScroll = Math.floor(
         frameWidth / (slideWidth + props.cellSpacing)
       );
     }
-
-    if (slideWidth !== 1) {
+    if (
+      props.slideWidth !== 1 ||
+      (props.cellSpacing > 0 && scrollMode === 'page' && cellAlign === 'left')
+    ) {
       slidesToShow = slidesToScroll;
     }
     this.setState(
@@ -1083,7 +1086,7 @@ export default class Carousel extends React.Component {
             previousSlide: () => this.previousSlide(),
             scrollMode: this.props.scrollMode,
             slideCount: this.state.slideCount,
-            slidesToScroll: this.props.slidesToScroll,
+            slidesToScroll: this.state.slidesToScroll,
             slidesToShow: this.state.slidesToShow,
             slideWidth: this.state.slideWidth,
             top: this.state.top,
