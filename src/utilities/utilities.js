@@ -1,4 +1,4 @@
-import React, { useImperativeHandle } from 'react';
+import React from 'react';
 import { getAlignmentOffset } from './style-utilities';
 
 export const addEvent = function (elem, type, eventHandle) {

@@ -167,7 +167,7 @@ export const getDotIndexes = (
     return [0];
   }
 
-  for (let i = 0; i <= lastDotIndex; i += slidesToScroll) {
+  for (let i = 0; i < lastDotIndex; i += slidesToScroll) {
     dotIndexes.push(i);
   }
 

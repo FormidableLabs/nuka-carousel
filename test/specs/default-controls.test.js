@@ -14,7 +14,7 @@ describe('getDotIndexes', () => {
 
     // testing extreme scenarios on number of pages
     expect(getDotIndexes(11, 5, 3, 'left')).toEqual([0, 5, 9]);
-    expect(getDotIndexes(11, 2, 7, 'left')).toEqual([0, 2, 4, 7]);
+    expect(getDotIndexes(11, 2, 7, 'left')).toEqual([0, 2, 7]);
 
     // testing edge case scenarios
     expect(getDotIndexes(5, 2, 6, 'left')).toEqual([0]);
