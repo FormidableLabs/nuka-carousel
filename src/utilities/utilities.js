@@ -203,6 +203,7 @@ export const isFullyVisible = (slideIndex, config) => {
 
   // Slide width can't be 0
   const fullSlideWidth = slideWidth || 1;
+  // Calculate offset without cellSpacing
   const offsetWidth =
     getAlignmentOffset(currentSlide, config) + cellSpacing * currentSlide;
   const remainingWidth = frameWidth - offsetWidth;
