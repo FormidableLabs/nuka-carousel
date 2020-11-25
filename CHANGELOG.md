@@ -1,5 +1,11 @@
 # Nuka Changelog
 
+## 4.7.3 (2020-11-24)
+
+- [#740](https://github.com/FormidableLabs/nuka-carousel/pull/740) Update Wicg-inert and puppeteer
+- [#737](https://github.com/FormidableLabs/nuka-carousel/pull/737) Types update: fix PreviousButton, NextButton, and PagingDots def
+- [#734](https://github.com/FormidableLabs/nuka-carousel/pull/734) Fix: showing partial slides breaks navigation dots
+
 ## 4.7.2 (2020-10-30)
 
 - [#733](https://github.com/FormidableLabs/nuka-carousel/pull/733) Fix package vulnerability
