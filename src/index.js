@@ -1016,20 +1016,15 @@ export default class Carousel extends React.Component {
     let { slidesToScroll } = getPropsByTransitionMode(props, [
       'slidesToScroll'
     ]);
-    // slidesToScroll /slidesToShow changes if slidewidth and cellspacing are provided.
-    if (
-      slidesToScroll === 'auto' ||
-      scrollMode === 'page' ||
-      props.slideWidth !== 1 ||
-      (props.cellSpacing > 0 && cellAlign === 'left')
-    ) {
+    if (slidesToScroll === 'auto' || scrollMode === 'page') {
       slidesToScroll = Math.floor(
         frameWidth / (slideWidth + props.cellSpacing)
       );
     }
     if (
-      props.slideWidth !== 1 ||
-      (props.cellSpacing > 0 && scrollMode === 'page' && cellAlign === 'left')
+      (props.slideWidth !== 1 || props.cellSpacing > 0) &&
+      scrollMode === 'page' &&
+      cellAlign === 'left'
     ) {
       slidesToShow = slidesToScroll;
     }

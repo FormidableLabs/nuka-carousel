@@ -53,7 +53,9 @@ export const nextButtonDisabled = ({
   slideCount,
   slidesToShow,
   slideWidth,
-  wrapAround
+  wrapAround,
+  scrollMode,
+  slidesToScroll
 }) => {
   let buttonDisabled = false;
 
@@ -77,8 +79,10 @@ export const nextButtonDisabled = ({
       Math.abs(relativePosition - endPosition) < 0.01;
   }
   // return true if its last slide or slideCount =0
+  const lastSlide =
+    currentSlide > 0 && currentSlide + slidesToScroll >= slideCount;
   if (
-    (slideCount - 1 - currentSlide === 0 && !wrapAround) ||
+    (lastSlide && !wrapAround && scrollMode === 'remainder') ||
     slideCount === 0
   ) {
     return (buttonDisabled = true);
@@ -104,7 +108,9 @@ export const NextButton = (props) => {
     slideWidth,
     top,
     vertical,
-    wrapAround
+    wrapAround,
+    scrollMode,
+    slidesToScroll
   } = props;
 
   const {
@@ -122,7 +128,9 @@ export const NextButton = (props) => {
     slideCount,
     slidesToShow,
     slideWidth,
-    wrapAround
+    wrapAround,
+    scrollMode,
+    slidesToScroll
   });
 
   return (
