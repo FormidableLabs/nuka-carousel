@@ -184,7 +184,9 @@ export default class ScrollTransition extends React.Component {
       touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`,
       transform,
       WebkitTransform: transform,
-      width: 'auto'
+      width: 'auto',
+      transition:
+        this.props.heightMode === 'current' ? `height 0.2s ease-out` : '0s'
     };
   }
 
