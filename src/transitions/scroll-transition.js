@@ -167,7 +167,9 @@ export default class ScrollTransition extends React.Component {
       this.props.cellSpacing * React.Children.count(this.props.children);
     const transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
     const transition =
-      this.props.heightMode === 'current' ? 'height 0.2s ease-out' : '0s';
+      this.props.heightMode === 'current' && this.props.hasInteraction
+        ? 'height 0.2s ease-out'
+        : '0s';
     return {
       boxSizing: 'border-box',
       cursor: this.props.dragging === true ? 'pointer' : 'inherit',
@@ -215,6 +217,7 @@ ScrollTransition.propTypes = {
   deltaY: PropTypes.number,
   dragging: PropTypes.bool,
   frameWidth: PropTypes.number,
+  hasInteraction: PropTypes.bool,
   heightMode: PropTypes.oneOf(['first', 'current', 'max']),
   isWrappingAround: PropTypes.bool,
   left: PropTypes.number,
