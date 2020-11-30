@@ -197,7 +197,8 @@ export const isFullyVisible = (slideIndex, config) => {
     slideCount,
     slideWidth,
     frameWidth,
-    wrapAround
+    wrapAround,
+    cellAlign
   } = config;
 
   // Slide width can't be 0
@@ -207,16 +208,30 @@ export const isFullyVisible = (slideIndex, config) => {
     getAlignmentOffset(currentSlide, config) + cellSpacing * currentSlide;
   const remainingWidth = frameWidth - offsetWidth;
 
-  const fullSlidesBefore = Math.max(
-    Math.floor(offsetWidth / fullSlideWidth),
+  let fullSlidesBefore = 0;
+
+  if (cellAlign !== 'left') {
+    fullSlidesBefore = Math.max(
+      Math.floor(offsetWidth / fullSlideWidth) + 1,
+      0
+    );
+  } else {
+    fullSlidesBefore = Math.max(Math.floor(offsetWidth / fullSlideWidth), 0);
+  }
+
+  let fullSlidesAfter = Math.max(
+    Math.floor(remainingWidth / fullSlideWidth),
     0
   );
-
-  const fullSlidesAfter = Math.max(
-    Math.floor(remainingWidth / fullSlideWidth) - 1,
-    0
-  );
-
+  // when slidesToScroll is auto enable clicking of all fully visible slides
+  if (
+    fullSlidesAfter + fullSlidesBefore + currentSlide >= slideCount &&
+    !wrapAround
+  ) {
+    const fullSlidesAuto = fullSlidesBefore + fullSlidesAfter;
+    fullSlidesAfter = fullSlidesAuto;
+    fullSlidesBefore = fullSlidesAuto;
+  }
   const currentSlideIndex = Math.ceil(currentSlide);
   const fullyVisibleSlides = [];
 
@@ -232,6 +247,5 @@ export const isFullyVisible = (slideIndex, config) => {
       fullyVisibleSlides.push(i > slideCount - 1 ? i - slideCount : i);
     }
   }
-
   return fullyVisibleSlides.includes(slideIndex);
 };

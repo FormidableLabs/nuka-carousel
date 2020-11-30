@@ -685,9 +685,8 @@ export default class Carousel extends React.Component {
 
     if (
       lastSlide &&
-      this.props.slideWidth !== 1 &&
       !this.props.wrapAround &&
-      this.props.slidesToScroll === 'auto'
+      this.props.scrollMode === 'remainder'
     ) {
       left =
         this.state.slideWidth * this.state.slideCount - this.state.frameWidth;
@@ -889,7 +888,7 @@ export default class Carousel extends React.Component {
       const leftAlignSlideIndex =
         this.props.scrollMode === 'page'
           ? offset
-          : Math.min(offset, slideCount - slidesToShow);
+          : Math.min(offset, slideCount - Math.floor(slidesToShow));
 
       const nextSlideIndex =
         this.props.cellAlign !== 'left' ? offset : leftAlignSlideIndex;
@@ -992,12 +991,15 @@ export default class Carousel extends React.Component {
     }
   }
 
+  // eslint-disable-next-line complexity
   setDimensions(props, stateCb = () => {}) {
     props = props || this.props;
 
-    const {
+    let {
       slidesToShow,
+      // eslint-disable-next-line prefer-const
       cellAlign,
+      // eslint-disable-next-line prefer-const
       scrollMode
     } = getPropsByTransitionMode(props, [
       'slidesToShow',
@@ -1021,6 +1023,13 @@ export default class Carousel extends React.Component {
       );
     }
 
+    if (
+      (props.slideWidth !== 1 || props.cellSpacing > 0) &&
+      scrollMode === 'page' &&
+      cellAlign === 'left'
+    ) {
+      slidesToShow = slidesToScroll;
+    }
     this.setState(
       {
         frameWidth,

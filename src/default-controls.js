@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React from 'react';
 import { getAlignmentOffset } from './utilities/style-utilities';
 
@@ -52,7 +53,9 @@ export const nextButtonDisabled = ({
   slideCount,
   slidesToShow,
   slideWidth,
-  wrapAround
+  wrapAround,
+  scrollMode,
+  slidesToScroll
 }) => {
   let buttonDisabled = false;
 
@@ -75,7 +78,15 @@ export const nextButtonDisabled = ({
       relativePosition < endPosition ||
       Math.abs(relativePosition - endPosition) < 0.01;
   }
-
+  // return true if its last slide or slideCount =0
+  const lastSlide =
+    currentSlide > 0 && currentSlide + slidesToScroll >= slideCount;
+  if (
+    (lastSlide && !wrapAround && scrollMode === 'remainder') ||
+    slideCount === 0
+  ) {
+    return (buttonDisabled = true);
+  }
   return buttonDisabled;
 };
 
@@ -97,7 +108,9 @@ export const NextButton = (props) => {
     slideWidth,
     top,
     vertical,
-    wrapAround
+    wrapAround,
+    scrollMode,
+    slidesToScroll
   } = props;
 
   const {
@@ -115,7 +128,9 @@ export const NextButton = (props) => {
     slideCount,
     slidesToShow,
     slideWidth,
-    wrapAround
+    wrapAround,
+    scrollMode,
+    slidesToScroll
   });
 
   return (
@@ -139,8 +154,7 @@ export const getDotIndexes = (
   slideCount,
   slidesToScroll,
   slidesToShow,
-  cellAlign,
-  scrollMode
+  cellAlign
 ) => {
   const dotIndexes = [];
   let lastDotIndex = slideCount - slidesToShow;
@@ -165,12 +179,13 @@ export const getDotIndexes = (
     dotIndexes.push(i);
   }
 
-  // the below condition includes the last index if slidesToShow is not decimal and cellAlign = left and mode = page
-  if (cellAlign === 'left' && scrollMode === 'page' && !slidesToShowIsDecimal) {
+  // the below condition includes the last index if slidesToShow is not decimal and cellAlign = left
+  if (cellAlign === 'left' && !slidesToShowIsDecimal) {
     lastDotIndex = slideCount - (slideCount % slidesToShow || slidesToShow);
   }
-
-  dotIndexes.push(lastDotIndex);
+  if (!dotIndexes.includes(lastDotIndex)) {
+    dotIndexes.push(lastDotIndex);
+  }
   return dotIndexes;
 };
 
@@ -196,8 +211,7 @@ export const PagingDots = (props) => {
     props.slideCount,
     props.slidesToScroll,
     props.slidesToShow,
-    props.cellAlign,
-    props.scrollMode
+    props.cellAlign
   );
   const {
     pagingDotsContainerClassName,
