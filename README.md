@@ -212,7 +212,7 @@ Example, you can change the text of the `Previous` and `Next` buttons, and chang
 ```
 defaultControlsConfig={{
   nextButtonText: 'Custom Next',
-  prevButtonText: 'Customn Prev',
+  prevButtonText: 'Custom Prev',
   pagingDotsStyle: {
     fill: 'red'
   }
