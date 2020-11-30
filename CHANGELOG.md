@@ -1,5 +1,11 @@
 # Nuka Changelog
 
+## 4.7.4 (2020-11-30)
+
+- [#745](https://github.com/FormidableLabs/nuka-carousel/pull/745) Add transition when heightMode is set to 'current'
+- [#742](https://github.com/FormidableLabs/nuka-carousel/pull/742) ariaProps should not override child props values
+- [#739](https://github.com/FormidableLabs/nuka-carousel/pull/739) Fix non-clickable slides and several bugs in paging dots display
+
 ## 4.7.3 (2020-11-24)
 
 - [#740](https://github.com/FormidableLabs/nuka-carousel/pull/740) Update Wicg-inert and puppeteer
