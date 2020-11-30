@@ -38,8 +38,8 @@ export const addAccessibility = (children, slidesToShow, currentSlide) => {
         ? { 'aria-hidden': 'false', tabIndex: 0 }
         : { 'aria-hidden': 'true' };
       return React.cloneElement(child, {
-        ...child.props,
-        ...ariaProps
+        ...ariaProps,
+        ...child.props
       });
     });
   } else {
@@ -49,8 +49,8 @@ export const addAccessibility = (children, slidesToShow, currentSlide) => {
         ? { 'aria-hidden': 'true' }
         : { 'aria-hidden': 'false', tabIndex: 0 };
       return React.cloneElement(child, {
-        ...child.props,
-        ...ariaProps
+        ...ariaProps,
+        ...child.props
       });
     });
   }

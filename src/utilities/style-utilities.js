@@ -174,6 +174,7 @@ export const getTransitionProps = (props, state) => {
     currentSlide: state.currentSlide,
     dragging: props.dragging,
     frameWidth: parseInt(state.frameWidth),
+    hasInteraction: state.hasInteraction,
     heightMode: props.heightMode,
     isWrappingAround: state.isWrappingAround,
     left: state.left,
