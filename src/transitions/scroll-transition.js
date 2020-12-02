@@ -27,7 +27,10 @@ export default class ScrollTransition extends React.Component {
     let peekSlide = true;
     switch (this.props.cellAlign) {
       case 'left':
-        peekSlide = this.props.children.length > 2 ? true : false;
+        peekSlide =
+          this.props.children.length <= 2 && currentSlideIndex !== 0
+            ? false
+            : true;
         break;
       case 'center':
         peekSlide =
@@ -210,7 +213,6 @@ export default class ScrollTransition extends React.Component {
     const children = this.formatChildren(this.props.children);
     const deltaX = this.props.deltaX;
     const deltaY = this.props.deltaY;
-
     return (
       <ul
         className="slider-list"
