@@ -21,11 +21,26 @@ export default class ScrollTransition extends React.Component {
   }
 
   /* eslint-disable complexity */
-  getSlideTargetPosition(currentSlideIndex, positionValue) {
+  getSlideTargetPosition(currentSlideIndex, positionValue, cellAlign) {
     let offset = 0;
+    // Below lines help to display peeking slides when number of slides is less than 3.
+    let peekSlide = true;
+    switch (cellAlign) {
+      case 'left':
+        peekSlide = this.props.children.length > 2 ? true : false;
+        break;
+      case 'center':
+        peekSlide =
+          this.props.children.length > 2 ||
+          this.props.currentSlide !== currentSlideIndex - 1
+            ? true
+            : false;
+        break;
+    }
 
     if (
       this.props.animation === 'zoom' &&
+      peekSlide &&
       (this.props.currentSlide === currentSlideIndex + 1 ||
         (this.props.currentSlide === 0 &&
           currentSlideIndex === this.props.children.length - 1))
@@ -97,13 +112,19 @@ export default class ScrollTransition extends React.Component {
           -1;
       }
     }
-
     return targetPosition + offset || 0;
   }
 
   /* eslint-enable complexity */
   formatChildren(children) {
-    const { top, left, currentSlide, slidesToShow, vertical } = this.props;
+    const {
+      top,
+      left,
+      currentSlide,
+      slidesToShow,
+      vertical,
+      cellAlign
+    } = this.props;
     const positionValue = vertical ? top : left;
 
     return React.Children.map(children, (child, index) => {
@@ -116,7 +137,7 @@ export default class ScrollTransition extends React.Component {
             currentSlide,
             slidesToShow
           )}`}
-          style={this.getSlideStyles(index, positionValue)}
+          style={this.getSlideStyles(index, positionValue, cellAlign)}
           key={index}
           onClick={handleSelfFocus}
           tabIndex={-1}
@@ -128,8 +149,12 @@ export default class ScrollTransition extends React.Component {
     });
   }
 
-  getSlideStyles(index, positionValue) {
-    const targetPosition = this.getSlideTargetPosition(index, positionValue);
+  getSlideStyles(index, positionValue, cellAlign) {
+    const targetPosition = this.getSlideTargetPosition(
+      index,
+      positionValue,
+      cellAlign
+    );
     const transformScale =
       this.props.animation === 'zoom' && this.props.currentSlide !== index
         ? Math.max(
