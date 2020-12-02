@@ -115,6 +115,7 @@ export default class ScrollTransition extends React.Component {
           -1;
       }
     }
+
     return targetPosition + offset || 0;
   }
 
@@ -213,6 +214,7 @@ export default class ScrollTransition extends React.Component {
     const children = this.formatChildren(this.props.children);
     const deltaX = this.props.deltaX;
     const deltaY = this.props.deltaY;
+
     return (
       <ul
         className="slider-list"
