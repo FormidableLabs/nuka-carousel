@@ -23,9 +23,27 @@ export default class ScrollTransition extends React.Component {
   /* eslint-disable complexity */
   getSlideTargetPosition(currentSlideIndex, positionValue) {
     let offset = 0;
+    // Below lines help to display peeking slides when number of slides is less than 3.
+    let peekSlide = true;
+    switch (this.props.cellAlign) {
+      case 'left':
+        peekSlide =
+          this.props.children.length <= 2 && currentSlideIndex !== 0
+            ? false
+            : true;
+        break;
+      case 'center':
+        peekSlide =
+          this.props.children.length > 2 ||
+          this.props.currentSlide !== currentSlideIndex - 1
+            ? true
+            : false;
+        break;
+    }
 
     if (
       this.props.animation === 'zoom' &&
+      peekSlide &&
       (this.props.currentSlide === currentSlideIndex + 1 ||
         (this.props.currentSlide === 0 &&
           currentSlideIndex === this.props.children.length - 1))
