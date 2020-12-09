@@ -225,10 +225,14 @@ export default class Carousel extends React.Component {
     const initializeHeight = (delay) => {
       this.timers.push(
         setTimeout(() => {
-          // If slideHeight is greater than zero, then
+          // If slideHeight is greater than zero and matches calculated slideHeight,
           // assume the app has been initialized.  If not,
           // keep trying to set dimensions until things work.
-          if (this.state.slideHeight > 0) {
+          const { slideHeight } = this.calcSlideHeightAndWidth();
+          if (
+            this.state.slideHeight > 0 &&
+            this.state.slideHeight === slideHeight
+          ) {
             return;
           }
 
