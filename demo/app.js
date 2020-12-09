@@ -5,15 +5,15 @@ import ReactDom from 'react-dom';
 // eslint-disable-next-line complexity
 export default function App() {
   const colors = [
-    '7732bb',
-    '047cc0',
-    '00884b',
-    'e3bc13',
-    'db7c00',
-    'aa231f',
-    'e3bc13',
-    'db7c00',
-    'aa231f'
+    '080a87',
+    '0f7d8c',
+    'd88913',
+    'f725b1',
+    'bc8ee5',
+    '5fb1f4',
+    '037f7b',
+    '4710a0',
+    '5eced6'
   ];
   const [animation, setAnimation] = useState(undefined);
   const [autoplay, setAutoplay] = useState(false);

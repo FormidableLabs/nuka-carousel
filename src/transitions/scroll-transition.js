@@ -188,6 +188,7 @@ export default class ScrollTransition extends React.Component {
       this.props.heightMode === 'current' && this.props.hasInteraction
         ? 'height 0.2s ease-out'
         : '0s';
+
     return {
       boxSizing: 'border-box',
       cursor: this.props.dragging === true ? 'pointer' : 'inherit',
