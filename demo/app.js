@@ -5,7 +5,7 @@ import ReactDom from 'react-dom';
 // eslint-disable-next-line complexity
 export default function App() {
   const colors = [
-    '080a87',
+    'c90ac3',
     '0f7d8c',
     'd88913',
     'f725b1',
