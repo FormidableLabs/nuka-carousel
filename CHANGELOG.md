@@ -1,5 +1,11 @@
 # Nuka Changelog
 
+## 4.7.5 (2020-12-30)
+
+- [#746](https://github.com/FormidableLabs/nuka-carousel/pull/746) Fixes #705 - allow peeking slides when slide count is less than 3, and using Zoom animation
+- [#747](https://github.com/FormidableLabs/nuka-carousel/pull/747) Set proper offset on first render for slider-list
+- [#750](https://github.com/FormidableLabs/nuka-carousel/pull/750) Fixes #749 - Updates to `setDimensions` method to fix video height bug
+
 ## 4.7.4 (2020-11-30)
 
 - [#745](https://github.com/FormidableLabs/nuka-carousel/pull/745) Add transition when heightMode is set to 'current'
