@@ -175,6 +175,20 @@ describe('<Carousel />', () => {
       expect(slider).toHaveLength(1);
     });
 
+    it('should set the offset for `slider-list` depending on `currentSlide` on first render', () => {
+      const wrapper = mount(
+        <Carousel slideIndex={1} slideWidth={100} initialSlideWidth={100}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const sliderList = wrapper.find('ul.slider-list');
+      expect(sliderList.prop('style').transform).toBe(
+        'translate3d(-100px, 0px, 0)'
+      );
+    });
+
     it('should set slideHeight to max value by default', () => {
       const firstSlideNode = document.createElement('div');
       const secondSlideNode = document.createElement('div');

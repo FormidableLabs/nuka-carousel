@@ -1155,6 +1155,10 @@ export default class Carousel extends React.Component {
     const mouseEvents = this.getMouseEvents();
     const TransitionControl = Transitions[this.props.transitionMode];
     const validChildren = getValidChildren(this.props.children);
+    const {
+      tx: [startTx],
+      ty: [startTy]
+    } = this.getOffsetDeltas();
 
     return (
       <div
@@ -1184,7 +1188,7 @@ export default class Carousel extends React.Component {
         >
           <Animate
             show
-            start={{ tx: 0, ty: 0 }}
+            start={{ tx: startTx, ty: startTy }}
             update={() => {
               const { tx, ty } = this.getOffsetDeltas();
 
