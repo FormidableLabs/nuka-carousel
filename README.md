@@ -4,8 +4,6 @@
 
 A Pure ReactJS Carousel Component
 
-Maintained by [@sarmeyer](https://twitter.com/sarmeyer)
-
 ![Nuka Carousel Animated Example](https://i.imgur.com/UwP5gle.gif)
 
 ### Install
@@ -14,6 +12,10 @@ To add `nuka-carousel` to your project run the following command in your project
 
 ```bash
 $ yarn add nuka-carousel
+```
+OR
+```bash
+$ npm install nuka-carousel
 ```
 
 ### Example
@@ -40,7 +42,7 @@ export default class extends React.Component {
 
 ### Running demo locally
 
-The demo can be launched on your local machine via `webpack-dev-server`. Make sure you are running node version 9.11 or earlier. Once you have cloned this repo locally, run the following:
+The demo can be launched on your local machine via `webpack-dev-server`. Once you have cloned this repo locally, run the following:
 
 ```bash
 yarn
@@ -138,9 +140,9 @@ A set of eight render props for rendering controls in different positions around
 </Carousel>
 ```
 
-- The function returns the props for `goToSlide`, `nextSlide` and `previousSlide` functions in addition to `slideCount` and `currentSlide` values. Can also remove all render controls using `withoutControls`.
+- The function returns the props for `goToSlide`, `nextSlide` and `previousSlide` functions, in addition to `slideCount` and `currentSlide` values. You can also remove all render controls using `withoutControls`.
 
-- NOTE: The className `slide-visible` is added to the currently visible slide or slides (when slidesToShow > 1). The className `slide-current` is added to the currently "active" slide.
+- NOTE: The className `slide-visible` is added to the currently visible slide or slides (when `slidesToShow` > 1). The className `slide-current` is added to the currently "active" slide.
 
 #### renderAnnounceSlideMessage
 
@@ -207,7 +209,7 @@ The default controls used by Nuka are the `Previous` button, `Next` button, and 
 - The props ending with `Style` let you apply inline styles to its respective control.
 - The text label for the `Previous` button and `Next` button can be customized using `prevButtonText` and `nextButtonText`, respectively.
 
-Example, you can change the text of the `Previous` and `Next` buttons, and change the paging dots to red by passing in the following configuration:
+For example, you can change the text of the `Previous` and `Next` buttons, and change the paging dots to red by passing in the following configuration:
 
 ```
 defaultControlsConfig={{
@@ -260,7 +262,7 @@ TypeScript type definitions are now shipped with nuka-carousel. You can use them
 
 In componentDidMount, the initial dimensions are assigned to each slide:
 
-- Width: `initialSlidewidth` || `slideWidth` || (`slidesToShow` / width of container)
+- Width: `initialSlideWidth` || `slideWidth` || (`slidesToShow` / width of container)
 - Height: `initialSlideHeight`
 
 After the component completes mounting with the accurate width, it tries to calculate the desired height of the content (`current`, `first`, `max`). If that calculation fails (perhaps because slide images are still loading), it'll wait a bit and try again. Once successful, that measurement then replaces `initialSlideHeight` with the measured height in pixels.
