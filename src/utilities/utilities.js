@@ -171,7 +171,7 @@ export const calcSomeInitialState = (props) => {
     ? (props.initialSlideHeight || 0) * props.slidesToShow
     : props.initialSlideHeight || 0;
 
-  const frameHeight = slideHeight + props.cellSpacing * (slidesToShow - 1);
+  const frameHeight = (slideHeight + props.cellSpacing) * (slidesToShow - 1);
 
   const frameWidth = props.vertical ? frameHeight : '100%';
   return {
