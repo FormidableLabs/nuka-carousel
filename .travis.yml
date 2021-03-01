@@ -6,10 +6,6 @@ node_js:
 
 sudo: false
 
-branches:
-  only:
-    - master
-
 script:
   - yarn run build
   - yarn run build-dist
