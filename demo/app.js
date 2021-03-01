@@ -152,7 +152,7 @@ export default function App() {
             marginBottom: '10px',
             display: 'flex',
             justifyContent: 'space-around',
-            height: '36px'
+            height: '100%'
           }}
         >
           <button
@@ -163,7 +163,9 @@ export default function App() {
               }))
             }
           >
-            Toggle Show 3 Slides Only
+            {carouselState.length === 9
+              ? 'Show 3 Slides Only'
+              : 'Show 9 Slides'}
           </button>
           <button
             onClick={() =>
@@ -194,7 +196,7 @@ export default function App() {
               }))
             }
           >
-            Toggle Autoplay {carouselState.autoplay === true ? 'Off' : 'On'}
+            Toggle Autoplay: {carouselState.autoplay === true ? 'Off' : 'On'}
           </button>
         </div>
 
@@ -205,7 +207,7 @@ export default function App() {
                 marginBottom: '10px',
                 display: 'flex',
                 justifyContent: 'space-around',
-                height: '36px'
+                height: '100%'
               }}
             >
               <button
@@ -323,11 +325,11 @@ export default function App() {
                 onClick={() =>
                   setCarouselState(({ cellSpacing: prevCellSpacing }) => ({
                     ...carouselState,
-                    cellSpacing: prevCellSpacing > 0 ? 0 : 15
+                    cellSpacing: prevCellSpacing > 0 ? 0 : 25
                   }))
                 }
               >
-                Toggle Cell Spacing{' '}
+                Toggle Cell Spacing:{' '}
                 {carouselState.cellSpacing > 0 ? 'Off' : 'On'}
               </button>
             </div>
