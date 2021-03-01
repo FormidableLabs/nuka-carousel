@@ -34,11 +34,9 @@ export default function App() {
     zoomScale: 0.5
   });
 
-  const handleImageClick = useCallback(() => {
-    setCarouselState(({ underlineHeader: prevUnderlineHeader }) => ({
-      ...carouselState,
-      underlineHeader: !prevUnderlineHeader
-    }));
+  const handleImageClick = useCallback((index) => {
+    // eslint-disable-next-line no-alert
+    window.alert(`Slide ${index + 1} clicked`);
   }, []);
 
   const handleZoomScaleChange = useCallback((event) => {
@@ -66,7 +64,7 @@ export default function App() {
       }`}
       alt={`Slide ${index + 1}`}
       key={color}
-      onClick={() => handleImageClick()}
+      onClick={() => handleImageClick(index)}
       style={{
         height: carouselState.heightMode === 'current' ? 100 * (index + 1) : 400
       }}
