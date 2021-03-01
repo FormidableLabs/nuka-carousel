@@ -309,7 +309,7 @@ describe('<Carousel />', () => {
 
     it('should allow navigation to the last slide for center align and > 1 slidesToShow.', () => {
       const wrapper = mount(
-        <Carousel cellAlign="center" slidesToShow={3}>
+        <Carousel cellAlign="center" slidesToShow={2}>
           <p>Slide 1</p>
           <p>Slide 2</p>
           <p>Slide 3</p>
@@ -318,14 +318,11 @@ describe('<Carousel />', () => {
           <p>Slide 6</p>
         </Carousel>
       );
-      const nextButton = wrapper.find('.slider-control-centerright button');
+
       jest.useFakeTimers();
 
-      for (let i = 0; i < 5; i++) {
-        nextButton.simulate('click');
-        jest.advanceTimersByTime(500);
-      }
-
+      wrapper.instance().goToSlide(5);
+      jest.advanceTimersByTime(500);
       expect(wrapper).toHaveState({ currentSlide: 5 });
     });
 
@@ -340,14 +337,11 @@ describe('<Carousel />', () => {
           <p>Slide 6</p>
         </Carousel>
       );
-      const nextButton = wrapper.find('.slider-control-centerright button');
+
       jest.useFakeTimers();
 
-      for (let i = 0; i < 5; i++) {
-        nextButton.simulate('click');
-        jest.advanceTimersByTime(500);
-      }
-
+      wrapper.instance().goToSlide(5);
+      jest.advanceTimersByTime(500);
       expect(wrapper).toHaveState({ currentSlide: 5 });
     });
 

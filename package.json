@@ -27,7 +27,7 @@
     "babel-loader": "8.1.0",
     "builder": "^5.0.0",
     "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.15.5",
+    "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "^4.8.0",
     "eslint-config-formidable": "^3.0.0",
     "eslint-config-jest-enzyme": "^6.0.0",
