@@ -679,7 +679,6 @@ export default class Carousel extends React.Component {
 
   getTargetLeft(touchOffset, slide) {
     const target = slide || this.state.currentSlide;
-
     let offset = getAlignmentOffset(target, { ...this.props, ...this.state });
     let left = this.state.slideWidth * target;
 
@@ -698,7 +697,11 @@ export default class Carousel extends React.Component {
       offset -= this.props.cellSpacing * (this.state.slideCount - 1);
     }
 
-    offset -= touchOffset || 0;
+    if (!isNaN(touchOffset)) {
+      offset -= touchOffset;
+    } else {
+      offset -= 0;
+    }
 
     return (left - offset) * -1;
   }
@@ -1238,7 +1241,8 @@ export default class Carousel extends React.Component {
                 };
               }
             }}
-            children={({ tx, ty }) => (
+          >
+            {({ tx, ty }) => (
               <TransitionControl
                 {...getTransitionProps(this.props, this.state)}
                 deltaX={tx}
@@ -1247,7 +1251,7 @@ export default class Carousel extends React.Component {
                 {addAccessibility(validChildren, slidesToShow, currentSlide)}
               </TransitionControl>
             )}
-          />
+          </Animate>
         </div>
 
         {this.renderControls()}

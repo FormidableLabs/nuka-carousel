@@ -43,19 +43,17 @@ export default function App() {
     setCarouselState({ ...carouselState, zoomScale: event.target.value });
   }, []);
 
-  const renderTopControls = (currentSlide) => {
-    return (
-      <div
-        style={{
-          fontFamily: 'Helvetica',
-          color: '#fff',
-          textDecoration: carouselState.underlineHeader ? 'underline' : 'none'
-        }}
-      >
-        Nuka Carousel: Slide {Math.ceil(currentSlide) + 1}
-      </div>
-    );
-  };
+  const renderTopControls = (currentSlide) => (
+    <div
+      style={{
+        fontFamily: 'Helvetica',
+        color: '#fff',
+        textDecoration: carouselState.underlineHeader ? 'underline' : 'none'
+      }}
+    >
+      Nuka Carousel: Slide {Math.ceil(currentSlide) + 1}
+    </div>
+  );
 
   const slides = colors.slice(0, carouselState.length).map((color, index) => (
     <img
