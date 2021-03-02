@@ -15,54 +15,54 @@ export default function App() {
     'db7c00',
     'aa231f'
   ];
-  const [animation, setAnimation] = useState(undefined);
-  const [autoplay, setAutoplay] = useState(false);
-  const [cellAlign, setCellAlign] = useState('left');
-  const [cellSpacing, setCellSpacing] = useState(0);
-  const [heightMode, setHeightMode] = useState('max');
-  const [length, setLength] = useState(colors.length);
-  const [scrollMode, setScrollMode] = useState('remainder');
-  const [slideIndex, setSlideIndex] = useState(0);
-  const [slidesToScroll, setSlidesToScroll] = useState(1);
-  const [slidesToShow, setSlidesToShow] = useState(1);
-  const [transitionMode, setTransitionMode] = useState('scroll');
-  const [underlineHeader, setUnderlineHeader] = useState(false);
-  const [withoutControls, setWithoutControls] = useState(false);
-  const [wrapAround, setWrapAround] = useState(false);
-  const [zoomScale, setZoomScale] = useState(0.5);
 
-  const handleImageClick = useCallback(() => {
-    setUnderlineHeader((prevUnderlineHeader) => !prevUnderlineHeader);
+  const [carouselState, setCarouselState] = useState({
+    animation: undefined,
+    autoplay: false,
+    cellAlign: 'left',
+    cellSpacing: 0,
+    heightMode: 'max',
+    length: colors.length,
+    scrollMode: 'remainder',
+    slideIndex: 0,
+    slidesToScroll: 1,
+    slidesToShow: 1,
+    transitionMode: 'scroll',
+    withoutControls: false,
+    wrapAround: false,
+    zoomScale: 0.5
+  });
+
+  const handleImageClick = useCallback((index) => {
+    // eslint-disable-next-line no-alert
+    window.alert(`Slide ${index + 1} clicked`);
   }, []);
 
   const handleZoomScaleChange = useCallback((event) => {
-    setZoomScale(event.target.value);
+    setCarouselState({ ...carouselState, zoomScale: event.target.value });
   }, []);
 
-  const renderTopControls = (currentSlide) => {
-    return (
-      <div
-        style={{
-          fontFamily: 'Helvetica',
-          color: '#fff',
-          textDecoration: underlineHeader ? 'underline' : 'none'
-        }}
-      >
-        Nuka Carousel: Slide {Math.ceil(currentSlide) + 1}
-      </div>
-    );
-  };
+  const renderTopControls = (currentSlide) => (
+    <div
+      style={{
+        fontFamily: 'Helvetica',
+        color: '#fff'
+      }}
+    >
+      Nuka Carousel: Slide {Math.ceil(currentSlide) + 1}
+    </div>
+  );
 
-  const slides = colors.slice(0, length).map((color, index) => (
+  const slides = colors.slice(0, carouselState.length).map((color, index) => (
     <img
       src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${
         index + 1
       }`}
       alt={`Slide ${index + 1}`}
       key={color}
-      onClick={() => handleImageClick()}
+      onClick={() => handleImageClick(index)}
       style={{
-        height: heightMode === 'current' ? 100 * (index + 1) : 400
+        height: carouselState.heightMode === 'current' ? 100 * (index + 1) : 400
       }}
     />
   ));
@@ -71,20 +71,20 @@ export default function App() {
     <div style={{ width: '50%', margin: 'auto' }}>
       <h2 style={{ textAlign: 'center' }}>Nuka Carousel Demo</h2>
       <Carousel
-        cellSpacing={cellSpacing}
-        animation={animation}
-        autoplay={autoplay}
-        cellAlign={cellAlign}
-        heightMode={heightMode}
-        scrollMode={scrollMode}
-        slideIndex={slideIndex}
+        cellSpacing={carouselState.cellSpacing}
+        animation={carouselState.animation}
+        autoplay={carouselState.autoplay}
+        cellAlign={carouselState.cellAlign}
+        heightMode={carouselState.heightMode}
+        scrollMode={carouselState.scrollMode}
+        slideIndex={carouselState.slideIndex}
         slideListMargin={0}
-        slidesToScroll={slidesToScroll}
-        slidesToShow={slidesToShow}
-        transitionMode={transitionMode}
-        withoutControls={withoutControls}
-        wrapAround={wrapAround}
-        zoomScale={Number(zoomScale || 0)}
+        slidesToScroll={carouselState.slidesToScroll}
+        slidesToShow={carouselState.slidesToShow}
+        transitionMode={carouselState.transitionMode}
+        withoutControls={carouselState.withoutControls}
+        wrapAround={carouselState.wrapAround}
+        zoomScale={Number(carouselState.zoomScale || 0)}
         renderAnnounceSlideMessage={({ currentSlide, slideCount }) => {
           return `Showing slide ${currentSlide + 1} of ${slideCount}`;
         }}
@@ -104,16 +104,39 @@ export default function App() {
       >
         <div>
           {slides.map((slide, idx) => (
-            <button key={idx} onClick={() => setSlideIndex(idx)}>
+            <button
+              key={idx}
+              onClick={() =>
+                setCarouselState({ ...carouselState, slideIndex: idx })
+              }
+            >
               {idx + 1}
             </button>
           ))}
         </div>
-        {slidesToShow > 1.0 && (
+        {carouselState.slidesToShow > 1.0 && (
           <div>
-            <button onClick={() => setCellAlign('left')}>Left</button>
-            <button onClick={() => setCellAlign('center')}>Center</button>
-            <button onClick={() => setCellAlign('right')}>Right</button>
+            <button
+              onClick={() =>
+                setCarouselState({ ...carouselState, cellAlign: 'left' })
+              }
+            >
+              Left
+            </button>
+            <button
+              onClick={() =>
+                setCarouselState({ ...carouselState, cellAlign: 'center' })
+              }
+            >
+              Center
+            </button>
+            <button
+              onClick={() =>
+                setCarouselState({ ...carouselState, cellAlign: 'right' })
+              }
+            >
+              Right
+            </button>
           </div>
         )}
       </div>
@@ -123,76 +146,107 @@ export default function App() {
             marginBottom: '10px',
             display: 'flex',
             justifyContent: 'space-around',
-            height: '36px'
+            height: '100%'
           }}
         >
           <button
             onClick={() =>
-              setLength((prevLength) => (prevLength === 9 ? 3 : 9))
+              setCarouselState(({ length: prevLength }) => ({
+                ...carouselState,
+                length: prevLength === 9 ? 3 : 9
+              }))
             }
           >
-            Toggle Show 3 Slides Only
+            {carouselState.length === 9
+              ? 'Show 3 Slides Only'
+              : 'Show 9 Slides'}
           </button>
           <button
             onClick={() =>
-              setTransitionMode((prevTransitionMode) =>
-                prevTransitionMode === 'fade' ? 'scroll' : 'fade'
-              )
+              setCarouselState(({ transitionMode: prevTransitionMode }) => ({
+                ...carouselState,
+                transitionMode:
+                  prevTransitionMode === 'fade' ? 'scroll' : 'fade'
+              }))
             }
           >
-            Toggle Fade {transitionMode === 'fade' ? 'Off' : 'On'}
+            Toggle Fade {carouselState.transitionMode === 'fade' ? 'Off' : 'On'}
           </button>
           <button
-            onClick={() => setWrapAround((prevWrapAround) => !prevWrapAround)}
+            onClick={() =>
+              setCarouselState(({ wrapAround: prevWrapAround }) => ({
+                ...carouselState,
+                wrapAround: !prevWrapAround
+              }))
+            }
           >
-            Toggle Wrap Around: {wrapAround.toString()}
+            Toggle Wrap Around: {carouselState.wrapAround.toString()}
           </button>
-          <button onClick={() => setAutoplay((prevAutoPlay) => !prevAutoPlay)}>
-            Toggle Autoplay {autoplay === true ? 'Off' : 'On'}
+          <button
+            onClick={() =>
+              setCarouselState(({ autoplay: prevAutoPlay }) => ({
+                ...carouselState,
+                autoplay: !prevAutoPlay
+              }))
+            }
+          >
+            Toggle Autoplay: {carouselState.autoplay === true ? 'Off' : 'On'}
           </button>
         </div>
 
-        {transitionMode !== 'fade' && (
+        {carouselState.transitionMode !== 'fade' && (
           <>
             <div
               style={{
                 marginBottom: '10px',
                 display: 'flex',
                 justifyContent: 'space-around',
-                height: '36px'
+                height: '100%'
               }}
             >
               <button
                 onClick={() => {
-                  setSlidesToShow(slidesToShow === 3 ? 1 : 3);
-                  setSlidesToScroll(slidesToScroll === 'auto' ? 1 : 'auto');
+                  setCarouselState({
+                    ...carouselState,
+                    slidesToShow: carouselState.slidesToShow === 3 ? 1 : 3,
+                    slidesToScroll:
+                      carouselState.slidesToScroll === 'auto' ? 1 : 'auto'
+                  });
                 }}
               >
                 Toggle Drag Multiple{' '}
-                {slidesToShow > 1 && slidesToScroll === 'auto' ? 'Off' : 'On'}
+                {carouselState.slidesToShow > 1 &&
+                carouselState.slidesToScroll === 'auto'
+                  ? 'Off'
+                  : 'On'}
               </button>
               <button
                 onClick={() =>
-                  setSlidesToShow((prevSlidesToShow) =>
-                    prevSlidesToShow > 1.0 ? 1.0 : 1.25
-                  )
+                  setCarouselState(({ slidesToShow: prevSlidesToShow }) => ({
+                    ...carouselState,
+                    slidesToShow: prevSlidesToShow > 1.0 ? 1.0 : 1.25
+                  }))
                 }
               >
                 Toggle Partially Visible Slides
               </button>
               <button
                 onClick={() =>
-                  setHeightMode((prevHeightMode) =>
-                    prevHeightMode === 'current' ? 'max' : 'current'
-                  )
+                  setCarouselState(({ heightMode: prevHeightMode }) => ({
+                    ...carouselState,
+                    heightMode: prevHeightMode === 'current' ? 'max' : 'current'
+                  }))
                 }
               >
-                Toggle Height Mode: {heightMode}
+                Toggle Height Mode: {carouselState.heightMode}
               </button>
               <button
                 onClick={() =>
-                  setWithoutControls(
-                    (prevWithoutControls) => !prevWithoutControls
+                  setCarouselState(
+                    ({ withoutControls: prevWithoutControls }) => ({
+                      ...carouselState,
+                      withoutControls: !prevWithoutControls
+                    })
                   )
                 }
               >
@@ -206,59 +260,71 @@ export default function App() {
                 justifyContent: 'space-around'
               }}
             >
-              {animation === 'zoom' && (
+              {carouselState.animation === 'zoom' && (
                 <input
                   type="number"
-                  value={zoomScale}
+                  value={carouselState.zoomScale}
                   onChange={handleZoomScaleChange}
                 />
               )}
               <button
                 onClick={() => {
-                  setAnimation((prevAnimation) =>
-                    prevAnimation === 'zoom' ? undefined : 'zoom'
-                  );
-                  setCellAlign('center');
+                  setCarouselState(({ animation: prevAnimation }) => ({
+                    ...carouselState,
+                    animation: prevAnimation === 'zoom' ? undefined : 'zoom',
+                    cellAlign: 'center'
+                  }));
                 }}
               >
-                Toggle Zoom Animation {animation === 'zoom' ? 'Off' : 'On'}
+                Toggle Zoom Animation{' '}
+                {carouselState.animation === 'zoom' ? 'Off' : 'On'}
               </button>
               <button
                 onClick={() => {
-                  setSlidesToScroll((prevSlidesToScroll) =>
-                    prevSlidesToScroll === 1 ? 2 : 1
+                  setCarouselState(
+                    ({ slidesToScroll: prevSlidesToScroll }) => ({
+                      ...carouselState,
+                      slidesToScroll: prevSlidesToScroll === 1 ? 2 : 1,
+                      cellAlign: 'center'
+                    })
                   );
-                  setCellAlign('center');
                 }}
               >
-                Toggle SlidesToScroll {slidesToScroll === 1 ? 2 : 1}
+                Toggle SlidesToScroll{' '}
+                {carouselState.slidesToScroll === 1 ? 2 : 1}
               </button>
               <button
                 onClick={() => {
-                  setSlidesToShow((prevSlidesToShow) =>
-                    prevSlidesToShow >= 3.0 ? 1.0 : prevSlidesToShow + 0.25
-                  );
+                  setCarouselState(({ slidesToShow: prevSlidesToShow }) => ({
+                    ...carouselState,
+                    slidesToShow:
+                      prevSlidesToShow >= 3.0 ? 1.0 : prevSlidesToShow + 0.25
+                  }));
                 }}
               >
-                Increase Slides to Show: {slidesToShow}
+                Increase Slides to Show: {carouselState.slidesToShow}
               </button>
               <button
                 onClick={() =>
-                  setScrollMode((prevScrollMode) =>
-                    prevScrollMode === 'remainder' ? 'page' : 'remainder'
-                  )
+                  setCarouselState(({ scrollMode: prevScrollMode }) => ({
+                    ...carouselState,
+                    scrollMode:
+                      prevScrollMode === 'remainder' ? 'page' : 'remainder'
+                  }))
                 }
               >
-                Toggle ScrollMode: {scrollMode}
+                Toggle ScrollMode: {carouselState.scrollMode}
               </button>
               <button
                 onClick={() =>
-                  setCellSpacing((prevCellSpacing) =>
-                    prevCellSpacing > 0 ? 0 : 5
-                  )
+                  setCarouselState(({ cellSpacing: prevCellSpacing }) => ({
+                    ...carouselState,
+                    cellSpacing: prevCellSpacing > 0 ? 0 : 25
+                  }))
                 }
               >
-                Toggle Cellspacing {cellSpacing > 0 ? 'Off' : 'On'}
+                Toggle Cell Spacing:{' '}
+                {carouselState.cellSpacing > 0 ? 'Off' : 'On'}
               </button>
             </div>
           </>
