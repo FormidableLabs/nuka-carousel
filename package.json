@@ -23,6 +23,7 @@
     "@babel/polyfill": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.1",
     "babel-eslint": "^8.2.2",
     "babel-loader": "8.1.0",
     "builder": "^5.0.0",
