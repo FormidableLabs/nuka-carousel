@@ -13,7 +13,6 @@
 - What version of nuka-carousel are you using?
 - What version of React are you using?
 - What browser are you using?
-- What machine are you on?
 
 ### Describe the Problem
 

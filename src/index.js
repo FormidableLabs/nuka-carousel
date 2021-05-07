@@ -344,10 +344,6 @@ export default class Carousel extends React.Component {
           this.props.vertical
         );
 
-        if (direction !== 0) {
-          e.preventDefault();
-        }
-
         const length = this.props.vertical
           ? Math.round(
               Math.sqrt(

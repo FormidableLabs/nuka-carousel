@@ -1,5 +1,12 @@
 # Nuka Changelog
 
+## 4.7.6 (2021-03-15)
+
+- [#765](https://github.com/FormidableLabs/nuka-carousel/pull/765) Fixes #732 - remove preventDefault from touch handler
+- [#764](https://github.com/FormidableLabs/nuka-carousel/pull/764) Set up GH Actions
+- [#763](https://github.com/FormidableLabs/nuka-carousel/pull/763) Dep bumps
+- [#760](https://github.com/FormidableLabs/nuka-carousel/pull/760) Fixes: #754 - Center cellAlign bug
+
 ## 4.7.5 (2020-12-30)
 
 - [#746](https://github.com/FormidableLabs/nuka-carousel/pull/746) Fixes #705 - allow peeking slides when slide count is less than 3, and using Zoom animation
