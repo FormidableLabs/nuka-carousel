@@ -85,9 +85,9 @@ export default function App() {
         withoutControls={carouselState.withoutControls}
         wrapAround={carouselState.wrapAround}
         zoomScale={Number(carouselState.zoomScale || 0)}
-        renderAnnounceSlideMessage={({ currentSlide, slideCount }) => {
-          return `Showing slide ${currentSlide + 1} of ${slideCount}`;
-        }}
+        renderAnnounceSlideMessage={({ currentSlide, slideCount }) =>
+          `Showing slide ${currentSlide + 1} of ${slideCount}`
+        }
         renderTopCenterControls={({ currentSlide }) =>
           renderTopControls(currentSlide)
         }
