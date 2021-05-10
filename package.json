@@ -51,8 +51,8 @@
     "webpack-dev-server": "^3.11.0"
   },
   "peerDependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": "^0.14.9 || ^15.3.0 || ^16.0.0 || ^17.0.1",
+    "react-dom": "^0.14.9 || ^15.3.0 || ^16.0.0 || ^17.0.1"
   },
   "resolutions": {
     "jsdom": "^14.0.0"
