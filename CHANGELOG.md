@@ -1,5 +1,15 @@
 # Nuka Changelog
 
+## 4.7.8 (2021-05-10)
+
+- [#766](https://github.com/FormidableLabs/nuka-carousel/pull/766) Dep bumps
+- [#767](https://github.com/FormidableLabs/nuka-carousel/pull/767)
+- [#770](https://github.com/FormidableLabs/nuka-carousel/pull/770)
+- [#771](https://github.com/FormidableLabs/nuka-carousel/pull/771)
+- [#772](https://github.com/FormidableLabs/nuka-carousel/pull/772)
+- [#774](https://github.com/FormidableLabs/nuka-carousel/pull/774) Allow React 17 Peer Dep
+- [#775](https://github.com/FormidableLabs/nuka-carousel/pull/775) Check offset type
+
 ## 4.7.6 (2021-03-15)
 
 - [#765](https://github.com/FormidableLabs/nuka-carousel/pull/765) Fixes #732 - remove preventDefault from touch handler
@@ -50,7 +60,7 @@
 
 - [#687](https://github.com/FormidableLabs/nuka-carousel/pull/687) Fix Edge issue
 - [#683](https://github.com/FormidableLabs/nuka-carousel/pull/683) Rename param of afterSlide callback
-- [#680](https://github.com/FormidableLabs/nuka-carousel/pull/680) Fixes bug #586 - changing slide too quickly doesn't behave as expected 
+- [#680](https://github.com/FormidableLabs/nuka-carousel/pull/680) Fixes bug #586 - changing slide too quickly doesn't behave as expected
 - [#677](https://github.com/FormidableLabs/nuka-carousel/pull/677) Update incorrect prop `getControlsContainerStyle`
 
 ## 4.6.6 (2020-03-10)
