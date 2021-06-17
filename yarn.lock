@@ -966,7 +966,14 @@
     "@babel/plugin-transform-react-jsx-source" "^7.10.4"
     "@babel/plugin-transform-react-pure-annotations" "^7.10.4"
 
-"@babel/runtime@^7.10.3", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.14.5":
+  version "7.14.6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.6.tgz#535203bc0892efc7dec60bdc27b2ecf6e409062d"
+  integrity sha512-/PCB2uJ7oM44tz8YhC4Z/6PeOKXp4K588f+5M3clr1M4zbqztlo0XEfJ2LEzj/FgwfgGcIdl8n7YYjTCI0BYwg==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
+"@babel/runtime@^7.8.4":
   version "7.11.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.11.2.tgz#f549c13c754cc40b87644b9fa9f09a6a95fe0736"
   integrity sha512-TeWkU52so0mPtDcaCTxNBI/IHiz0pZgr8VEFqXFtZWpYD08ZB6FaSwVAS8MKRQAP3bYKiVjwysOJgMFY28o6Tw==
@@ -6895,12 +6902,12 @@ react-is@^16.12.0, react-is@^16.13.1, react-is@^16.8.1, react-is@^16.8.4, react-
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-move@^6.1.0:
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/react-move/-/react-move-6.4.0.tgz#9163a87c62fff94bf6e6980685c713739192650e"
-  integrity sha512-TNyDQESDZ0xsejnxFTQ9CKarJQN6NbgpImrvIEzOVe7+jt8y7uTjJwWxqFTfmvwskIs+RmUbCWdN7PAbGyhrdA==
+react-move@^6.5.0:
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/react-move/-/react-move-6.5.0.tgz#4b337d75987f9266426193f80e982604d49e97ff"
+  integrity sha512-tl8zwCqtXXWfmrUJGnkyPMNhx8DUTy1NugEuPW/JTMp2TGSEC819aMXGYMG8FWFzV9I6jy4kbgoZJnBpmZRktA==
   dependencies:
-    "@babel/runtime" "^7.10.3"
+    "@babel/runtime" "^7.14.5"
     kapellmeister "^3.0.1"
     prop-types "^15.7.2"
 
