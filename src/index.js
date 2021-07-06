@@ -123,7 +123,7 @@ export default class Carousel extends React.Component {
       this.props.keyCodeConfig
     );
     this.keyCodeMap = this.getKeyCodeMap(keyCodeConfig);
-    this.getLockScrollEvents().lockTouchScroll();
+//    this.getLockScrollEvents().lockTouchScroll();
     this.initializeCarouselHeight();
   }
 
@@ -217,7 +217,7 @@ export default class Carousel extends React.Component {
     for (let i = 0; i < this.timers.length; i++) {
       clearTimeout(this.timers[i]);
     }
-    this.getLockScrollEvents().unlockTouchScroll();
+//    this.getLockScrollEvents().unlockTouchScroll();
   }
 
   initializeCarouselHeight() {
