@@ -83,6 +83,7 @@ export default class Carousel extends React.Component {
     this.getOffsetDeltas = this.getOffsetDeltas.bind(this);
     this.getTargetLeft = this.getTargetLeft.bind(this);
     this.getTouchEvents = this.getTouchEvents.bind(this);
+    this.blockEvent = this.blockEvent.bind(this);
     this.goToSlide = this.goToSlide.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
@@ -281,30 +282,31 @@ export default class Carousel extends React.Component {
     }
   }
 
-  getLockScrollEvents() {
-    const blockEvent = (e) => {
-      if (this.state.dragging) {
-        const direction = swipeDirection(
-          this.touchObject.startX,
-          e.touches[0].pageX,
-          this.touchObject.startY,
-          e.touches[0].pageY,
-          this.props.vertical
-        );
-        if (direction !== 0) {
-          e.preventDefault();
-        }
+  blockEvent(e) {
+    if (this.state.dragging) {
+      const direction = swipeDirection(
+        this.touchObject.startX,
+        e.touches[0].pageX,
+        this.touchObject.startY,
+        e.touches[0].pageY,
+        this.props.vertical
+      );
+      if (direction !== 0) {
+        e.preventDefault();
       }
-    };
+    }
+  }
 
+  getLockScrollEvents() {
     const lockTouchScroll = () => {
-      document.addEventListener('touchmove', blockEvent, {
+      document.addEventListener('touchmove', this.blockEvent, {
         passive: false
       });
     };
+    console.log(document);
 
     const unlockTouchScroll = () => {
-      document.removeEventListener('touchmove', blockEvent, {
+      document.removeEventListener('touchmove', this.blockEvent, {
         passive: false
       });
     };
