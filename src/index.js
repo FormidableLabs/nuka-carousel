@@ -303,7 +303,6 @@ export default class Carousel extends React.Component {
         passive: false
       });
     };
-    console.log(document);
 
     const unlockTouchScroll = () => {
       document.removeEventListener('touchmove', this.blockEvent, {
