@@ -1,5 +1,14 @@
 # Nuka Changelog
 
+## 4.7.9 (2021-07-13)
+
+- [#791](https://github.com/FormidableLabs/nuka-carousel/pull/791) Fix: bind blockEvent method to `this`
+- [#785](https://github.com/FormidableLabs/nuka-carousel/pull/785) Fix: update react-move
+- [#781](https://github.com/FormidableLabs/nuka-carousel/pull/781) Fix: Improve SVG dot A11y
+- [#779](https://github.com/FormidableLabs/nuka-carousel/pull/779) Dep bumps
+- [#777](https://github.com/FormidableLabs/nuka-carousel/pull/777)
+- [#776](https://github.com/FormidableLabs/nuka-carousel/pull/776)
+
 ## 4.7.8 (2021-05-10)
 
 - [#766](https://github.com/FormidableLabs/nuka-carousel/pull/766) Dep bumps
