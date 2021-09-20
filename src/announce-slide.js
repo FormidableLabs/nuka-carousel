@@ -10,7 +10,7 @@ const AnnounceSlide = ({ message }) => {
     margin: '-1px',
     clip: 'rect(0, 0, 0, 0)',
     'white-space': 'nowrap',
-    border: 0,
+    border: 0
   };
   return (
     <div aria-live="polite" aria-atomic="true" style={styles} tabIndex={-1}>
