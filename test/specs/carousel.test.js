@@ -16,7 +16,7 @@ describe('<Carousel />', () => {
       expect(children).toHaveLength(3);
     });
 
-    it('should render a div with the class `slider`.', () => {
+    it('should render a section with the class `slider`.', () => {
       const wrapper = mount(
         <Carousel>
           <p>Slide 1</p>
@@ -24,7 +24,7 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
         </Carousel>
       );
-      const sliderDiv = wrapper.find('div.slider');
+      const sliderDiv = wrapper.find('section.slider');
       expect(sliderDiv).toHaveLength(1);
     });
 
@@ -40,7 +40,7 @@ describe('<Carousel />', () => {
       expect(sliderFrameDiv).toHaveLength(1);
     });
 
-    it('should render an ul with the class `slider-list`.', () => {
+    it('should render a div with the class `slider-list`.', () => {
       const wrapper = mount(
         <Carousel>
           <p>Slide 1</p>
@@ -48,7 +48,7 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
         </Carousel>
       );
-      const sliderListUl = wrapper.find('ul.slider-list');
+      const sliderListUl = wrapper.find('div.slider-list');
       expect(sliderListUl).toHaveLength(1);
     });
 
@@ -137,7 +137,7 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
         </Carousel>
       );
-      expect(wrapper.find('div.slider').instance()).toEqual(ref.current);
+      expect(wrapper.find('section.slider').instance()).toEqual(ref.current);
     });
   });
 
@@ -171,7 +171,7 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
         </Carousel>
       );
-      const slider = wrapper.find('div.slider');
+      const slider = wrapper.find('section.slider');
       expect(slider).toHaveLength(1);
     });
 
@@ -183,7 +183,7 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
         </Carousel>
       );
-      const sliderList = wrapper.find('ul.slider-list');
+      const sliderList = wrapper.find('div.slider-list');
       expect(sliderList.prop('style').transform).toBe(
         'translate3d(-100px, 0px, 0)'
       );
@@ -239,7 +239,7 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
         </Carousel>
       );
-      const slider = wrapper.find('div.test');
+      const slider = wrapper.find('section.test');
       expect(slider).toHaveLength(1);
     });
 
@@ -263,7 +263,7 @@ describe('<Carousel />', () => {
           <p>Slide 3</p>
         </Carousel>
       );
-      const slider = wrapper.find('div.slider');
+      const slider = wrapper.find('section.slider');
       expect(slider).toHaveStyle('backgroundColor', 'black');
       expect(slider).toHaveStyle('display', 'block');
     });
@@ -619,7 +619,7 @@ describe('<Carousel />', () => {
         );
 
         // Setting carousel focus
-        wrapper.find('div.slider').simulate('focus');
+        wrapper.find('section.slider').simulate('focus');
 
         expect(wrapper).toHaveState({ currentSlide: 0 });
         map.keydown({ keyCode: 39 });
@@ -641,7 +641,7 @@ describe('<Carousel />', () => {
         );
 
         // Setting carousel focus
-        wrapper.find('div.slider').simulate('focus');
+        wrapper.find('section.slider').simulate('focus');
 
         expect(wrapper).toHaveState({ currentSlide: 0 });
         map.keydown({ keyCode: 39 });
@@ -669,7 +669,7 @@ describe('<Carousel />', () => {
           );
 
           // Setting carousel focus
-          wrapper.find('div.slider').simulate('focus');
+          wrapper.find('section.slider').simulate('focus');
 
           expect(wrapper).toHaveState({ currentSlide: 0 });
           map.keydown({ keyCode: 38 });
