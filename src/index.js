@@ -1127,7 +1127,7 @@ export default class Carousel extends React.Component {
   }
 
   render() {
-    const { currentSlide, slideCount, frameWidth } = this.state;
+    const { currentSlide, slideCount, frameWidth, hasInteraction } = this.state;
     const {
       disableAnimation,
       frameOverflow,
@@ -1142,7 +1142,7 @@ export default class Carousel extends React.Component {
         this.state.resetWrapAroundPosition &&
         this.props.wrapAround) ||
       disableAnimation ||
-      !this.state.hasInteraction
+      !hasInteraction
         ? 0
         : this.props.speed;
 
@@ -1162,9 +1162,11 @@ export default class Carousel extends React.Component {
     } = this.getOffsetDeltas();
 
     return (
-      <div
+      <section
         className={['slider', this.props.className || ''].join(' ').trim()}
         onFocus={this.handleFocus}
+        aria-label="carousel-slider"
+        role="region"
         onBlur={this.handleBlur}
         ref={this.props.innerRef}
         tabIndex={0}
@@ -1260,7 +1262,7 @@ export default class Carousel extends React.Component {
             dangerouslySetInnerHTML={{ __html: getImgTagStyles() }}
           />
         )}
-      </div>
+      </section>
     );
   }
 }

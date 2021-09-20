@@ -12,7 +12,7 @@ export default class FadeTransition extends React.Component {
   formatChildren(children, opacity) {
     const { currentSlide, slidesToShow } = this.props;
     return React.Children.map(children, (child, index) => (
-      <li
+      <div
         className={`slider-slide${getSlideClassName(
           index,
           currentSlide,
@@ -20,11 +20,13 @@ export default class FadeTransition extends React.Component {
         )}`}
         style={this.getSlideStyles(index, opacity)}
         key={index}
+        aria-label={`slide ${index + 1} of ${children.length}`}
+        role="group"
         onClick={handleSelfFocus}
         tabIndex={-1}
       >
         {child}
-      </li>
+      </div>
     ));
   }
 
@@ -126,9 +128,9 @@ export default class FadeTransition extends React.Component {
     );
 
     return (
-      <ul className="slider-list" style={this.getContainerStyles()}>
+      <div className="slider-list" style={this.getContainerStyles()}>
         {children}
-      </ul>
+      </div>
     );
   }
 }
