@@ -240,6 +240,7 @@ export const PagingDots = (props) => {
               }}
               onClick={props.goToSlide.bind(null, index)}
               aria-label={`slide ${index + 1} bullet`}
+              aria-selected={isActive}
             >
               <svg
                 className="paging-dot"

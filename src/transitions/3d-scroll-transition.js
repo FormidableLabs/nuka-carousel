@@ -55,17 +55,19 @@ export default class ScrollTransition3D extends React.Component {
       const visible = this.getDistanceToCurrentSlide(index) <= slidesToShow / 2;
       const current = currentSlide === index;
       return (
-        <li
+        <div
           className={`slider-slide${visible ? ' slide-visible' : ''}${
             current ? ' slide-current' : ''
           }`}
           style={this.getSlideStyles(index, positionValue)}
           key={index}
+          aria-label={`slide ${index + 1} of ${children.length}`}
+          role="group"
           onClick={handleSelfFocus}
           tabIndex={-1}
         >
           {child}
-        </li>
+        </div>
       );
     });
   }
@@ -216,9 +218,9 @@ export default class ScrollTransition3D extends React.Component {
   render() {
     const children = this.formatChildren(this.props.children);
     return (
-      <ul className="slider-list" style={this.getListStyles()}>
+      <div className="slider-list" style={this.getListStyles()}>
         {children}
-      </ul>
+      </div>
     );
   }
 }

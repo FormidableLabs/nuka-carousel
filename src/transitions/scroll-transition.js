@@ -128,12 +128,14 @@ export default class ScrollTransition extends React.Component {
       const isVisible = isFullyVisible(index, this.props);
       const inert = isVisible ? {} : { inert: 'true' };
       return (
-        <li
+        <div
           className={`slider-slide${getSlideClassName(
             index,
             currentSlide,
             slidesToShow
           )}`}
+          aria-label={`slide ${index + 1} of ${children.length}`}
+          role="group"
           style={this.getSlideStyles(index, positionValue)}
           key={index}
           onClick={handleSelfFocus}
@@ -141,7 +143,7 @@ export default class ScrollTransition extends React.Component {
           {...inert}
         >
           {child}
-        </li>
+        </div>
       );
     });
   }
@@ -217,12 +219,12 @@ export default class ScrollTransition extends React.Component {
     const deltaY = this.props.deltaY;
 
     return (
-      <ul
+      <div
         className="slider-list"
         style={this.getListStyles({ deltaX, deltaY })}
       >
         {children}
-      </ul>
+      </div>
     );
   }
 }

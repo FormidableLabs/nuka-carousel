@@ -9,7 +9,7 @@ const AnnounceSlide = ({ message }) => {
     padding: 0,
     margin: '-1px',
     clip: 'rect(0, 0, 0, 0)',
-    'white-space': 'nowrap',
+    whiteSpace: 'nowrap',
     border: 0
   };
   return (
