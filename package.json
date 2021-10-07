@@ -37,6 +37,7 @@
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.14.3",
     "jest": "^24.7.1",
+    "jest-axe": "^5.0.1",
     "jest-enzyme": "^7.0.2",
     "jest-puppeteer-preset": "^2.0.1",
     "prettier": "2.1.2",
