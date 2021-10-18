@@ -248,7 +248,7 @@ export default class Carousel extends React.Component {
           // to load, so we stop checking. Otherwise, the page will freeze
           // after a long period:
           // See https://github.com/FormidableLabs/nuka-carousel/issues/798
-          if (timesChecked > 10) {
+          if (timesChecked < 10) {
             // Add exponential backoff to check more slowly
             initializeHeight(delay * 1.5);
           }
