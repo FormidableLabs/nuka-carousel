@@ -222,7 +222,8 @@ export default class Carousel extends React.Component {
   }
 
   initializeCarouselHeight() {
-    const heightCheckDelay = 200;
+    const initialDelay = 200;
+    let timesChecked = 0;
     const initializeHeight = (delay) => {
       this.timers.push(
         setTimeout(() => {
@@ -238,15 +239,24 @@ export default class Carousel extends React.Component {
           }
 
           this.setDimensions();
+          ++timesChecked;
 
           // Increase delay per attempt so the checks
           // slowly decrease if content is taking forever to load.
-          initializeHeight(delay + heightCheckDelay);
+          //
+          // If we've checked more than 10 times, it's probably never going
+          // to load, so we stop checking. Otherwise, the page will freeze
+          // after a long period:
+          // See https://github.com/FormidableLabs/nuka-carousel/issues/798
+          if (timesChecked > 10) {
+            // Add exponential backoff to check more slowly
+            initializeHeight(delay * 1.5);
+          }
         }, delay)
       );
     };
 
-    initializeHeight(heightCheckDelay);
+    initializeHeight(initialDelay);
   }
 
   establishChildNodesMutationObserver() {
