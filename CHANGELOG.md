@@ -1,5 +1,19 @@
 # Nuka Changelog
 
+## 4.8.1 (2021-10-22)
+
+- [#804](https://github.com/FormidableLabs/nuka-carousel/pull/804) Fix: flip inequality check in initializeCarouselHeight
+- [#805](https://github.com/FormidableLabs/nuka-carousel/pull/805) Fix: prevent initializeCarouselHeight loop to fix browser crash
+
+## 4.8.0 (2021-09-21)
+
+- [#802](https://github.com/FormidableLabs/nuka-carousel/pull/802) Minor A11y improvements
+- [#801](https://github.com/FormidableLabs/nuka-carousel/pull/801) Fix lint errors
+- [#800](https://github.com/FormidableLabs/nuka-carousel/pull/800) Dep bumps
+- [#799](https://github.com/FormidableLabs/nuka-carousel/pull/799) Dep bumps
+- [#796](https://github.com/FormidableLabs/nuka-carousel/pull/796) Perf: Use more modern screen-reader only styles
+- [#794](https://github.com/FormidableLabs/nuka-carousel/pull/794) Dep bumps
+
 ## 4.7.9 (2021-07-13)
 
 - [#791](https://github.com/FormidableLabs/nuka-carousel/pull/791) Fix: bind blockEvent method to `this`
