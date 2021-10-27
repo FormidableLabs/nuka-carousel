@@ -52,7 +52,7 @@ yarn start
 
 You can access the application on your localhost at the following url: <a href="http://localhost:8080/demo" target="_blank">Local Demo</a>
 
-Or on CodeSandBox: [![Edit silly-rhodes-5pr2i](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/silly-rhodes-5pr2i?fontsize=14&hidenavigation=1&theme=dark)
+Or on CodeSandBox: [![Edit silly-rhodes-5pr2i](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/silly-rosalind-6y7f3)
 
 ### Keyboard Controls
 
