@@ -16,7 +16,7 @@ module.exports = {
   },
 
   devServer: {
-    contentBase: './demo',
+    static: './demo',
     historyApiFallback: true,
     hot: false
   },
