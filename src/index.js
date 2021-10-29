@@ -336,6 +336,12 @@ export default class Carousel extends React.Component {
 
     return {
       onTouchStart: (e) => {
+        //detect pinch zoom
+        if (e.touches.length === 2) {
+          this.handleMouseOver();
+          return;
+        }
+
         this.touchObject = {
           startX: e.touches[0].pageX,
           startY: e.touches[0].pageY
@@ -347,6 +353,10 @@ export default class Carousel extends React.Component {
         });
       },
       onTouchMove: (e) => {
+        if (e.touches.length === 2) {
+          return;
+        }
+
         const direction = swipeDirection(
           this.touchObject.startX,
           e.touches[0].pageX,
@@ -395,6 +405,11 @@ export default class Carousel extends React.Component {
         });
       },
       onTouchEnd: (e) => {
+        if (e.touches.length === 2) {
+          this.handleMouseOut();
+          return;
+        }
+
         this.handleSwipe(e);
         this.handleMouseOut();
       },
