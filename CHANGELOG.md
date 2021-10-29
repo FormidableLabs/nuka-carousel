@@ -1,4 +1,8 @@
 # Nuka Changelog
+## 4.8.2 (2021-10-29)
+
+- [#808](https://github.com/FormidableLabs/nuka-carousel/pull/808) update webpack deps
+- [#807](https://github.com/FormidableLabs/nuka-carousel/pull/807) Fix: improve pinch zoom behavior on mobile
 
 ## 4.8.1 (2021-10-22)
 
