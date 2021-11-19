@@ -587,7 +587,7 @@ describe('Nuka Carousel', () => {
         );
       });
 
-      it('should partially show previous and next slide', async () => {
+      it('should partially show previous and next slide with 3 slides only', async () => {
         await expect(page).toClick('button', {
           text: 'Toggle Show 3 Slides Only'
         });
