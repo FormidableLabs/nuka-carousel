@@ -1,4 +1,8 @@
 # Nuka Changelog
+## 4.8.3 (2021-11-19)
+
+- [#810](https://github.com/FormidableLabs/nuka-carousel/pull/810) fix: Last image is not rendered with 3 slides
+
 ## 4.8.2 (2021-10-29)
 
 - [#808](https://github.com/FormidableLabs/nuka-carousel/pull/808) update webpack deps
