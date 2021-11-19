@@ -586,6 +586,35 @@ describe('Nuka Carousel', () => {
           'true'
         );
       });
+
+      it('should partially show previous and next slide', async () => {
+        await expect(page).toClick('button', {
+          text: 'Toggle Show 3 Slides Only'
+        });
+
+        const prevSlide = 3;
+        const prevStyles = await page.evaluate(
+          getStyles,
+          `.slider-slide:nth-child(${prevSlide})`,
+          ['left', 'width']
+        );
+
+        const correctPrevLeft = -parseFloat(prevStyles.width);
+        expect(`${approximately(prevStyles.left, correctPrevLeft)}`).toMatch(
+          'true'
+        );
+
+        const nextSlide = 2;
+        const nextStyles = await page.evaluate(
+          getStyles,
+          `.slider-slide:nth-child(${nextSlide})`,
+          ['left', 'width']
+        );
+        const correctNextLeft = parseFloat(nextStyles.width);
+        expect(`${approximately(nextStyles.left, correctNextLeft)}`).toMatch(
+          'true'
+        );
+      });
     });
   });
 });

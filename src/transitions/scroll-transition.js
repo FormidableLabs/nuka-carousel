@@ -108,7 +108,7 @@ export default class ScrollTransition extends React.Component {
             (this.props.slideWidth + this.props.cellSpacing) *
             (this.props.slideCount + currentSlideIndex);
         }
-      } else if (distanceFromStart > slidesAfter) {
+      } else if (distanceFromStart >= slidesAfter) {
         targetPosition =
           (this.props.slideWidth + this.props.cellSpacing) *
           (this.props.slideCount - currentSlideIndex) *
