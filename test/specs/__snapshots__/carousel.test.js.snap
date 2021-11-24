@@ -1,0 +1,609 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Carousel /> Rendering and Mounting should correctly mount with children and scrollMode set to \`page\`. 1`] = `
+<Carousel
+  afterSlide={[Function]}
+  autoGenerateStyleTag={true}
+  autoplay={false}
+  autoplayInterval={3000}
+  autoplayReverse={false}
+  beforeSlide={[Function]}
+  cellAlign="left"
+  cellSpacing={10}
+  defaultControlsConfig={Object {}}
+  disableAnimation={false}
+  disableEdgeSwiping={false}
+  dragging={true}
+  easing="easeCircleOut"
+  edgeEasing="easeElasticOut"
+  enableKeyboardControls={false}
+  frameOverflow="hidden"
+  framePadding="0px"
+  getControlsContainerStyles={[Function]}
+  height="inherit"
+  heightMode="max"
+  keyCodeConfig={Object {}}
+  onDragStart={[Function]}
+  onResize={[Function]}
+  pauseOnHover={true}
+  renderAnnounceSlideMessage={[Function]}
+  renderBottomCenterControls={[Function]}
+  renderCenterLeftControls={[Function]}
+  renderCenterRightControls={[Function]}
+  scrollMode="page"
+  slideIndex={0}
+  slideListMargin={10}
+  slideOffset={25}
+  slideWidth="300"
+  slidesToScroll={1}
+  slidesToShow={1}
+  speed={500}
+  style={Object {}}
+  swiping={true}
+  transitionMode="scroll"
+  vertical={false}
+  width="100%"
+  withoutControls={false}
+  wrapAround={false}
+>
+  <section
+    aria-label="carousel-slider"
+    className="slider"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    role="region"
+    style={
+      Object {
+        "MozBoxSizing": "border-box",
+        "boxSizing": "border-box",
+        "display": "block",
+        "height": "inherit",
+        "position": "relative",
+        "width": "100%",
+      }
+    }
+    tabIndex={0}
+  >
+    <AnnounceSlide
+      message="Slide 1 of 3"
+    >
+      <div
+        aria-atomic="true"
+        aria-live="polite"
+        style={
+          Object {
+            "border": 0,
+            "clip": "rect(0, 0, 0, 0)",
+            "height": "1px",
+            "margin": "-1px",
+            "overflow": "hidden",
+            "padding": 0,
+            "position": "absolute",
+            "whiteSpace": "nowrap",
+            "width": "1px",
+          }
+        }
+        tabIndex={-1}
+      >
+        Slide 1 of 3
+      </div>
+    </AnnounceSlide>
+    <div
+      className="slider-frame"
+      onClickCapture={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseMove={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+      onMouseUp={[Function]}
+      onTouchCancel={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      style={
+        Object {
+          "MozBoxSizing": "border-box",
+          "WebkitTransform": "translate3d(0, 0, 0)",
+          "boxSizing": "border-box",
+          "display": "block",
+          "height": "100%",
+          "margin": "0px",
+          "msTransform": "translate(0, 0)",
+          "overflow": "hidden",
+          "padding": 0,
+          "position": "relative",
+          "touchAction": "pinch-zoom pan-y",
+          "transform": "translate3d(0, 0, 0)",
+        }
+      }
+    >
+      <Animate
+        interpolation={[Function]}
+        show={true}
+        start={
+          Object {
+            "tx": -0,
+            "ty": 0,
+          }
+        }
+        update={[Function]}
+      >
+        <NodeGroup
+          data={
+            Array [
+              Object {
+                "tx": -0,
+                "ty": 0,
+              },
+            ]
+          }
+          enter={[Function]}
+          interpolation={[Function]}
+          keyAccessor={[Function]}
+          leave={[Function]}
+          start={[Function]}
+          update={[Function]}
+        >
+          <ScrollTransition
+            cellAlign="left"
+            cellSpacing={10}
+            currentSlide={0}
+            deltaX={-0}
+            deltaY={0}
+            dragging={true}
+            frameWidth={0}
+            hasInteraction={false}
+            heightMode="max"
+            isWrappingAround={false}
+            left={0}
+            slideCount={3}
+            slideHeight={0}
+            slideListMargin={10}
+            slideOffset={25}
+            slideWidth={300}
+            slidesToScroll={0}
+            slidesToShow={0}
+            top={0}
+            vertical={false}
+            wrapAround={false}
+            zoomScale={0.85}
+          >
+            <div
+              className="slider-list"
+              style={
+                Object {
+                  "MozBoxSizing": "border-box",
+                  "WebkitTransform": "translate3d(0px, 0px, 0)",
+                  "boxSizing": "border-box",
+                  "cursor": "pointer",
+                  "display": "block",
+                  "height": 0,
+                  "margin": "0px -5px",
+                  "msTransform": "translate(0px, 0px)",
+                  "padding": 0,
+                  "position": "relative",
+                  "touchAction": "pinch-zoom pan-y",
+                  "transform": "translate3d(0px, 0px, 0)",
+                  "transition": "0s",
+                  "width": "auto",
+                }
+              }
+            >
+              <div
+                aria-label="slide 1 of 3"
+                className="slider-slide"
+                key="0/.$.$.0"
+                onClick={[Function]}
+                role="group"
+                style={
+                  Object {
+                    "MozBoxSizing": "border-box",
+                    "boxSizing": "border-box",
+                    "display": "inline-block",
+                    "height": "auto",
+                    "left": 0,
+                    "listStyleType": "none",
+                    "marginBottom": "auto",
+                    "marginLeft": 5,
+                    "marginRight": 5,
+                    "marginTop": "auto",
+                    "position": "absolute",
+                    "top": 0,
+                    "transform": "scale(1)",
+                    "transition": "transform .4s linear",
+                    "verticalAlign": "top",
+                    "width": 300,
+                  }
+                }
+                tabIndex={-1}
+              >
+                <p
+                  aria-hidden="false"
+                  key=".$.0"
+                  tabIndex={0}
+                >
+                  Slide 1
+                </p>
+              </div>
+              <div
+                aria-label="slide 2 of 3"
+                className="slider-slide"
+                inert="true"
+                key="1/.$.$.1"
+                onClick={[Function]}
+                role="group"
+                style={
+                  Object {
+                    "MozBoxSizing": "border-box",
+                    "boxSizing": "border-box",
+                    "display": "inline-block",
+                    "height": "auto",
+                    "left": 310,
+                    "listStyleType": "none",
+                    "marginBottom": "auto",
+                    "marginLeft": 5,
+                    "marginRight": 5,
+                    "marginTop": "auto",
+                    "position": "absolute",
+                    "top": 0,
+                    "transform": "scale(1)",
+                    "transition": "transform .4s linear",
+                    "verticalAlign": "top",
+                    "width": 300,
+                  }
+                }
+                tabIndex={-1}
+              >
+                <p
+                  aria-hidden="true"
+                  key=".$.1"
+                >
+                  Slide 2
+                </p>
+              </div>
+              <div
+                aria-label="slide 3 of 3"
+                className="slider-slide"
+                inert="true"
+                key="2/.$.$.2"
+                onClick={[Function]}
+                role="group"
+                style={
+                  Object {
+                    "MozBoxSizing": "border-box",
+                    "boxSizing": "border-box",
+                    "display": "inline-block",
+                    "height": "auto",
+                    "left": 620,
+                    "listStyleType": "none",
+                    "marginBottom": "auto",
+                    "marginLeft": 5,
+                    "marginRight": 5,
+                    "marginTop": "auto",
+                    "position": "absolute",
+                    "top": 0,
+                    "transform": "scale(1)",
+                    "transition": "transform .4s linear",
+                    "verticalAlign": "top",
+                    "width": 300,
+                  }
+                }
+                tabIndex={-1}
+              >
+                <p
+                  aria-hidden="true"
+                  key=".$.2"
+                >
+                  Slide 3
+                </p>
+              </div>
+            </div>
+          </ScrollTransition>
+        </NodeGroup>
+      </Animate>
+    </div>
+    <div
+      className="slider-control-centerleft"
+      key="CenterLeft"
+      style={
+        Object {
+          "WebkitTransform": "translateY(-50%)",
+          "left": 0,
+          "msTransform": "translateY(-50%)",
+          "position": "absolute",
+          "top": "50%",
+          "transform": "translateY(-50%)",
+        }
+      }
+    >
+      <PreviousButton
+        cellAlign="left"
+        cellSpacing={10}
+        currentSlide={0}
+        defaultControlsConfig={Object {}}
+        frameWidth={0}
+        goToSlide={[Function]}
+        left={0}
+        nextSlide={[Function]}
+        previousSlide={[Function]}
+        scrollMode="page"
+        slideCount={3}
+        slideWidth={300}
+        slidesToScroll={0}
+        slidesToShow={0}
+        top={0}
+        vertical={false}
+        wrapAround={false}
+      >
+        <button
+          aria-label="previous"
+          disabled={true}
+          onClick={[Function]}
+          style={
+            Object {
+              "background": "rgba(0,0,0,0.4)",
+              "border": 0,
+              "color": "white",
+              "cursor": "not-allowed",
+              "opacity": 0.3,
+              "padding": 10,
+              "textTransform": "uppercase",
+            }
+          }
+          type="button"
+        >
+          Prev
+        </button>
+      </PreviousButton>
+    </div>
+    <div
+      className="slider-control-centerright"
+      key="CenterRight"
+      style={
+        Object {
+          "WebkitTransform": "translateY(-50%)",
+          "msTransform": "translateY(-50%)",
+          "position": "absolute",
+          "right": 0,
+          "top": "50%",
+          "transform": "translateY(-50%)",
+        }
+      }
+    >
+      <NextButton
+        cellAlign="left"
+        cellSpacing={10}
+        currentSlide={0}
+        defaultControlsConfig={Object {}}
+        frameWidth={0}
+        goToSlide={[Function]}
+        left={0}
+        nextSlide={[Function]}
+        previousSlide={[Function]}
+        scrollMode="page"
+        slideCount={3}
+        slideWidth={300}
+        slidesToScroll={0}
+        slidesToShow={0}
+        top={0}
+        vertical={false}
+        wrapAround={false}
+      >
+        <button
+          aria-label="next"
+          disabled={false}
+          onClick={[Function]}
+          style={
+            Object {
+              "background": "rgba(0,0,0,0.4)",
+              "border": 0,
+              "color": "white",
+              "cursor": "pointer",
+              "opacity": false,
+              "padding": 10,
+              "textTransform": "uppercase",
+            }
+          }
+          type="button"
+        >
+          Next
+        </button>
+      </NextButton>
+    </div>
+    <div
+      className="slider-control-bottomcenter"
+      key="BottomCenter"
+      style={
+        Object {
+          "WebkitTransform": "translateX(-50%)",
+          "bottom": 0,
+          "left": "50%",
+          "msTransform": "translateX(-50%)",
+          "position": "absolute",
+          "transform": "translateX(-50%)",
+        }
+      }
+    >
+      <PagingDots
+        cellAlign="left"
+        cellSpacing={10}
+        currentSlide={0}
+        defaultControlsConfig={Object {}}
+        frameWidth={0}
+        goToSlide={[Function]}
+        left={0}
+        nextSlide={[Function]}
+        previousSlide={[Function]}
+        scrollMode="page"
+        slideCount={3}
+        slideWidth={300}
+        slidesToScroll={0}
+        slidesToShow={0}
+        top={0}
+        vertical={false}
+        wrapAround={false}
+      >
+        <ul
+          style={
+            Object {
+              "display": "flex",
+              "listStyleType": "none",
+              "margin": 0,
+              "padding": 0,
+              "position": "relative",
+              "top": -10,
+            }
+          }
+        >
+          <li
+            className="paging-item active"
+            key="0"
+          >
+            <button
+              aria-label="slide 1 bullet"
+              aria-selected={true}
+              onClick={[Function]}
+              style={
+                Object {
+                  "background": "transparent",
+                  "border": "none",
+                  "cursor": "pointer",
+                  "fill": "black",
+                  "opacity": 1,
+                }
+              }
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                className="paging-dot"
+                focusable="false"
+                height="6"
+                width="6"
+              >
+                <circle
+                  cx="3"
+                  cy="3"
+                  r="3"
+                />
+              </svg>
+            </button>
+          </li>
+          <li
+            className="paging-item"
+            key="1"
+          >
+            <button
+              aria-label="slide 2 bullet"
+              aria-selected={false}
+              onClick={[Function]}
+              style={
+                Object {
+                  "background": "transparent",
+                  "border": "none",
+                  "cursor": "pointer",
+                  "fill": "black",
+                  "opacity": 0.5,
+                }
+              }
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                className="paging-dot"
+                focusable="false"
+                height="6"
+                width="6"
+              >
+                <circle
+                  cx="3"
+                  cy="3"
+                  r="3"
+                />
+              </svg>
+            </button>
+          </li>
+          <li
+            className="paging-item"
+            key="2"
+          >
+            <button
+              aria-label="slide 3 bullet"
+              aria-selected={false}
+              onClick={[Function]}
+              style={
+                Object {
+                  "background": "transparent",
+                  "border": "none",
+                  "cursor": "pointer",
+                  "fill": "black",
+                  "opacity": 0.5,
+                }
+              }
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                className="paging-dot"
+                focusable="false"
+                height="6"
+                width="6"
+              >
+                <circle
+                  cx="3"
+                  cy="3"
+                  r="3"
+                />
+              </svg>
+            </button>
+          </li>
+          <li
+            className="paging-item"
+            key="3"
+          >
+            <button
+              aria-label="slide 4 bullet"
+              aria-selected={false}
+              onClick={[Function]}
+              style={
+                Object {
+                  "background": "transparent",
+                  "border": "none",
+                  "cursor": "pointer",
+                  "fill": "black",
+                  "opacity": 0.5,
+                }
+              }
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                className="paging-dot"
+                focusable="false"
+                height="6"
+                width="6"
+              >
+                <circle
+                  cx="3"
+                  cy="3"
+                  r="3"
+                />
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </PagingDots>
+    </div>
+    <style
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": ".slider-slide > img { width: 100%; display: block; }
+          .slider-slide > img:focus { margin: auto; }",
+        }
+      }
+      type="text/css"
+    />
+  </section>
+</Carousel>
+`;

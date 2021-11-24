@@ -3,6 +3,7 @@ import { getDotIndexes, nextButtonDisabled } from '../../src/default-controls';
 describe('getDotIndexes', () => {
   it('should return valid array of paging dot indexes when cellAlign = `left`', () => {
     // testing smaller number of pages
+    expect(getDotIndexes(6, 0, 1, 'left')).toEqual([0, 1, 2, 3, 4, 5]);
     expect(getDotIndexes(6, 1, 1, 'left')).toEqual([0, 1, 2, 3, 4, 5]);
     expect(getDotIndexes(6, 2, 1, 'left')).toEqual([0, 2, 4, 5]);
     expect(getDotIndexes(6, 2, 2, 'left')).toEqual([0, 2, 4]);

@@ -4,6 +4,19 @@ import Carousel from '../../src';
 
 describe('<Carousel />', () => {
   describe('Rendering and Mounting', () => {
+    it('should correctly mount with children and scrollMode set to `page`.', () => {
+      const wrapper = mount(
+        <Carousel scrollMode="page" slideWidth={'300'} cellSpacing={10}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const children = wrapper.find('p');
+      expect(wrapper).toMatchSnapshot();
+      expect(children).toHaveLength(3);
+    });
+
     it('should correctly mount with children.', () => {
       const wrapper = mount(
         <Carousel>
