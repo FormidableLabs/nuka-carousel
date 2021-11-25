@@ -15,7 +15,6 @@ const colors = [
 ];
 
 export default function Home() {
-
   const slides = colors.map((color, index) => (
     <img
       src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${
@@ -32,8 +31,8 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Nuka Carousel | FormidableLabs</title>
-        <meta name="description" content="Nuka Carousel example with Next.js - FormidableLabs" />
+        <title>Nuka Carousel | Formidable Labs</title>
+        <meta name="description" content="Nuka Carousel example with Next.js - Formidable Labs" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
