@@ -26,6 +26,8 @@
     "@types/d3-ease": "^3.0.0",
     "@types/exenv": "^1.2.0",
     "@types/react": "^16.9.56",
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/parser": "^5.5.0",
     "babel-eslint": "^8.2.2",
     "babel-loader": "8.1.0",
     "builder": "^5.0.0",

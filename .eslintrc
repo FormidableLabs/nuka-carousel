@@ -1,5 +1,6 @@
 {
   "extends": ["formidable/configurations/es6-react", "prettier", "jest-enzyme"],
+
   "env": {
     "node": true,
     "browser": true,
@@ -8,14 +9,14 @@
   "globals": {
     "page": true
   },
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 7,
     "ecmaFeatures": {
       "jsx": true
     }
   },
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "@typescript-eslint"],
   "rules": {
     "prettier/prettier": "error",
     "react/no-multi-comp": 0,
@@ -27,6 +28,7 @@
     "react/no-string-refs": 0,
     "react/no-did-update-set-state": 0,
     "max-statements": 0,
-    "no-invalid-this": 0
+    "no-invalid-this": 0,
+    "@typescript-eslint/no-unused-vars": ["error"]
   }
 }

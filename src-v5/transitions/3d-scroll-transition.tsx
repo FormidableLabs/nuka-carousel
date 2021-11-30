@@ -1,19 +1,58 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, CSSProperties, ReactNode } from 'react';
 import { getSlideHeight } from '../utilities/style-utilities';
 import { handleSelfFocus } from '../utilities/utilities';
 
 const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
 
-export default class ScrollTransition3D extends React.Component {
-  constructor(props) {
+interface Props {
+  animation: 'zoom';
+  cellSpacing: number;
+  currentSlide: number;
+  children: ReactNode[];
+  dragging: boolean;
+  heightMode: 'first' | 'current' | 'max';
+  isWrappingAround: boolean;
+  left: number;
+  opacityScale: number;
+  slideCount: number;
+  slideHeight: number;
+  slideListMargin: number;
+  slideOffset: number;
+  slidesToShow: number;
+  slideWidth: number;
+  top: number;
+  vertical: boolean;
+  wrapAround: boolean;
+  zoomScale: number;
+}
+
+export default class ScrollTransition3D extends Component<Props> {
+  static defaultProps: Partial<Props> = {
+    cellSpacing: 0,
+    currentSlide: 0,
+    dragging: false,
+    heightMode: 'max',
+    isWrappingAround: false,
+    left: 0,
+    opacityScale: 0.65,
+    slideCount: 0,
+    slideHeight: 0,
+    slideListMargin: 0,
+    slidesToShow: 3,
+    slideWidth: 0,
+    top: 0,
+    vertical: false,
+    wrapAround: true,
+    zoomScale: 0.75
+  };
+
+  constructor(props: Props) {
     super(props);
     this.getListStyles = this.getListStyles.bind(this);
   }
 
-  /* eslint-disable complexity */
-  getSlideTargetPosition(index) {
+  getSlideTargetPosition(index: number): number {
     let targetPosition = 0;
     let offset = 0;
     if (index !== this.props.currentSlide) {
@@ -46,20 +85,19 @@ export default class ScrollTransition3D extends React.Component {
     return targetPosition + offset;
   }
 
-  /* eslint-enable complexity */
-  formatChildren(children) {
-    const { top, left, currentSlide, slidesToShow, vertical } = this.props;
-    const positionValue = vertical ? top : left;
+  formatChildren(children: Props['children']) {
+    const { currentSlide, slidesToShow } = this.props;
 
     return React.Children.map(children, (child, index) => {
       const visible = this.getDistanceToCurrentSlide(index) <= slidesToShow / 2;
       const current = currentSlide === index;
+
       return (
         <div
           className={`slider-slide${visible ? ' slide-visible' : ''}${
             current ? ' slide-current' : ''
           }`}
-          style={this.getSlideStyles(index, positionValue)}
+          style={this.getSlideStyles(index)}
           key={index}
           aria-label={`slide ${index + 1} of ${children.length}`}
           role="group"
@@ -72,7 +110,7 @@ export default class ScrollTransition3D extends React.Component {
     });
   }
 
-  getZoomOffsetFor(relativeDistanceToCurrent) {
+  getZoomOffsetFor(relativeDistanceToCurrent: number): number {
     if (relativeDistanceToCurrent === 0) {
       return 0;
     }
@@ -90,11 +128,11 @@ export default class ScrollTransition3D extends React.Component {
     return result;
   }
 
-  getDistance(index, referenceIndex) {
+  getDistance(index: number, referenceIndex: number): number {
     return Math.abs(index - referenceIndex);
   }
 
-  getDistanceToCurrentSlide(index) {
+  getDistanceToCurrentSlide(index: number): number {
     const { wrapAround, currentSlide, slideCount } = this.props;
     return wrapAround
       ? Math.min(
@@ -109,7 +147,7 @@ export default class ScrollTransition3D extends React.Component {
       : this.getDistance(index, currentSlide);
   }
 
-  getRelativeDistanceToCurrentSlide(index) {
+  getRelativeDistanceToCurrentSlide(index: number): number {
     const { wrapAround, currentSlide, slideCount } = this.props;
     if (wrapAround) {
       const distanceByLeftEge =
@@ -138,7 +176,7 @@ export default class ScrollTransition3D extends React.Component {
     }
   }
 
-  getTransformScale(index) {
+  getTransformScale(index: number): number {
     return this.props.currentSlide !== index
       ? Math.max(
           Math.min(
@@ -150,7 +188,7 @@ export default class ScrollTransition3D extends React.Component {
       : 1.0;
   }
 
-  getOpacityScale(index) {
+  getOpacityScale(index: number): number {
     return this.props.currentSlide !== index
       ? Math.max(
           Math.min(
@@ -162,12 +200,11 @@ export default class ScrollTransition3D extends React.Component {
       : 1.0;
   }
 
-  getSlideStyles(index, positionValue) {
+  getSlideStyles(index: number): CSSProperties {
     const { vertical, slideCount, cellSpacing, slideWidth } = this.props;
-    const targetPosition = this.getSlideTargetPosition(index, positionValue);
+    const targetPosition = this.getSlideTargetPosition(index);
     const transformScale = this.getTransformScale(index);
-
-    return {
+    const styles: CSSProperties = {
       boxSizing: 'border-box',
       display: vertical ? 'block' : 'inline-block',
       height: getSlideHeight(this.props),
@@ -188,14 +225,15 @@ export default class ScrollTransition3D extends React.Component {
       width: vertical ? '100%' : slideWidth,
       zIndex: slideCount - this.getDistanceToCurrentSlide(index)
     };
+    return styles;
   }
 
-  getListStyles() {
+  getListStyles(): CSSProperties {
     const listWidth =
       this.props.slideWidth * React.Children.count(this.props.children);
     const spacingOffset =
       this.props.cellSpacing * React.Children.count(this.props.children);
-    return {
+    const styles: CSSProperties = {
       boxSizing: 'border-box',
       cursor: this.props.dragging === true ? 'pointer' : 'inherit',
       height: this.props.vertical
@@ -213,6 +251,7 @@ export default class ScrollTransition3D extends React.Component {
       touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`,
       width: this.props.vertical ? 'auto' : '100%'
     };
+    return styles;
   }
 
   render() {
@@ -224,42 +263,3 @@ export default class ScrollTransition3D extends React.Component {
     );
   }
 }
-
-ScrollTransition3D.propTypes = {
-  cellSpacing: PropTypes.number,
-  currentSlide: PropTypes.number,
-  dragging: PropTypes.bool,
-  heightMode: PropTypes.oneOf(['first', 'current', 'max']),
-  isWrappingAround: PropTypes.bool,
-  left: PropTypes.number,
-  opacityScale: PropTypes.number,
-  slideCount: PropTypes.number,
-  slideHeight: PropTypes.number,
-  slideListMargin: PropTypes.number,
-  slideOffset: PropTypes.number,
-  slidesToShow: PropTypes.number,
-  slideWidth: PropTypes.number,
-  top: PropTypes.number,
-  vertical: PropTypes.bool,
-  wrapAround: PropTypes.bool,
-  zoomScale: PropTypes.number
-};
-
-ScrollTransition3D.defaultProps = {
-  cellSpacing: 0,
-  currentSlide: 0,
-  dragging: false,
-  heightMode: 'max',
-  isWrappingAround: false,
-  left: 0,
-  opacityScale: 0.65,
-  slideCount: 0,
-  slideHeight: 0,
-  slideListMargin: 0,
-  slidesToShow: 3,
-  slideWidth: 0,
-  top: 0,
-  vertical: false,
-  wrapAround: true,
-  zoomScale: 0.75
-};
