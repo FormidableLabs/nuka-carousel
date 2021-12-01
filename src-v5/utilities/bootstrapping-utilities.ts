@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slide, Alignment, HeightMode } from './types';
+import { Slide, Alignment, HeightMode } from '../types';
 
 export const getValidChildren = (children: React.ReactNode) =>
   // .toArray automatically removes invalid React children

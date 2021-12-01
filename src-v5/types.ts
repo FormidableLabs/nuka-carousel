@@ -1,5 +1,7 @@
 /* eslint-disable no-shadow */
 
+import { ReactNode } from 'react';
+
 export enum Alignment {
   Center = 'center',
   Right = 'right',
@@ -36,4 +38,28 @@ type SlideChildren = {
 export interface Slide {
   children?: [SlideChildren];
   offsetHeight: number;
+}
+
+export interface Transition {
+  animation: 'zoom';
+  cellSpacing: number;
+  currentSlide: number;
+  children: ReactNode[];
+  deltaX: number;
+  deltaY: number;
+  dragging: boolean;
+  heightMode: HeightMode;
+  isWrappingAround: boolean;
+  left: number;
+  opacityScale: number;
+  slideCount: number;
+  slideHeight: number;
+  slideListMargin: number;
+  slideOffset: number;
+  slidesToShow: number;
+  slideWidth: number;
+  top: number;
+  vertical: boolean;
+  wrapAround: boolean;
+  zoomScale: number;
 }

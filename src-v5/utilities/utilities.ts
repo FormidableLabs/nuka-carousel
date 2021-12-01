@@ -1,6 +1,6 @@
 import React from 'react';
 import { getAlignmentOffset } from './style-utilities';
-import { Alignment } from './types';
+import { Alignment } from '../types';
 
 export const addEvent = function (
   elem: any,

@@ -1,38 +1,17 @@
-import React, { Component, CSSProperties, ReactNode } from 'react';
+import React, { Component, CSSProperties } from 'react';
 import { getSlideHeight } from '../utilities/style-utilities';
 import { handleSelfFocus } from '../utilities/utilities';
+import { Transition, HeightMode } from '../types';
 
 const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
 
-interface Props {
-  animation: 'zoom';
-  cellSpacing: number;
-  currentSlide: number;
-  children: ReactNode[];
-  dragging: boolean;
-  heightMode: 'first' | 'current' | 'max';
-  isWrappingAround: boolean;
-  left: number;
-  opacityScale: number;
-  slideCount: number;
-  slideHeight: number;
-  slideListMargin: number;
-  slideOffset: number;
-  slidesToShow: number;
-  slideWidth: number;
-  top: number;
-  vertical: boolean;
-  wrapAround: boolean;
-  zoomScale: number;
-}
-
-export default class ScrollTransition3D extends Component<Props> {
-  static defaultProps: Partial<Props> = {
+export default class ScrollTransition3D extends Component<Transition> {
+  static defaultProps: Partial<Transition> = {
     cellSpacing: 0,
     currentSlide: 0,
     dragging: false,
-    heightMode: 'max',
+    heightMode: HeightMode.Max,
     isWrappingAround: false,
     left: 0,
     opacityScale: 0.65,
@@ -47,7 +26,7 @@ export default class ScrollTransition3D extends Component<Props> {
     zoomScale: 0.75
   };
 
-  constructor(props: Props) {
+  constructor(props: Transition) {
     super(props);
     this.getListStyles = this.getListStyles.bind(this);
   }
@@ -85,7 +64,7 @@ export default class ScrollTransition3D extends Component<Props> {
     return targetPosition + offset;
   }
 
-  formatChildren(children: Props['children']) {
+  formatChildren(children: Transition['children']) {
     const { currentSlide, slidesToShow } = this.props;
 
     return React.Children.map(children, (child, index) => {
@@ -204,7 +183,7 @@ export default class ScrollTransition3D extends Component<Props> {
     const { vertical, slideCount, cellSpacing, slideWidth } = this.props;
     const targetPosition = this.getSlideTargetPosition(index);
     const transformScale = this.getTransformScale(index);
-    const styles: CSSProperties = {
+    return {
       boxSizing: 'border-box',
       display: vertical ? 'block' : 'inline-block',
       height: getSlideHeight(this.props),
@@ -225,7 +204,6 @@ export default class ScrollTransition3D extends Component<Props> {
       width: vertical ? '100%' : slideWidth,
       zIndex: slideCount - this.getDistanceToCurrentSlide(index)
     };
-    return styles;
   }
 
   getListStyles(): CSSProperties {
@@ -233,7 +211,7 @@ export default class ScrollTransition3D extends Component<Props> {
       this.props.slideWidth * React.Children.count(this.props.children);
     const spacingOffset =
       this.props.cellSpacing * React.Children.count(this.props.children);
-    const styles: CSSProperties = {
+    return {
       boxSizing: 'border-box',
       cursor: this.props.dragging === true ? 'pointer' : 'inherit',
       height: this.props.vertical
@@ -251,7 +229,6 @@ export default class ScrollTransition3D extends Component<Props> {
       touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`,
       width: this.props.vertical ? 'auto' : '100%'
     };
-    return styles;
   }
 
   render() {

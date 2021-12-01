@@ -1,5 +1,5 @@
 import React from 'react';
-import { Positions, ScrollMode, Alignment, HeightMode } from './types';
+import { Positions, ScrollMode, Alignment, HeightMode } from '../types';
 
 export const getImgTagStyles = (): string => `.slider-slide > img { width: 100%; display: block; }
           .slider-slide > img:focus { margin: auto; }`;

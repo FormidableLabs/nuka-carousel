@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 import React from 'react';
 import { getAlignmentOffset } from './utilities/style-utilities';
-import { Alignment, ScrollMode } from './utilities/types';
+import { Alignment, ScrollMode } from './types';
 
 const defaultButtonStyles = (disabled: boolean) => ({
   border: 0,

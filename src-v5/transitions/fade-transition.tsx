@@ -1,15 +1,40 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, CSSProperties } from 'react';
 import { getSlideHeight } from '../utilities/style-utilities';
 import { handleSelfFocus, getSlideClassName } from '../utilities/utilities';
+import { Transition, HeightMode } from '../types';
 
-export default class FadeTransition extends React.Component {
-  constructor(props) {
+type OpacityAndLeftMap = { [key: string]: CSSProperties };
+
+export default class FadeTransition extends Component<Transition> {
+  static defaultProps: Partial<Transition> = {
+    cellSpacing: 0,
+    currentSlide: 0,
+    deltaX: 0,
+    deltaY: 0,
+    dragging: false,
+    heightMode: HeightMode.Max,
+    isWrappingAround: false,
+    left: 0,
+    slideCount: 0,
+    slideHeight: 0,
+    slidesToShow: 1,
+    slideWidth: 0,
+    top: 0,
+    vertical: false,
+    wrapAround: false
+  };
+
+  constructor(props: Transition) {
     super(props);
     this.fadeFromSlide = props.currentSlide;
   }
 
-  formatChildren(children, opacity) {
+  fadeFromSlide: number;
+
+  formatChildren(
+    children: Transition['children'],
+    opacityAndLeftMap: OpacityAndLeftMap
+  ) {
     const { currentSlide, slidesToShow } = this.props;
     return React.Children.map(children, (child, index) => (
       <div
@@ -18,7 +43,7 @@ export default class FadeTransition extends React.Component {
           currentSlide,
           slidesToShow
         )}`}
-        style={this.getSlideStyles(index, opacity)}
+        style={this.getSlideStyles(index, opacityAndLeftMap)}
         key={index}
         aria-label={`slide ${index + 1} of ${children.length}`}
         role="group"
@@ -30,7 +55,11 @@ export default class FadeTransition extends React.Component {
     ));
   }
 
-  getSlideOpacityAndLeftMap(fadeFrom, fadeTo, fade) {
+  getSlideOpacityAndLeftMap(
+    fadeFrom: number,
+    fadeTo: number,
+    fade: number
+  ): OpacityAndLeftMap {
     // Figure out which position to fade to
     let fadeToPosition = fadeTo;
     if (fadeFrom > fade && fadeFrom === 0) {
@@ -43,7 +72,7 @@ export default class FadeTransition extends React.Component {
     }
 
     // Calculate opacity for active slides
-    const opacity = {};
+    const opacity: { [key: string]: number } = {};
     if (fadeFrom === fadeTo) {
       opacity[fadeFrom] = 1;
     } else {
@@ -53,7 +82,7 @@ export default class FadeTransition extends React.Component {
     }
 
     // Calculate left for slides and merge in opacity
-    const map = {};
+    const map: OpacityAndLeftMap = {};
     for (let i = 0; i < this.props.slidesToShow; i++) {
       map[fadeFrom + i] = {
         opacity: opacity[fadeFrom],
@@ -69,7 +98,7 @@ export default class FadeTransition extends React.Component {
     return map;
   }
 
-  getSlideStyles(index, data) {
+  getSlideStyles(index: number, data: OpacityAndLeftMap): CSSProperties {
     return {
       boxSizing: 'border-box',
       display: 'block',
@@ -90,9 +119,8 @@ export default class FadeTransition extends React.Component {
     };
   }
 
-  getContainerStyles() {
+  getContainerStyles(): CSSProperties {
     const width = this.props.slideWidth * this.props.slidesToShow;
-
     return {
       boxSizing: 'border-box',
       cursor: this.props.dragging === true ? 'pointer' : 'inherit',
@@ -112,7 +140,7 @@ export default class FadeTransition extends React.Component {
     const fade =
       (-(this.props.deltaX || this.props.deltaY) / this.props.slideWidth) %
       this.props.slideCount;
-    if (parseInt(fade) === fade) {
+    if (Math.trunc(fade) === fade) {
       this.fadeFromSlide = fade;
     }
 
@@ -134,39 +162,3 @@ export default class FadeTransition extends React.Component {
     );
   }
 }
-
-FadeTransition.propTypes = {
-  cellSpacing: PropTypes.number,
-  currentSlide: PropTypes.number,
-  deltaX: PropTypes.number,
-  deltaY: PropTypes.number,
-  dragging: PropTypes.bool,
-  heightMode: PropTypes.oneOf(['first', 'current', 'max']),
-  isWrappingAround: PropTypes.bool,
-  left: PropTypes.number,
-  slideCount: PropTypes.number,
-  slideHeight: PropTypes.number,
-  slidesToShow: PropTypes.number,
-  slideWidth: PropTypes.number,
-  top: PropTypes.number,
-  vertical: PropTypes.bool,
-  wrapAround: PropTypes.bool
-};
-
-FadeTransition.defaultProps = {
-  cellSpacing: 0,
-  currentSlide: 0,
-  deltaX: 0,
-  deltaY: 0,
-  dragging: false,
-  heightMode: 'max',
-  isWrappingAround: false,
-  left: 0,
-  slideCount: 0,
-  slideHeight: 0,
-  slidesToShow: 1,
-  slideWidth: 0,
-  top: 0,
-  vertical: false,
-  wrapAround: false
-};
