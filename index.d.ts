@@ -5,11 +5,6 @@
 import * as CSS from 'csstype';
 import * as React from 'react';
 
-export default class Carousel extends React.Component<
-  CarouselProps,
-  CarouselState
-> {}
-
 export type CarouselScrollModeProp = 'page' | 'remainder';
 
 export type CarouselCellAlignProp = 'left' | 'center' | 'right';
@@ -498,6 +493,11 @@ export interface CarouselState {
    */
   wrapToIndex: boolean;
 }
+
+export default class Carousel extends React.Component<
+  CarouselProps,
+  CarouselState
+> {}
 
 export interface PreviousButtonProps extends CarouselSlideRenderControlProps {}
 export const PreviousButton: React.FC<PreviousButtonProps>;

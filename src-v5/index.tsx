@@ -336,7 +336,7 @@ export default class Carousel extends React.Component {
 
     return {
       onTouchStart: (e) => {
-        //detect pinch zoom
+        // detect pinch zoom
         if (e.touches.length === 2) {
           this.handleMouseOver();
           return;
@@ -825,39 +825,38 @@ export default class Carousel extends React.Component {
           }
         );
         return;
-      } else {
-        const endSlide =
-          index < 0
-            ? this.state.slideCount + index
-            : this.state.slideCount - this.state.slidesToScroll;
-        props.beforeSlide(this.state.currentSlide, endSlide);
-        this.setState(
-          (prevState) => ({
-            left: props.vertical
-              ? 0
-              : this.getTargetLeft(0, prevState.currentSlide),
-            top: props.vertical
-              ? this.getTargetLeft(0, prevState.currentSlide)
-              : 0,
-            currentSlide: endSlide,
-            isWrappingAround: true,
-            wrapToIndex: index
-          }),
-          () => {
-            this.timers.push(
-              setTimeout(() => {
-                if (index === this.latestTransitioningIndex) {
-                  this.resetAutoplay();
-                  if (index !== previousSlide) {
-                    this.props.afterSlide(this.state.slideCount - 1);
-                  }
-                }
-              }, props.speed)
-            );
-          }
-        );
-        return;
       }
+      const endSlide =
+        index < 0
+          ? this.state.slideCount + index
+          : this.state.slideCount - this.state.slidesToScroll;
+      props.beforeSlide(this.state.currentSlide, endSlide);
+      this.setState(
+        (prevState) => ({
+          left: props.vertical
+            ? 0
+            : this.getTargetLeft(0, prevState.currentSlide),
+          top: props.vertical
+            ? this.getTargetLeft(0, prevState.currentSlide)
+            : 0,
+          currentSlide: endSlide,
+          isWrappingAround: true,
+          wrapToIndex: index
+        }),
+        () => {
+          this.timers.push(
+            setTimeout(() => {
+              if (index === this.latestTransitioningIndex) {
+                this.resetAutoplay();
+                if (index !== previousSlide) {
+                  this.props.afterSlide(this.state.slideCount - 1);
+                }
+              }
+            }, props.speed)
+          );
+        }
+      );
+      return;
     }
 
     this.props.beforeSlide(this.state.currentSlide, index);
@@ -986,7 +985,7 @@ export default class Carousel extends React.Component {
     const childNodes = this.getChildNodes();
     const slideHeight = calculateSlideHeight(props, this.state, childNodes);
 
-    //slide width
+    // slide width
     const { slidesToShow } = getPropsByTransitionMode(props, ['slidesToShow']);
     const frame = this.frame;
     let slideWidth;
@@ -1102,53 +1101,52 @@ export default class Carousel extends React.Component {
   renderControls() {
     if (this.props.withoutControls) {
       return this.controlsMap.map(() => null);
-    } else {
-      return this.controlsMap.map(({ funcName, key }) => {
-        const func = this.props[funcName];
-        const controlChildren =
-          func &&
-          typeof func === 'function' &&
-          func({
-            cellAlign: this.props.cellAlign,
-            cellSpacing: this.props.cellSpacing,
-            currentSlide: this.state.currentSlide,
-            defaultControlsConfig: this.props.defaultControlsConfig,
-            frameWidth: this.state.frameWidth,
-            goToSlide: (index) => this.goToSlide(index),
-            left: this.state.left,
-            nextSlide: () => this.nextSlide(),
-            previousSlide: () => this.previousSlide(),
-            scrollMode: this.props.scrollMode,
-            slideCount: this.state.slideCount,
-            slidesToScroll: this.state.slidesToScroll,
-            slidesToShow: this.state.slidesToShow,
-            slideWidth: this.state.slideWidth,
-            top: this.state.top,
-            vertical: this.props.vertical,
-            wrapAround: this.props.wrapAround
-          });
-
-        return (
-          controlChildren && (
-            <div
-              key={key}
-              className={[
-                `slider-control-${key.toLowerCase()}`,
-                this.props.defaultControlsConfig.containerClassName || ''
-              ]
-                .join(' ')
-                .trim()}
-              style={{
-                ...getDecoratorStyles(key),
-                ...this.props.getControlsContainerStyles(key)
-              }}
-            >
-              {controlChildren}
-            </div>
-          )
-        );
-      });
     }
+    return this.controlsMap.map(({ funcName, key }) => {
+      const func = this.props[funcName];
+      const controlChildren =
+        func &&
+        typeof func === 'function' &&
+        func({
+          cellAlign: this.props.cellAlign,
+          cellSpacing: this.props.cellSpacing,
+          currentSlide: this.state.currentSlide,
+          defaultControlsConfig: this.props.defaultControlsConfig,
+          frameWidth: this.state.frameWidth,
+          goToSlide: (index) => this.goToSlide(index),
+          left: this.state.left,
+          nextSlide: () => this.nextSlide(),
+          previousSlide: () => this.previousSlide(),
+          scrollMode: this.props.scrollMode,
+          slideCount: this.state.slideCount,
+          slidesToScroll: this.state.slidesToScroll,
+          slidesToShow: this.state.slidesToShow,
+          slideWidth: this.state.slideWidth,
+          top: this.state.top,
+          vertical: this.props.vertical,
+          wrapAround: this.props.wrapAround
+        });
+
+      return (
+        controlChildren && (
+          <div
+            key={key}
+            className={[
+              `slider-control-${key.toLowerCase()}`,
+              this.props.defaultControlsConfig.containerClassName || ''
+            ]
+              .join(' ')
+              .trim()}
+            style={{
+              ...getDecoratorStyles(key),
+              ...this.props.getControlsContainerStyles(key)
+            }}
+          >
+            {controlChildren}
+          </div>
+        )
+      );
+    });
   }
 
   render() {
@@ -1226,45 +1224,44 @@ export default class Carousel extends React.Component {
                 this.isEdgeSwiping()
               ) {
                 return {};
-              } else {
-                return {
-                  tx,
-                  ty,
-                  timing: {
-                    duration,
-                    ease: this.state.easing
-                  },
-                  events: {
-                    end: () => {
-                      const newLeft = this.props.vertical
-                        ? 0
-                        : this.getTargetLeft();
-                      const newTop = this.props.vertical
-                        ? this.getTargetLeft()
-                        : 0;
+              }
+              return {
+                tx,
+                ty,
+                timing: {
+                  duration,
+                  ease: this.state.easing
+                },
+                events: {
+                  end: () => {
+                    const newLeft = this.props.vertical
+                      ? 0
+                      : this.getTargetLeft();
+                    const newTop = this.props.vertical
+                      ? this.getTargetLeft()
+                      : 0;
 
-                      if (
-                        newLeft !== this.state.left ||
-                        newTop !== this.state.top
-                      ) {
-                        this.setState(
-                          {
-                            left: newLeft,
-                            top: newTop,
-                            isWrappingAround: false,
-                            resetWrapAroundPosition: true
-                          },
-                          () => {
-                            this.setState({
-                              resetWrapAroundPosition: false
-                            });
-                          }
-                        );
-                      }
+                    if (
+                      newLeft !== this.state.left ||
+                      newTop !== this.state.top
+                    ) {
+                      this.setState(
+                        {
+                          left: newLeft,
+                          top: newTop,
+                          isWrappingAround: false,
+                          resetWrapAroundPosition: true
+                        },
+                        () => {
+                          this.setState({
+                            resetWrapAroundPosition: false
+                          });
+                        }
+                      );
                     }
                   }
-                };
-              }
+                }
+              };
             }}
           >
             {({ tx, ty }) => (

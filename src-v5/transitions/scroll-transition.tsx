@@ -27,17 +27,15 @@ export default class ScrollTransition extends React.Component {
     let peekSlide = true;
     switch (this.props.cellAlign) {
       case 'left':
-        peekSlide =
+        peekSlide = !(
           this.props.children.length <= 2 && currentSlideIndex !== 0
-            ? false
-            : true;
+        );
         break;
       case 'center':
-        peekSlide =
+        peekSlide = !!(
           this.props.children.length > 2 ||
           this.props.currentSlide !== currentSlideIndex - 1
-            ? true
-            : false;
+        );
         break;
     }
 

@@ -1,4 +1,4 @@
-/*eslint max-nested-callbacks: ["error", 4]*/
+/* eslint max-nested-callbacks: ["error", 4]*/
 import ScrollTransition from '../../src/transitions/scroll-transition';
 
 describe('<ScrollTransition />', () => {

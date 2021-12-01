@@ -39,19 +39,17 @@ export default function App() {
     setZoomScale(event.target.value);
   }, []);
 
-  const renderTopControls = (currentSlide) => {
-    return (
-      <div
-        style={{
-          fontFamily: 'Helvetica',
-          color: '#fff',
-          textDecoration: underlineHeader ? 'underline' : 'none'
-        }}
-      >
-        Nuka Carousel: Slide {Math.ceil(currentSlide) + 1}
-      </div>
-    );
-  };
+  const renderTopControls = (currentSlide) => (
+    <div
+      style={{
+        fontFamily: 'Helvetica',
+        color: '#fff',
+        textDecoration: underlineHeader ? 'underline' : 'none'
+      }}
+    >
+      Nuka Carousel: Slide {Math.ceil(currentSlide) + 1}
+    </div>
+  );
 
   const slides = colors.slice(0, length).map((color, index) => (
     <img
@@ -85,9 +83,9 @@ export default function App() {
         withoutControls={withoutControls}
         wrapAround={wrapAround}
         zoomScale={Number(zoomScale || 0)}
-        renderAnnounceSlideMessage={({ currentSlide, slideCount }) => {
-          return `Showing slide ${currentSlide + 1} of ${slideCount}`;
-        }}
+        renderAnnounceSlideMessage={({ currentSlide, slideCount }) =>
+          `Showing slide ${currentSlide + 1} of ${slideCount}`
+        }
         renderTopCenterControls={({ currentSlide }) =>
           renderTopControls(currentSlide)
         }

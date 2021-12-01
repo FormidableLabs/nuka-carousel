@@ -455,9 +455,8 @@ describe('Nuka Carousel', () => {
   });
 
   describe('Neighboring Slide Visibility and Slide Alignment', () => {
-    const approximately = (a, b) => {
-      return Math.abs(parseFloat(a) - parseFloat(b)) < 0.25;
-    };
+    const approximately = (a, b) =>
+      Math.abs(parseFloat(a) - parseFloat(b)) < 0.25;
 
     const transitionSpeed = 700;
 

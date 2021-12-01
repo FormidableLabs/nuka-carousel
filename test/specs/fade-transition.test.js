@@ -1,4 +1,4 @@
-/*eslint max-nested-callbacks: ["error", 5]*/
+/* eslint max-nested-callbacks: ["error", 5] */
 import FadeTransition from '../../src/transitions/fade-transition';
 
 describe('<FadeTransition />', () => {

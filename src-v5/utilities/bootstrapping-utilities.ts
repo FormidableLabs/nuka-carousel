@@ -1,13 +1,10 @@
 import React from 'react';
 
-export const getValidChildren = (children) => {
+export const getValidChildren = (children) =>
   // .toArray automatically removes invalid React children
-  return React.Children.toArray(children);
-};
+  React.Children.toArray(children);
 
-const getMax = (a, b) => {
-  return a > b ? a : b;
-};
+const getMax = (a, b) => (a > b ? a : b);
 
 const getHeightOfSlide = (slide) => {
   if (!slide) {
@@ -20,9 +17,8 @@ const getHeightOfSlide = (slide) => {
       totalHeight += slide.children[i].offsetHeight;
     }
     return totalHeight;
-  } else {
-    return slide.offsetHeight;
   }
+  return slide.offsetHeight;
 };
 
 // end - is exclusive
@@ -115,9 +111,8 @@ export const findCurrentHeightSlide = (
       : Math.min(lastIndex, slides.length);
 
     return findMaxHeightSlideInRange(slides, startIndex, lastIndex);
-  } else {
-    return getHeightOfSlide(slides[currentSlide]);
   }
+  return getHeightOfSlide(slides[currentSlide]);
 };
 
 export const calculateSlideHeight = (props, state, childNodes = []) => {

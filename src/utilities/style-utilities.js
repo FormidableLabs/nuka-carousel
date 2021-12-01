@@ -1,9 +1,7 @@
 import React from 'react';
 
-export const getImgTagStyles = () => {
-  return `.slider-slide > img { width: 100%; display: block; }
+export const getImgTagStyles = () => `.slider-slide > img { width: 100%; display: block; }
           .slider-slide > img:focus { margin: auto; }`;
-};
 
 export const getSlideHeight = (props) => {
   const childCount = React.Children.count(props.children);
@@ -133,63 +131,57 @@ export const getDecoratorStyles = (position) => {
   }
 };
 
-export const getSliderStyles = (propWidth, propHeight) => {
-  return {
-    boxSizing: 'border-box',
-    display: 'block',
-    height: propHeight,
-    MozBoxSizing: 'border-box',
-    position: 'relative',
-    width: propWidth
-  };
-};
+export const getSliderStyles = (propWidth, propHeight) => ({
+  boxSizing: 'border-box',
+  display: 'block',
+  height: propHeight,
+  MozBoxSizing: 'border-box',
+  position: 'relative',
+  width: propWidth
+});
 
 export const getFrameStyles = (
   propFrameOverFlow,
   propVertical,
   propFramePadding,
   stateFrameWidth
-) => {
-  return {
-    boxSizing: 'border-box',
-    display: 'block',
-    height: propVertical ? stateFrameWidth || 'initial' : '100%',
-    margin: propFramePadding,
-    MozBoxSizing: 'border-box',
-    msTransform: 'translate(0, 0)',
-    overflow: propFrameOverFlow,
-    padding: 0,
-    position: 'relative',
-    touchAction: `pinch-zoom ${propVertical ? 'pan-x' : 'pan-y'}`,
-    transform: 'translate3d(0, 0, 0)',
-    WebkitTransform: 'translate3d(0, 0, 0)'
-  };
-};
+) => ({
+  boxSizing: 'border-box',
+  display: 'block',
+  height: propVertical ? stateFrameWidth || 'initial' : '100%',
+  margin: propFramePadding,
+  MozBoxSizing: 'border-box',
+  msTransform: 'translate(0, 0)',
+  overflow: propFrameOverFlow,
+  padding: 0,
+  position: 'relative',
+  touchAction: `pinch-zoom ${propVertical ? 'pan-x' : 'pan-y'}`,
+  transform: 'translate3d(0, 0, 0)',
+  WebkitTransform: 'translate3d(0, 0, 0)'
+});
 
-export const getTransitionProps = (props, state) => {
-  return {
-    animation: props.animation,
-    cellAlign: props.cellAlign,
-    cellSpacing: props.cellSpacing,
-    currentSlide: state.currentSlide,
-    dragging: props.dragging,
-    frameWidth: parseInt(state.frameWidth),
-    hasInteraction: state.hasInteraction,
-    heightMode: props.heightMode,
-    isWrappingAround: state.isWrappingAround,
-    left: state.left,
-    opacityScale: props.opacityScale,
-    slideCount: state.slideCount,
-    slideHeight: state.slideHeight,
-    slideListMargin: props.slideListMargin,
-    slideOffset: props.slideOffset,
-    slidesToScroll:
-      props.scrollMode === 'page' ? state.slidesToShow : props.slidesToScroll,
-    slidesToShow: state.slidesToShow,
-    slideWidth: state.slideWidth,
-    top: state.top,
-    vertical: props.vertical,
-    wrapAround: props.wrapAround,
-    zoomScale: props.zoomScale
-  };
-};
+export const getTransitionProps = (props, state) => ({
+  animation: props.animation,
+  cellAlign: props.cellAlign,
+  cellSpacing: props.cellSpacing,
+  currentSlide: state.currentSlide,
+  dragging: props.dragging,
+  frameWidth: parseInt(state.frameWidth),
+  hasInteraction: state.hasInteraction,
+  heightMode: props.heightMode,
+  isWrappingAround: state.isWrappingAround,
+  left: state.left,
+  opacityScale: props.opacityScale,
+  slideCount: state.slideCount,
+  slideHeight: state.slideHeight,
+  slideListMargin: props.slideListMargin,
+  slideOffset: props.slideOffset,
+  slidesToScroll:
+    props.scrollMode === 'page' ? state.slidesToShow : props.slidesToScroll,
+  slidesToShow: state.slidesToShow,
+  slideWidth: state.slideWidth,
+  top: state.top,
+  vertical: props.vertical,
+  wrapAround: props.wrapAround,
+  zoomScale: props.zoomScale
+});

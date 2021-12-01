@@ -42,18 +42,17 @@ export const addAccessibility = (children, slidesToShow, currentSlide) => {
         ...child.props
       });
     });
-  } else {
-    return React.Children.map(children, (child, index) => {
-      needsTabIndex = index !== currentSlide;
-      const ariaProps = needsTabIndex
-        ? { 'aria-hidden': 'true' }
-        : { 'aria-hidden': 'false', tabIndex: 0 };
-      return React.cloneElement(child, {
-        ...ariaProps,
-        ...child.props
-      });
-    });
   }
+  return React.Children.map(children, (child, index) => {
+    needsTabIndex = index !== currentSlide;
+    const ariaProps = needsTabIndex
+      ? { 'aria-hidden': 'true' }
+      : { 'aria-hidden': 'false', tabIndex: 0 };
+    return React.cloneElement(child, {
+      ...ariaProps,
+      ...child.props
+    });
+  });
 };
 
 export const getSlideClassName = (index, currentSlide, slidesToShow) => {
@@ -120,9 +119,8 @@ export const swipeDirection = (x1, x2, y1, y2, vertical) => {
   if (vertical === true) {
     if (swipeAngle >= 35 && swipeAngle <= 135) {
       return 1;
-    } else {
-      return -1;
     }
+    return -1;
   }
   return 0;
 };

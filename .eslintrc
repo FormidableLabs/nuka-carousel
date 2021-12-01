@@ -1,10 +1,22 @@
 {
-  "extends": ["formidable/configurations/es6-react", "prettier", "jest-enzyme"],
-
+  "extends": [
+    "formidable/configurations/es6-react",
+    "prettier",
+    "prettier/react",
+    "jest-enzyme",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
+  ],
   "env": {
     "node": true,
     "browser": true,
     "jest": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   },
   "globals": {
     "page": true
