@@ -1,7 +1,12 @@
 import React from 'react';
 import { getAlignmentOffset } from './style-utilities';
+import { Alignment } from './types';
 
-export const addEvent = function (elem, type, eventHandle) {
+export const addEvent = function (
+  elem: any,
+  type: string,
+  eventHandle: () => {}
+) {
   if (elem === null || typeof elem === 'undefined') {
     return;
   }
@@ -14,7 +19,11 @@ export const addEvent = function (elem, type, eventHandle) {
   }
 };
 
-export const removeEvent = function (elem, type, eventHandle) {
+export const removeEvent = function (
+  elem: any,
+  type: string,
+  eventHandle: () => {}
+) {
   if (elem === null || typeof elem === 'undefined') {
     return;
   }
@@ -27,7 +36,11 @@ export const removeEvent = function (elem, type, eventHandle) {
   }
 };
 
-export const addAccessibility = (children, slidesToShow, currentSlide) => {
+export const addAccessibility = (
+  children: React.ReactNode,
+  slidesToShow: number,
+  currentSlide: number
+) => {
   let needsTabIndex;
   if (slidesToShow > 1) {
     return React.Children.map(children, (child, index) => {
@@ -55,7 +68,11 @@ export const addAccessibility = (children, slidesToShow, currentSlide) => {
   });
 };
 
-export const getSlideClassName = (index, currentSlide, slidesToShow) => {
+export const getSlideClassName = (
+  index: number,
+  currentSlide: number,
+  slidesToShow: number
+): string => {
   let className = '';
   const visible = index >= currentSlide && index < currentSlide + slidesToShow;
   const current = index === currentSlide;
@@ -69,11 +86,11 @@ export const getSlideClassName = (index, currentSlide, slidesToShow) => {
   return className;
 };
 
-export const getPropsByTransitionMode = (props, keys) => {
+export const getPropsByTransitionMode = (props, keys: string[]) => {
   const { slidesToShow, transitionMode } = props;
-  const updatedDefaults = {};
+  const updatedDefaults: { [key: string]: string | number } = {};
   if (transitionMode === 'fade') {
-    keys.forEach((key) => {
+    keys.forEach((key: string) => {
       switch (key) {
         case 'slidesToShow':
           updatedDefaults[key] = Math.max(parseInt(slidesToShow), 1);
@@ -90,7 +107,7 @@ export const getPropsByTransitionMode = (props, keys) => {
       }
     });
   } else {
-    keys.forEach((key) => {
+    keys.forEach((key: string) => {
       updatedDefaults[key] = props[key];
     });
   }
@@ -98,7 +115,13 @@ export const getPropsByTransitionMode = (props, keys) => {
   return updatedDefaults;
 };
 
-export const swipeDirection = (x1, x2, y1, y2, vertical) => {
+export const swipeDirection = (
+  x1: number,
+  x2: number,
+  y1: number,
+  y2: number,
+  vertical: boolean
+): number => {
   const xDist = x1 - x2;
   const yDist = y1 - y2;
   const r = Math.atan2(yDist, xDist);
@@ -125,7 +148,11 @@ export const swipeDirection = (x1, x2, y1, y2, vertical) => {
   return 0;
 };
 
-export const getSlideDirection = (start, end, isWrapping) => {
+export const getSlideDirection = (
+  start: number,
+  end: number,
+  isWrapping: boolean
+): number => {
   let direction = 0;
 
   if (start === end) return direction;
@@ -188,7 +215,18 @@ export const handleSelfFocus = (e) => {
   }
 };
 
-export const isFullyVisible = (slideIndex, config) => {
+export const isFullyVisible = (
+  slideIndex: number,
+  config: {
+    currentSlide: number;
+    cellSpacing: number;
+    slideCount: number;
+    slideWidth: number;
+    frameWidth: number;
+    wrapAround: boolean;
+    cellAlign: Alignment;
+  }
+): boolean => {
   const {
     currentSlide,
     cellSpacing,
@@ -208,7 +246,7 @@ export const isFullyVisible = (slideIndex, config) => {
 
   let fullSlidesBefore = 0;
 
-  if (cellAlign !== 'left') {
+  if (cellAlign !== Alignment.Left) {
     fullSlidesBefore = Math.max(
       Math.floor(offsetWidth / fullSlideWidth) + 1,
       0

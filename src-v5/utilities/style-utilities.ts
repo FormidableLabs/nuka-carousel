@@ -1,9 +1,17 @@
 import React from 'react';
+import { Positions, ScrollMode, Alignment, HeightMode } from './types';
 
-export const getImgTagStyles = () => `.slider-slide > img { width: 100%; display: block; }
+export const getImgTagStyles = (): string => `.slider-slide > img { width: 100%; display: block; }
           .slider-slide > img:focus { margin: auto; }`;
 
-export const getSlideHeight = (props) => {
+export const getSlideHeight = (props: {
+  children: React.ReactNode;
+  slideWidth: number;
+  cellSpacing: number;
+  slideHeight: number;
+  vertical: boolean;
+  heightMode: HeightMode;
+}): number | 'auto' => {
   const childCount = React.Children.count(props.children);
   const listWidth = props.slideWidth * childCount;
   const spacingOffset = props.cellSpacing * childCount;
@@ -12,26 +20,34 @@ export const getSlideHeight = (props) => {
     ? listWidth + spacingOffset
     : props.slideHeight;
 
-  return calculatedHeight > 0 && props.heightMode !== 'current'
+  return calculatedHeight > 0 && props.heightMode !== HeightMode.Current
     ? calculatedHeight
     : 'auto';
 };
 
-export const getAlignmentOffset = (slideIndex, config) => {
+export const getAlignmentOffset = (
+  slideIndex: number,
+  config: {
+    cellAlign: Alignment;
+    cellSpacing: number;
+    frameWidth: number;
+    slideWidth: number;
+  }
+): number => {
   let offset = 0;
 
   switch (config.cellAlign) {
-    case 'left': {
+    case Alignment.Left: {
       offset = 0;
       offset -= config.cellSpacing * slideIndex;
       break;
     }
-    case 'center': {
+    case Alignment.Center: {
       offset = (config.frameWidth - config.slideWidth) / 2;
       offset -= config.cellSpacing * slideIndex;
       break;
     }
-    case 'right': {
+    case Alignment.Right: {
       offset = config.frameWidth - config.slideWidth;
       offset -= config.cellSpacing * slideIndex;
       break;
@@ -41,16 +57,16 @@ export const getAlignmentOffset = (slideIndex, config) => {
   return offset;
 };
 
-export const getDecoratorStyles = (position) => {
+export const getDecoratorStyles = (position: Positions) => {
   switch (position) {
-    case 'TopLeft': {
+    case Positions.TopLeft: {
       return {
         position: 'absolute',
         top: 0,
         left: 0
       };
     }
-    case 'TopCenter': {
+    case Positions.TopCenter: {
       return {
         position: 'absolute',
         top: 0,
@@ -60,14 +76,14 @@ export const getDecoratorStyles = (position) => {
         msTransform: 'translateX(-50%)'
       };
     }
-    case 'TopRight': {
+    case Positions.TopRight: {
       return {
         position: 'absolute',
         top: 0,
         right: 0
       };
     }
-    case 'CenterLeft': {
+    case Positions.CenterLeft: {
       return {
         position: 'absolute',
         top: '50%',
@@ -77,7 +93,7 @@ export const getDecoratorStyles = (position) => {
         msTransform: 'translateY(-50%)'
       };
     }
-    case 'CenterCenter': {
+    case Positions.CenterCenter: {
       return {
         position: 'absolute',
         top: '50%',
@@ -87,7 +103,7 @@ export const getDecoratorStyles = (position) => {
         msTransform: 'translate(-50%, -50%)'
       };
     }
-    case 'CenterRight': {
+    case Positions.CenterRight: {
       return {
         position: 'absolute',
         top: '50%',
@@ -97,14 +113,14 @@ export const getDecoratorStyles = (position) => {
         msTransform: 'translateY(-50%)'
       };
     }
-    case 'BottomLeft': {
+    case Positions.BottomLeft: {
       return {
         position: 'absolute',
         bottom: 0,
         left: 0
       };
     }
-    case 'BottomCenter': {
+    case Positions.BottomCenter: {
       return {
         position: 'absolute',
         bottom: 0,
@@ -114,7 +130,7 @@ export const getDecoratorStyles = (position) => {
         msTransform: 'translateX(-50%)'
       };
     }
-    case 'BottomRight': {
+    case Positions.BottomRight: {
       return {
         position: 'absolute',
         bottom: 0,
@@ -131,7 +147,10 @@ export const getDecoratorStyles = (position) => {
   }
 };
 
-export const getSliderStyles = (propWidth, propHeight) => ({
+export const getSliderStyles = (
+  propWidth: number | string,
+  propHeight: number | string
+) => ({
   boxSizing: 'border-box',
   display: 'block',
   height: propHeight,
@@ -141,10 +160,10 @@ export const getSliderStyles = (propWidth, propHeight) => ({
 });
 
 export const getFrameStyles = (
-  propFrameOverFlow,
-  propVertical,
-  propFramePadding,
-  stateFrameWidth
+  propFrameOverFlow: string,
+  propVertical: boolean,
+  propFramePadding: number | string,
+  stateFrameWidth: number | string
 ) => ({
   boxSizing: 'border-box',
   display: 'block',
@@ -160,7 +179,35 @@ export const getFrameStyles = (
   WebkitTransform: 'translate3d(0, 0, 0)'
 });
 
-export const getTransitionProps = (props, state) => ({
+export const getTransitionProps = (
+  props: {
+    animation: string;
+    cellAlign: Alignment;
+    cellSpacing: number | string;
+    dragging: boolean;
+    heightMode: HeightMode;
+    opacityScale: number;
+    slideListMargin: number | string;
+    slideOffset: number | string;
+    scrollMode: ScrollMode;
+    slidesToScroll: number;
+    vertical: boolean;
+    wrapAround: boolean;
+    zoomScale: number;
+  },
+  state: {
+    currentSlide: number;
+    frameWidth: string;
+    hasInteraction: boolean;
+    isWrappingAround: string;
+    left: number | string;
+    slideCount: number;
+    slideHeight: number | string;
+    slideWidth: number | string;
+    slidesToShow: number;
+    top: number | string;
+  }
+) => ({
   animation: props.animation,
   cellAlign: props.cellAlign,
   cellSpacing: props.cellSpacing,

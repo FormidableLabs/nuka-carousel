@@ -1,8 +1,9 @@
 /* eslint-disable complexity */
 import React from 'react';
 import { getAlignmentOffset } from './utilities/style-utilities';
+import { Alignment, ScrollMode } from './utilities/types';
 
-const defaultButtonStyles = (disabled) => ({
+const defaultButtonStyles = (disabled: boolean) => ({
   border: 0,
   background: 'rgba(0,0,0,0.4)',
   color: 'white',
@@ -12,8 +13,18 @@ const defaultButtonStyles = (disabled) => ({
   cursor: disabled ? 'not-allowed' : 'pointer'
 });
 
-export const PreviousButton = (props) => {
-  const handleClick = (event) => {
+export const PreviousButton = (props: {
+  previousSlide: () => {};
+  defaultControlsConfig: {
+    prevButtonClassName: string;
+    prevButtonStyle: object;
+    prevButtonText: string;
+  };
+  currentSlide: number;
+  slideCount: number;
+  wrapAround: boolean;
+}) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     props.previousSlide();
   };
@@ -56,6 +67,18 @@ export const nextButtonDisabled = ({
   wrapAround,
   scrollMode,
   slidesToScroll
+}: {
+  cellAlign: Alignment;
+  cellSpacing: number;
+  currentSlide: number;
+  frameWidth: number;
+  positionValue: number;
+  slideCount: number;
+  slidesToShow: number;
+  slideWidth: number;
+  wrapAround: boolean;
+  scrollMode: ScrollMode;
+  slidesToScroll: number;
 }) => {
   let buttonDisabled = false;
 
@@ -91,7 +114,7 @@ export const nextButtonDisabled = ({
 };
 
 export const NextButton = (props) => {
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     props.nextSlide();
   };
@@ -151,23 +174,23 @@ export const NextButton = (props) => {
 };
 
 export const getDotIndexes = (
-  slideCount,
-  slidesToScroll,
-  slidesToShow,
-  cellAlign
+  slideCount: number,
+  slidesToScroll: number,
+  slidesToShow: number,
+  cellAlign: Alignment
 ) => {
   const dotIndexes = [];
   let lastDotIndex = slideCount - slidesToShow;
   const slidesToShowIsDecimal = slidesToShow % 1 !== 0;
 
   switch (cellAlign) {
-    case 'center':
-    case 'right':
+    case Alignment.Center:
+    case Alignment.Right:
       lastDotIndex += slidesToShow - 1;
       break;
   }
   // the below condition includes the last index if slidesToShow is decimal
-  if (cellAlign === 'left' && slidesToShowIsDecimal) {
+  if (cellAlign === Alignment.Left && slidesToShowIsDecimal) {
     lastDotIndex += slidesToShow - 1;
   }
 
@@ -201,7 +224,7 @@ export const PagingDots = (props) => {
     listStyleType: 'none'
   });
 
-  const getButtonStyles = (active) => ({
+  const getButtonStyles = (active: boolean) => ({
     cursor: 'pointer',
     opacity: active ? 1 : 0.5,
     background: 'transparent',

@@ -1,6 +1,10 @@
 import React from 'react';
 
-const AnnounceSlide = ({ message }) => {
+const AnnounceSlide = ({
+  message
+}: {
+  message: string;
+}): React.ReactElement => {
   const styles = {
     position: 'absolute',
     width: '1px',
@@ -22,6 +26,9 @@ const AnnounceSlide = ({ message }) => {
 export const defaultRenderAnnounceSlideMessage = ({
   currentSlide,
   slideCount
-}) => `Slide ${currentSlide + 1} of ${slideCount}`;
+}: {
+  currentSlide: number;
+  slideCount: number;
+}): string => `Slide ${currentSlide + 1} of ${slideCount}`;
 
 export default AnnounceSlide;
