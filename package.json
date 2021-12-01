@@ -7,7 +7,6 @@
   "jsnext:main": "es/index.js",
   "types": "index.d.ts",
   "dependencies": {
-    "csstype": "^2.6.6",
     "d3-ease": "^1.0.3",
     "exenv": "^1.2.0",
     "prop-types": "^15.6.0",
