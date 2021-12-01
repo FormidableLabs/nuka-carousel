@@ -1,12 +1,12 @@
 import React, { Component, CSSProperties } from 'react';
 import { getSlideHeight } from '../utilities/style-utilities';
 import { handleSelfFocus, getSlideClassName } from '../utilities/utilities';
-import { Transition, HeightMode } from '../types';
+import { TransitionProps, HeightMode } from '../types';
 
 type OpacityAndLeftMap = { [key: string]: CSSProperties };
 
-export default class FadeTransition extends Component<Transition> {
-  static defaultProps: Partial<Transition> = {
+export default class FadeTransition extends Component<TransitionProps> {
+  static defaultProps: Partial<TransitionProps> = {
     cellSpacing: 0,
     currentSlide: 0,
     deltaX: 0,
@@ -24,7 +24,7 @@ export default class FadeTransition extends Component<Transition> {
     wrapAround: false
   };
 
-  constructor(props: Transition) {
+  constructor(props: TransitionProps) {
     super(props);
     this.fadeFromSlide = props.currentSlide;
   }
@@ -32,7 +32,7 @@ export default class FadeTransition extends Component<Transition> {
   fadeFromSlide: number;
 
   formatChildren(
-    children: Transition['children'],
+    children: TransitionProps['children'],
     opacityAndLeftMap: OpacityAndLeftMap
   ) {
     const { currentSlide, slidesToShow } = this.props;

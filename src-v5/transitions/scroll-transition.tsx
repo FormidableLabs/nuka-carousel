@@ -9,13 +9,13 @@ import {
   getSlideClassName,
   isFullyVisible
 } from '../utilities/utilities';
-import { Alignment, HeightMode, Transition } from '../types';
+import { Alignment, HeightMode, TransitionProps } from '../types';
 
 const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
 
-export default class ScrollTransition extends Component<Transition> {
-  static defaultProps: Partial<Transition> = {
+export default class ScrollTransition extends Component<TransitionProps> {
+  static defaultProps: Partial<TransitionProps> = {
     cellAlign: Alignment.Left,
     cellSpacing: 0,
     currentSlide: 0,
@@ -36,7 +36,7 @@ export default class ScrollTransition extends Component<Transition> {
     zoomScale: 0.85
   };
 
-  constructor(props: Transition) {
+  constructor(props: TransitionProps) {
     super(props);
     this.getListStyles = this.getListStyles.bind(this);
   }
@@ -142,7 +142,7 @@ export default class ScrollTransition extends Component<Transition> {
   }
 
   /* eslint-enable complexity */
-  formatChildren(children: Transition['children']) {
+  formatChildren(children: TransitionProps['children']) {
     const { top, left, currentSlide, slidesToShow, vertical } = this.props;
     const positionValue = vertical ? top : left;
 
@@ -201,8 +201,8 @@ export default class ScrollTransition extends Component<Transition> {
   }
 
   getListStyles(
-    deltaX: Transition['deltaX'],
-    deltaY: Transition['deltaY']
+    deltaX: TransitionProps['deltaX'],
+    deltaY: TransitionProps['deltaY']
   ): CSSProperties {
     const listWidth =
       this.props.slideWidth * React.Children.count(this.props.children);

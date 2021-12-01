@@ -1,6 +1,6 @@
 import React from 'react';
 import { getAlignmentOffset } from './style-utilities';
-import { Alignment } from '../types';
+import { Alignment, CarouselProps, CarouselState } from '../types';
 
 export const addEvent = function (
   elem: any,
@@ -86,7 +86,10 @@ export const getSlideClassName = (
   return className;
 };
 
-export const getPropsByTransitionMode = (props, keys: string[]) => {
+export const getPropsByTransitionMode = (
+  props: CarouselProps,
+  keys: string[]
+) => {
   const { slidesToShow, transitionMode } = props;
   const updatedDefaults: { [key: string]: string | number } = {};
   if (transitionMode === 'fade') {
@@ -178,7 +181,17 @@ export const shouldUpdate = (curr, next, keys) => {
   return update;
 };
 
-export const calcSomeInitialState = (props) => {
+export const calcSomeInitialState = (
+  props: CarouselProps
+): Pick<
+  CarouselState,
+  | 'slideWidth'
+  | 'slideHeight'
+  | 'frameWidth'
+  | 'slidesToScroll'
+  | 'slidesToShow'
+  | 'cellAlign'
+> => {
   const {
     slidesToScroll,
     slidesToShow,

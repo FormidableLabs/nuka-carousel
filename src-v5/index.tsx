@@ -1,9 +1,8 @@
-import React from 'react';
-import 'wicg-inert';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import ExecutionEnvironment from 'exenv';
 import Animate from 'react-move/Animate';
 import * as easing from 'd3-ease';
+import 'wicg-inert';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import Transitions from './all-transitions';
 import AnnounceSlide, {
@@ -30,8 +29,67 @@ import {
   getValidChildren,
   calculateSlideHeight
 } from './utilities/bootstrapping-utilities';
+import {
+  Alignment,
+  CarouselProps,
+  CarouselState,
+  HeightMode,
+  KeyCodeConfig,
+  Positions,
+  RenderControlFunctionNames,
+  ScrollMode,
+  TransitionMode
+} from './types';
 
-export default class Carousel extends React.Component {
+export default class Carousel extends Component<CarouselProps, CarouselState> {
+  displayName: string;
+
+  static defaultProps: Partial<CarouselProps> = {
+    afterSlide: () => {},
+    autoGenerateStyleTag: true,
+    autoplay: false,
+    autoplayInterval: 3000,
+    autoplayReverse: false,
+    beforeSlide: () => {},
+    cellAlign: Alignment.Left,
+    cellSpacing: 0,
+    getControlsContainerStyles: () => {},
+    defaultControlsConfig: {},
+    disableAnimation: false,
+    disableEdgeSwiping: false,
+    dragging: true,
+    easing: 'easeCircOut',
+    edgeEasing: 'easeElasticOut',
+    enableKeyboardControls: false,
+    frameOverflow: 'hidden',
+    framePadding: '0px',
+    height: 'inherit',
+    heightMode: HeightMode.Max,
+    keyCodeConfig: {},
+    onDragStart: () => {},
+    onResize: () => {},
+    pauseOnHover: true,
+    renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
+    renderBottomCenterControls: (props) => <PagingDots {...props} />,
+    renderCenterLeftControls: (props) => <PreviousButton {...props} />,
+    renderCenterRightControls: (props) => <NextButton {...props} />,
+    scrollMode: ScrollMode.Remainder,
+    slideIndex: 0,
+    slideListMargin: 10,
+    slideOffset: 25,
+    slidesToScroll: 1,
+    slidesToShow: 1,
+    slideWidth: 1,
+    speed: 500,
+    style: {},
+    swiping: true,
+    transitionMode: TransitionMode.Scroll,
+    vertical: false,
+    width: '100%',
+    withoutControls: false,
+    wrapAround: false
+  };
+
   constructor() {
     super(...arguments);
 
@@ -41,15 +99,15 @@ export default class Carousel extends React.Component {
     this.timers = [];
     this.touchObject = {};
     this.controlsMap = [
-      { funcName: 'renderTopLeftControls', key: 'TopLeft' },
-      { funcName: 'renderTopCenterControls', key: 'TopCenter' },
-      { funcName: 'renderTopRightControls', key: 'TopRight' },
-      { funcName: 'renderCenterLeftControls', key: 'CenterLeft' },
-      { funcName: 'renderCenterCenterControls', key: 'CenterCenter' },
-      { funcName: 'renderCenterRightControls', key: 'CenterRight' },
-      { funcName: 'renderBottomLeftControls', key: 'BottomLeft' },
-      { funcName: 'renderBottomCenterControls', key: 'BottomCenter' },
-      { funcName: 'renderBottomRightControls', key: 'BottomRight' }
+      { funcName: 'renderTopLeftControls', key: Positions.TopLeft },
+      { funcName: 'renderTopCenterControls', key: Positions.TopCenter },
+      { funcName: 'renderTopRightControls', key: Positions.TopRight },
+      { funcName: 'renderCenterLeftControls', key: Positions.CenterLeft },
+      { funcName: 'renderCenterCenterControls', key: Positions.CenterCenter },
+      { funcName: 'renderCenterRightControls', key: Positions.CenterRight },
+      { funcName: 'renderBottomLeftControls', key: Positions.BottomLeft },
+      { funcName: 'renderBottomCenterControls', key: Positions.BottomCenter },
+      { funcName: 'renderBottomRightControls', key: Positions.BottomRight }
     ];
     this.keyCodeConfig = {
       nextSlide: [39, 68, 38, 87],
@@ -58,13 +116,14 @@ export default class Carousel extends React.Component {
       lastSlide: [69],
       pause: [32]
     };
+    this.mounted = false;
 
     this.childNodesMutationObs = null;
 
     this.state = {
       currentSlide: this.props.slideIndex,
       dragging: false,
-      easing: this.props.disableAnimation ? '' : easing.easeCircleOut,
+      easing: this.props.disableAnimation ? () => 0 : easing.easeCircleOut,
       hasInteraction: false, // to remove animation from the initial slide on the page load when non-default slideIndex is used
       isWrappingAround: false,
       left: 0,
@@ -1152,6 +1211,15 @@ export default class Carousel extends React.Component {
     });
   }
 
+  clickDisabled: boolean;
+  latestTransitioningIndex: number | null;
+  timers: ReturnType<typeof setTimeout>[];
+  touchObject: { startY?: number; startX?: number };
+  controlsMap: { funcName: RenderControlFunctionNames; key: Positions }[];
+  keyCodeConfig: KeyCodeConfig;
+  childNodesMutationObs: MutationObserver | null;
+  mounted: boolean;
+
   render() {
     const { currentSlide, slideCount, frameWidth, hasInteraction } = this.state;
     const {
@@ -1291,130 +1359,5 @@ export default class Carousel extends React.Component {
     );
   }
 }
-
-Carousel.propTypes = {
-  afterSlide: PropTypes.func,
-  animation: PropTypes.oneOf(['zoom']),
-  autoGenerateStyleTag: PropTypes.bool,
-  autoplay: PropTypes.bool,
-  autoplayInterval: PropTypes.number,
-  autoplayReverse: PropTypes.bool,
-  beforeSlide: PropTypes.func,
-  cellAlign: PropTypes.oneOf(['left', 'center', 'right']),
-  cellSpacing: PropTypes.number,
-  getControlsContainerStyles: PropTypes.func,
-  defaultControlsConfig: PropTypes.shape({
-    containerClassName: PropTypes.string,
-    nextButtonClassName: PropTypes.string,
-    nextButtonStyle: PropTypes.object,
-    nextButtonText: PropTypes.string,
-    prevButtonClassName: PropTypes.string,
-    prevButtonStyle: PropTypes.object,
-    prevButtonText: PropTypes.string,
-    pagingDotsContainerClassName: PropTypes.string,
-    pagingDotsClassName: PropTypes.string,
-    pagingDotsStyle: PropTypes.object
-  }),
-  disableAnimation: PropTypes.bool,
-  disableEdgeSwiping: PropTypes.bool,
-  dragging: PropTypes.bool,
-  easing: PropTypes.string,
-  edgeEasing: PropTypes.string,
-  enableKeyboardControls: PropTypes.bool,
-  frameOverflow: PropTypes.string,
-  framePadding: PropTypes.string,
-  height: PropTypes.string,
-  heightMode: PropTypes.oneOf(['first', 'current', 'max']),
-  innerRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.elementType })
-  ]),
-  initialSlideHeight: PropTypes.number,
-  initialSlideWidth: PropTypes.number,
-  keyCodeConfig: PropTypes.exact({
-    previousSlide: PropTypes.arrayOf(PropTypes.number),
-    nextSlide: PropTypes.arrayOf(PropTypes.number),
-    firstSlide: PropTypes.arrayOf(PropTypes.number),
-    lastSlide: PropTypes.arrayOf(PropTypes.number),
-    pause: PropTypes.arrayOf(PropTypes.number)
-  }),
-  onDragStart: PropTypes.func,
-  onResize: PropTypes.func,
-  opacityScale: PropTypes.number,
-  pauseOnHover: PropTypes.bool,
-  renderAnnounceSlideMessage: PropTypes.func,
-  renderBottomCenterControls: PropTypes.func,
-  renderBottomLeftControls: PropTypes.func,
-  renderBottomRightControls: PropTypes.func,
-  renderCenterCenterControls: PropTypes.func,
-  renderCenterLeftControls: PropTypes.func,
-  renderCenterRightControls: PropTypes.func,
-  renderTopCenterControls: PropTypes.func,
-  renderTopLeftControls: PropTypes.func,
-  renderTopRightControls: PropTypes.func,
-  scrollMode: PropTypes.oneOf(['page', 'remainder']),
-  slideIndex: PropTypes.number,
-  slideListMargin: PropTypes.number,
-  slideOffset: PropTypes.number,
-  slidesToScroll: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.oneOf(['auto'])
-  ]),
-  slidesToShow: PropTypes.number,
-  slideWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  speed: PropTypes.number,
-  swiping: PropTypes.bool,
-  transitionMode: PropTypes.oneOf(['scroll', 'fade', 'scroll3d']),
-  vertical: PropTypes.bool,
-  width: PropTypes.string,
-  withoutControls: PropTypes.bool,
-  wrapAround: PropTypes.bool
-};
-
-Carousel.defaultProps = {
-  afterSlide() {},
-  autoGenerateStyleTag: true,
-  autoplay: false,
-  autoplayInterval: 3000,
-  autoplayReverse: false,
-  beforeSlide() {},
-  cellAlign: 'left',
-  cellSpacing: 0,
-  getControlsContainerStyles() {},
-  defaultControlsConfig: {},
-  disableAnimation: false,
-  disableEdgeSwiping: false,
-  dragging: true,
-  easing: 'easeCircleOut',
-  edgeEasing: 'easeElasticOut',
-  enableKeyboardControls: false,
-  frameOverflow: 'hidden',
-  framePadding: '0px',
-  height: 'inherit',
-  heightMode: 'max',
-  keyCodeConfig: {},
-  onDragStart() {},
-  onResize() {},
-  pauseOnHover: true,
-  renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
-  renderBottomCenterControls: (props) => <PagingDots {...props} />,
-  renderCenterLeftControls: (props) => <PreviousButton {...props} />,
-  renderCenterRightControls: (props) => <NextButton {...props} />,
-  scrollMode: 'remainder',
-  slideIndex: 0,
-  slideListMargin: 10,
-  slideOffset: 25,
-  slidesToScroll: 1,
-  slidesToShow: 1,
-  slideWidth: 1,
-  speed: 500,
-  style: {},
-  swiping: true,
-  transitionMode: 'scroll',
-  vertical: false,
-  width: '100%',
-  withoutControls: false,
-  wrapAround: false
-};
 
 export { NextButton, PreviousButton, PagingDots };

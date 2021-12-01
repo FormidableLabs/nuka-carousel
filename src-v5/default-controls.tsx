@@ -1,29 +1,19 @@
 /* eslint-disable complexity */
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { getAlignmentOffset } from './utilities/style-utilities';
-import { Alignment, ScrollMode } from './types';
+import { Alignment, ControlProps } from './types';
 
-const defaultButtonStyles = (disabled: boolean) => ({
+const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
   border: 0,
   background: 'rgba(0,0,0,0.4)',
   color: 'white',
   padding: 10,
   textTransform: 'uppercase',
-  opacity: disabled && 0.3,
+  opacity: disabled ? 0.3 : 1,
   cursor: disabled ? 'not-allowed' : 'pointer'
 });
 
-export const PreviousButton = (props: {
-  previousSlide: () => {};
-  defaultControlsConfig: {
-    prevButtonClassName: string;
-    prevButtonStyle: object;
-    prevButtonText: string;
-  };
-  currentSlide: number;
-  slideCount: number;
-  wrapAround: boolean;
-}) => {
+export const PreviousButton = (props: ControlProps) => {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     props.previousSlide();
@@ -67,19 +57,7 @@ export const nextButtonDisabled = ({
   wrapAround,
   scrollMode,
   slidesToScroll
-}: {
-  cellAlign: Alignment;
-  cellSpacing: number;
-  currentSlide: number;
-  frameWidth: number;
-  positionValue: number;
-  slideCount: number;
-  slidesToShow: number;
-  slideWidth: number;
-  wrapAround: boolean;
-  scrollMode: ScrollMode;
-  slidesToScroll: number;
-}) => {
+}: ControlProps) => {
   let buttonDisabled = false;
 
   if (!wrapAround) {
@@ -113,7 +91,7 @@ export const nextButtonDisabled = ({
   return buttonDisabled;
 };
 
-export const NextButton = (props) => {
+export const NextButton = (props: ControlProps) => {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     props.nextSlide();
@@ -214,15 +192,15 @@ export const getDotIndexes = (
   return dotIndexes;
 };
 
-export const PagingDots = (props) => {
-  const getListStyles = () => ({
+export const PagingDots = (props: ControlProps) => {
+  const listStyles: CSSProperties = {
     position: 'relative',
     top: -10,
     display: 'flex',
     margin: 0,
     padding: 0,
     listStyleType: 'none'
-  });
+  };
 
   const getButtonStyles = (active: boolean) => ({
     cursor: 'pointer',
@@ -244,7 +222,7 @@ export const PagingDots = (props) => {
     pagingDotsStyle = {}
   } = props.defaultControlsConfig;
   return (
-    <ul className={pagingDotsContainerClassName} style={getListStyles()}>
+    <ul className={pagingDotsContainerClassName} style={listStyles}>
       {indexes.map((index, i) => {
         let isActive = props.currentSlide === index;
         // the below condition checks and sets navigation dots active if the current slide falls in the current index range

@@ -1,13 +1,13 @@
 import React, { Component, CSSProperties } from 'react';
 import { getSlideHeight } from '../utilities/style-utilities';
 import { handleSelfFocus } from '../utilities/utilities';
-import { Transition, HeightMode } from '../types';
+import { TransitionProps, HeightMode } from '../types';
 
 const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
 
-export default class ScrollTransition3D extends Component<Transition> {
-  static defaultProps: Partial<Transition> = {
+export default class ScrollTransition3D extends Component<TransitionProps> {
+  static defaultProps: Partial<TransitionProps> = {
     cellSpacing: 0,
     currentSlide: 0,
     dragging: false,
@@ -26,7 +26,7 @@ export default class ScrollTransition3D extends Component<Transition> {
     zoomScale: 0.75
   };
 
-  constructor(props: Transition) {
+  constructor(props: TransitionProps) {
     super(props);
     this.getListStyles = this.getListStyles.bind(this);
   }
@@ -64,7 +64,7 @@ export default class ScrollTransition3D extends Component<Transition> {
     return targetPosition + offset;
   }
 
-  formatChildren(children: Transition['children']) {
+  formatChildren(children: TransitionProps['children']) {
     const { currentSlide, slidesToShow } = this.props;
 
     return React.Children.map(children, (child, index) => {

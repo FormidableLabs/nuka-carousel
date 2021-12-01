@@ -1,6 +1,11 @@
-/* eslint-disable no-shadow */
+import {
+  ReactNode,
+  CSSProperties,
+  MutableRefObject,
+  ReactElement
+} from 'react';
 
-import { ReactNode } from 'react';
+/* eslint-disable no-shadow */
 
 export enum Alignment {
   Center = 'center',
@@ -31,6 +36,12 @@ export enum HeightMode {
   Current = 'current'
 }
 
+export enum TransitionMode {
+  Scroll = 'scroll',
+  Fade = 'fade',
+  Scroll3D = 'scroll3d'
+}
+
 type SlideChildren = {
   offsetHeight: number;
 };
@@ -40,30 +51,207 @@ export interface Slide {
   offsetHeight: number;
 }
 
-export interface Transition {
-  animation: 'zoom';
+type D3EasingFunctionNames =
+  | 'easeLiner'
+  | 'easeQuad'
+  | 'easeQuadIn'
+  | 'easeQuadOut'
+  | 'easeQuadInOut'
+  | 'easeCubic'
+  | 'easeCubicIn'
+  | 'easeCubicOut'
+  | 'easeCubicInOut'
+  | 'easePoly'
+  | 'easePolyIn'
+  | 'easePolyOut'
+  | 'easePolyInOut'
+  | 'easeSin'
+  | 'easeSinIn'
+  | 'easeSinOut'
+  | 'easeSinInOut'
+  | 'easeExp'
+  | 'easeExpIn'
+  | 'easeExpOut'
+  | 'easeExpInOut'
+  | 'easeCirc'
+  | 'easeCircIn'
+  | 'easeCircOut'
+  | 'easeCircInOut'
+  | 'easeBack'
+  | 'easeBackIn'
+  | 'easeBackOut'
+  | 'easeBackInOut'
+  | 'easeBounce'
+  | 'easeBounceIn'
+  | 'easeBounceOut'
+  | 'easeBounceInOut'
+  | 'easeElastic'
+  | 'easeElasticIn'
+  | 'easeElasticOut'
+  | 'easeElasticInOut';
+
+interface DefaultControlsConfig {
+  containerClassName?: string;
+  nextButtonClassName?: string;
+  nextButtonStyle?: CSSProperties;
+  nextButtonText?: string;
+  pagingDotsClassName?: string;
+  pagingDotsContainerClassName?: string;
+  pagingDotsStyle?: CSSProperties;
+  prevButtonClassName?: string;
+  prevButtonStyle?: CSSProperties;
+  prevButtonText?: string;
+}
+
+export interface KeyCodeConfig {
+  firstSlide?: number[];
+  lastSlide?: number[];
+  nextSlide?: number[];
+  pause?: number[];
+  previousSlide?: number[];
+}
+
+export interface CarouselState {
   cellAlign: Alignment;
-  cellSpacing: number;
   currentSlide: number;
-  children: ReactNode[];
-  deltaX: number;
-  deltaY: number;
   dragging: boolean;
-  frameWidth: number;
+  easing: (normalizedTime: number) => number;
+  frameWidth: number | null;
+  hasFocus: boolean;
   hasInteraction: boolean;
-  heightMode: HeightMode;
   isWrappingAround: boolean;
   left: number;
-  opacityScale: number;
+  resetWrapAroundPosition: boolean;
   slideCount: number;
   slideHeight: number;
   slidesToScroll: number;
-  slideListMargin: number;
-  slideOffset: number;
+  slidesToShow: number;
+  slideWidth: number;
+  top: number;
+  wrapToIndex: number | null;
+}
+
+type RenderAnnounceSlideMessage = (
+  props: Pick<CarouselState, 'currentSlide' | 'slideCount'>
+) => string;
+
+export interface ControlProps {
+  cellAlign: Alignment;
+  cellSpacing: number;
+  currentSlide: number;
+  defaultControlsConfig: DefaultControlsConfig;
+  frameWidth: number;
+  goToSlide: (index: number) => void;
+  left: number;
+  nextSlide: () => void;
+  previousSlide: () => void;
+  scrollMode: ScrollMode;
+  slideCount: number;
+  slidesToScroll: number;
   slidesToShow: number;
   slideWidth: number;
   top: number;
   vertical: boolean;
   wrapAround: boolean;
+}
+
+export type RenderControlFunctionNames =
+  | 'renderTopLeftControls'
+  | 'renderTopCenterControls'
+  | 'renderTopRightControls'
+  | 'renderCenterLeftControls'
+  | 'renderCenterCenterControls'
+  | 'renderCenterRightControls'
+  | 'renderBottomLeftControls'
+  | 'renderBottomCenterControls'
+  | 'renderBottomRightControls';
+
+type RenderControls = (props: ControlProps) => ReactElement;
+
+export interface CarouselProps {
+  afterSlide: () => void;
+  animation: 'zoom';
+  autoGenerateStyleTag: boolean;
+  autoplay: boolean;
+  autoplayInterval: number;
+  autoplayReverse: boolean;
+  beforeSlide: () => void;
+  cellAlign: Alignment;
+  cellSpacing: number;
+  children: ReactNode[];
+  defaultControlsConfig: DefaultControlsConfig;
+  disableAnimation: boolean;
+  disableEdgeSwiping: boolean;
+  dragging: boolean;
+  easing: D3EasingFunctionNames;
+  edgeEasing: D3EasingFunctionNames;
+  enableKeyboardControls: boolean;
+  frameOverflow: string;
+  framePadding: string;
+  getControlsContainerStyles: () => void;
+  height: string;
+  heightMode: HeightMode;
+  initialSlideHeight: number;
+  initialSlideWidth: number;
+  innerRef: MutableRefObject<HTMLDivElement>;
+  keyCodeConfig: KeyCodeConfig;
+  onDragStart: () => void;
+  onResize: () => void;
+  opacityScale: number;
+  pauseOnHover: boolean;
+  renderAnnounceSlideMessage: RenderAnnounceSlideMessage;
+  renderBottomCenterControls: RenderControls;
+  renderBottomLeftControls: RenderControls;
+  renderBottomRightControls: RenderControls;
+  renderCenterCenterControls: RenderControls;
+  renderCenterLeftControls: RenderControls;
+  renderCenterRightControls: RenderControls;
+  renderTopCenterControls: RenderControls;
+  renderTopLeftControls: RenderControls;
+  renderTopRightControls: RenderControls;
+  scrollMode: ScrollMode;
+  slideIndex: number;
+  slideListMargin: number;
+  slideOffset: number;
+  slidesToScroll: 'auto' | number;
+  slidesToShow: number;
+  slideWidth: number | string;
+  speed: number;
+  style: CSSProperties;
+  swiping: boolean;
+  transitionMode: TransitionMode;
+  vertical: boolean;
+  width: string;
+  withoutControls: boolean;
+  wrapAround: boolean;
   zoomScale: number;
 }
+
+export type TransitionProps = Pick<
+  CarouselProps,
+  | 'animation'
+  | 'cellAlign'
+  | 'cellSpacing'
+  | 'dragging'
+  | 'heightMode'
+  | 'opacityScale'
+  | 'slideListMargin'
+  | 'slideOffset'
+  | 'slidesToScroll'
+  | 'vertical'
+  | 'wrapAround'
+  | 'zoomScale'
+> &
+  Pick<
+    CarouselState,
+    | 'currentSlide'
+    | 'frameWidth'
+    | 'hasInteraction'
+    | 'isWrappingAround'
+    | 'left'
+    | 'slideCount'
+    | 'slideHeight'
+    | 'slideWidth'
+    | 'slidesToShow'
+    | 'top'
+  > & { children: ReactNode[]; deltaX: number; deltaY: number };

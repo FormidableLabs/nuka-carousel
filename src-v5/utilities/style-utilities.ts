@@ -1,5 +1,13 @@
-import React from 'react';
-import { Positions, ScrollMode, Alignment, HeightMode } from '../types';
+import React, { CSSProperties } from 'react';
+import {
+  Positions,
+  Alignment,
+  HeightMode,
+  TransitionProps,
+  CarouselProps,
+  CarouselState,
+  ScrollMode
+} from '../types';
 
 export const getImgTagStyles = (): string => `.slider-slide > img { width: 100%; display: block; }
           .slider-slide > img:focus { margin: auto; }`;
@@ -57,7 +65,7 @@ export const getAlignmentOffset = (
   return offset;
 };
 
-export const getDecoratorStyles = (position: Positions) => {
+export const getDecoratorStyles = (position: Positions): CSSProperties => {
   switch (position) {
     case Positions.TopLeft: {
       return {
@@ -150,7 +158,7 @@ export const getDecoratorStyles = (position: Positions) => {
 export const getSliderStyles = (
   propWidth: number | string,
   propHeight: number | string
-) => ({
+): CSSProperties => ({
   boxSizing: 'border-box',
   display: 'block',
   height: propHeight,
@@ -164,7 +172,7 @@ export const getFrameStyles = (
   propVertical: boolean,
   propFramePadding: number | string,
   stateFrameWidth: number | string
-) => ({
+): CSSProperties => ({
   boxSizing: 'border-box',
   display: 'block',
   height: propVertical ? stateFrameWidth || 'initial' : '100%',
@@ -180,40 +188,15 @@ export const getFrameStyles = (
 });
 
 export const getTransitionProps = (
-  props: {
-    animation: string;
-    cellAlign: Alignment;
-    cellSpacing: number | string;
-    dragging: boolean;
-    heightMode: HeightMode;
-    opacityScale: number;
-    slideListMargin: number | string;
-    slideOffset: number | string;
-    scrollMode: ScrollMode;
-    slidesToScroll: number;
-    vertical: boolean;
-    wrapAround: boolean;
-    zoomScale: number;
-  },
-  state: {
-    currentSlide: number;
-    frameWidth: string;
-    hasInteraction: boolean;
-    isWrappingAround: string;
-    left: number | string;
-    slideCount: number;
-    slideHeight: number | string;
-    slideWidth: number | string;
-    slidesToShow: number;
-    top: number | string;
-  }
-) => ({
+  props: CarouselProps,
+  state: CarouselState
+): Omit<TransitionProps, 'children' | 'deltaX' | 'deltaY'> => ({
   animation: props.animation,
   cellAlign: props.cellAlign,
   cellSpacing: props.cellSpacing,
   currentSlide: state.currentSlide,
   dragging: props.dragging,
-  frameWidth: parseInt(state.frameWidth),
+  frameWidth: Math.trunc(state.frameWidth),
   hasInteraction: state.hasInteraction,
   heightMode: props.heightMode,
   isWrappingAround: state.isWrappingAround,
@@ -224,7 +207,9 @@ export const getTransitionProps = (
   slideListMargin: props.slideListMargin,
   slideOffset: props.slideOffset,
   slidesToScroll:
-    props.scrollMode === 'page' ? state.slidesToShow : props.slidesToScroll,
+    props.scrollMode === ScrollMode.Page
+      ? state.slidesToShow
+      : props.slidesToScroll,
   slidesToShow: state.slidesToShow,
   slideWidth: state.slideWidth,
   top: state.top,

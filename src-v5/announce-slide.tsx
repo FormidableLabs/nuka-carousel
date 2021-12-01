@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
 const AnnounceSlide = ({
   message
 }: {
   message: string;
 }): React.ReactElement => {
-  const styles = {
+  const styles: CSSProperties = {
     position: 'absolute',
     width: '1px',
     height: '1px',

@@ -27,7 +27,7 @@ export const findMaxHeightSlideInRange = (
   slides: Slide[],
   start: number,
   end: number
-) => {
+): number => {
   let maxHeight = 0;
 
   if (
