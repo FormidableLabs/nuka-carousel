@@ -1,4 +1,4 @@
-/*eslint max-nested-callbacks: ["error", 5]*/
+/* eslint max-nested-callbacks: ["error", 5]*/
 import { createRef } from 'react';
 import Carousel from '../../src';
 
@@ -97,6 +97,18 @@ describe('<Carousel />', () => {
       );
       const children = wrapper.find('.slide-visible');
       expect(children).toHaveLength(1);
+    });
+
+    it('should render visible child with the `slide-visible` class when slidesToShow is equal to children', () => {
+      const wrapper = mount(
+        <Carousel slidesToShow={3}>
+          <p>Slide 1</p>
+          <p>Slide 2</p>
+          <p>Slide 3</p>
+        </Carousel>
+      );
+      const children = wrapper.find('.slide-visible');
+      expect(children).toHaveLength(3);
     });
 
     it('should render controls by default.', () => {
