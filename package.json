@@ -6,6 +6,9 @@
   "module": "es/index.js",
   "jsnext:main": "es/index.js",
   "types": "index.d.ts",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "dependencies": {
     "d3-ease": "^1.0.3",
     "exenv": "^1.2.0",
