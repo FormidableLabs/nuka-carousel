@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, CSSProperties } from 'react';
 import {
   getSlideHeight,
   getAlignmentOffset
@@ -10,18 +9,43 @@ import {
   getSlideClassName,
   isFullyVisible
 } from '../utilities/utilities';
+import { Alignment, HeightMode, Transition } from '../types';
 
 const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
 
-export default class ScrollTransition extends React.Component {
-  constructor(props) {
+export default class ScrollTransition extends Component<Transition> {
+  static defaultProps: Partial<Transition> = {
+    cellAlign: Alignment.Left,
+    cellSpacing: 0,
+    currentSlide: 0,
+    deltaX: 0,
+    deltaY: 0,
+    dragging: false,
+    frameWidth: 0,
+    heightMode: HeightMode.Max,
+    isWrappingAround: false,
+    left: 0,
+    slideCount: 0,
+    slideHeight: 0,
+    slidesToScroll: 1,
+    slideWidth: 0,
+    top: 0,
+    vertical: false,
+    wrapAround: false,
+    zoomScale: 0.85
+  };
+
+  constructor(props: Transition) {
     super(props);
     this.getListStyles = this.getListStyles.bind(this);
   }
 
   /* eslint-disable complexity */
-  getSlideTargetPosition(currentSlideIndex, positionValue) {
+  getSlideTargetPosition(
+    currentSlideIndex: number,
+    positionValue: number
+  ): number {
     let offset = 0;
     // Below lines help to display peeking slides when number of slides is less than 3.
     let peekSlide = true;
@@ -118,7 +142,7 @@ export default class ScrollTransition extends React.Component {
   }
 
   /* eslint-enable complexity */
-  formatChildren(children) {
+  formatChildren(children: Transition['children']) {
     const { top, left, currentSlide, slidesToShow, vertical } = this.props;
     const positionValue = vertical ? top : left;
 
@@ -146,7 +170,7 @@ export default class ScrollTransition extends React.Component {
     });
   }
 
-  getSlideStyles(index, positionValue) {
+  getSlideStyles(index: number, positionValue: number): CSSProperties {
     const targetPosition = this.getSlideTargetPosition(index, positionValue);
     const transformScale =
       this.props.animation === 'zoom' && this.props.currentSlide !== index
@@ -176,9 +200,10 @@ export default class ScrollTransition extends React.Component {
     };
   }
 
-  getListStyles(styles) {
-    const { deltaX, deltaY } = styles;
-
+  getListStyles(
+    deltaX: Transition['deltaX'],
+    deltaY: Transition['deltaY']
+  ): CSSProperties {
     const listWidth =
       this.props.slideWidth * React.Children.count(this.props.children);
     const spacingOffset =
@@ -217,57 +242,9 @@ export default class ScrollTransition extends React.Component {
     const deltaY = this.props.deltaY;
 
     return (
-      <div
-        className="slider-list"
-        style={this.getListStyles({ deltaX, deltaY })}
-      >
+      <div className="slider-list" style={this.getListStyles(deltaX, deltaY)}>
         {children}
       </div>
     );
   }
 }
-
-ScrollTransition.propTypes = {
-  animation: PropTypes.oneOf(['zoom']),
-  cellAlign: PropTypes.string,
-  cellSpacing: PropTypes.number,
-  currentSlide: PropTypes.number,
-  deltaX: PropTypes.number,
-  deltaY: PropTypes.number,
-  dragging: PropTypes.bool,
-  frameWidth: PropTypes.number,
-  hasInteraction: PropTypes.bool,
-  heightMode: PropTypes.oneOf(['first', 'current', 'max']),
-  isWrappingAround: PropTypes.bool,
-  left: PropTypes.number,
-  slideCount: PropTypes.number,
-  slideHeight: PropTypes.number,
-  slideOffset: PropTypes.number,
-  slidesToScroll: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  slideWidth: PropTypes.number,
-  top: PropTypes.number,
-  vertical: PropTypes.bool,
-  wrapAround: PropTypes.bool,
-  zoomScale: PropTypes.number
-};
-
-ScrollTransition.defaultProps = {
-  cellAlign: 'left',
-  cellSpacing: 0,
-  currentSlide: 0,
-  deltaX: 0,
-  deltaY: 0,
-  dragging: false,
-  frameWidth: 0,
-  heightMode: 'max',
-  isWrappingAround: false,
-  left: 0,
-  slideCount: 0,
-  slideHeight: 0,
-  slidesToScroll: 1,
-  slideWidth: 0,
-  top: 0,
-  vertical: false,
-  wrapAround: false,
-  zoomScale: 0.85
-};

@@ -42,18 +42,22 @@ export interface Slide {
 
 export interface Transition {
   animation: 'zoom';
+  cellAlign: Alignment;
   cellSpacing: number;
   currentSlide: number;
   children: ReactNode[];
   deltaX: number;
   deltaY: number;
   dragging: boolean;
+  frameWidth: number;
+  hasInteraction: boolean;
   heightMode: HeightMode;
   isWrappingAround: boolean;
   left: number;
   opacityScale: number;
   slideCount: number;
   slideHeight: number;
+  slidesToScroll: number;
   slideListMargin: number;
   slideOffset: number;
   slidesToShow: number;
