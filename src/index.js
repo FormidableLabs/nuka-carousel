@@ -584,12 +584,14 @@ export default class Carousel extends React.Component {
           this.state.currentSlide + 1 >= this.state.slideCount &&
           !this.props.wrapAround
         ) {
+          // eslint-disable-next-line import/namespace
           this.setState({ easing: easing[this.props.edgeEasing] });
         } else {
           this.nextSlide();
         }
       } else if (this.touchObject.direction === -1) {
         if (this.state.currentSlide <= 0 && !this.props.wrapAround) {
+          // eslint-disable-next-line import/namespace
           this.setState({ easing: easing[this.props.edgeEasing] });
         } else {
           this.previousSlide();
@@ -783,6 +785,7 @@ export default class Carousel extends React.Component {
     }
     this.latestTransitioningIndex = index;
 
+    // eslint-disable-next-line import/namespace
     this.setState({ hasInteraction: true, easing: easing[props.easing] });
     const previousSlide = this.state.currentSlide;
 
