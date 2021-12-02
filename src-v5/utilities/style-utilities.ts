@@ -171,7 +171,7 @@ export const getFrameStyles = (
   propFrameOverFlow: string,
   propVertical: boolean,
   propFramePadding: number | string,
-  stateFrameWidth: number | string
+  stateFrameWidth: number | string | null
 ): CSSProperties => ({
   boxSizing: 'border-box',
   display: 'block',

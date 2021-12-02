@@ -1,6 +1,6 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import Carousel from '../../../src-v5/index'
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import Carousel from '../../../src-v5/index';
 
 const colors = [
   '7732bb',
@@ -32,16 +32,17 @@ export default function Home() {
     <div className={styles.container}>
       <Head>
         <title>Nuka Carousel | Formidable Labs</title>
-        <meta name="description" content="Nuka Carousel example with Next.js - Formidable Labs" />
+        <meta
+          name="description"
+          content="Nuka Carousel example with Next.js - Formidable Labs"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
         <h1>Nuka Carousel - SSR Example Formidable Labs</h1>
-        <Carousel>
-          {slides}
-        </Carousel>
+        <Carousel>{slides}</Carousel>
       </main>
     </div>
-  )
+  );
 }

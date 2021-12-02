@@ -33,6 +33,7 @@ import {
   Alignment,
   CarouselProps,
   CarouselState,
+  ControlProps,
   HeightMode,
   KeyCodeConfig,
   Positions,
@@ -44,7 +45,7 @@ import {
 export default class Carousel extends Component<CarouselProps, CarouselState> {
   displayName: string;
 
-  static defaultProps: Partial<CarouselProps> = {
+  static defaultProps = {
     afterSlide: () => {},
     autoGenerateStyleTag: true,
     autoplay: false,
@@ -53,16 +54,16 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     beforeSlide: () => {},
     cellAlign: Alignment.Left,
     cellSpacing: 0,
-    getControlsContainerStyles: () => {},
     defaultControlsConfig: {},
     disableAnimation: false,
     disableEdgeSwiping: false,
     dragging: true,
-    easing: 'easeCircOut',
+    easing: 'easeCircleOut',
     edgeEasing: 'easeElasticOut',
     enableKeyboardControls: false,
     frameOverflow: 'hidden',
     framePadding: '0px',
+    getControlsContainerStyles: () => {},
     height: 'inherit',
     heightMode: HeightMode.Max,
     keyCodeConfig: {},
@@ -70,9 +71,15 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     onResize: () => {},
     pauseOnHover: true,
     renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
-    renderBottomCenterControls: (props) => <PagingDots {...props} />,
-    renderCenterLeftControls: (props) => <PreviousButton {...props} />,
-    renderCenterRightControls: (props) => <NextButton {...props} />,
+    renderBottomCenterControls: (props: ControlProps) => (
+      <PagingDots {...props} />
+    ),
+    renderCenterLeftControls: (props: ControlProps) => (
+      <PreviousButton {...props} />
+    ),
+    renderCenterRightControls: (props: ControlProps) => (
+      <NextButton {...props} />
+    ),
     scrollMode: ScrollMode.Remainder,
     slideIndex: 0,
     slideListMargin: 10,
@@ -91,6 +98,8 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
   };
 
   constructor() {
+    // TODO: Find a way of typing spreading args here
+    // @ts-ignore
     super(...arguments);
 
     this.displayName = 'Carousel';
@@ -188,7 +197,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
   }
 
   // eslint-disable-next-line complexity
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: CarouselProps, prevState: CarouselState) {
     const slideChanged = prevState.currentSlide !== this.state.currentSlide;
     const heightModeChanged = prevProps.heightMode !== this.props.heightMode;
     const axisChanged = prevProps.vertical !== this.props.vertical;
@@ -283,7 +292,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
   initializeCarouselHeight() {
     const initialDelay = 200;
     let timesChecked = 0;
-    const initializeHeight = (delay) => {
+    const initializeHeight = (delay: number) => {
       this.timers.push(
         setTimeout(() => {
           // If slideHeight is greater than zero and matches calculated slideHeight,
@@ -351,8 +360,12 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     }
   }
 
-  blockEvent(e) {
-    if (this.state.dragging) {
+  blockEvent(e: TouchEvent) {
+    if (
+      this.state.dragging &&
+      this.touchObject.startX !== undefined &&
+      this.touchObject.startY !== undefined
+    ) {
       const direction = swipeDirection(
         this.touchObject.startX,
         e.touches[0].pageX,
@@ -394,7 +407,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     }
 
     return {
-      onTouchStart: (e) => {
+      onTouchStart: (e: TouchEvent) => {
         // detect pinch zoom
         if (e.touches.length === 2) {
           this.handleMouseOver();
@@ -411,7 +424,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
           dragging: true
         });
       },
-      onTouchMove: (e) => {
+      onTouchMove: (e: TouchEvent) => {
         if (e.touches.length === 2) {
           return;
         }
@@ -463,17 +476,17 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
             : 0
         });
       },
-      onTouchEnd: (e) => {
+      onTouchEnd: (e: TouchEvent) => {
         if (e.touches.length === 2) {
           this.handleMouseOut();
           return;
         }
 
-        this.handleSwipe(e);
+        this.handleSwipe();
         this.handleMouseOut();
       },
-      onTouchCancel: (e) => {
-        this.handleSwipe(e);
+      onTouchCancel: () => {
+        this.handleSwipe();
       }
     };
   }
@@ -504,7 +517,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
         });
       },
 
-      onMouseMove: (e) => {
+      onMouseMove: (e: MouseEvent) => {
         if (!this.state.dragging) {
           return;
         }
@@ -558,7 +571,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
         });
       },
 
-      onMouseUp: (e) => {
+      onMouseUp: () => {
         if (
           this.touchObject.length === 0 ||
           this.touchObject.length === undefined
@@ -567,15 +580,15 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
           return;
         }
 
-        this.handleSwipe(e);
+        this.handleSwipe();
       },
 
-      onMouseLeave: (e) => {
+      onMouseLeave: () => {
         if (!this.state.dragging) {
           return;
         }
 
-        this.handleSwipe(e);
+        this.handleSwipe();
       }
     };
   }
@@ -614,7 +627,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     this.setState({ hasFocus: false });
   }
 
-  handleClick(event) {
+  handleClick(event: React.MouseEvent) {
     if (this.clickDisabled === true) {
       if (event.metaKey || event.shiftKey || event.altKey || event.ctrlKey) {
         return;
@@ -673,7 +686,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     });
   }
   // eslint-disable-next-line complexity
-  handleKeyPress(e) {
+  handleKeyPress(e: React.KeyboardEvent) {
     if (this.state.hasFocus && this.props.enableKeyboardControls) {
       const actionName = this.keyCodeMap[e.keyCode];
       switch (actionName) {
@@ -703,7 +716,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     }
   }
 
-  getKeyCodeMap(keyCodeConfig) {
+  getKeyCodeMap(keyCodeConfig: KeyCodeConfig) {
     const keyCodeMap = {};
     Object.keys(keyCodeConfig).forEach((actionName) => {
       keyCodeConfig[actionName].forEach(
@@ -760,7 +773,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
 
   // Animation Method
 
-  getTargetLeft(touchOffset, slide) {
+  getTargetLeft(touchOffset?: number | null, slide?: number): number {
     const target = slide || this.state.currentSlide;
 
     let offset = getAlignmentOffset(target, { ...this.props, ...this.state });
@@ -773,7 +786,8 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     if (
       lastSlide &&
       !this.props.wrapAround &&
-      this.props.scrollMode === 'remainder'
+      this.props.scrollMode === 'remainder' &&
+      this.state.frameWidth !== null
     ) {
       left =
         this.state.slideWidth * this.state.slideCount - this.state.frameWidth;
@@ -781,7 +795,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
       offset -= this.props.cellSpacing * (this.state.slideCount - 1);
     }
 
-    if (!isNaN(touchOffset)) {
+    if (touchOffset && !isNaN(touchOffset)) {
       offset -= touchOffset;
     } else {
       offset -= 0;
@@ -838,7 +852,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
 
   // Action Methods
 
-  goToSlide(index, props) {
+  goToSlide(index: number, props?: CarouselProps): void {
     if (props === undefined) {
       props = this.props;
     }
@@ -1041,7 +1055,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     }
   }
 
-  calcSlideHeightAndWidth(props) {
+  calcSlideHeightAndWidth(props?: CarouselProps) {
     // slide height
     props = props || this.props;
     const childNodes = this.getChildNodes();
@@ -1083,7 +1097,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
   }
 
   // eslint-disable-next-line complexity
-  setDimensions(props, stateCb = () => {}) {
+  setDimensions(props?: CarouselProps | null, stateCb = () => {}) {
     props = props || this.props;
 
     let {
@@ -1137,7 +1151,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
   }
 
   getChildNodes() {
-    return this.frame.childNodes[0].childNodes;
+    return this.frame ? this.frame.children[0].children : [];
   }
 
   getCurrentChildNodeImg() {
@@ -1211,14 +1225,26 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     });
   }
 
-  clickDisabled: boolean;
-  latestTransitioningIndex: number | null;
-  timers: ReturnType<typeof setTimeout>[];
-  touchObject: { startY?: number; startX?: number };
-  controlsMap: { funcName: RenderControlFunctionNames; key: Positions }[];
-  keyCodeConfig: KeyCodeConfig;
+  autoplayID?: ReturnType<typeof setTimeout>;
+  autoplayPaused?: boolean | null;
   childNodesMutationObs: MutationObserver | null;
+  clickDisabled: boolean;
+  controlsMap: { funcName: RenderControlFunctionNames; key: Positions }[];
+  frame?: HTMLDivElement | null;
+  isWrapped?: boolean;
+  keyCodeConfig: KeyCodeConfig;
+  keyCodeMap?: { [key: number]: keyof KeyCodeConfig };
+  latestTransitioningIndex: number | null;
   mounted: boolean;
+  timers: ReturnType<typeof setTimeout>[];
+  touchObject: {
+    startY?: number;
+    startX?: number;
+    endX?: number;
+    endY?: number;
+    length?: number;
+    direction?: number;
+  };
 
   render() {
     const { currentSlide, slideCount, frameWidth, hasInteraction } = this.state;

@@ -15,7 +15,7 @@ const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
 
 export default class ScrollTransition extends Component<TransitionProps> {
-  static defaultProps: Partial<TransitionProps> = {
+  static defaultProps = {
     cellAlign: Alignment.Left,
     cellSpacing: 0,
     currentSlide: 0,

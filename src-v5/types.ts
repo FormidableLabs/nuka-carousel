@@ -73,10 +73,10 @@ type D3EasingFunctionNames =
   | 'easeExpIn'
   | 'easeExpOut'
   | 'easeExpInOut'
-  | 'easeCirc'
-  | 'easeCircIn'
-  | 'easeCircOut'
-  | 'easeCircInOut'
+  | 'easeCircle'
+  | 'easeCircleIn'
+  | 'easeCircleOut'
+  | 'easeCircleInOut'
   | 'easeBack'
   | 'easeBackIn'
   | 'easeBackOut'
@@ -140,7 +140,7 @@ export interface ControlProps {
   cellSpacing: number;
   currentSlide: number;
   defaultControlsConfig: DefaultControlsConfig;
-  frameWidth: number;
+  frameWidth: number | null;
   goToSlide: (index: number) => void;
   left: number;
   nextSlide: () => void;
@@ -169,61 +169,62 @@ export type RenderControlFunctionNames =
 type RenderControls = (props: ControlProps) => ReactElement;
 
 export interface CarouselProps {
-  afterSlide?: () => void;
+  afterSlide: (index: number) => void;
   animation?: 'zoom';
-  autoGenerateStyleTag?: boolean;
-  autoplay?: boolean;
-  autoplayInterval?: number;
-  autoplayReverse?: boolean;
-  beforeSlide?: () => void;
-  cellAlign?: Alignment;
-  cellSpacing?: number;
-  children?: ReactNode[];
-  defaultControlsConfig?: DefaultControlsConfig;
-  disableAnimation?: boolean;
-  disableEdgeSwiping?: boolean;
-  dragging?: boolean;
-  easing?: D3EasingFunctionNames;
-  edgeEasing?: D3EasingFunctionNames;
-  enableKeyboardControls?: boolean;
-  frameOverflow?: string;
-  framePadding?: string;
-  getControlsContainerStyles?: () => void;
-  height?: string;
-  heightMode?: HeightMode;
+  autoGenerateStyleTag: boolean;
+  autoplay: boolean;
+  autoplayInterval: number;
+  autoplayReverse: boolean;
+  beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void;
+  cellAlign: Alignment;
+  cellSpacing: number;
+  children: ReactNode | ReactNode[];
+  className?: string;
+  defaultControlsConfig: DefaultControlsConfig;
+  disableAnimation: boolean;
+  disableEdgeSwiping: boolean;
+  dragging: boolean;
+  easing: D3EasingFunctionNames;
+  edgeEasing: D3EasingFunctionNames;
+  enableKeyboardControls: boolean;
+  frameOverflow: string;
+  framePadding: string;
+  getControlsContainerStyles: (key: Positions) => CSSProperties;
+  height: string;
+  heightMode: HeightMode;
   initialSlideHeight?: number;
   initialSlideWidth?: number;
   innerRef?: MutableRefObject<HTMLDivElement>;
-  keyCodeConfig?: KeyCodeConfig;
-  onDragStart?: () => void;
-  onResize?: () => void;
+  keyCodeConfig: KeyCodeConfig;
+  onDragStart: (e: TouchEvent) => void;
+  onResize: () => void;
   opacityScale?: number;
-  pauseOnHover?: boolean;
-  renderAnnounceSlideMessage?: RenderAnnounceSlideMessage;
-  renderBottomCenterControls?: RenderControls;
+  pauseOnHover: boolean;
+  renderAnnounceSlideMessage: RenderAnnounceSlideMessage;
+  renderBottomCenterControls: RenderControls;
   renderBottomLeftControls?: RenderControls;
   renderBottomRightControls?: RenderControls;
   renderCenterCenterControls?: RenderControls;
-  renderCenterLeftControls?: RenderControls;
-  renderCenterRightControls?: RenderControls;
+  renderCenterLeftControls: RenderControls;
+  renderCenterRightControls: RenderControls;
   renderTopCenterControls?: RenderControls;
   renderTopLeftControls?: RenderControls;
   renderTopRightControls?: RenderControls;
-  scrollMode?: ScrollMode;
-  slideIndex?: number;
-  slideListMargin?: number;
-  slideOffset?: number;
-  slidesToScroll?: 'auto' | number;
-  slidesToShow?: number;
-  slideWidth?: number | string;
-  speed?: number;
-  style?: CSSProperties;
-  swiping?: boolean;
-  transitionMode?: TransitionMode;
-  vertical?: boolean;
-  width?: string;
-  withoutControls?: boolean;
-  wrapAround?: boolean;
+  scrollMode: ScrollMode;
+  slideIndex: number;
+  slideListMargin: number;
+  slideOffset: number;
+  slidesToScroll: 'auto' | number;
+  slidesToShow: number;
+  slideWidth: number | string;
+  speed: number;
+  style: CSSProperties;
+  swiping: boolean;
+  transitionMode: TransitionMode;
+  vertical: boolean;
+  width: string;
+  withoutControls: boolean;
+  wrapAround: boolean;
   zoomScale?: number;
 }
 
@@ -232,6 +233,7 @@ export type TransitionProps = Pick<
   | 'animation'
   | 'cellAlign'
   | 'cellSpacing'
+  | 'children'
   | 'dragging'
   | 'heightMode'
   | 'opacityScale'
@@ -254,4 +256,4 @@ export type TransitionProps = Pick<
     | 'slideWidth'
     | 'slidesToShow'
     | 'top'
-  > & { children: ReactNode[]; deltaX: number; deltaY: number };
+  > & { deltaX: number; deltaY: number };

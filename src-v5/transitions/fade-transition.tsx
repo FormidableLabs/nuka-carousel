@@ -6,7 +6,7 @@ import { TransitionProps, HeightMode } from '../types';
 type OpacityAndLeftMap = { [key: string]: CSSProperties };
 
 export default class FadeTransition extends Component<TransitionProps> {
-  static defaultProps: Partial<TransitionProps> = {
+  static defaultProps = {
     cellSpacing: 0,
     currentSlide: 0,
     deltaX: 0,

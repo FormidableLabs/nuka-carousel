@@ -7,7 +7,7 @@ const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
 
 export default class ScrollTransition3D extends Component<TransitionProps> {
-  static defaultProps: Partial<TransitionProps> = {
+  static defaultProps = {
     cellSpacing: 0,
     currentSlide: 0,
     dragging: false,
