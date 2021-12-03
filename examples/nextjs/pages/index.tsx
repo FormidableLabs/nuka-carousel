@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import Carousel from '../../../src-v5/index';
+import Carousel from '../../../src-v5/index'
+import NewCarousel from '../components/carousel'
 
 const colors = [
   '7732bb',
@@ -14,7 +15,7 @@ const colors = [
   'aa231f'
 ];
 
-export default function Home() {
+const Home = () => {
   const slides = colors.map((color, index) => (
     <img
       src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${
@@ -41,8 +42,12 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1>Nuka Carousel - SSR Example Formidable Labs</h1>
+        <NewCarousel>{slides}</NewCarousel>
         <Carousel>{slides}</Carousel>
       </main>
     </div>
   );
 }
+
+
+export default Home

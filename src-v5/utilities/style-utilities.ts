@@ -164,6 +164,7 @@ export const getSliderStyles = (
   height: propHeight,
   MozBoxSizing: 'border-box',
   position: 'relative',
+  overflow: 'hidden',
   width: propWidth
 });
 
