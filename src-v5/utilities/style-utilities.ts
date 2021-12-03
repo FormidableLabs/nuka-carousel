@@ -169,7 +169,6 @@ export const getSliderStyles = (
 });
 
 export const getFrameStyles = (
-  propFrameOverFlow: string,
   propVertical: boolean,
   propFramePadding: number | string,
   stateFrameWidth: number | string | null
@@ -180,7 +179,6 @@ export const getFrameStyles = (
   margin: propFramePadding,
   MozBoxSizing: 'border-box',
   msTransform: 'translate(0, 0)',
-  overflow: propFrameOverFlow,
   padding: 0,
   position: 'relative',
   touchAction: `pinch-zoom ${propVertical ? 'pan-x' : 'pan-y'}`,

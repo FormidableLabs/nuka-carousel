@@ -123,7 +123,7 @@ export interface CarouselState {
   left: number;
   resetWrapAroundPosition: boolean;
   slideCount: number;
-  slideHeight: number;
+  slideHeight: number | string;
   slidesToScroll: number;
   slidesToShow: number;
   slideWidth: number;

@@ -214,7 +214,7 @@ export const calcSomeInitialState = (
 
   return {
     slideWidth,
-    slideHeight,
+    slideHeight: slideHeight === 0 ? 'auto' : slideHeight,
     frameWidth,
     slidesToScroll,
     slidesToShow,

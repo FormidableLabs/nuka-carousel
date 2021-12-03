@@ -61,7 +61,6 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     easing: 'easeCircleOut',
     edgeEasing: 'easeElasticOut',
     enableKeyboardControls: false,
-    frameOverflow: 'hidden',
     framePadding: '0px',
     getControlsContainerStyles: () => {},
     height: 'inherit',
@@ -1246,7 +1245,6 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     const { currentSlide, slideCount, frameWidth, hasInteraction } = this.state;
     const {
       disableAnimation,
-      frameOverflow,
       framePadding,
       renderAnnounceSlideMessage,
       slidesToShow,
@@ -1263,7 +1261,6 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
         : this.props.speed;
 
     const frameStyles = getFrameStyles(
-      frameOverflow,
       vertical,
       framePadding,
       frameWidth

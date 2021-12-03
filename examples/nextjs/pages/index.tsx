@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Carousel from '../../../src-v5/index'
-import NewCarousel from '../components/carousel'
 
 const colors = [
   '7732bb',
@@ -42,8 +41,7 @@ const Home = () => {
 
       <main className={styles.main}>
         <h1>Nuka Carousel - SSR Example Formidable Labs</h1>
-        <NewCarousel>{slides}</NewCarousel>
-        <Carousel>{slides}</Carousel>
+        <Carousel slidesToShow={3} wrapAround>{slides}</Carousel>
       </main>
     </div>
   );
