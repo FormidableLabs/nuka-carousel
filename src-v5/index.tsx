@@ -48,12 +48,16 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
   displayName: string;
 
   static defaultProps = {
-    afterSlide: () => {},
+    afterSlide: () => {
+      // do nothing
+    },
     autoGenerateStyleTag: true,
     autoplay: false,
     autoplayInterval: 3000,
     autoplayReverse: false,
-    beforeSlide: () => {},
+    beforeSlide: () => {
+      // do nothing
+    },
     cellAlign: Alignment.Left,
     cellSpacing: 0,
     defaultControlsConfig: {},
@@ -64,12 +68,18 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     edgeEasing: 'easeElasticOut',
     enableKeyboardControls: false,
     framePadding: '0px',
-    getControlsContainerStyles: () => {},
+    getControlsContainerStyles: () => {
+      // do nothing
+    },
     height: 'inherit',
     heightMode: HeightMode.Max,
     keyCodeConfig: {},
-    onDragStart: () => {},
-    onResize: () => {},
+    onDragStart: () => {
+      // do nothing
+    },
+    onResize: () => {
+      // do nothing
+    },
     pauseOnHover: true,
     renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
     renderBottomCenterControls: (props: ControlProps) => (
@@ -752,10 +762,12 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
   getKeyCodeMap(keyCodeConfig: KeyCodeConfig): KeyCodeMap {
     const keyCodeMap: KeyCodeMap = {};
 
-    Object.keys(keyCodeConfig).forEach((actionName) => {
-      keyCodeConfig[actionName].forEach(
-        (keyCode) => (keyCodeMap[keyCode] = actionName)
-      );
+    Object.keys(keyCodeConfig).forEach((key) => {
+      const actionName = key as keyof KeyCodeConfig;
+
+      keyCodeConfig[actionName].forEach((keyCode: number) => {
+        keyCodeMap[keyCode] = actionName;
+      });
     });
 
     return keyCodeMap;
@@ -1142,7 +1154,12 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
   }
 
   // eslint-disable-next-line complexity
-  setDimensions(props?: CarouselProps | null, stateCb = () => {}) {
+  setDimensions(
+    props?: CarouselProps | null,
+    stateCb = () => {
+      // do nothing
+    }
+  ) {
     props = props || this.props;
 
     let {

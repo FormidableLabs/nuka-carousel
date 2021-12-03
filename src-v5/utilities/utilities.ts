@@ -5,7 +5,7 @@ import { Alignment, CarouselProps, CarouselState } from '../types';
 export const addEvent = function (
   elem: any,
   type: string,
-  eventHandle: () => void
+  eventHandle: ((e: React.KeyboardEvent<Element>) => void) | (() => void)
 ) {
   if (elem === null || typeof elem === 'undefined') {
     return;
@@ -22,7 +22,7 @@ export const addEvent = function (
 export const removeEvent = function (
   elem: any,
   type: string,
-  eventHandle: () => void
+  eventHandle: ((e: React.KeyboardEvent<Element>) => void) | (() => void)
 ) {
   if (elem === null || typeof elem === 'undefined') {
     return;
