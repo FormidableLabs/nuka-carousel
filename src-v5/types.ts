@@ -121,6 +121,7 @@ export interface CarouselState {
   hasInteraction: boolean;
   isWrappingAround: boolean;
   left: number;
+  pauseOnHover?: boolean;
   resetWrapAroundPosition: boolean;
   slideCount: number;
   slideHeight: number | string;
@@ -196,7 +197,9 @@ export interface CarouselProps {
   initialSlideWidth?: number;
   innerRef?: MutableRefObject<HTMLDivElement>;
   keyCodeConfig: KeyCodeConfig;
-  onDragStart: (e: TouchEvent) => void;
+  onDragStart: (
+    e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+  ) => void;
   onResize: () => void;
   opacityScale?: number;
   pauseOnHover: boolean;

@@ -35,14 +35,13 @@ export const getSlideHeight = (props: {
 
 export const getAlignmentOffset = (
   slideIndex: number,
-  config: {
-    cellAlign: Alignment;
-    cellSpacing: number;
-    frameWidth: number;
-    slideWidth: number;
-  }
+  config: Pick<
+    CarouselState & CarouselProps,
+    'cellAlign' | 'cellSpacing' | 'frameWidth' | 'slideWidth'
+  >
 ): number => {
   let offset = 0;
+  const frameWidth = config.frameWidth || 0;
 
   switch (config.cellAlign) {
     case Alignment.Left: {
@@ -51,12 +50,12 @@ export const getAlignmentOffset = (
       break;
     }
     case Alignment.Center: {
-      offset = (config.frameWidth - config.slideWidth) / 2;
+      offset = (frameWidth - config.slideWidth) / 2;
       offset -= config.cellSpacing * slideIndex;
       break;
     }
     case Alignment.Right: {
-      offset = config.frameWidth - config.slideWidth;
+      offset = frameWidth - config.slideWidth;
       offset -= config.cellSpacing * slideIndex;
       break;
     }

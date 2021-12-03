@@ -422,30 +422,45 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
           dragging: true
         });
       },
+
+      // eslint-disable-next-line complexity
       onTouchMove: (e: React.TouchEvent<HTMLDivElement>) => {
         if (e.touches.length === 2) {
           return;
         }
+        let direction = 0;
 
-        const direction = swipeDirection(
-          this.touchObject.startX,
-          e.touches[0].pageX,
-          this.touchObject.startY,
-          e.touches[0].pageY,
-          this.props.vertical
-        );
+        if (
+          this.touchObject.startX !== undefined &&
+          this.touchObject.startY !== undefined
+        ) {
+          direction = swipeDirection(
+            this.touchObject.startX,
+            e.touches[0].pageX,
+            this.touchObject.startY,
+            e.touches[0].pageY,
+            this.props.vertical
+          );
+        }
 
-        const length = this.props.vertical
-          ? Math.round(
-              Math.sqrt(
-                Math.pow(e.touches[0].pageY - this.touchObject.startY, 2)
+        let length = 0;
+
+        if (
+          this.touchObject.startX !== undefined &&
+          this.touchObject.startY !== undefined
+        ) {
+          length = this.props.vertical
+            ? Math.round(
+                Math.sqrt(
+                  Math.pow(e.touches[0].pageY - this.touchObject.startY, 2)
+                )
               )
-            )
-          : Math.round(
-              Math.sqrt(
-                Math.pow(e.touches[0].pageX - this.touchObject.startX, 2)
-              )
-            );
+            : Math.round(
+                Math.sqrt(
+                  Math.pow(e.touches[0].pageX - this.touchObject.startX, 2)
+                )
+              );
+        }
 
         if (length >= 10) {
           if (this.clickDisabled === false) this.props.onDragStart(e);
@@ -461,17 +476,18 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
           direction
         };
 
+        let offset: number | null = null;
+
+        if (
+          this.touchObject.length !== undefined &&
+          this.touchObject.direction !== undefined
+        ) {
+          offset = this.touchObject.length * this.touchObject.direction;
+        }
+
         this.setState({
-          left: this.props.vertical
-            ? 0
-            : this.getTargetLeft(
-                this.touchObject.length * this.touchObject.direction
-              ),
-          top: this.props.vertical
-            ? this.getTargetLeft(
-                this.touchObject.length * this.touchObject.direction
-              )
-            : 0
+          left: this.props.vertical ? 0 : this.getTargetLeft(offset),
+          top: this.props.vertical ? this.getTargetLeft(offset) : 0
         });
       },
       onTouchEnd: (e: React.TouchEvent<HTMLDivElement>) => {
@@ -515,30 +531,45 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
         });
       },
 
+      // eslint-disable-next-line complexity
       onMouseMove: (e: React.MouseEvent<HTMLDivElement>) => {
         if (!this.state.dragging) {
           return;
         }
 
-        const direction = swipeDirection(
-          this.touchObject.startX,
-          e.clientX,
-          this.touchObject.startY,
-          e.clientY,
-          this.props.vertical
-        );
+        let direction = 0;
+
+        if (
+          this.touchObject.startX !== undefined &&
+          this.touchObject.startY !== undefined
+        ) {
+          direction = swipeDirection(
+            this.touchObject.startX,
+            e.clientX,
+            this.touchObject.startY,
+            e.clientY,
+            this.props.vertical
+          );
+        }
 
         if (direction !== 0) {
           e.preventDefault();
         }
 
-        const length = this.props.vertical
-          ? Math.round(
-              Math.sqrt(Math.pow(e.clientY - this.touchObject.startY, 2))
-            )
-          : Math.round(
-              Math.sqrt(Math.pow(e.clientX - this.touchObject.startX, 2))
-            );
+        let length = 0;
+
+        if (
+          this.touchObject.startX !== undefined &&
+          this.touchObject.startY !== undefined
+        ) {
+          length = this.props.vertical
+            ? Math.round(
+                Math.sqrt(Math.pow(e.clientY - this.touchObject.startY, 2))
+              )
+            : Math.round(
+                Math.sqrt(Math.pow(e.clientX - this.touchObject.startX, 2))
+              );
+        }
 
         // prevents disabling click just because mouse moves a fraction of a pixel
         if (length >= 10) {
@@ -555,17 +586,18 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
           direction
         };
 
+        let offset: number | null = null;
+
+        if (
+          this.touchObject.length !== undefined &&
+          this.touchObject.direction !== undefined
+        ) {
+          offset = this.touchObject.length * this.touchObject.direction;
+        }
+
         this.setState({
-          left: this.props.vertical
-            ? 0
-            : this.getTargetLeft(
-                this.touchObject.length * this.touchObject.direction
-              ),
-          top: this.props.vertical
-            ? this.getTargetLeft(
-                this.touchObject.length * this.touchObject.direction
-              )
-            : 0
+          left: this.props.vertical ? 0 : this.getTargetLeft(offset),
+          top: this.props.vertical ? this.getTargetLeft(offset) : 0
         });
       },
 
@@ -771,7 +803,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
 
   // Animation Method
 
-  getTargetLeft(touchOffset?: number | null, slide?: number): number {
+  getTargetLeft(touchOffset?: number | null, slide?: number | null): number {
     const target = slide || this.state.currentSlide;
 
     let offset = getAlignmentOffset(target, { ...this.props, ...this.state });
@@ -807,7 +839,10 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
 
     if (this.state.isWrappingAround) {
       offset = this.getTargetLeft(null, this.state.wrapToIndex);
-    } else {
+    } else if (
+      this.touchObject.length !== undefined &&
+      this.touchObject.direction !== undefined
+    ) {
       offset = this.getTargetLeft(
         this.touchObject.length * this.touchObject.direction
       );
@@ -1260,11 +1295,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
         ? 0
         : this.props.speed;
 
-    const frameStyles = getFrameStyles(
-      vertical,
-      framePadding,
-      frameWidth
-    );
+    const frameStyles = getFrameStyles(vertical, framePadding, frameWidth);
     const touchEvents = this.getTouchEvents();
     const mouseEvents = this.getMouseEvents();
     const TransitionControl = Transitions[this.props.transitionMode];
