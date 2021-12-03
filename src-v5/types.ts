@@ -111,6 +111,10 @@ export interface KeyCodeConfig {
   previousSlide?: number[];
 }
 
+export interface KeyCodeMap {
+  [key: number]: keyof KeyCodeConfig;
+}
+
 export interface CarouselState {
   cellAlign: Alignment;
   currentSlide: number;
@@ -124,7 +128,7 @@ export interface CarouselState {
   pauseOnHover?: boolean;
   resetWrapAroundPosition: boolean;
   slideCount: number;
-  slideHeight: number | string;
+  slideHeight: number;
   slidesToScroll: number;
   slidesToShow: number;
   slideWidth: number;

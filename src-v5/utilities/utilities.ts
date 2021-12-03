@@ -5,7 +5,7 @@ import { Alignment, CarouselProps, CarouselState } from '../types';
 export const addEvent = function (
   elem: any,
   type: string,
-  eventHandle: () => {}
+  eventHandle: () => void
 ) {
   if (elem === null || typeof elem === 'undefined') {
     return;
@@ -22,7 +22,7 @@ export const addEvent = function (
 export const removeEvent = function (
   elem: any,
   type: string,
-  eventHandle: () => {}
+  eventHandle: () => void
 ) {
   if (elem === null || typeof elem === 'undefined') {
     return;
@@ -88,30 +88,25 @@ export const getSlideClassName = (
 
 export const getPropsByTransitionMode = (
   props: CarouselProps,
-  keys: string[]
+  keys: (keyof CarouselProps)[]
 ) => {
   const { slidesToShow, transitionMode } = props;
-  const updatedDefaults: { [key: string]: string | number } = {};
+
+  const updatedDefaults: CarouselProps = { ...props };
+
   if (transitionMode === 'fade') {
-    keys.forEach((key: string) => {
+    keys.forEach((key: keyof CarouselProps) => {
       switch (key) {
         case 'slidesToShow':
-          updatedDefaults[key] = Math.max(parseInt(slidesToShow), 1);
+          updatedDefaults[key] = Math.max(Math.trunc(slidesToShow), 1);
           break;
         case 'slidesToScroll':
-          updatedDefaults[key] = Math.max(parseInt(slidesToShow), 1);
+          updatedDefaults[key] = Math.max(Math.trunc(slidesToShow), 1);
           break;
         case 'cellAlign':
-          updatedDefaults[key] = 'left';
-          break;
-        default:
-          updatedDefaults[key] = props[key];
+          updatedDefaults[key] = Alignment.Left;
           break;
       }
-    });
-  } else {
-    keys.forEach((key: string) => {
-      updatedDefaults[key] = props[key];
     });
   }
 
@@ -168,7 +163,11 @@ export const getSlideDirection = (
   return direction;
 };
 
-export const shouldUpdate = (curr, next, keys) => {
+export const shouldUpdate = (
+  curr: CarouselProps,
+  next: CarouselProps,
+  keys: (keyof CarouselProps)[]
+) => {
   let update = false;
 
   for (let i = 0; i < keys.length; i++) {

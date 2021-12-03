@@ -36,9 +36,11 @@ import {
   ControlProps,
   HeightMode,
   KeyCodeConfig,
+  KeyCodeMap,
   Positions,
   RenderControlFunctionNames,
   ScrollMode,
+  Slide,
   TransitionMode
 } from './types';
 
@@ -239,7 +241,6 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
           'cellSpacing',
           'vertical',
           'slideWidth',
-          'slideHeight',
           'heightMode',
           'slidesToScroll',
           'slidesToShow',
@@ -717,41 +718,46 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
   // eslint-disable-next-line complexity
   handleKeyPress(e: React.KeyboardEvent) {
     if (this.state.hasFocus && this.props.enableKeyboardControls) {
-      const actionName = this.keyCodeMap[e.keyCode];
-      switch (actionName) {
-        case 'nextSlide':
-          this.nextSlide();
-          break;
-        case 'previousSlide':
-          this.previousSlide();
-          break;
-        case 'firstSlide':
-          this.goToSlide(0, this.props);
-          break;
-        case 'lastSlide':
-          this.goToSlide(this.state.slideCount - 1, this.props);
-          break;
-        case 'pause':
-          if (this.state.pauseOnHover && this.props.autoplay) {
-            this.setState({ pauseOnHover: false });
-            this.pauseAutoplay();
+      const actionName = this.keyCodeMap?.[e.keyCode];
+
+      if (actionName) {
+        switch (actionName) {
+          case 'nextSlide':
+            this.nextSlide();
             break;
-          } else {
-            this.setState({ pauseOnHover: true });
-            this.unpauseAutoplay();
+          case 'previousSlide':
+            this.previousSlide();
             break;
-          }
+          case 'firstSlide':
+            this.goToSlide(0, this.props);
+            break;
+          case 'lastSlide':
+            this.goToSlide(this.state.slideCount - 1, this.props);
+            break;
+          case 'pause':
+            if (this.state.pauseOnHover && this.props.autoplay) {
+              this.setState({ pauseOnHover: false });
+              this.pauseAutoplay();
+              break;
+            } else {
+              this.setState({ pauseOnHover: true });
+              this.unpauseAutoplay();
+              break;
+            }
+        }
       }
     }
   }
 
-  getKeyCodeMap(keyCodeConfig: KeyCodeConfig) {
-    const keyCodeMap = {};
+  getKeyCodeMap(keyCodeConfig: KeyCodeConfig): KeyCodeMap {
+    const keyCodeMap: KeyCodeMap = {};
+
     Object.keys(keyCodeConfig).forEach((actionName) => {
       keyCodeConfig[actionName].forEach(
         (keyCode) => (keyCodeMap[keyCode] = actionName)
       );
     });
+
     return keyCodeMap;
   }
 
@@ -994,7 +1000,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     if (this.props.slidesToScroll === 'auto') {
       const { length: swipeDistance } = this.touchObject;
 
-      if (swipeDistance > 0) {
+      if (swipeDistance !== undefined && swipeDistance > 0) {
         targetSlideIndex =
           Math.round(swipeDistance / slideWidth) + currentSlide;
       } else {
@@ -1039,7 +1045,11 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     let targetSlideIndex = currentSlide - slidesToScroll;
     const { length: swipeDistance } = this.touchObject;
 
-    if (this.props.slidesToScroll === 'auto' && swipeDistance > 0) {
+    if (
+      this.props.slidesToScroll === 'auto' &&
+      swipeDistance !== undefined &&
+      swipeDistance > 0
+    ) {
       targetSlideIndex = currentSlide - Math.round(swipeDistance / slideWidth);
     }
 
@@ -1088,21 +1098,27 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     // slide height
     props = props || this.props;
     const childNodes = this.getChildNodes();
-    const slideHeight = calculateSlideHeight(props, this.state, childNodes);
+    const slideHeight = calculateSlideHeight(
+      props,
+      this.state,
+      childNodes as Slide[]
+    );
 
     // slide width
     const { slidesToShow } = getPropsByTransitionMode(props, ['slidesToShow']);
     const frame = this.frame;
-    let slideWidth;
+    let slideWidth = 0;
 
-    if (this.props.animation === 'zoom') {
-      slideWidth = frame.offsetWidth - (frame.offsetWidth * 15) / 100;
-    } else if (typeof props.slideWidth !== 'number') {
-      slideWidth = parseInt(props.slideWidth);
-    } else if (props.vertical) {
-      slideWidth = (slideHeight / slidesToShow) * props.slideWidth;
-    } else {
-      slideWidth = (frame.offsetWidth / slidesToShow) * props.slideWidth;
+    if (frame) {
+      if (this.props.animation === 'zoom') {
+        slideWidth = frame.offsetWidth - (frame.offsetWidth * 15) / 100;
+      } else if (typeof props.slideWidth !== 'number') {
+        slideWidth = parseInt(props.slideWidth);
+      } else if (props.vertical) {
+        slideWidth = (slideHeight / slidesToShow) * props.slideWidth;
+      } else {
+        slideWidth = (frame.offsetWidth / slidesToShow) * props.slideWidth;
+      }
     }
 
     if (!props.vertical) {
@@ -1142,10 +1158,10 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     ]);
 
     const frame = this.frame;
-    const { slideHeight, slideWidth } = this.calcSlideHeightAndWidth(props);
+    const { slideHeight, slideWidth = 0 } = this.calcSlideHeightAndWidth(props);
 
     const frameHeight = slideHeight + props.cellSpacing * (slidesToShow - 1);
-    const frameWidth = props.vertical ? frameHeight : frame.offsetWidth;
+    const frameWidth = props.vertical ? frameHeight : frame?.offsetWidth || 0;
 
     let { slidesToScroll } = getPropsByTransitionMode(props, [
       'slidesToScroll'
@@ -1262,7 +1278,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
   frame?: HTMLDivElement | null;
   isWrapped?: boolean;
   keyCodeConfig: KeyCodeConfig;
-  keyCodeMap?: { [key: number]: keyof KeyCodeConfig };
+  keyCodeMap?: KeyCodeMap;
   latestTransitioningIndex: number | null;
   mounted: boolean;
   timers: ReturnType<typeof setTimeout>[];

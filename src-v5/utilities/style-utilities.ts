@@ -194,7 +194,10 @@ export const getTransitionProps = (
   cellSpacing: props.cellSpacing,
   currentSlide: state.currentSlide,
   dragging: props.dragging,
-  frameWidth: Math.trunc(state.frameWidth),
+  frameWidth:
+    typeof state.frameWidth === 'number'
+      ? Math.trunc(state.frameWidth)
+      : state.frameWidth,
   hasInteraction: state.hasInteraction,
   heightMode: props.heightMode,
   isWrappingAround: state.isWrappingAround,

@@ -1,5 +1,11 @@
 import React from 'react';
-import { Slide, Alignment, HeightMode } from '../types';
+import {
+  Slide,
+  Alignment,
+  HeightMode,
+  CarouselProps,
+  CarouselState
+} from '../types';
 
 export const getValidChildren = (children: React.ReactNode) =>
   // .toArray automatically removes invalid React children
@@ -123,18 +129,12 @@ export const findCurrentHeightSlide = (
 };
 
 export const calculateSlideHeight = (
-  props: {
-    vertical: boolean;
-    wrapAround: boolean;
-    initialSlideHeight: string | number;
-    heightMode: HeightMode;
-  },
-  state: {
-    slidesToShow: number;
-    currentSlide: number;
-    cellAlign: Alignment;
-  },
-  childNodes = []
+  props: Pick<
+    CarouselProps,
+    'vertical' | 'wrapAround' | 'initialSlideHeight' | 'heightMode'
+  >,
+  state: Pick<CarouselState, 'slidesToShow' | 'currentSlide' | 'cellAlign'>,
+  childNodes: Slide[]
 ) => {
   const { heightMode, vertical, initialSlideHeight, wrapAround } = props;
   const { slidesToShow, currentSlide, cellAlign } = state;
