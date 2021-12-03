@@ -143,8 +143,7 @@ export default class ScrollTransition extends Component<TransitionProps> {
 
   /* eslint-enable complexity */
   formatChildren(children: TransitionProps['children']) {
-    const { top, left, currentSlide, slidesToShow, vertical } = this.props;
-    const positionValue = vertical ? top : left;
+    const { currentSlide, slidesToShow } = this.props;
 
     return React.Children.map(children, (child, index) => {
       const isVisible = isFullyVisible(index, this.props);
@@ -158,7 +157,7 @@ export default class ScrollTransition extends Component<TransitionProps> {
           )}`}
           aria-label={`slide ${index + 1} of ${children.length}`}
           role="group"
-          style={this.getSlideStyles(index, positionValue)}
+          style={this.getSlideStyles(index)}
           key={index}
           onClick={handleSelfFocus}
           tabIndex={-1}
@@ -170,8 +169,7 @@ export default class ScrollTransition extends Component<TransitionProps> {
     });
   }
 
-  getSlideStyles(index: number, positionValue: number): CSSProperties {
-    const targetPosition = this.getSlideTargetPosition(index, positionValue);
+  getSlideStyles(index: number): CSSProperties {
     const transformScale =
       this.props.animation === 'zoom' && this.props.currentSlide !== index
         ? Math.max(
@@ -180,23 +178,23 @@ export default class ScrollTransition extends Component<TransitionProps> {
           )
         : 1.0;
 
+    
+    const length = React.Children.count(this.props.children)
+    const width = this.props.slideWidth === 0 ? `${100 / length}%` : this.props.slideWidth;
     return {
       boxSizing: 'border-box',
       display: this.props.vertical ? 'block' : 'inline-block',
       height: getSlideHeight(this.props),
-      left: this.props.vertical ? 0 : targetPosition,
       listStyleType: 'none',
       marginBottom: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
       marginLeft: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
       marginRight: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
       marginTop: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
       MozBoxSizing: 'border-box',
-      position: 'absolute',
-      top: this.props.vertical ? targetPosition : 0,
       transform: `scale(${transformScale})`,
       transition: 'transform .4s linear',
       verticalAlign: 'top',
-      width: this.props.vertical ? '100%' : this.props.slideWidth
+      width: this.props.vertical ? '100%' : width
     };
   }
 
@@ -204,10 +202,11 @@ export default class ScrollTransition extends Component<TransitionProps> {
     deltaX: TransitionProps['deltaX'],
     deltaY: TransitionProps['deltaY']
   ): CSSProperties {
+    const length = React.Children.count(this.props.children);
     const listWidth =
-      this.props.slideWidth * React.Children.count(this.props.children);
+      this.props.slideWidth * length;
     const spacingOffset =
-      this.props.cellSpacing * React.Children.count(this.props.children);
+      this.props.cellSpacing * length;
     const transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
     const transition =
       this.props.heightMode === 'current' && this.props.hasInteraction
@@ -231,7 +230,7 @@ export default class ScrollTransition extends Component<TransitionProps> {
       touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`,
       transform,
       WebkitTransform: transform,
-      width: 'auto',
+      width: this.props.vertical ? '100%' : `${100 * (length / (this.props.slidesToShow || 1))}%`,
       transition
     };
   }
