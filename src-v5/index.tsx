@@ -96,9 +96,8 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     wrapAround: false
   };
 
-  constructor() {
-    // TODO: Find a way of typing spreading args here
-    super(...arguments);
+  constructor(args: CarouselProps) {
+    super(args);
 
     this.displayName = 'Carousel';
     this.clickDisabled = false;
