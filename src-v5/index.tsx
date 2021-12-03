@@ -99,7 +99,6 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
 
   constructor() {
     // TODO: Find a way of typing spreading args here
-    // @ts-ignore
     super(...arguments);
 
     this.displayName = 'Carousel';
@@ -334,8 +333,8 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
         this.setSlideHeightAndWidth();
       });
 
-      const observeChildNodeMutation = (node) => {
-        this.childNodesMutationObs.observe(node, {
+      const observeChildNodeMutation = (node: Element) => {
+        this.childNodesMutationObs?.observe(node, {
           attributeFilter: ['style'],
           attributeOldValue: false,
           attributes: true,
@@ -380,16 +379,16 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
   }
 
   getLockScrollEvents() {
+    const options: AddEventListenerOptions & EventListenerOptions = {
+      passive: false
+    };
+
     const lockTouchScroll = () => {
-      document.addEventListener('touchmove', this.blockEvent, {
-        passive: false
-      });
+      document.addEventListener('touchmove', this.blockEvent, options);
     };
 
     const unlockTouchScroll = () => {
-      document.removeEventListener('touchmove', this.blockEvent, {
-        passive: false
-      });
+      document.removeEventListener('touchmove', this.blockEvent, options);
     };
 
     return {
@@ -398,7 +397,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     };
   }
 
-  getTouchEvents() {
+  getTouchEvents(): React.HTMLAttributes<HTMLDivElement> {
     if (this.props.swiping === false) {
       return {
         onTouchStart: this.handleMouseOver,
@@ -407,7 +406,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     }
 
     return {
-      onTouchStart: (e: TouchEvent) => {
+      onTouchStart: (e: React.TouchEvent<HTMLDivElement>) => {
         // detect pinch zoom
         if (e.touches.length === 2) {
           this.handleMouseOver();
@@ -424,7 +423,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
           dragging: true
         });
       },
-      onTouchMove: (e: TouchEvent) => {
+      onTouchMove: (e: React.TouchEvent<HTMLDivElement>) => {
         if (e.touches.length === 2) {
           return;
         }
@@ -476,7 +475,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
             : 0
         });
       },
-      onTouchEnd: (e: TouchEvent) => {
+      onTouchEnd: (e: React.TouchEvent<HTMLDivElement>) => {
         if (e.touches.length === 2) {
           this.handleMouseOut();
           return;
@@ -491,7 +490,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     };
   }
 
-  getMouseEvents() {
+  getMouseEvents(): React.HTMLAttributes<HTMLDivElement> {
     if (this.props.dragging === false) {
       return {
         onMouseOver: this.handleMouseOver,
@@ -502,7 +501,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     return {
       onMouseOver: this.handleMouseOver,
       onMouseOut: this.handleMouseOut,
-      onMouseDown: (e) => {
+      onMouseDown: (e: React.MouseEvent<HTMLDivElement>) => {
         if (e.preventDefault) {
           e.preventDefault();
         }
@@ -517,7 +516,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
         });
       },
 
-      onMouseMove: (e: MouseEvent) => {
+      onMouseMove: (e: React.MouseEvent<HTMLDivElement>) => {
         if (!this.state.dragging) {
           return;
         }
@@ -852,10 +851,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
 
   // Action Methods
 
-  goToSlide(index: number, props?: CarouselProps): void {
-    if (props === undefined) {
-      props = this.props;
-    }
+  goToSlide(index: number, props: CarouselProps = this.props): void {
     this.latestTransitioningIndex = index;
 
     // eslint-disable-next-line import/namespace

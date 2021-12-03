@@ -6,7 +6,8 @@
     "jest-enzyme",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:import/typescript"
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/recommended"
   ],
   "env": {
     "node": true,

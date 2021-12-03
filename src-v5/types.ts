@@ -52,7 +52,7 @@ export interface Slide {
 }
 
 type D3EasingFunctionNames =
-  | 'easeLiner'
+  | 'easeLinear'
   | 'easeQuad'
   | 'easeQuadIn'
   | 'easeQuadOut'
