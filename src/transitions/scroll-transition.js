@@ -21,7 +21,12 @@ export default class ScrollTransition extends React.Component {
   }
 
   /* eslint-disable complexity */
-  getSlideTargetPosition(currentSlideIndex, positionValue) {
+  getSlideTargetPosition(
+    currentSlideIndex,
+    positionValue,
+    childrenLength,
+    slidesToShow
+  ) {
     let offset = 0;
     // Below lines help to display peeking slides when number of slides is less than 3.
     let peekSlide = true;
@@ -100,13 +105,18 @@ export default class ScrollTransition extends React.Component {
       const slidesAfter = slidesInViewAfter + slidesOutOfViewAfter;
 
       const distanceFromStart = Math.abs(startSlideIndex - currentSlideIndex);
+
+      const isDistanceBiggerThanSlides =
+        childrenLength === slidesToShow
+          ? distanceFromStart > slidesAfter
+          : distanceFromStart >= slidesAfter;
       if (currentSlideIndex < startSlideIndex) {
         if (distanceFromStart > slidesBefore) {
           targetPosition =
             (this.props.slideWidth + this.props.cellSpacing) *
             (this.props.slideCount + currentSlideIndex);
         }
-      } else if (distanceFromStart >= slidesAfter) {
+      } else if (isDistanceBiggerThanSlides) {
         targetPosition =
           (this.props.slideWidth + this.props.cellSpacing) *
           (this.props.slideCount - currentSlideIndex) *
@@ -121,6 +131,7 @@ export default class ScrollTransition extends React.Component {
   formatChildren(children) {
     const { top, left, currentSlide, slidesToShow, vertical } = this.props;
     const positionValue = vertical ? top : left;
+    const childrenLength = React.Children.count(children);
 
     return React.Children.map(children, (child, index) => {
       const isVisible = isFullyVisible(index, this.props);
@@ -134,7 +145,12 @@ export default class ScrollTransition extends React.Component {
           )}`}
           aria-label={`slide ${index + 1} of ${children.length}`}
           role="group"
-          style={this.getSlideStyles(index, positionValue)}
+          style={this.getSlideStyles(
+            index,
+            positionValue,
+            childrenLength,
+            slidesToShow
+          )}
           key={index}
           onClick={handleSelfFocus}
           tabIndex={-1}
@@ -146,8 +162,13 @@ export default class ScrollTransition extends React.Component {
     });
   }
 
-  getSlideStyles(index, positionValue) {
-    const targetPosition = this.getSlideTargetPosition(index, positionValue);
+  getSlideStyles(index, positionValue, childrenLength, slidesToShow) {
+    const targetPosition = this.getSlideTargetPosition(
+      index,
+      positionValue,
+      childrenLength,
+      slidesToShow
+    );
     const transformScale =
       this.props.animation === 'zoom' && this.props.currentSlide !== index
         ? Math.max(
