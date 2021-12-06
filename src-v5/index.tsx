@@ -765,7 +765,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     Object.keys(keyCodeConfig).forEach((key) => {
       const actionName = key as keyof KeyCodeConfig;
 
-      keyCodeConfig[actionName].forEach((keyCode: number) => {
+      keyCodeConfig?.[actionName]?.forEach((keyCode: number) => {
         keyCodeMap[keyCode] = actionName;
       });
     });
