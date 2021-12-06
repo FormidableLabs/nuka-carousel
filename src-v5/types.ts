@@ -128,7 +128,7 @@ export interface CarouselState {
   pauseOnHover?: boolean;
   resetWrapAroundPosition: boolean;
   slideCount: number;
-  slideHeight: number;
+  slideHeight: number | 'auto';
   slidesToScroll: number;
   slidesToShow: number;
   slideWidth: number;
@@ -192,7 +192,6 @@ export interface CarouselProps {
   easing: D3EasingFunctionNames;
   edgeEasing: D3EasingFunctionNames;
   enableKeyboardControls: boolean;
-  frameOverflow: string;
   framePadding: string;
   getControlsContainerStyles: (key: Positions) => CSSProperties;
   height: string;

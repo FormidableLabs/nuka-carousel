@@ -52,12 +52,13 @@ export default class ScrollTransition extends Component<TransitionProps> {
     switch (this.props.cellAlign) {
       case 'left':
         peekSlide = !(
-          this.props.children.length <= 2 && currentSlideIndex !== 0
+          React.Children.count(this.props.children) <= 2 &&
+          currentSlideIndex !== 0
         );
         break;
       case 'center':
         peekSlide = !!(
-          this.props.children.length > 2 ||
+          React.Children.count(this.props.children) > 2 ||
           this.props.currentSlide !== currentSlideIndex - 1
         );
         break;
@@ -68,13 +69,14 @@ export default class ScrollTransition extends Component<TransitionProps> {
       peekSlide &&
       (this.props.currentSlide === currentSlideIndex + 1 ||
         (this.props.currentSlide === 0 &&
-          currentSlideIndex === this.props.children.length - 1))
+          currentSlideIndex === React.Children.count(this.props.children) - 1))
     ) {
       offset = this.props.slideOffset;
     } else if (
       this.props.animation === 'zoom' &&
       (this.props.currentSlide === currentSlideIndex - 1 ||
-        (this.props.currentSlide === this.props.children.length - 1 &&
+        (this.props.currentSlide ===
+          React.Children.count(this.props.children) - 1 &&
           currentSlideIndex === 0))
     ) {
       offset = -this.props.slideOffset;
@@ -155,7 +157,7 @@ export default class ScrollTransition extends Component<TransitionProps> {
             currentSlide,
             slidesToShow
           )}`}
-          aria-label={`slide ${index + 1} of ${children.length}`}
+          aria-label={`slide ${index + 1} of ${React.Children.count(children)}`}
           role="group"
           style={this.getSlideStyles(index)}
           key={index}
@@ -178,9 +180,9 @@ export default class ScrollTransition extends Component<TransitionProps> {
           )
         : 1.0;
 
-    
-    const length = React.Children.count(this.props.children)
-    const width = this.props.slideWidth === 0 ? `${100 / length}%` : this.props.slideWidth;
+    const length = React.Children.count(this.props.children);
+    const width =
+      this.props.slideWidth === 0 ? `${100 / length}%` : this.props.slideWidth;
     return {
       boxSizing: 'border-box',
       display: this.props.vertical ? 'block' : 'inline-block',
@@ -203,10 +205,8 @@ export default class ScrollTransition extends Component<TransitionProps> {
     deltaY: TransitionProps['deltaY']
   ): CSSProperties {
     const length = React.Children.count(this.props.children);
-    const listWidth =
-      this.props.slideWidth * length;
-    const spacingOffset =
-      this.props.cellSpacing * length;
+    const listWidth = this.props.slideWidth * length;
+    const spacingOffset = this.props.cellSpacing * length;
     const transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
     const transition =
       this.props.heightMode === 'current' && this.props.hasInteraction
@@ -230,7 +230,9 @@ export default class ScrollTransition extends Component<TransitionProps> {
       touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`,
       transform,
       WebkitTransform: transform,
-      width: this.props.vertical ? '100%' : `${100 * (length / (this.props.slidesToShow || 1))}%`,
+      width: this.props.vertical
+        ? '100%'
+        : `${100 * (length / (this.props.slidesToShow || 1))}%`,
       transition
     };
   }

@@ -882,7 +882,7 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
       ...this.state
     });
 
-    if (this.props.vertical) {
+    if (this.props.vertical && typeof slideHeight === 'number') {
       const rowHeight = slideHeight / slidesToShow;
       const slidesLeftToShow = slideCount - slidesToShow;
       const lastSlideLimit = rowHeight * slidesLeftToShow;

@@ -45,7 +45,7 @@ export default class FadeTransition extends Component<TransitionProps> {
         )}`}
         style={this.getSlideStyles(index, opacityAndLeftMap)}
         key={index}
-        aria-label={`slide ${index + 1} of ${children.length}`}
+        aria-label={`slide ${index + 1} of ${React.Children.count(children)}`}
         role="group"
         onClick={handleSelfFocus}
         tabIndex={-1}

@@ -12,14 +12,7 @@ import {
 export const getImgTagStyles = (): string => `.slider-slide > img { width: 100%; display: block; }
           .slider-slide > img:focus { margin: auto; }`;
 
-export const getSlideHeight = (props: {
-  children: React.ReactNode;
-  slideWidth: number;
-  cellSpacing: number;
-  slideHeight: number;
-  vertical: boolean;
-  heightMode: HeightMode;
-}): number | 'auto' => {
+export const getSlideHeight = (props: TransitionProps): number | 'auto' => {
   const childCount = React.Children.count(props.children);
   const listWidth = props.slideWidth * childCount;
   const spacingOffset = props.cellSpacing * childCount;

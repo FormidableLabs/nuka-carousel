@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { getAlignmentOffset } from './style-utilities';
-import { Alignment, CarouselProps, CarouselState } from '../types';
+import {
+  Alignment,
+  CarouselProps,
+  CarouselState,
+  TransitionProps
+} from '../types';
 
 export const addEvent = function (
   elem: any,
@@ -43,25 +48,25 @@ export const addAccessibility = (
 ) => {
   let needsTabIndex;
   if (slidesToShow > 1) {
-    return React.Children.map(children, (child, index) => {
+    return React.Children.map(children as ReactElement[], (child, index) => {
       const firstVisibleSlide = index >= currentSlide;
       const lastVisibleSlide = index < slidesToShow + currentSlide;
       needsTabIndex = firstVisibleSlide && lastVisibleSlide;
       const ariaProps = needsTabIndex
         ? { 'aria-hidden': 'false', tabIndex: 0 }
         : { 'aria-hidden': 'true' };
-      return React.cloneElement(child, {
+      return React.cloneElement(child as ReactElement, {
         ...ariaProps,
         ...child.props
       });
     });
   }
-  return React.Children.map(children, (child, index) => {
+  return React.Children.map(children as ReactElement[], (child, index) => {
     needsTabIndex = index !== currentSlide;
     const ariaProps = needsTabIndex
       ? { 'aria-hidden': 'true' }
       : { 'aria-hidden': 'false', tabIndex: 0 };
-    return React.cloneElement(child, {
+    return React.cloneElement(child as ReactElement, {
       ...ariaProps,
       ...child.props
     });
@@ -221,7 +226,7 @@ export const calcSomeInitialState = (
   };
 };
 
-export const handleSelfFocus = (e) => {
+export const handleSelfFocus = (e: React.MouseEvent<HTMLDivElement>) => {
   if (e && e.currentTarget) {
     e.currentTarget.focus();
   }
@@ -229,15 +234,16 @@ export const handleSelfFocus = (e) => {
 
 export const isFullyVisible = (
   slideIndex: number,
-  config: {
-    currentSlide: number;
-    cellSpacing: number;
-    slideCount: number;
-    slideWidth: number;
-    frameWidth: number;
-    wrapAround: boolean;
-    cellAlign: Alignment;
-  }
+  config: Pick<
+    TransitionProps,
+    | 'currentSlide'
+    | 'cellSpacing'
+    | 'slideCount'
+    | 'slideWidth'
+    | 'frameWidth'
+    | 'wrapAround'
+    | 'cellAlign'
+  >
 ): boolean => {
   const {
     currentSlide,
@@ -254,7 +260,7 @@ export const isFullyVisible = (
   // Calculate offset without cellSpacing
   const offsetWidth =
     getAlignmentOffset(currentSlide, config) + cellSpacing * currentSlide;
-  const remainingWidth = frameWidth - offsetWidth;
+  const remainingWidth = frameWidth || 0 - offsetWidth;
 
   let fullSlidesBefore = 0;
 

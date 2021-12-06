@@ -7,7 +7,9 @@ import {
   CarouselState
 } from '../types';
 
-export const getValidChildren = (children: React.ReactNode) =>
+export const getValidChildren = (
+  children: React.ReactNode
+): React.ReactNode[] =>
   // .toArray automatically removes invalid React children
   React.Children.toArray(children);
 

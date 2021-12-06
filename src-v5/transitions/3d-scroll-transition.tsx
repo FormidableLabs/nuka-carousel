@@ -49,13 +49,14 @@ export default class ScrollTransition3D extends Component<TransitionProps> {
         this.props.animation === 'zoom' &&
         (this.props.currentSlide === index + 1 ||
           (this.props.currentSlide === 0 &&
-            index === this.props.children.length - 1))
+            index === React.Children.count(this.props.children) - 1))
       ) {
         offset = this.props.slideOffset;
       } else if (
         this.props.animation === 'zoom' &&
         (this.props.currentSlide === index - 1 ||
-          (this.props.currentSlide === this.props.children.length - 1 &&
+          (this.props.currentSlide ===
+            React.Children.count(this.props.children) - 1 &&
             index === 0))
       ) {
         offset = -this.props.slideOffset;
@@ -78,7 +79,7 @@ export default class ScrollTransition3D extends Component<TransitionProps> {
           }`}
           style={this.getSlideStyles(index)}
           key={index}
-          aria-label={`slide ${index + 1} of ${children.length}`}
+          aria-label={`slide ${index + 1} of ${React.Children.count(children)}`}
           role="group"
           onClick={handleSelfFocus}
           tabIndex={-1}

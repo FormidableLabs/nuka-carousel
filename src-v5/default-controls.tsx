@@ -57,7 +57,7 @@ export const nextButtonDisabled = ({
   wrapAround,
   scrollMode,
   slidesToScroll
-}: ControlProps) => {
+}: ControlProps & { positionValue: number }) => {
   let buttonDisabled = false;
 
   if (!wrapAround) {
@@ -97,22 +97,7 @@ export const NextButton = (props: ControlProps) => {
     props.nextSlide();
   };
 
-  const {
-    cellAlign,
-    cellSpacing,
-    currentSlide,
-    defaultControlsConfig,
-    frameWidth,
-    left,
-    slideCount,
-    slidesToShow,
-    slideWidth,
-    top,
-    vertical,
-    wrapAround,
-    scrollMode,
-    slidesToScroll
-  } = props;
+  const { defaultControlsConfig, left, top, vertical } = props;
 
   const {
     nextButtonClassName,
@@ -121,17 +106,8 @@ export const NextButton = (props: ControlProps) => {
   } = defaultControlsConfig;
 
   const disabled = nextButtonDisabled({
-    cellAlign,
-    cellSpacing,
-    currentSlide,
-    frameWidth,
-    positionValue: vertical ? top : left,
-    slideCount,
-    slidesToShow,
-    slideWidth,
-    wrapAround,
-    scrollMode,
-    slidesToScroll
+    ...props,
+    positionValue: vertical ? top : left
   });
 
   return (
