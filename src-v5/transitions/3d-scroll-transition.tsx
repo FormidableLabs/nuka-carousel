@@ -94,8 +94,9 @@ export default class ScrollTransition3D extends Component<TransitionProps> {
     if (relativeDistanceToCurrent === 0) {
       return 0;
     }
+    const zoomScale = this.props.zoomScale || 0;
     const marginGeneratedByZoom =
-      (1 - this.props.zoomScale ** Math.abs(relativeDistanceToCurrent)) *
+      (1 - zoomScale ** Math.abs(relativeDistanceToCurrent)) *
       this.props.slideWidth;
     const direction = relativeDistanceToCurrent < 0 ? -1 : 1;
     const result =
@@ -157,10 +158,11 @@ export default class ScrollTransition3D extends Component<TransitionProps> {
   }
 
   getTransformScale(index: number): number {
+    const zoomScale = this.props.zoomScale || 0;
     return this.props.currentSlide !== index
       ? Math.max(
           Math.min(
-            this.props.zoomScale ** this.getDistanceToCurrentSlide(index),
+            zoomScale ** this.getDistanceToCurrentSlide(index),
             MAX_ZOOM_SCALE
           ),
           MIN_ZOOM_SCALE
@@ -169,10 +171,11 @@ export default class ScrollTransition3D extends Component<TransitionProps> {
   }
 
   getOpacityScale(index: number): number {
+    const opacityScale = this.props.opacityScale || 0;
     return this.props.currentSlide !== index
       ? Math.max(
           Math.min(
-            this.props.opacityScale ** this.getDistanceToCurrentSlide(index),
+            opacityScale ** this.getDistanceToCurrentSlide(index),
             MAX_ZOOM_SCALE
           ),
           MIN_ZOOM_SCALE

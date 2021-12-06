@@ -93,9 +93,9 @@ export default class ScrollTransition extends Component<TransitionProps> {
     );
 
     if (this.props.wrapAround && currentSlideIndex !== startSlideIndex) {
+      const frameWidth = this.props.frameWidth || 0;
       const slidesOutOfView = Math.max(
-        this.props.slideCount -
-          Math.ceil(this.props.frameWidth / this.props.slideWidth), // Total slides in view
+        this.props.slideCount - Math.ceil(frameWidth / this.props.slideWidth), // Total slides in view
         0
       );
 
@@ -118,11 +118,8 @@ export default class ScrollTransition extends Component<TransitionProps> {
         alignmentOffset / this.props.slideWidth
       );
       const slidesBefore = slidesInViewBefore + slidesOutOfViewBefore;
-
       const slidesInViewAfter =
-        Math.ceil(
-          (this.props.frameWidth - alignmentOffset) / this.props.slideWidth
-        ) - 1;
+        Math.ceil((frameWidth - alignmentOffset) / this.props.slideWidth) - 1;
       const slidesAfter = slidesInViewAfter + slidesOutOfViewAfter;
 
       const distanceFromStart = Math.abs(startSlideIndex - currentSlideIndex);
@@ -172,12 +169,10 @@ export default class ScrollTransition extends Component<TransitionProps> {
   }
 
   getSlideStyles(index: number): CSSProperties {
+    const zoomScale = this.props.zoomScale || 0;
     const transformScale =
       this.props.animation === 'zoom' && this.props.currentSlide !== index
-        ? Math.max(
-            Math.min(this.props.zoomScale, MAX_ZOOM_SCALE),
-            MIN_ZOOM_SCALE
-          )
+        ? Math.max(Math.min(zoomScale, MAX_ZOOM_SCALE), MIN_ZOOM_SCALE)
         : 1.0;
 
     const length = React.Children.count(this.props.children);

@@ -220,7 +220,7 @@ export const calcSomeInitialState = (
     slideWidth,
     slideHeight: slideHeight === 0 ? 'auto' : slideHeight,
     frameWidth,
-    slidesToScroll,
+    slidesToScroll: slidesToScroll === 'auto' ? slidesToShow : slidesToScroll,
     slidesToShow,
     cellAlign
   };
