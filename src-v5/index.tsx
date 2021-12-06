@@ -853,16 +853,13 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
 
   getOffsetDeltas() {
     let offset = 0;
+    const length = this.touchObject.length || 0;
+    const direction = this.touchObject.direction || 0;
 
     if (this.state.isWrappingAround) {
       offset = this.getTargetLeft(null, this.state.wrapToIndex);
-    } else if (
-      this.touchObject.length !== undefined &&
-      this.touchObject.direction !== undefined
-    ) {
-      offset = this.getTargetLeft(
-        this.touchObject.length * this.touchObject.direction
-      );
+    } else {
+      offset = this.getTargetLeft(length * direction);
     }
 
     return {
