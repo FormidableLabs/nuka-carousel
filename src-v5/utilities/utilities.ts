@@ -7,11 +7,11 @@ import {
   TransitionProps
 } from '../types';
 
-export const addEvent = function (
-  elem: any,
+export const addEvent = (
+  elem: Window | Document,
   type: string,
-  eventHandle: ((e: React.KeyboardEvent<Element>) => void) | (() => void)
-) {
+  eventHandle: EventListener
+): void => {
   if (elem === null || typeof elem === 'undefined') {
     return;
   }
@@ -24,11 +24,11 @@ export const addEvent = function (
   }
 };
 
-export const removeEvent = function (
-  elem: any,
+export const removeEvent = (
+  elem: Window | Document,
   type: string,
-  eventHandle: ((e: React.KeyboardEvent<Element>) => void) | (() => void)
-) {
+  eventHandle: EventListener
+): void => {
   if (elem === null || typeof elem === 'undefined') {
     return;
   }

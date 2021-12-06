@@ -1024,7 +1024,12 @@ export default class Carousel extends React.Component {
   }
 
   // eslint-disable-next-line complexity
-  setDimensions(props, stateCb = () => {}) {
+  setDimensions(
+    props,
+    stateCb = () => {
+      // Do nothing
+    }
+  ) {
     props = props || this.props;
 
     let {
@@ -1372,15 +1377,21 @@ Carousel.propTypes = {
 };
 
 Carousel.defaultProps = {
-  afterSlide() {},
+  afterSlide() {
+    // Do nothing
+  },
   autoGenerateStyleTag: true,
   autoplay: false,
   autoplayInterval: 3000,
   autoplayReverse: false,
-  beforeSlide() {},
+  beforeSlide() {
+    // Do nothing
+  },
   cellAlign: 'left',
   cellSpacing: 0,
-  getControlsContainerStyles() {},
+  getControlsContainerStyles() {
+    // Do nothing
+  },
   defaultControlsConfig: {},
   disableAnimation: false,
   disableEdgeSwiping: false,
@@ -1393,8 +1404,12 @@ Carousel.defaultProps = {
   height: 'inherit',
   heightMode: 'max',
   keyCodeConfig: {},
-  onDragStart() {},
-  onResize() {},
+  onDragStart() {
+    // Do nothing
+  },
+  onResize() {
+    // Do nothing
+  },
   pauseOnHover: true,
   renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
   renderBottomCenterControls: (props) => <PagingDots {...props} />,

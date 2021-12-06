@@ -726,9 +726,9 @@ export default class Carousel extends Component<CarouselProps, CarouselState> {
     });
   }
   // eslint-disable-next-line complexity
-  handleKeyPress(e: React.KeyboardEvent) {
+  handleKeyPress(e: Event): ReturnType<EventListener> {
     if (this.state.hasFocus && this.props.enableKeyboardControls) {
-      const actionName = this.keyCodeMap?.[e.keyCode];
+      const actionName = this.keyCodeMap?.[(e as KeyboardEvent).keyCode];
 
       if (actionName) {
         switch (actionName) {

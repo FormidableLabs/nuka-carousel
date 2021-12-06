@@ -492,11 +492,11 @@ export default class Carousel extends React.Component<
   CarouselState
 > {}
 
-export interface PreviousButtonProps extends CarouselSlideRenderControlProps {}
+export type PreviousButtonProps = CarouselSlideRenderControlProps;
 export const PreviousButton: React.FC<PreviousButtonProps>;
 
-export interface NextButtonProps extends CarouselSlideRenderControlProps {}
+export type NextButtonProps = CarouselSlideRenderControlProps;
 export const NextButton: React.FC<NextButtonProps>;
 
-export interface PagingDotsProps extends CarouselSlideRenderControlProps {}
+export type PagingDotsProps = CarouselSlideRenderControlProps;
 export const PagingDots: React.FC<PagingDotsProps>;
