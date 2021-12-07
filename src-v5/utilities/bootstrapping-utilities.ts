@@ -1,12 +1,21 @@
 import React from 'react';
+import {
+  Slide,
+  Alignment,
+  HeightMode,
+  CarouselProps,
+  CarouselState
+} from '../types';
 
-export const getValidChildren = (children) =>
+export const getValidChildren = (
+  children: React.ReactNode
+): React.ReactNode[] =>
   // .toArray automatically removes invalid React children
   React.Children.toArray(children);
 
-const getMax = (a, b) => (a > b ? a : b);
+const getMax = (a: number, b: number): number => (a > b ? a : b);
 
-const getHeightOfSlide = (slide) => {
+const getHeightOfSlide = (slide: Slide): number => {
   if (!slide) {
     return 0;
   }
@@ -22,7 +31,11 @@ const getHeightOfSlide = (slide) => {
 };
 
 // end - is exclusive
-export const findMaxHeightSlideInRange = (slides, start, end) => {
+export const findMaxHeightSlideInRange = (
+  slides: Slide[],
+  start: number,
+  end: number
+): number => {
   let maxHeight = 0;
 
   if (
@@ -56,7 +69,7 @@ export const findMaxHeightSlideInRange = (slides, start, end) => {
   return maxHeight;
 };
 
-const ensureIndexInBounds = (index, slideCount) => {
+const ensureIndexInBounds = (index: number, slideCount: number): number => {
   let newIndex = index;
   while (newIndex < 0) {
     newIndex += slideCount;
@@ -68,11 +81,11 @@ const ensureIndexInBounds = (index, slideCount) => {
 };
 
 export const findCurrentHeightSlide = (
-  currentSlide,
-  slidesToShow,
-  alignment,
-  wrapAround,
-  slides
+  currentSlide: number,
+  slidesToShow: number,
+  alignment: Alignment,
+  wrapAround: boolean,
+  slides: Slide[]
 ) => {
   if (slidesToShow > 1) {
     let startIndex = currentSlide;
@@ -82,19 +95,21 @@ export const findCurrentHeightSlide = (
     );
 
     const offset =
-      alignment === 'center' ? (slidesToShow - 1) / 2 : slidesToShow - 1;
+      alignment === Alignment.Center
+        ? (slidesToShow - 1) / 2
+        : slidesToShow - 1;
 
     switch (alignment) {
-      case 'center':
+      case Alignment.Center:
         startIndex = Math.floor(currentSlide - offset);
         lastIndex = Math.ceil(currentSlide + offset) + 1;
         break;
 
-      case 'right':
+      case Alignment.Right:
         startIndex = Math.floor(currentSlide - offset);
         lastIndex = currentSlide + 1;
         break;
-      case 'left':
+      case Alignment.Left:
         startIndex = currentSlide;
         lastIndex = Math.ceil(currentSlide + offset) + 1;
         break;
@@ -115,22 +130,29 @@ export const findCurrentHeightSlide = (
   return getHeightOfSlide(slides[currentSlide]);
 };
 
-export const calculateSlideHeight = (props, state, childNodes = []) => {
+export const calculateSlideHeight = (
+  props: Pick<
+    CarouselProps,
+    'vertical' | 'wrapAround' | 'initialSlideHeight' | 'heightMode'
+  >,
+  state: Pick<CarouselState, 'slidesToShow' | 'currentSlide' | 'cellAlign'>,
+  childNodes: Slide[]
+) => {
   const { heightMode, vertical, initialSlideHeight, wrapAround } = props;
   const { slidesToShow, currentSlide, cellAlign } = state;
   const firstSlide = childNodes[0];
 
-  if (firstSlide && heightMode === 'first') {
+  if (firstSlide && heightMode === HeightMode.First) {
     return vertical
       ? getHeightOfSlide(firstSlide) * slidesToShow
       : getHeightOfSlide(firstSlide);
   }
 
-  if (heightMode === 'max') {
+  if (heightMode === HeightMode.Max) {
     return findMaxHeightSlideInRange(childNodes, 0, childNodes.length);
   }
 
-  if (heightMode === 'current') {
+  if (heightMode === HeightMode.Current) {
     return findCurrentHeightSlide(
       currentSlide,
       slidesToShow,

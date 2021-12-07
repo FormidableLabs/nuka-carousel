@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, CSSProperties } from 'react';
 import {
   getSlideHeight,
   getAlignmentOffset
@@ -10,35 +9,56 @@ import {
   getSlideClassName,
   isFullyVisible
 } from '../utilities/utilities';
+import { Alignment, HeightMode, TransitionProps } from '../types';
 
 const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
 
-export default class ScrollTransition extends React.Component {
-  constructor(props) {
+export default class ScrollTransition extends Component<TransitionProps> {
+  static defaultProps = {
+    cellAlign: Alignment.Left,
+    cellSpacing: 0,
+    currentSlide: 0,
+    deltaX: 0,
+    deltaY: 0,
+    dragging: false,
+    frameWidth: 0,
+    heightMode: HeightMode.Max,
+    isWrappingAround: false,
+    left: 0,
+    slideCount: 0,
+    slideHeight: 0,
+    slidesToScroll: 1,
+    slideWidth: 0,
+    top: 0,
+    vertical: false,
+    wrapAround: false,
+    zoomScale: 0.85
+  };
+
+  constructor(props: TransitionProps) {
     super(props);
     this.getListStyles = this.getListStyles.bind(this);
   }
 
   /* eslint-disable complexity */
   getSlideTargetPosition(
-    currentSlideIndex,
-    positionValue,
-    childrenLength,
-    slidesToShow
-  ) {
+    currentSlideIndex: number,
+    positionValue: number
+  ): number {
     let offset = 0;
     // Below lines help to display peeking slides when number of slides is less than 3.
     let peekSlide = true;
     switch (this.props.cellAlign) {
       case 'left':
         peekSlide = !(
-          this.props.children.length <= 2 && currentSlideIndex !== 0
+          React.Children.count(this.props.children) <= 2 &&
+          currentSlideIndex !== 0
         );
         break;
       case 'center':
         peekSlide = !!(
-          this.props.children.length > 2 ||
+          React.Children.count(this.props.children) > 2 ||
           this.props.currentSlide !== currentSlideIndex - 1
         );
         break;
@@ -49,13 +69,14 @@ export default class ScrollTransition extends React.Component {
       peekSlide &&
       (this.props.currentSlide === currentSlideIndex + 1 ||
         (this.props.currentSlide === 0 &&
-          currentSlideIndex === this.props.children.length - 1))
+          currentSlideIndex === React.Children.count(this.props.children) - 1))
     ) {
       offset = this.props.slideOffset;
     } else if (
       this.props.animation === 'zoom' &&
       (this.props.currentSlide === currentSlideIndex - 1 ||
-        (this.props.currentSlide === this.props.children.length - 1 &&
+        (this.props.currentSlide ===
+          React.Children.count(this.props.children) - 1 &&
           currentSlideIndex === 0))
     ) {
       offset = -this.props.slideOffset;
@@ -72,9 +93,9 @@ export default class ScrollTransition extends React.Component {
     );
 
     if (this.props.wrapAround && currentSlideIndex !== startSlideIndex) {
+      const frameWidth = this.props.frameWidth || 0;
       const slidesOutOfView = Math.max(
-        this.props.slideCount -
-          Math.ceil(this.props.frameWidth / this.props.slideWidth), // Total slides in view
+        this.props.slideCount - Math.ceil(frameWidth / this.props.slideWidth), // Total slides in view
         0
       );
 
@@ -97,26 +118,18 @@ export default class ScrollTransition extends React.Component {
         alignmentOffset / this.props.slideWidth
       );
       const slidesBefore = slidesInViewBefore + slidesOutOfViewBefore;
-
       const slidesInViewAfter =
-        Math.ceil(
-          (this.props.frameWidth - alignmentOffset) / this.props.slideWidth
-        ) - 1;
+        Math.ceil((frameWidth - alignmentOffset) / this.props.slideWidth) - 1;
       const slidesAfter = slidesInViewAfter + slidesOutOfViewAfter;
 
       const distanceFromStart = Math.abs(startSlideIndex - currentSlideIndex);
-
-      const isDistanceBiggerThanSlides =
-        childrenLength === slidesToShow
-          ? distanceFromStart > slidesAfter
-          : distanceFromStart >= slidesAfter;
       if (currentSlideIndex < startSlideIndex) {
         if (distanceFromStart > slidesBefore) {
           targetPosition =
             (this.props.slideWidth + this.props.cellSpacing) *
             (this.props.slideCount + currentSlideIndex);
         }
-      } else if (isDistanceBiggerThanSlides) {
+      } else if (distanceFromStart >= slidesAfter) {
         targetPosition =
           (this.props.slideWidth + this.props.cellSpacing) *
           (this.props.slideCount - currentSlideIndex) *
@@ -128,10 +141,8 @@ export default class ScrollTransition extends React.Component {
   }
 
   /* eslint-enable complexity */
-  formatChildren(children) {
-    const { top, left, currentSlide, slidesToShow, vertical } = this.props;
-    const positionValue = vertical ? top : left;
-    const childrenLength = React.Children.count(children);
+  formatChildren(children: TransitionProps['children']) {
+    const { currentSlide, slidesToShow } = this.props;
 
     return React.Children.map(children, (child, index) => {
       const isVisible = isFullyVisible(index, this.props);
@@ -143,14 +154,9 @@ export default class ScrollTransition extends React.Component {
             currentSlide,
             slidesToShow
           )}`}
-          aria-label={`slide ${index + 1} of ${children.length}`}
+          aria-label={`slide ${index + 1} of ${React.Children.count(children)}`}
           role="group"
-          style={this.getSlideStyles(
-            index,
-            positionValue,
-            childrenLength,
-            slidesToShow
-          )}
+          style={this.getSlideStyles(index)}
           key={index}
           onClick={handleSelfFocus}
           tabIndex={-1}
@@ -162,48 +168,40 @@ export default class ScrollTransition extends React.Component {
     });
   }
 
-  getSlideStyles(index, positionValue, childrenLength, slidesToShow) {
-    const targetPosition = this.getSlideTargetPosition(
-      index,
-      positionValue,
-      childrenLength,
-      slidesToShow
-    );
+  getSlideStyles(index: number): CSSProperties {
+    const zoomScale = this.props.zoomScale || 0;
     const transformScale =
       this.props.animation === 'zoom' && this.props.currentSlide !== index
-        ? Math.max(
-            Math.min(this.props.zoomScale, MAX_ZOOM_SCALE),
-            MIN_ZOOM_SCALE
-          )
+        ? Math.max(Math.min(zoomScale, MAX_ZOOM_SCALE), MIN_ZOOM_SCALE)
         : 1.0;
 
+    const length = React.Children.count(this.props.children);
+    const width =
+      this.props.slideWidth === 0 ? `${100 / length}%` : this.props.slideWidth;
     return {
       boxSizing: 'border-box',
       display: this.props.vertical ? 'block' : 'inline-block',
       height: getSlideHeight(this.props),
-      left: this.props.vertical ? 0 : targetPosition,
       listStyleType: 'none',
       marginBottom: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
       marginLeft: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
       marginRight: this.props.vertical ? 'auto' : this.props.cellSpacing / 2,
       marginTop: this.props.vertical ? this.props.cellSpacing / 2 : 'auto',
       MozBoxSizing: 'border-box',
-      position: 'absolute',
-      top: this.props.vertical ? targetPosition : 0,
       transform: `scale(${transformScale})`,
       transition: 'transform .4s linear',
       verticalAlign: 'top',
-      width: this.props.vertical ? '100%' : this.props.slideWidth
+      width: this.props.vertical ? '100%' : width
     };
   }
 
-  getListStyles(styles) {
-    const { deltaX, deltaY } = styles;
-
-    const listWidth =
-      this.props.slideWidth * React.Children.count(this.props.children);
-    const spacingOffset =
-      this.props.cellSpacing * React.Children.count(this.props.children);
+  getListStyles(
+    deltaX: TransitionProps['deltaX'],
+    deltaY: TransitionProps['deltaY']
+  ): CSSProperties {
+    const length = React.Children.count(this.props.children);
+    const listWidth = this.props.slideWidth * length;
+    const spacingOffset = this.props.cellSpacing * length;
     const transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
     const transition =
       this.props.heightMode === 'current' && this.props.hasInteraction
@@ -227,7 +225,9 @@ export default class ScrollTransition extends React.Component {
       touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`,
       transform,
       WebkitTransform: transform,
-      width: 'auto',
+      width: this.props.vertical
+        ? '100%'
+        : `${100 * (length / (this.props.slidesToShow || 1))}%`,
       transition
     };
   }
@@ -238,57 +238,9 @@ export default class ScrollTransition extends React.Component {
     const deltaY = this.props.deltaY;
 
     return (
-      <div
-        className="slider-list"
-        style={this.getListStyles({ deltaX, deltaY })}
-      >
+      <div className="slider-list" style={this.getListStyles(deltaX, deltaY)}>
         {children}
       </div>
     );
   }
 }
-
-ScrollTransition.propTypes = {
-  animation: PropTypes.oneOf(['zoom']),
-  cellAlign: PropTypes.string,
-  cellSpacing: PropTypes.number,
-  currentSlide: PropTypes.number,
-  deltaX: PropTypes.number,
-  deltaY: PropTypes.number,
-  dragging: PropTypes.bool,
-  frameWidth: PropTypes.number,
-  hasInteraction: PropTypes.bool,
-  heightMode: PropTypes.oneOf(['first', 'current', 'max']),
-  isWrappingAround: PropTypes.bool,
-  left: PropTypes.number,
-  slideCount: PropTypes.number,
-  slideHeight: PropTypes.number,
-  slideOffset: PropTypes.number,
-  slidesToScroll: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  slideWidth: PropTypes.number,
-  top: PropTypes.number,
-  vertical: PropTypes.bool,
-  wrapAround: PropTypes.bool,
-  zoomScale: PropTypes.number
-};
-
-ScrollTransition.defaultProps = {
-  cellAlign: 'left',
-  cellSpacing: 0,
-  currentSlide: 0,
-  deltaX: 0,
-  deltaY: 0,
-  dragging: false,
-  frameWidth: 0,
-  heightMode: 'max',
-  isWrappingAround: false,
-  left: 0,
-  slideCount: 0,
-  slideHeight: 0,
-  slidesToScroll: 1,
-  slideWidth: 0,
-  top: 0,
-  vertical: false,
-  wrapAround: false,
-  zoomScale: 0.85
-};

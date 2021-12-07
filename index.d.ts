@@ -2,13 +2,7 @@
 //                 Alex Smith <https://github.com/altaudio>
 //                 matt-sungwook <https://github.com/matt-sungwook>
 
-import * as CSS from 'csstype';
 import * as React from 'react';
-
-export default class Carousel extends React.Component<
-  CarouselProps,
-  CarouselState
-> {}
 
 export type CarouselScrollModeProp = 'page' | 'remainder';
 
@@ -107,12 +101,6 @@ export type CarouselRenderControl = (
   props: CarouselSlideRenderControlProps
 ) => React.ReactNode;
 
-/**
- * All available DOM style properties and their types
- * https://www.npmjs.com/package/csstype
- */
-export interface CSSProperties extends CSS.Properties<string | number> {}
-
 export interface CarouselProps {
   /**
    * Hook to be called after a slide is changed
@@ -190,7 +178,7 @@ export interface CarouselProps {
    */
   getControlsContainerStyles?: (
     key: CarouselControlContainerProp
-  ) => CSSProperties;
+  ) => React.CSSProperties;
 
   /**
    * This prop lets you apply custom classes and styles to the default Next, Previous, and Paging Dots controls
@@ -198,14 +186,14 @@ export interface CarouselProps {
   defaultControlsConfig?: {
     containerClassName?: string;
     nextButtonClassName?: string;
-    nextButtonStyle?: CSSProperties;
+    nextButtonStyle?: React.CSSProperties;
     nextButtonText?: string;
     prevButtonClassName?: string;
-    prevButtonStyle?: CSSProperties;
+    prevButtonStyle?: React.CSSProperties;
     prevButtonText?: string;
     pagingDotsContainerClassName?: string;
     pagingDotsClassName?: string;
-    pagingDotsStyle?: CSSProperties;
+    pagingDotsStyle?: React.CSSProperties;
   };
 
   /**
@@ -397,7 +385,7 @@ export interface CarouselProps {
   /**
    * style object
    */
-  style?: CSSProperties;
+  style?: React.CSSProperties;
 
   /**
    * Enable touch swipe/dragging
@@ -499,11 +487,16 @@ export interface CarouselState {
   wrapToIndex: boolean;
 }
 
-export interface PreviousButtonProps extends CarouselSlideRenderControlProps {}
+export default class Carousel extends React.Component<
+  CarouselProps,
+  CarouselState
+> {}
+
+export type PreviousButtonProps = CarouselSlideRenderControlProps;
 export const PreviousButton: React.FC<PreviousButtonProps>;
 
-export interface NextButtonProps extends CarouselSlideRenderControlProps {}
+export type NextButtonProps = CarouselSlideRenderControlProps;
 export const NextButton: React.FC<NextButtonProps>;
 
-export interface PagingDotsProps extends CarouselSlideRenderControlProps {}
+export type PagingDotsProps = CarouselSlideRenderControlProps;
 export const PagingDots: React.FC<PagingDotsProps>;

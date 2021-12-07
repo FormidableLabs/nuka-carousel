@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
+import {
+  Positions,
+  Alignment,
+  HeightMode,
+  TransitionProps,
+  CarouselProps,
+  CarouselState,
+  ScrollMode
+} from '../types';
 
-export const getImgTagStyles = () => `.slider-slide > img { width: 100%; display: block; }
+export const getImgTagStyles = (): string => `.slider-slide > img { width: 100%; display: block; }
           .slider-slide > img:focus { margin: auto; }`;
 
-export const getSlideHeight = (props) => {
+export const getSlideHeight = (props: TransitionProps): number | 'auto' => {
   const childCount = React.Children.count(props.children);
   const listWidth = props.slideWidth * childCount;
   const spacingOffset = props.cellSpacing * childCount;
@@ -12,27 +21,34 @@ export const getSlideHeight = (props) => {
     ? listWidth + spacingOffset
     : props.slideHeight;
 
-  return calculatedHeight > 0 && props.heightMode !== 'current'
+  return calculatedHeight > 0 && props.heightMode !== HeightMode.Current
     ? calculatedHeight
     : 'auto';
 };
 
-export const getAlignmentOffset = (slideIndex, config) => {
+export const getAlignmentOffset = (
+  slideIndex: number,
+  config: Pick<
+    CarouselState & CarouselProps,
+    'cellAlign' | 'cellSpacing' | 'frameWidth' | 'slideWidth'
+  >
+): number => {
   let offset = 0;
+  const frameWidth = config.frameWidth || 0;
 
   switch (config.cellAlign) {
-    case 'left': {
+    case Alignment.Left: {
       offset = 0;
       offset -= config.cellSpacing * slideIndex;
       break;
     }
-    case 'center': {
-      offset = (config.frameWidth - config.slideWidth) / 2;
+    case Alignment.Center: {
+      offset = (frameWidth - config.slideWidth) / 2;
       offset -= config.cellSpacing * slideIndex;
       break;
     }
-    case 'right': {
-      offset = config.frameWidth - config.slideWidth;
+    case Alignment.Right: {
+      offset = frameWidth - config.slideWidth;
       offset -= config.cellSpacing * slideIndex;
       break;
     }
@@ -41,16 +57,16 @@ export const getAlignmentOffset = (slideIndex, config) => {
   return offset;
 };
 
-export const getDecoratorStyles = (position) => {
+export const getDecoratorStyles = (position: Positions): CSSProperties => {
   switch (position) {
-    case 'TopLeft': {
+    case Positions.TopLeft: {
       return {
         position: 'absolute',
         top: 0,
         left: 0
       };
     }
-    case 'TopCenter': {
+    case Positions.TopCenter: {
       return {
         position: 'absolute',
         top: 0,
@@ -60,14 +76,14 @@ export const getDecoratorStyles = (position) => {
         msTransform: 'translateX(-50%)'
       };
     }
-    case 'TopRight': {
+    case Positions.TopRight: {
       return {
         position: 'absolute',
         top: 0,
         right: 0
       };
     }
-    case 'CenterLeft': {
+    case Positions.CenterLeft: {
       return {
         position: 'absolute',
         top: '50%',
@@ -77,7 +93,7 @@ export const getDecoratorStyles = (position) => {
         msTransform: 'translateY(-50%)'
       };
     }
-    case 'CenterCenter': {
+    case Positions.CenterCenter: {
       return {
         position: 'absolute',
         top: '50%',
@@ -87,7 +103,7 @@ export const getDecoratorStyles = (position) => {
         msTransform: 'translate(-50%, -50%)'
       };
     }
-    case 'CenterRight': {
+    case Positions.CenterRight: {
       return {
         position: 'absolute',
         top: '50%',
@@ -97,14 +113,14 @@ export const getDecoratorStyles = (position) => {
         msTransform: 'translateY(-50%)'
       };
     }
-    case 'BottomLeft': {
+    case Positions.BottomLeft: {
       return {
         position: 'absolute',
         bottom: 0,
         left: 0
       };
     }
-    case 'BottomCenter': {
+    case Positions.BottomCenter: {
       return {
         position: 'absolute',
         bottom: 0,
@@ -114,7 +130,7 @@ export const getDecoratorStyles = (position) => {
         msTransform: 'translateX(-50%)'
       };
     }
-    case 'BottomRight': {
+    case Positions.BottomRight: {
       return {
         position: 'absolute',
         bottom: 0,
@@ -131,28 +147,30 @@ export const getDecoratorStyles = (position) => {
   }
 };
 
-export const getSliderStyles = (propWidth, propHeight) => ({
+export const getSliderStyles = (
+  propWidth: number | string,
+  propHeight: number | string
+): CSSProperties => ({
   boxSizing: 'border-box',
   display: 'block',
   height: propHeight,
   MozBoxSizing: 'border-box',
   position: 'relative',
+  overflow: 'hidden',
   width: propWidth
 });
 
 export const getFrameStyles = (
-  propFrameOverFlow,
-  propVertical,
-  propFramePadding,
-  stateFrameWidth
-) => ({
+  propVertical: boolean,
+  propFramePadding: number | string,
+  stateFrameWidth: number | string | null
+): CSSProperties => ({
   boxSizing: 'border-box',
   display: 'block',
   height: propVertical ? stateFrameWidth || 'initial' : '100%',
   margin: propFramePadding,
   MozBoxSizing: 'border-box',
   msTransform: 'translate(0, 0)',
-  overflow: propFrameOverFlow,
   padding: 0,
   position: 'relative',
   touchAction: `pinch-zoom ${propVertical ? 'pan-x' : 'pan-y'}`,
@@ -160,13 +178,19 @@ export const getFrameStyles = (
   WebkitTransform: 'translate3d(0, 0, 0)'
 });
 
-export const getTransitionProps = (props, state) => ({
+export const getTransitionProps = (
+  props: CarouselProps,
+  state: CarouselState
+): Omit<TransitionProps, 'children' | 'deltaX' | 'deltaY'> => ({
   animation: props.animation,
   cellAlign: props.cellAlign,
   cellSpacing: props.cellSpacing,
   currentSlide: state.currentSlide,
   dragging: props.dragging,
-  frameWidth: parseInt(state.frameWidth),
+  frameWidth:
+    typeof state.frameWidth === 'number'
+      ? Math.trunc(state.frameWidth)
+      : state.frameWidth,
   hasInteraction: state.hasInteraction,
   heightMode: props.heightMode,
   isWrappingAround: state.isWrappingAround,
@@ -177,7 +201,9 @@ export const getTransitionProps = (props, state) => ({
   slideListMargin: props.slideListMargin,
   slideOffset: props.slideOffset,
   slidesToScroll:
-    props.scrollMode === 'page' ? state.slidesToShow : props.slidesToScroll,
+    props.scrollMode === ScrollMode.Page
+      ? state.slidesToShow
+      : props.slidesToScroll,
   slidesToShow: state.slidesToShow,
   slideWidth: state.slideWidth,
   top: state.top,

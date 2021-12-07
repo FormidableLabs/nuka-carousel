@@ -26,4 +26,5 @@ It's easier to show us than tell us what's going wrong with your code. Because o
 **Actual behavior:** [What actually happens]
 
 ### Additional Information
+
 Any additional information, configuration or data that might be necessary to reproduce the issue.

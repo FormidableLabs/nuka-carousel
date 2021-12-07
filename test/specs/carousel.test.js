@@ -1,4 +1,4 @@
-/* eslint max-nested-callbacks: ["error", 5]*/
+/* eslint max-nested-callbacks: ["error", 5] */
 import { createRef } from 'react';
 import Carousel from '../../src';
 
