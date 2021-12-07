@@ -51,44 +51,45 @@ export interface Slide {
   offsetHeight: number;
 }
 
-type D3EasingFunctionNames =
-  | 'easeLinear'
-  | 'easeQuad'
-  | 'easeQuadIn'
-  | 'easeQuadOut'
-  | 'easeQuadInOut'
-  | 'easeCubic'
-  | 'easeCubicIn'
-  | 'easeCubicOut'
-  | 'easeCubicInOut'
-  | 'easePoly'
-  | 'easePolyIn'
-  | 'easePolyOut'
-  | 'easePolyInOut'
-  | 'easeSin'
-  | 'easeSinIn'
-  | 'easeSinOut'
-  | 'easeSinInOut'
-  | 'easeExp'
-  | 'easeExpIn'
-  | 'easeExpOut'
-  | 'easeExpInOut'
-  | 'easeCircle'
-  | 'easeCircleIn'
-  | 'easeCircleOut'
-  | 'easeCircleInOut'
-  | 'easeBack'
-  | 'easeBackIn'
-  | 'easeBackOut'
-  | 'easeBackInOut'
-  | 'easeBounce'
-  | 'easeBounceIn'
-  | 'easeBounceOut'
-  | 'easeBounceInOut'
-  | 'easeElastic'
-  | 'easeElasticIn'
-  | 'easeElasticOut'
-  | 'easeElasticInOut';
+export enum D3EasingFunctions {
+  EaseLinear = 'easeLinear',
+  EaseQuad = 'easeQuad',
+  EaseQuadIn = 'easeQuadIn',
+  EaseQuadOut = 'easeQuadOut',
+  EaseQuadInOut = 'easeQuadInOut',
+  EaseCubic = 'easeCubic',
+  EaseCubicIn = 'easeCubicIn',
+  EaseCubicOut = 'easeCubicOut',
+  EaseCubicInOut = 'easeCubicInOut',
+  EasePoly = 'easePoly',
+  EasePolyIn = 'easePolyIn',
+  EasePolyOut = 'easePolyOut',
+  EasePolyInOut = 'easePolyInOut',
+  EaseSin = 'easeSin',
+  EaseSinIn = 'easeSinIn',
+  EaseSinOut = 'easeSinOut',
+  EaseSinInOut = 'easeSinInOut',
+  EaseExp = 'easeExp',
+  EaseExpIn = 'easeExpIn',
+  EaseExpOut = 'easeExpOut',
+  EaseExpInOut = 'easeExpInOut',
+  EaseCircle = 'easeCircle',
+  EaseCircleIn = 'easeCircleIn',
+  EaseCircleOut = 'easeCircleOut',
+  EaseCircleInOut = 'easeCircleInOut',
+  EaseBack = 'easeBack',
+  EaseBackIn = 'easeBackIn',
+  EaseBackOut = 'easeBackOut',
+  EaseBackInOut = 'easeBackInOut',
+  EaseBounce = 'easeBounce',
+  EaseBounceIn = 'easeBounceIn',
+  EaseBounceOut = 'easeBounceOut',
+  EaseBounceInOut = 'easeBounceInOut',
+  EaseElastic = 'easeElastic',
+  EaseElasticIn = 'easeElasticIn',
+  EaseElasticOut = 'easeElasticOut',
+  EaseElasticInOut = 'easeElasticInOut'
+}
 
 interface DefaultControlsConfig {
   containerClassName?: string;
@@ -189,8 +190,8 @@ export interface CarouselProps {
   disableAnimation: boolean;
   disableEdgeSwiping: boolean;
   dragging: boolean;
-  easing: D3EasingFunctionNames;
-  edgeEasing: D3EasingFunctionNames;
+  easing: D3EasingFunctions;
+  edgeEasing: D3EasingFunctions;
   enableKeyboardControls: boolean;
   framePadding: string;
   getControlsContainerStyles: (key: Positions) => CSSProperties;
