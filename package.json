@@ -38,6 +38,7 @@
     "@typescript-eslint/parser": "^5.5.0",
     "babel-loader": "8.1.0",
     "builder": "^5.0.0",
+    "chromatic": "^6.2.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "^8.3.0",
@@ -88,7 +89,8 @@
     "test-e2e": "jest test --config jest.e2e.config.js",
     "version": "npm run build",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "storybook-build": "build-storybook",
+    "chromatic": "chromatic --exit-zero-on-changes"
   },
   "repository": {
     "type": "git",
