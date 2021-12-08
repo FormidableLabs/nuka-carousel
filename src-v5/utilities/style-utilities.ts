@@ -30,15 +30,18 @@ export const getAlignmentOffset = (
   slideIndex: number,
   config: Pick<
     CarouselState & CarouselProps,
-    'cellAlign' | 'cellSpacing' | 'frameWidth' | 'slideWidth'
-  >
+    'cellAlign' | 'cellSpacing' | 'frameWidth' | 'slideWidth' | 'wrapAround'
+  >,
+  children?: TransitionProps['children']
 ): number => {
   let offset = 0;
+  const length = React.Children.count(children);
+
   const frameWidth = config.frameWidth || 0;
 
   switch (config.cellAlign) {
     case Alignment.Left: {
-      offset = 0;
+      offset = config.wrapAround ? -(config.slideWidth * length) : 0;
       offset -= config.cellSpacing * slideIndex;
       break;
     }

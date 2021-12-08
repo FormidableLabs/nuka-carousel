@@ -818,12 +818,20 @@ export class Carousel extends Component<CarouselProps, CarouselState> {
   }
 
   // Animation Method
-
+  // eslint-disable-next-line complexity
   getTargetLeft(touchOffset?: number | null, slide?: number | null): number {
     const target = slide || this.state.currentSlide;
+    const count = React.Children.count(this.props.children);
+    let offset = getAlignmentOffset(
+      target,
+      { ...this.props, ...this.state },
+      this.props.children
+    );
 
-    let offset = getAlignmentOffset(target, { ...this.props, ...this.state });
-    let left = this.state.slideWidth * target;
+    let left =
+      this.props.wrapAround && target >= count - (this.props.slidesToShow || 1)
+        ? -(this.state.slideWidth * (count - target))
+        : this.state.slideWidth * target;
 
     const lastSlide =
       this.state.currentSlide > 0 &&
@@ -876,10 +884,14 @@ export class Carousel extends Component<CarouselProps, CarouselState> {
       slidesToShow
     } = this.state;
     const { tx, ty } = this.getOffsetDeltas();
-    const offset = getAlignmentOffset(currentSlide, {
-      ...this.props,
-      ...this.state
-    });
+    const offset = getAlignmentOffset(
+      currentSlide,
+      {
+        ...this.props,
+        ...this.state
+      },
+      this.props.children
+    );
 
     if (this.props.vertical && typeof slideHeight === 'number') {
       const rowHeight = slideHeight / slidesToShow;

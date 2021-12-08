@@ -3,13 +3,9 @@ import {
   getSlideHeight,
   getAlignmentOffset
 } from '../utilities/style-utilities';
-import {
-  getSlideDirection,
-  handleSelfFocus,
-  getSlideClassName,
-  isFullyVisible
-} from '../utilities/utilities';
+import { getSlideDirection } from '../utilities/utilities';
 import { Alignment, HeightMode, TransitionProps } from '../types';
+import { getSlides } from '../utilities/slides';
 
 const MIN_ZOOM_SCALE = 0;
 const MAX_ZOOM_SCALE = 1;
@@ -25,12 +21,10 @@ export default class ScrollTransition extends Component<TransitionProps> {
     frameWidth: 0,
     heightMode: HeightMode.Max,
     isWrappingAround: false,
-    left: 0,
     slideCount: 0,
     slideHeight: 0,
     slidesToScroll: 1,
     slideWidth: 0,
-    top: 0,
     vertical: false,
     wrapAround: false,
     zoomScale: 0.85
@@ -85,7 +79,11 @@ export default class ScrollTransition extends Component<TransitionProps> {
     let targetPosition =
       (this.props.slideWidth + this.props.cellSpacing) * currentSlideIndex;
 
-    const alignmentOffset = getAlignmentOffset(currentSlideIndex, this.props);
+    const alignmentOffset = getAlignmentOffset(
+      currentSlideIndex,
+      this.props,
+      this.props.children
+    );
     const relativePosition = positionValue - alignmentOffset;
     const startSlideIndex = Math.min(
       Math.abs(Math.floor(relativePosition / this.props.slideWidth)),
@@ -142,30 +140,26 @@ export default class ScrollTransition extends Component<TransitionProps> {
 
   /* eslint-enable complexity */
   formatChildren(children: TransitionProps['children']) {
-    const { currentSlide, slidesToShow } = this.props;
-
-    return React.Children.map(children, (child, index) => {
-      const isVisible = isFullyVisible(index, this.props);
-      const inert = isVisible ? {} : { inert: 'true' };
-      return (
-        <div
-          className={`slider-slide${getSlideClassName(
-            index,
-            currentSlide,
-            slidesToShow
-          )}`}
-          aria-label={`slide ${index + 1} of ${React.Children.count(children)}`}
-          role="group"
-          style={this.getSlideStyles(index)}
-          key={index}
-          onClick={handleSelfFocus}
-          tabIndex={-1}
-          {...inert}
-        >
-          {child}
-        </div>
-      );
-    });
+    return [
+      ...getSlides(
+        children,
+        this.getSlideStyles.bind(this),
+        this.props,
+        'left'
+      ),
+      ...getSlides(
+        children,
+        this.getSlideStyles.bind(this),
+        this.props,
+        'primary'
+      ),
+      ...getSlides(
+        children,
+        this.getSlideStyles.bind(this),
+        this.props,
+        'right'
+      )
+    ];
   }
 
   getSlideStyles(index: number): CSSProperties {
@@ -203,6 +197,9 @@ export default class ScrollTransition extends Component<TransitionProps> {
     const listWidth = this.props.slideWidth * length;
     const spacingOffset = this.props.cellSpacing * length;
     const transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
+    const horizontalWidth = this.props.wrapAround
+      ? `${200 * (length / (this.props.slidesToShow || 1))}%`
+      : `${100 * (length / (this.props.slidesToShow || 1))}%`;
     const transition =
       this.props.heightMode === 'current' && this.props.hasInteraction
         ? 'height 0.2s ease-out'
@@ -225,9 +222,7 @@ export default class ScrollTransition extends Component<TransitionProps> {
       touchAction: `pinch-zoom ${this.props.vertical ? 'pan-x' : 'pan-y'}`,
       transform,
       WebkitTransform: transform,
-      width: this.props.vertical
-        ? '100%'
-        : `${100 * (length / (this.props.slidesToShow || 1))}%`,
+      width: this.props.vertical ? '100%' : horizontalWidth,
       transition
     };
   }

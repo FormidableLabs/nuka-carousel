@@ -65,7 +65,8 @@ export const nextButtonDisabled = ({
       cellAlign,
       cellSpacing,
       frameWidth,
-      slideWidth
+      slideWidth,
+      wrapAround
     });
 
     const relativePosition = positionValue - alignmentOffset;
