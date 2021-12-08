@@ -56,6 +56,17 @@ You can access the application on your localhost at the following url: <a href="
 
 Or on CodeSandBox: [![Edit silly-rhodes-5pr2i](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/silly-rosalind-6y7f3)
 
+### Running Storybook
+
+Once you have cloned this repo locally, run the following to launch Storybook:
+
+```bash
+yarn
+yarn storybook
+```
+
+You can access Storybook on your localhost at the following url: <a href="http://localhost:6006/" target="_blank">Storybook</a>
+
 ### Keyboard Controls
 
 | Key Combination            | Function                                            |
