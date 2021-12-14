@@ -159,6 +159,7 @@ export interface ControlProps {
   top: number;
   vertical: boolean;
   wrapAround: boolean;
+  children: ReactNode;
 }
 
 export type RenderControlFunctionNames =

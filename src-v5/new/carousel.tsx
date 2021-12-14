@@ -1,13 +1,9 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { renderSlide } from './slide';
 import { getSliderListStyles } from './slider-list';
+import { ControlProps } from './types';
 
-interface CarouselProps {
-  children: ReactNode | ReactNode[];
-  slidesToShow?: number;
-}
-
-const Carousel = (props: CarouselProps): React.ReactElement => {
+const Carousel = (props: ControlProps): React.ReactElement => {
   const slides = React.Children.map(props.children, (child, index) =>
     renderSlide(props.children, child, index)
   );
