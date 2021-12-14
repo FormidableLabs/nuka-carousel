@@ -159,7 +159,6 @@ export interface ControlProps {
   top: number;
   vertical: boolean;
   wrapAround: boolean;
-  children: ReactNode;
 }
 
 export type RenderControlFunctionNames =
@@ -176,63 +175,63 @@ export type RenderControlFunctionNames =
 type RenderControls = (props: ControlProps) => ReactElement;
 
 export interface CarouselProps {
-  afterSlide: (index: number) => void;
+  afterSlide?: (index: number) => void;
   animation?: 'zoom';
-  autoGenerateStyleTag: boolean;
-  autoplay: boolean;
-  autoplayInterval: number;
-  autoplayReverse: boolean;
-  beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void;
-  cellAlign: Alignment;
-  cellSpacing: number;
-  children: ReactNode | ReactNode[];
+  autoGenerateStyleTag?: boolean;
+  autoplay?: boolean;
+  autoplayInterval?: number;
+  autoplayReverse?: boolean;
+  beforeSlide?: (currentSlideIndex: number, endSlideIndex: number) => void;
+  cellAlign?: 'left' | 'right' | 'center'; // migrated for horizontal carousel
+  cellSpacing?: number;
+  children: ReactNode | ReactNode[]; // migrated
   className?: string;
-  defaultControlsConfig: DefaultControlsConfig;
-  disableAnimation: boolean;
-  disableEdgeSwiping: boolean;
-  dragging: boolean;
-  easing: D3EasingFunctions;
-  edgeEasing: D3EasingFunctions;
-  enableKeyboardControls: boolean;
-  framePadding: string;
-  getControlsContainerStyles: (key: Positions) => CSSProperties;
-  height: string;
-  heightMode: HeightMode;
+  defaultControlsConfig?: DefaultControlsConfig;
+  disableAnimation?: boolean;
+  disableEdgeSwiping?: boolean;
+  dragging?: boolean;
+  easing?: D3EasingFunctions;
+  edgeEasing?: D3EasingFunctions;
+  enableKeyboardControls?: boolean;
+  framePadding?: string;
+  getControlsContainerStyles?: (key: Positions) => CSSProperties;
+  height?: string; // to be deprecated, it can be controlled by the children of the carousel
+  heightMode?: HeightMode;
   initialSlideHeight?: number;
   initialSlideWidth?: number;
   innerRef?: MutableRefObject<HTMLDivElement>;
-  keyCodeConfig: KeyCodeConfig;
-  onDragStart: (
+  keyCodeConfig?: KeyCodeConfig;
+  onDragStart?: (
     e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => void;
-  onResize: () => void;
+  onResize?: () => void;
   opacityScale?: number;
-  pauseOnHover: boolean;
-  renderAnnounceSlideMessage: RenderAnnounceSlideMessage;
-  renderBottomCenterControls: RenderControls;
+  pauseOnHover?: boolean;
+  renderAnnounceSlideMessage?: RenderAnnounceSlideMessage;
+  renderBottomCenterControls?: RenderControls;
   renderBottomLeftControls?: RenderControls;
   renderBottomRightControls?: RenderControls;
   renderCenterCenterControls?: RenderControls;
-  renderCenterLeftControls: RenderControls;
-  renderCenterRightControls: RenderControls;
+  renderCenterLeftControls?: RenderControls;
+  renderCenterRightControls?: RenderControls;
   renderTopCenterControls?: RenderControls;
   renderTopLeftControls?: RenderControls;
   renderTopRightControls?: RenderControls;
-  scrollMode: ScrollMode;
-  slideIndex: number;
-  slideListMargin: number;
-  slideOffset: number;
-  slidesToScroll: 'auto' | number;
-  slidesToShow: number;
-  slideWidth: number | string;
-  speed: number;
-  style: CSSProperties;
-  swiping: boolean;
-  transitionMode: TransitionMode;
-  vertical: boolean;
-  width: string;
-  withoutControls: boolean;
-  wrapAround: boolean;
+  scrollMode?: ScrollMode;
+  slideIndex?: number;
+  slideListMargin?: number;
+  slideOffset?: number;
+  slidesToScroll?: 'auto' | number; // change to number only, default 1
+  slidesToShow?: number; // migrated
+  slideWidth?: number | string; // to be deprecated, it can be controlled by the children of the carousel
+  speed?: number;
+  style?: CSSProperties;
+  swiping?: boolean;
+  transitionMode?: TransitionMode;
+  vertical?: boolean;
+  width?: string; // to be deprecated, it can be controlled by parent element of the carousel
+  withoutControls?: boolean;
+  wrapAround?: boolean;
   zoomScale?: number;
 }
 

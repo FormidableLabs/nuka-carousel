@@ -1,9 +1,9 @@
 import React from 'react';
 import Slide from './slide';
 import { getSliderListStyles } from './slider-list';
-import { ControlProps } from './types';
+import { CarouselProps } from './types';
 
-const Carousel = (props: ControlProps): React.ReactElement => {
+const Carousel = (props: CarouselProps): React.ReactElement => {
   const count = React.Children.count(props.children);
   const slides = React.Children.map(props.children, (child, index) => (
     <Slide key={index} count={count}>
@@ -21,7 +21,11 @@ const Carousel = (props: ControlProps): React.ReactElement => {
     >
       <div
         className="slider-list"
-        style={getSliderListStyles(props.children, props.slidesToShow)}
+        style={getSliderListStyles(
+          props.children,
+          props.slidesToShow,
+          props.cellAlign
+        )}
       >
         {slides}
       </div>

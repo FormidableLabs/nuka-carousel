@@ -43,7 +43,7 @@ const Home = () => {
       <main className={styles.main}>
         <h1>Nuka Carousel - SSR Example Formidable Labs</h1>
         {/* <Carousel slidesToShow={3} wrapAround> */}
-        <Carousel slidesToShow={3}>
+        <Carousel slidesToShow={3} cellAlign={'center'}>
           {slides}
         </Carousel>
       </main>
