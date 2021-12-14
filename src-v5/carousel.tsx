@@ -70,8 +70,8 @@ export class Carousel extends Component<CarouselProps, CarouselState> {
     enableKeyboardControls: false,
     framePadding: '0px',
     getControlsContainerStyles: () => ({}),
-    height: 'inherit',
-    heightMode: HeightMode.Max,
+    height: 'inherit', // obsolete? - to be deprecated
+    heightMode: HeightMode.Max, // ???
     keyCodeConfig: {},
     onDragStart: () => {
       // do nothing
@@ -96,13 +96,13 @@ export class Carousel extends Component<CarouselProps, CarouselState> {
     slideOffset: 25,
     slidesToScroll: 1,
     slidesToShow: 1,
-    slideWidth: 1,
+    slideWidth: 1, // obsolete? - to be deprecated
     speed: 500,
     style: {},
     swiping: true,
     transitionMode: TransitionMode.Scroll,
     vertical: false,
-    width: '100%',
+    width: '100%', // obsolete? - to be deprecated
     withoutControls: false,
     wrapAround: false
   };

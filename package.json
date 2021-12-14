@@ -85,6 +85,7 @@
     "prettier-fix": "prettier \"**/*.{js,json,ts,tsx,css,md}\" --write",
     "preversion": "npm run check",
     "start": "webpack-dev-server --mode development",
+    "start:next": "cd ./examples/nextjs && yarn dev",
     "test": "jest test --config jest.unit.config.js",
     "test-e2e": "jest test --config jest.e2e.config.js",
     "version": "npm run build",
