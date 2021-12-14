@@ -12,16 +12,16 @@ const getSlideStyles = (count: number): CSSProperties => {
   };
 };
 
-export const renderSlide = (
-  children: ReactNode | ReactNode[],
-  child: ReactNode,
-  index: number
-): ReactNode | ReactNode[] => {
-  const count = React.Children.count(children);
+const Slide = ({
+  count,
+  children
+}: {
+  count: number;
+  children: ReactNode | ReactNode[];
+}): JSX.Element => (
+  <div className="slide" style={getSlideStyles(count)}>
+    {children}
+  </div>
+);
 
-  return (
-    <div key={index} className="slide" style={getSlideStyles(count)}>
-      {child}
-    </div>
-  );
-};
+export default Slide;
