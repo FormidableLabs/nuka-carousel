@@ -146,20 +146,19 @@ export interface ControlProps {
   cellSpacing: number;
   currentSlide: number;
   defaultControlsConfig: DefaultControlsConfig;
-  frameWidth: number | null;
+  frameWidth?: number | null; // obsolete
   goToSlide: (index: number) => void;
-  left: number;
+  left?: number; // obsolete
   nextSlide: () => void;
   previousSlide: () => void;
   scrollMode: ScrollMode;
   slideCount: number;
   slidesToScroll: number;
   slidesToShow: number;
-  slideWidth: number;
-  top: number;
+  slideWidth?: number; // obsolete
+  top?: number; // obsolete
   vertical: boolean;
   wrapAround: boolean;
-  children: ReactNode;
 }
 
 export type RenderControlFunctionNames =
@@ -208,7 +207,7 @@ export interface CarouselProps {
   onResize: () => void;
   opacityScale?: number;
   pauseOnHover: boolean;
-  renderAnnounceSlideMessage: RenderAnnounceSlideMessage;
+  renderAnnounceSlideMessage?: RenderAnnounceSlideMessage; // change it to be mandatory when you update the default prop
   renderBottomCenterControls: RenderControls;
   renderBottomLeftControls?: RenderControls;
   renderBottomRightControls?: RenderControls;
@@ -222,7 +221,7 @@ export interface CarouselProps {
   slideIndex: number;
   slideListMargin: number;
   slideOffset: number;
-  slidesToScroll: 'auto' | number;
+  slidesToScroll: number;
   slidesToShow: number;
   slideWidth: number | string;
   speed: number;
