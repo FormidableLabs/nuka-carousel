@@ -2,6 +2,8 @@ import React from 'react';
 import Slide from './slide';
 import { getSliderListStyles } from './slider-list';
 import { CarouselProps } from './types';
+import renderControls from './controls';
+import defaultProps from './default-carousel-props';
 
 const Carousel = (props: CarouselProps): React.ReactElement => {
   const count = React.Children.count(props.children);
@@ -16,7 +18,8 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
       className="slider-frame"
       style={{
         overflow: 'hidden',
-        width: '100%'
+        width: '100%',
+        position: 'relative'
       }}
     >
       <div
@@ -29,8 +32,11 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
       >
         {slides}
       </div>
+      {renderControls(props, count)}
     </div>
   );
 };
+
+Carousel.defaultProps = defaultProps;
 
 export default Carousel;
