@@ -42,51 +42,28 @@ export const PreviousButton = (props: ControlProps) => {
   );
 };
 
-// But why???
 export const nextButtonDisabled = ({
-  cellAlign,
-  cellSpacing,
   currentSlide,
-  positionValue,
   slideCount,
   slidesToShow,
-  wrapAround,
-  scrollMode,
-  slidesToScroll
-}: ControlProps & { positionValue: number }) => {
-  let buttonDisabled = false;
-
-  if (!wrapAround) {
-    // const alignmentOffset = getAlignmentOffset(currentSlide, {
-    //   cellAlign,
-    //   cellSpacing,
-    //   frameWidth,
-    //   slideWidth
-    // });
-    const alignmentOffset = 0;
-
-    const relativePosition = positionValue - alignmentOffset;
-
-    // const width = slideWidth + cellSpacing;
-    const width = cellSpacing;
-    const endOffset =
-      cellAlign === 'center' ? 2 * alignmentOffset : alignmentOffset;
-    const endPosition = -width * slideCount + width * slidesToShow - endOffset;
-
-    buttonDisabled =
-      relativePosition < endPosition ||
-      Math.abs(relativePosition - endPosition) < 0.01;
+  wrapAround
+}: ControlProps) => {
+  // inifite carousel with visible slides that are less than all slides
+  if (wrapAround && slidesToShow < slideCount) {
+    return false;
   }
-  // return true if its last slide or slideCount =0
-  const lastSlide =
-    currentSlide > 0 && currentSlide + slidesToScroll >= slideCount;
-  if (
-    (lastSlide && !wrapAround && scrollMode === 'remainder') ||
-    slideCount === 0
-  ) {
-    return (buttonDisabled = true);
+
+  // inifite carousel with visible slide equal or less than all slides
+  if (wrapAround) {
+    return true;
   }
-  return buttonDisabled;
+
+  // if the last slide is not visible return false (button is not disabled)
+  if (currentSlide + slidesToShow < slideCount) {
+    return false;
+  }
+
+  return true;
 };
 
 export const NextButton = (props: ControlProps) => {
@@ -103,11 +80,7 @@ export const NextButton = (props: ControlProps) => {
     nextButtonText
   } = defaultControlsConfig;
 
-  const disabled = nextButtonDisabled({
-    ...props,
-    // positionValue: vertical ? top : left
-    positionValue: 0
-  });
+  const disabled = nextButtonDisabled(props);
 
   return (
     <button
