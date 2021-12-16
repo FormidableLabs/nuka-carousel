@@ -18,9 +18,15 @@ const controlsMap: ControlMap = [
 
 const renderControls = (
   props: CarouselProps,
-  count: number
-): React.ReactElement[] =>
-  controlsMap.map((control) => {
+  count: number,
+  currentSlide: number,
+  nextSlide: () => void,
+  prevSlide: () => void
+): React.ReactElement[] | null => {
+  if (props.withoutControls) {
+    return null;
+  }
+  return controlsMap.map((control) => {
     if (
       !props[control.funcName] ||
       typeof props[control.funcName] !== 'function'
@@ -44,16 +50,13 @@ const renderControls = (
         {props[control.funcName]?.({
           cellAlign: props.cellAlign,
           cellSpacing: props.cellSpacing,
-          // currentSlide: state.currentSlide,
-          currentSlide: 0,
+          currentSlide,
           defaultControlsConfig: props.defaultControlsConfig || {},
           // frameWidth: state.frameWidth, // but why?
           // goToSlide: (index) => goToSlide(index),
-          // nextSlide: () => nextSlide(),
-          // previousSlide: () => previousSlide(),
           goToSlide: () => {},
-          nextSlide: () => {},
-          previousSlide: () => {},
+          nextSlide: () => nextSlide(),
+          previousSlide: () => prevSlide(),
           scrollMode: props.scrollMode,
           slideCount: count,
           slidesToScroll: props.slidesToScroll,
@@ -65,5 +68,6 @@ const renderControls = (
       </div>
     );
   });
+};
 
 export default renderControls;

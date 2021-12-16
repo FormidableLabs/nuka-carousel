@@ -13,6 +13,13 @@ export enum Alignment {
   Left = 'left'
 }
 
+export enum Directions {
+  Next = 'next',
+  Prev = 'prev',
+  Up = 'up',
+  Down = 'down'
+}
+
 export enum Positions {
   TopLeft = 'TopLeft',
   TopCenter = 'TopCenter',
@@ -182,9 +189,9 @@ export interface CarouselProps {
   autoplayInterval: number;
   autoplayReverse: boolean;
   beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void;
-  cellAlign: Alignment;
+  cellAlign: Alignment; // migrated
   cellSpacing: number;
-  children: ReactNode | ReactNode[];
+  children: ReactNode | ReactNode[]; // migrated
   className?: string;
   defaultControlsConfig: DefaultControlsConfig;
   disableAnimation: boolean;
@@ -195,10 +202,10 @@ export interface CarouselProps {
   enableKeyboardControls: boolean;
   framePadding: string;
   getControlsContainerStyles: (key: Positions) => CSSProperties;
-  height: string;
-  heightMode: HeightMode;
-  initialSlideHeight?: number;
-  initialSlideWidth?: number;
+  height: string; // to be deprecated
+  heightMode: HeightMode; // to be deprecated
+  initialSlideHeight?: number; // to be deprecated
+  initialSlideWidth?: number; // to be deprecated
   innerRef?: MutableRefObject<HTMLDivElement>;
   keyCodeConfig: KeyCodeConfig;
   onDragStart: (
@@ -208,29 +215,29 @@ export interface CarouselProps {
   opacityScale?: number;
   pauseOnHover: boolean;
   renderAnnounceSlideMessage?: RenderAnnounceSlideMessage; // change it to be mandatory when you update the default prop
-  renderBottomCenterControls: RenderControls;
-  renderBottomLeftControls?: RenderControls;
-  renderBottomRightControls?: RenderControls;
-  renderCenterCenterControls?: RenderControls;
-  renderCenterLeftControls: RenderControls;
-  renderCenterRightControls: RenderControls;
-  renderTopCenterControls?: RenderControls;
-  renderTopLeftControls?: RenderControls;
-  renderTopRightControls?: RenderControls;
+  renderBottomCenterControls: RenderControls; // migrated
+  renderBottomLeftControls?: RenderControls; // migrated
+  renderBottomRightControls?: RenderControls; // migrated
+  renderCenterCenterControls?: RenderControls; // migrated
+  renderCenterLeftControls: RenderControls; // migrated
+  renderCenterRightControls: RenderControls; // migrated
+  renderTopCenterControls?: RenderControls; // migrated
+  renderTopLeftControls?: RenderControls; // migrated
+  renderTopRightControls?: RenderControls; // migrated
   scrollMode: ScrollMode;
-  slideIndex: number;
-  slideListMargin: number;
+  slideIndex: number; // ???
+  slideListMargin: number; // ???
   slideOffset: number;
   slidesToScroll: number;
-  slidesToShow: number;
-  slideWidth: number | string;
+  slidesToShow: number; // migrated
+  slideWidth: number | string; // to be deprecated
   speed: number;
-  style: CSSProperties;
+  style: CSSProperties; // migrated
   swiping: boolean;
   transitionMode: TransitionMode;
   vertical: boolean;
-  width: string;
-  withoutControls: boolean;
+  width: string; // to be deprecated
+  withoutControls: boolean; // migrated
   wrapAround: boolean;
   zoomScale?: number;
 }
