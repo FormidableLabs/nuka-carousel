@@ -10,7 +10,9 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   const [direction, setDirection] = useState<Directions | null>(null);
   const [pause, setPause] = useState<boolean>(false);
   const count = React.Children.count(props.children);
-  const timer: MutableRefObject<ReturnType<typeof setTimeout> | null> = useRef(null)
+  const timer: MutableRefObject<ReturnType<typeof setTimeout> | null> = useRef(
+    null
+  );
 
   const nextSlide = () => {
     // boundary
@@ -29,7 +31,6 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   };
 
   useEffect(() => {
-
     if (
       props.autoplay &&
       currentSlide >= 0 &&
@@ -47,21 +48,21 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
 
     // Clear the timeout if user hover on carousel
     if (props.autoplay && pause && timer?.current) {
-      clearTimeout(timer.current)
+      clearTimeout(timer.current);
     }
   }, [currentSlide, pause]);
 
   const onMouseEnter = () => {
     if (props.pauseOnHover) {
-      setPause(true)
+      setPause(true);
     }
-  }
+  };
 
   const onMouseLeave = () => {
     if (props.pauseOnHover) {
-      setPause(false)
+      setPause(false);
     }
-  }
+  };
 
   const slides = React.Children.map(props.children, (child, index) => (
     <Slide key={index} count={count}>
