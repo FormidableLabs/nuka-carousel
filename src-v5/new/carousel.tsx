@@ -10,9 +10,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   const [direction, setDirection] = useState<Directions | null>(null);
   const [pause, setPause] = useState<boolean>(false);
   const count = React.Children.count(props.children);
-  const timer: MutableRefObject<ReturnType<typeof setTimeout> | null> = useRef(
-    null
-  );
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const nextSlide = () => {
     // boundary
