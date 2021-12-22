@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, MutableRefObject } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Slide from './slide';
 import { getSliderListStyles } from './slider-list';
 import { CarouselProps, Directions } from './types';
