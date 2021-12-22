@@ -185,14 +185,14 @@ export interface CarouselProps {
   afterSlide: (index: number) => void;
   animation?: 'zoom';
   autoGenerateStyleTag: boolean;
-  autoplay: boolean;
-  autoplayInterval: number;
+  autoplay: boolean; // migrated
+  autoplayInterval: number; // migrated
   autoplayReverse: boolean;
   beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void;
   cellAlign: Alignment; // migrated
   cellSpacing: number;
   children: ReactNode | ReactNode[]; // migrated
-  className?: string;
+  className?: string; // migrated
   defaultControlsConfig: DefaultControlsConfig;
   disableAnimation: boolean;
   disableEdgeSwiping: boolean;
@@ -206,14 +206,14 @@ export interface CarouselProps {
   heightMode: HeightMode; // to be deprecated
   initialSlideHeight?: number; // to be deprecated
   initialSlideWidth?: number; // to be deprecated
-  innerRef?: MutableRefObject<HTMLDivElement>;
+  innerRef?: MutableRefObject<HTMLDivElement>; // migrated
   keyCodeConfig: KeyCodeConfig;
   onDragStart: (
     e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => void;
   onResize: () => void;
   opacityScale?: number;
-  pauseOnHover: boolean;
+  pauseOnHover: boolean; // migrated
   renderAnnounceSlideMessage?: RenderAnnounceSlideMessage; // change it to be mandatory when you update the default prop
   renderBottomCenterControls: RenderControls; // migrated
   renderBottomLeftControls?: RenderControls; // migrated
