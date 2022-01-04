@@ -7,6 +7,7 @@ import defaultProps from './default-carousel-props';
 
 const Carousel = (props: CarouselProps): React.ReactElement => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const [animation, setAnimation] = useState<boolean>(true);
   const [direction, setDirection] = useState<Directions | null>(null);
   const [pause, setPause] = useState<boolean>(false);
   const count = React.Children.count(props.children);
@@ -14,7 +15,13 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
 
   const nextSlide = () => {
     // boundary
-    if (currentSlide < count - props.slidesToShow) {
+    if (
+      !(
+        props.autoplay &&
+        !props.wrapAround &&
+        currentSlide < count - props.slidesToShow
+      )
+    ) {
       setDirection(Directions.Next);
       setCurrentSlide(currentSlide + 1);
     }
@@ -22,7 +29,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
 
   const prevSlide = () => {
     // boundary
-    if (currentSlide > 0) {
+    if (!(props.autoplay && !props.wrapAround && currentSlide > 0)) {
       setDirection(Directions.Prev);
       setCurrentSlide(currentSlide - 1);
     }
@@ -50,6 +57,41 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     }
   }, [currentSlide, pause]);
 
+  useEffect(() => {
+    // makes the loop infinity
+    if (props.wrapAround) {
+      const speed = props.speed || 500;
+
+      if (currentSlide === -props.slidesToShow) {
+        // prev
+        setTimeout(() => {
+          setAnimation(false);
+        }, speed);
+
+        setTimeout(() => {
+          setCurrentSlide(count - props.slidesToShow);
+        }, speed + 50);
+
+        setTimeout(() => {
+          setAnimation(true);
+        }, speed + 100);
+      } else if (currentSlide === count + props.slidesToShow) {
+        // next
+        setTimeout(() => {
+          setAnimation(false);
+        }, speed);
+
+        setTimeout(() => {
+          setCurrentSlide(props.slidesToShow);
+        }, speed + 50);
+
+        setTimeout(() => {
+          setAnimation(true);
+        }, speed + 100);
+      }
+    }
+  }, [currentSlide]);
+
   const onMouseEnter = () => {
     if (props.pauseOnHover) {
       setPause(true);
@@ -62,11 +104,20 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     }
   };
 
-  const slides = React.Children.map(props.children, (child, index) => (
-    <Slide key={index} count={count}>
-      {child}
-    </Slide>
-  ));
+  const renderSlides = (typeOfSlide?: 'prev-cloned' | 'next-cloned') => {
+    const slides = React.Children.map(props.children, (child, index) => (
+      <Slide
+        key={index}
+        count={count}
+        typeOfSlide={typeOfSlide}
+        wrapAround={props.wrapAround}
+      >
+        {child}
+      </Slide>
+    ));
+
+    return slides;
+  };
 
   return (
     <div
@@ -87,11 +138,16 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
           props.children,
           direction,
           currentSlide,
+          animation,
           props.slidesToShow,
-          props.cellAlign
+          props.cellAlign,
+          props.wrapAround,
+          props.speed
         )}
       >
-        {slides}
+        {props.wrapAround ? renderSlides('prev-cloned') : null}
+        {renderSlides()}
+        {props.wrapAround ? renderSlides('next-cloned') : null}
       </div>
       {renderControls(props, count, currentSlide, nextSlide, prevSlide)}
     </div>
