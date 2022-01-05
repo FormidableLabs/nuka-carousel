@@ -231,14 +231,14 @@ export interface CarouselProps {
   slidesToScroll: number;
   slidesToShow: number; // migrated
   slideWidth: number | string; // to be deprecated
-  speed: number;
+  speed: number; // migrated
   style: CSSProperties; // migrated
   swiping: boolean;
   transitionMode: TransitionMode;
   vertical: boolean;
   width: string; // to be deprecated
   withoutControls: boolean; // migrated
-  wrapAround: boolean;
+  wrapAround: boolean; // migrated
   zoomScale?: number;
 }
 

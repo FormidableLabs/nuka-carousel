@@ -13,6 +13,30 @@ const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
   cursor: disabled ? 'not-allowed' : 'pointer'
 });
 
+export const prevButtonDisabled = ({
+  currentSlide,
+  slideCount,
+  slidesToShow,
+  wrapAround
+}: ControlProps) => {
+  // inifite carousel with visible slides that are less than all slides
+  if (wrapAround && slidesToShow < slideCount) {
+    return false;
+  }
+
+  // inifite carousel with visible slide equal or less than all slides
+  if (wrapAround) {
+    return true;
+  }
+
+  // if the first slide is not visible return false (button is not disabled)
+  if (currentSlide !== 0) {
+    return false;
+  }
+
+  return true;
+};
+
 export const PreviousButton = (props: ControlProps) => {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -22,8 +46,7 @@ export const PreviousButton = (props: ControlProps) => {
   const { prevButtonClassName, prevButtonStyle = {}, prevButtonText } =
     props.defaultControlsConfig || {};
 
-  const disabled =
-    (props.currentSlide === 0 && !props.wrapAround) || props.slideCount === 0;
+  const disabled = prevButtonDisabled(props);
 
   return (
     <button
