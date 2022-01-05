@@ -7,7 +7,7 @@ import defaultProps from './default-carousel-props';
 
 const Carousel = (props: CarouselProps): React.ReactElement => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
-  const [animation, setAnimation] = useState<boolean>(true);
+  const [animation, setAnimation] = useState<boolean>(false);
   const [direction, setDirection] = useState<Directions | null>(null);
   const [pause, setPause] = useState<boolean>(false);
   const count = React.Children.count(props.children);
@@ -22,16 +22,24 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
         currentSlide < count - props.slidesToShow
       )
     ) {
+      setAnimation(true)
       setDirection(Directions.Next);
       setCurrentSlide(currentSlide + 1);
+      setTimeout(() => {
+        setAnimation(false);
+      }, props.speed || 500);
     }
   };
 
   const prevSlide = () => {
     // boundary
     if (!(props.autoplay && !props.wrapAround && currentSlide > 0)) {
+      setAnimation(true)
       setDirection(Directions.Prev);
       setCurrentSlide(currentSlide - 1);
+      setTimeout(() => {
+        setAnimation(false);
+      }, props.speed || 500);
     }
   };
 
@@ -65,29 +73,13 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
       if (currentSlide === -props.slidesToShow) {
         // prev
         setTimeout(() => {
-          setAnimation(false);
-        }, speed);
-
-        setTimeout(() => {
           setCurrentSlide(count - props.slidesToShow);
-        }, speed + 50);
-
-        setTimeout(() => {
-          setAnimation(true);
-        }, speed + 100);
+        }, speed + 10);
       } else if (currentSlide === count + props.slidesToShow) {
         // next
         setTimeout(() => {
-          setAnimation(false);
-        }, speed);
-
-        setTimeout(() => {
           setCurrentSlide(props.slidesToShow);
-        }, speed + 50);
-
-        setTimeout(() => {
-          setAnimation(true);
-        }, speed + 100);
+        }, speed + 10);
       }
     }
   }, [currentSlide]);
