@@ -4,6 +4,7 @@ import { getSliderListStyles } from './slider-list';
 import { CarouselProps, Directions } from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
+import { getIndexes } from './utils';
 
 const Carousel = (props: CarouselProps): React.ReactElement => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -22,10 +23,17 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
         currentSlide < count - props.slidesToShow
       )
     ) {
+      const [slide, endSlide] = getIndexes(
+        currentSlide,
+        currentSlide + 1,
+        count
+      );
+      props.beforeSlide(slide, endSlide);
       setAnimation(true);
       setDirection(Directions.Next);
       setCurrentSlide(currentSlide + 1);
       setTimeout(() => {
+        props.afterSlide(currentSlide);
         setAnimation(false);
       }, props.speed || 500);
     }
@@ -34,10 +42,17 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   const prevSlide = () => {
     // boundary
     if (!(props.autoplay && !props.wrapAround && currentSlide > 0)) {
+      const [slide, endSlide] = getIndexes(
+        currentSlide,
+        currentSlide - 1,
+        count
+      );
+      props.beforeSlide(slide, endSlide);
       setAnimation(true);
       setDirection(Directions.Prev);
       setCurrentSlide(currentSlide - 1);
       setTimeout(() => {
+        props.afterSlide(currentSlide);
         setAnimation(false);
       }, props.speed || 500);
     }
