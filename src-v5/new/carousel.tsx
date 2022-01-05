@@ -22,7 +22,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
         currentSlide < count - props.slidesToShow
       )
     ) {
-      setAnimation(true)
+      setAnimation(true);
       setDirection(Directions.Next);
       setCurrentSlide(currentSlide + 1);
       setTimeout(() => {
@@ -34,7 +34,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   const prevSlide = () => {
     // boundary
     if (!(props.autoplay && !props.wrapAround && currentSlide > 0)) {
-      setAnimation(true)
+      setAnimation(true);
       setDirection(Directions.Prev);
       setCurrentSlide(currentSlide - 1);
       setTimeout(() => {
