@@ -21,20 +21,19 @@ const getTransition = (
   direction: Directions | null,
   initialValue: number,
   currentSlide: number,
+  slidesToScroll: number,
   wrapAround?: boolean
 ): number => {
   if (direction === Directions.Next || direction === Directions.Prev) {
     if (wrapAround) {
       const slideTransition = 100 / (3 * count);
-      const fullTransition = slideTransition; // multiply with slidesToScroll
       const currentTransition =
         initialValue - slideTransition * (currentSlide - 1);
 
-      return currentTransition - fullTransition;
+      return currentTransition - slideTransition;
     }
     const slideTransition = (100 / count) * currentSlide;
-    const fullTransition = slideTransition; // multiply with slidesToScroll
-    return -(fullTransition + initialValue);
+    return -(slideTransition + initialValue);
   }
 
   return initialValue;
@@ -43,6 +42,7 @@ const getTransition = (
 const getPositioning = (
   cellAlign: 'left' | 'right' | 'center',
   slidesToShow: number,
+  slidesToScroll: number,
   count: number,
   direction: Directions | null,
   currentSlide: number,
@@ -55,6 +55,7 @@ const getPositioning = (
       direction,
       initialValue,
       currentSlide,
+      slidesToScroll,
       wrapAround
     );
     return `translate3d(${horizontalMove}%, 0, 0)`;
@@ -74,6 +75,7 @@ const getPositioning = (
       direction,
       initialValue,
       currentSlide,
+      slidesToScroll,
       wrapAround
     );
     return `translate3d(${horizontalMove}%, 0, 0)`;
@@ -95,6 +97,7 @@ const getPositioning = (
       direction,
       initialValue,
       currentSlide,
+      slidesToScroll,
       wrapAround
     );
     return `translate3d(${horizontalMove}%, 0, 0)`;
@@ -107,6 +110,7 @@ export const getSliderListStyles = (
   children: ReactNode | ReactNode[],
   direction: Directions | null,
   currentSlide: number,
+  slidesToScroll: number,
   animation: boolean,
   slidesToShow?: number,
   cellAlign?: 'left' | 'right' | 'center',
@@ -119,6 +123,7 @@ export const getSliderListStyles = (
   const positioning = getPositioning(
     cellAlign || Alignment.Left,
     slidesToShow || 1,
+    slidesToScroll,
     count,
     direction,
     currentSlide,

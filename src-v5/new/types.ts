@@ -190,17 +190,17 @@ export interface CarouselProps {
   autoplayReverse: boolean; // migrated
   beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void; // migrated
   cellAlign: Alignment; // migrated
-  cellSpacing: number;
+  cellSpacing: number; // migrated
   children: ReactNode | ReactNode[]; // migrated
   className?: string; // migrated
-  defaultControlsConfig: DefaultControlsConfig;
-  disableAnimation: boolean;
+  defaultControlsConfig: DefaultControlsConfig; // migrated, needs more testing
+  disableAnimation: boolean; // migrated
   disableEdgeSwiping: boolean;
   dragging: boolean;
   easing: D3EasingFunctions;
   edgeEasing: D3EasingFunctions;
   enableKeyboardControls: boolean;
-  framePadding: string;
+  framePadding: string; // to be deprecated
   getControlsContainerStyles: (key: Positions) => CSSProperties;
   height: string; // to be deprecated
   heightMode: HeightMode; // to be deprecated
@@ -211,7 +211,6 @@ export interface CarouselProps {
   onDragStart: (
     e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => void;
-  onResize: () => void;
   opacityScale?: number;
   pauseOnHover: boolean; // migrated
   renderAnnounceSlideMessage?: RenderAnnounceSlideMessage; // change it to be mandatory when you update the default prop
@@ -225,10 +224,9 @@ export interface CarouselProps {
   renderTopLeftControls?: RenderControls; // migrated
   renderTopRightControls?: RenderControls; // migrated
   scrollMode: ScrollMode;
-  slideIndex: number; // ???
-  slideListMargin: number; // ???
+  slideIndex: number; // to be deprecated
   slideOffset: number;
-  slidesToScroll: number;
+  slidesToScroll: number; // migrated
   slidesToShow: number; // migrated
   slideWidth: number | string; // to be deprecated
   speed: number; // migrated
@@ -251,7 +249,6 @@ export type TransitionProps = Pick<
   | 'dragging'
   | 'heightMode'
   | 'opacityScale'
-  | 'slideListMargin'
   | 'slideOffset'
   | 'slidesToScroll'
   | 'vertical'
