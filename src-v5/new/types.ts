@@ -182,13 +182,13 @@ export type RenderControlFunctionNames =
 type RenderControls = (props: ControlProps) => ReactElement;
 
 export interface CarouselProps {
-  afterSlide: (index: number) => void;
+  afterSlide: (index: number) => void; // migrated
   animation?: 'zoom';
-  autoGenerateStyleTag: boolean;
+  autoGenerateStyleTag: boolean; // deprecated
   autoplay: boolean; // migrated
   autoplayInterval: number; // migrated
-  autoplayReverse: boolean;
-  beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void;
+  autoplayReverse: boolean; // migrated
+  beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void; // migrated
   cellAlign: Alignment; // migrated
   cellSpacing: number;
   children: ReactNode | ReactNode[]; // migrated
