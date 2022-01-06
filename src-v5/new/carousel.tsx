@@ -25,17 +25,22 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     ) {
       const [slide, endSlide] = getIndexes(
         currentSlide,
-        currentSlide + 1,
+        currentSlide + props.slidesToScroll,
         count
       );
       props.beforeSlide(slide, endSlide);
-      setAnimation(true);
+      !props.disableAnimation && setAnimation(true);
+
       setDirection(Directions.Next);
-      setCurrentSlide(currentSlide + 1);
-      setTimeout(() => {
-        props.afterSlide(currentSlide);
-        setAnimation(false);
-      }, props.speed || 500);
+      setCurrentSlide(currentSlide + props.slidesToScroll);
+
+      setTimeout(
+        () => {
+          props.afterSlide(currentSlide);
+          !props.disableAnimation && setAnimation(false);
+        },
+        !props.disableAnimation ? props.speed || 500 : 40
+      );
     }
   };
 
@@ -44,17 +49,20 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     if (!(props.autoplay && !props.wrapAround && currentSlide > 0)) {
       const [slide, endSlide] = getIndexes(
         currentSlide,
-        currentSlide - 1,
+        currentSlide - props.slidesToScroll,
         count
       );
       props.beforeSlide(slide, endSlide);
-      setAnimation(true);
+      !props.disableAnimation && setAnimation(true);
       setDirection(Directions.Prev);
-      setCurrentSlide(currentSlide - 1);
-      setTimeout(() => {
-        props.afterSlide(currentSlide);
-        setAnimation(false);
-      }, props.speed || 500);
+      setCurrentSlide(currentSlide - props.slidesToScroll);
+      setTimeout(
+        () => {
+          props.afterSlide(currentSlide);
+          !props.disableAnimation && setAnimation(false);
+        },
+        !props.disableAnimation ? props.speed || 500 : 40
+      ); // if animation is disabled decrease the speed to 40
     }
   };
 
@@ -83,17 +91,18 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   useEffect(() => {
     // makes the loop infinity
     if (props.wrapAround) {
-      const speed = props.speed || 500;
+      // if animation is disabled decrease the speed to 40
+      const speed = !props.disableAnimation ? props.speed || 500 : 40;
 
-      if (currentSlide === -props.slidesToShow) {
+      if (currentSlide <= -props.slidesToShow) {
         // prev
         setTimeout(() => {
-          setCurrentSlide(count - props.slidesToShow);
+          setCurrentSlide(count - -currentSlide);
         }, speed + 10);
-      } else if (currentSlide === count + props.slidesToShow) {
+      } else if (currentSlide >= count + props.slidesToShow) {
         // next
         setTimeout(() => {
-          setCurrentSlide(props.slidesToShow);
+          setCurrentSlide(currentSlide - count);
         }, speed + 10);
       }
     }
@@ -118,6 +127,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
         count={count}
         typeOfSlide={typeOfSlide}
         wrapAround={props.wrapAround}
+        cellSpacing={props.cellSpacing}
       >
         {child}
       </Slide>
@@ -145,6 +155,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
           props.children,
           direction,
           currentSlide,
+          props.slidesToScroll,
           animation,
           props.slidesToShow,
           props.cellAlign,

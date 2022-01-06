@@ -37,9 +37,6 @@ const defaultProps = {
   onDragStart: () => {
     // do nothing
   },
-  onResize: () => {
-    // do nothing
-  },
   pauseOnHover: true,
   // renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage, // uncomment when is ready
   renderBottomCenterControls: (props: ControlProps) => (
@@ -51,7 +48,6 @@ const defaultProps = {
   renderCenterRightControls: (props: ControlProps) => <NextButton {...props} />,
   scrollMode: ScrollMode.Remainder,
   slideIndex: 0,
-  slideListMargin: 10,
   slideOffset: 25,
   slidesToScroll: 1,
   slidesToShow: 1,

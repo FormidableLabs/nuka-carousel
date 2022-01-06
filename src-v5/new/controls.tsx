@@ -52,7 +52,6 @@ const renderControls = (
           cellSpacing: props.cellSpacing,
           currentSlide,
           defaultControlsConfig: props.defaultControlsConfig || {},
-          // frameWidth: state.frameWidth, // but why?
           // goToSlide: (index) => goToSlide(index),
           goToSlide: () => {},
           nextSlide: () => nextSlide(),
@@ -61,7 +60,6 @@ const renderControls = (
           slideCount: count,
           slidesToScroll: props.slidesToScroll,
           slidesToShow: props.slidesToShow || 1,
-          // slideWidth: props.slideWidth,
           vertical: props.vertical,
           wrapAround: props.wrapAround
         })}
