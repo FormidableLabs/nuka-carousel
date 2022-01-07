@@ -196,7 +196,7 @@ export interface CarouselProps {
   defaultControlsConfig: DefaultControlsConfig; // migrated, needs more testing
   disableAnimation: boolean; // migrated
   disableEdgeSwiping: boolean;
-  dragging: boolean;
+  dragging: boolean; // migrated
   easing: D3EasingFunctions;
   edgeEasing: D3EasingFunctions;
   enableKeyboardControls: boolean;
@@ -231,7 +231,7 @@ export interface CarouselProps {
   slideWidth: number | string; // to be deprecated
   speed: number; // migrated
   style: CSSProperties; // migrated
-  swiping: boolean;
+  swiping: boolean; // migrated
   transitionMode: TransitionMode;
   vertical: boolean;
   width: string; // to be deprecated

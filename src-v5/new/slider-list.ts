@@ -21,7 +21,6 @@ const getTransition = (
   direction: Directions | null,
   initialValue: number,
   currentSlide: number,
-  slidesToScroll: number,
   wrapAround?: boolean
 ): number => {
   if (direction === Directions.Next || direction === Directions.Prev) {
@@ -39,14 +38,15 @@ const getTransition = (
   return initialValue;
 };
 
+// eslint-disable-next-line complexity
 const getPositioning = (
   cellAlign: 'left' | 'right' | 'center',
   slidesToShow: number,
-  slidesToScroll: number,
   count: number,
   direction: Directions | null,
   currentSlide: number,
-  wrapAround?: boolean
+  wrapAround?: boolean,
+  move?: number
 ): string => {
   if (!cellAlign || cellAlign === Alignment.Left) {
     const initialValue = wrapAround ? -(3 * (100 / count)) : 0;
@@ -55,10 +55,12 @@ const getPositioning = (
       direction,
       initialValue,
       currentSlide,
-      slidesToScroll,
       wrapAround
     );
-    return `translate3d(${horizontalMove}%, 0, 0)`;
+    const draggableMove = move
+      ? `calc(${horizontalMove}% - ${move}px)`
+      : `${horizontalMove}%`;
+    return `translate3d(${draggableMove}, 0, 0)`;
   }
   if (cellAlign === Alignment.Right) {
     const right = slidesToShow > 1 ? (100 / count) * (slidesToShow - 1) : 0;
@@ -75,10 +77,12 @@ const getPositioning = (
       direction,
       initialValue,
       currentSlide,
-      slidesToScroll,
       wrapAround
     );
-    return `translate3d(${horizontalMove}%, 0, 0)`;
+    const draggableMove = move
+      ? `calc(${horizontalMove}% - ${move}px)`
+      : `${horizontalMove}%`;
+    return `translate3d(${draggableMove}, 0, 0)`;
   }
   if (cellAlign === Alignment.Center) {
     const center =
@@ -97,10 +101,12 @@ const getPositioning = (
       direction,
       initialValue,
       currentSlide,
-      slidesToScroll,
       wrapAround
     );
-    return `translate3d(${horizontalMove}%, 0, 0)`;
+    const draggableMove = move
+      ? `calc(${horizontalMove}% - ${move}px)`
+      : `${horizontalMove}%`;
+    return `translate3d(${draggableMove}, 0, 0)`;
   }
 
   return 'translate3d(0, 0, 0)';
@@ -110,12 +116,12 @@ export const getSliderListStyles = (
   children: ReactNode | ReactNode[],
   direction: Directions | null,
   currentSlide: number,
-  slidesToScroll: number,
   animation: boolean,
   slidesToShow?: number,
   cellAlign?: 'left' | 'right' | 'center',
   wrapAround?: boolean,
-  speed?: number
+  speed?: number,
+  move?: number
 ): CSSProperties => {
   const count = React.Children.count(children);
 
@@ -123,11 +129,11 @@ export const getSliderListStyles = (
   const positioning = getPositioning(
     cellAlign || Alignment.Left,
     slidesToShow || 1,
-    slidesToScroll,
     count,
     direction,
     currentSlide,
-    wrapAround
+    wrapAround,
+    move
   );
 
   return {
