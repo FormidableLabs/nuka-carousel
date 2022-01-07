@@ -196,7 +196,7 @@ export interface CarouselProps {
   defaultControlsConfig: DefaultControlsConfig; // migrated, needs more testing
   disableAnimation: boolean; // migrated
   disableEdgeSwiping: boolean;
-  dragging: boolean;
+  dragging: boolean; // migrated
   easing: D3EasingFunctions;
   edgeEasing: D3EasingFunctions;
   enableKeyboardControls: boolean;

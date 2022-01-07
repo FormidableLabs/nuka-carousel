@@ -11,6 +11,12 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   const [animation, setAnimation] = useState<boolean>(false);
   const [direction, setDirection] = useState<Directions | null>(null);
   const [pause, setPause] = useState<boolean>(false);
+  const [dragging, setDragging] = useState<boolean>(false);
+  const [move, setMove] = useState<number>(0);
+  const carouselWidth = useRef<number | null>(null);
+  const prevMove = useRef<number>(0);
+  const carouselEl = useRef<HTMLDivElement>(null);
+
   const count = React.Children.count(props.children);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -108,6 +114,97 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     }
   }, [currentSlide]);
 
+  useEffect(() => {
+    if (carouselEl && carouselEl.current) {
+      carouselWidth.current = carouselEl.current.offsetWidth;
+    } else if (props.innerRef) {
+      carouselWidth.current = props.innerRef.current.offsetWidth;
+    }
+  }, []);
+
+  const onTouchStart = () => {
+    if (!props.swiping) {
+      return;
+    }
+    setDragging(true);
+  };
+
+  const onTouchEnd = () => {
+    if (!props.dragging) {
+      return;
+    }
+    if (dragging) {
+      setDragging(false);
+      if (move > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+      setMove(0);
+      prevMove.current = 0;
+    }
+  };
+
+  const onTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!props.dragging) {
+      return;
+    }
+    if (dragging) {
+      const moveValue = (carouselWidth?.current || 0) - e.touches[0].pageX;
+      const newPrevValue = moveValue - prevMove.current;
+
+      setMove(
+        newPrevValue > 20 && newPrevValue > -20
+          ? move + 20
+          : move + newPrevValue
+      );
+      prevMove.current = moveValue;
+    }
+  };
+
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    e?.preventDefault();
+
+    if (!props.dragging) {
+      return;
+    }
+
+    setDragging(true);
+  };
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    e?.preventDefault();
+    if (!props.dragging) {
+      return;
+    }
+    if (dragging) {
+      const moveValue = (carouselWidth?.current || 0) - e.screenX;
+      const newPrevValue = moveValue - prevMove.current;
+
+      setMove(
+        newPrevValue > 20 && newPrevValue > -20
+          ? move + 20
+          : move + newPrevValue
+      );
+      prevMove.current = moveValue;
+    }
+  };
+  const onMouseUp = (e?: React.MouseEvent<HTMLDivElement>) => {
+    e?.preventDefault();
+    if (!props.dragging) {
+      return;
+    }
+    if (dragging) {
+      setDragging(false);
+      if (move > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+      setMove(0);
+      prevMove.current = 0;
+    }
+  };
+
   const onMouseEnter = () => {
     if (props.pauseOnHover) {
       setPause(true);
@@ -118,6 +215,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     if (props.pauseOnHover) {
       setPause(false);
     }
+    onMouseUp();
   };
 
   const renderSlides = (typeOfSlide?: 'prev-cloned' | 'next-cloned') => {
@@ -145,9 +243,15 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
         position: 'relative',
         ...props.style
       }}
-      ref={props.innerRef}
+      ref={props.innerRef || carouselEl}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onMouseUp={onMouseUp}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      onTouchMove={onTouchMove}
     >
       <div
         className="slider-list"
@@ -155,12 +259,12 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
           props.children,
           direction,
           currentSlide,
-          props.slidesToScroll,
           animation,
           props.slidesToShow,
           props.cellAlign,
           props.wrapAround,
-          props.speed
+          props.speed,
+          move
         )}
       >
         {props.wrapAround ? renderSlides('prev-cloned') : null}
