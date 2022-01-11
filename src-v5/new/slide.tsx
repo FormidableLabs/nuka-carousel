@@ -10,7 +10,7 @@ const getSlideStyles = (
   cellSpacing?: number,
   animation?: 'zoom',
   speed?: number,
-  zoomScale?: number,
+  zoomScale?: number
 ): CSSProperties => {
   const width = getSlideWidth(count, wrapAround);
 
@@ -20,7 +20,9 @@ const getSlideStyles = (
     display: 'inline-block',
     padding: `0 ${cellSpacing ? cellSpacing / 2 : 0}px`,
     transition: animation ? `${speed || 500}ms ease 0s` : 'none',
-    transform: `${animation ? `scale(${isCurrentSlide ? 1 : (zoomScale || 0.85)})` : 'initial'}`
+    transform: `${
+      animation ? `scale(${isCurrentSlide ? 1 : zoomScale || 0.85})` : 'initial'
+    }`
   };
 };
 
@@ -44,15 +46,21 @@ const Slide = ({
   animation?: 'zoom';
   speed?: number;
   zoomScale?: number;
-}): JSX.Element => {
-  return (
-    <div
-      className={`slide ${typeOfSlide || ''}`}
-      style={getSlideStyles(count, isCurrentSlide, wrapAround, cellSpacing, animation, speed, zoomScale)}
-    >
-      {children}
-    </div>
-  );
-}
+}): JSX.Element => (
+  <div
+    className={`slide ${typeOfSlide || ''}`}
+    style={getSlideStyles(
+      count,
+      isCurrentSlide,
+      wrapAround,
+      cellSpacing,
+      animation,
+      speed,
+      zoomScale
+    )}
+  >
+    {children}
+  </div>
+);
 
 export default Slide;

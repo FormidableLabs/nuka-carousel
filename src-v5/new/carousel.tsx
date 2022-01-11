@@ -144,12 +144,10 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
         } else if (props.wrapAround) {
           nextSlide();
         }
-      } else {
-        if (!props.wrapAround && currentSlide > 0) {
-          prevSlide();
-        } else if (props.wrapAround) {
-          prevSlide();
-        }
+      } else if (!props.wrapAround && currentSlide > 0) {
+        prevSlide();
+      } else if (props.wrapAround) {
+        prevSlide();
       }
       setMove(0);
       prevMove.current = 0;
@@ -163,7 +161,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     if (dragging) {
       const moveValue = (carouselWidth?.current || 0) - e.touches[0].pageX;
       const newPrevValue = moveValue - prevMove.current;
-      
+
       props.onDragStart(e);
       setMove(
         newPrevValue > 20 && newPrevValue > -20
@@ -188,8 +186,9 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
       return;
     }
     if (dragging) {
-      const carouselRef = props.innerRef || carouselEl
-      const offsetX = e.clientX - (carouselRef.current?.getBoundingClientRect().left || 0)
+      const carouselRef = props.innerRef || carouselEl;
+      const offsetX =
+        e.clientX - (carouselRef.current?.getBoundingClientRect().left || 0);
       const moveValue = (carouselWidth?.current || 0) - offsetX;
       const newPrevValue = moveValue - prevMove.current;
 
@@ -216,12 +215,10 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
         } else if (props.wrapAround) {
           nextSlide();
         }
-      } else {
-        if (!props.wrapAround && currentSlide > 0) {
-          prevSlide();
-        } else if (props.wrapAround) {
-          prevSlide();
-        }
+      } else if (!props.wrapAround && currentSlide > 0) {
+        prevSlide();
+      } else if (props.wrapAround) {
+        prevSlide();
       }
       setMove(0);
       prevMove.current = 0;
@@ -246,7 +243,13 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
       <Slide
         key={index}
         count={count}
-        isCurrentSlide={props.wrapAround ? (currentSlide === index || currentSlide === index + count || currentSlide === index - count) : currentSlide === index}
+        isCurrentSlide={
+          props.wrapAround
+            ? currentSlide === index ||
+              currentSlide === index + count ||
+              currentSlide === index - count
+            : currentSlide === index
+        }
         typeOfSlide={typeOfSlide}
         wrapAround={props.wrapAround}
         cellSpacing={props.cellSpacing}
@@ -261,20 +264,24 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     return slides;
   };
 
-
   const [slide] = getIndexes(
     currentSlide,
     currentSlide - props.slidesToScroll,
     count
   );
   return (
-    <div style={{
-      position: 'relative',
-      padding: props.withoutControls ? 0 : '0 60px 50px'
-    }}>
+    <div
+      style={{
+        position: 'relative',
+        padding: props.withoutControls ? 0 : '0 60px 50px'
+      }}
+    >
       {!props.autoplay && (
         <AnnounceSlide
-          message={props.renderAnnounceSlideMessage({ currentSlide: slide, count })}
+          message={props.renderAnnounceSlideMessage({
+            currentSlide: slide,
+            count
+          })}
         />
       )}
       <div

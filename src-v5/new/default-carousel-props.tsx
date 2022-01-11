@@ -8,9 +8,7 @@ import {
   TransitionMode
 } from './types';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
-import AnnounceSlide, {
-  defaultRenderAnnounceSlideMessage
-} from './announce-slide';
+import { defaultRenderAnnounceSlideMessage } from './announce-slide';
 
 const defaultProps = {
   afterSlide: () => {
