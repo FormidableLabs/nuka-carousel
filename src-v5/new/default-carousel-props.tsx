@@ -8,6 +8,7 @@ import {
   TransitionMode
 } from './types';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
+import { defaultRenderAnnounceSlideMessage } from './announce-slide';
 
 const defaultProps = {
   afterSlide: () => {
@@ -38,7 +39,7 @@ const defaultProps = {
     // do nothing
   },
   pauseOnHover: true,
-  // renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage, // uncomment when is ready
+  renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
   renderBottomCenterControls: (props: ControlProps) => (
     <PagingDots {...props} />
   ),
