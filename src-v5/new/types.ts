@@ -135,7 +135,7 @@ export interface CarouselState {
   left: number;
   pauseOnHover?: boolean;
   resetWrapAroundPosition: boolean;
-  slideCount: number;
+  count: number;
   slideHeight: number | 'auto';
   slidesToScroll: number;
   slidesToShow: number;
@@ -145,7 +145,7 @@ export interface CarouselState {
 }
 
 type RenderAnnounceSlideMessage = (
-  props: Pick<CarouselState, 'currentSlide' | 'slideCount'>
+  props: Pick<CarouselState, 'currentSlide' | 'count'>
 ) => string;
 
 export interface ControlProps {
@@ -213,7 +213,7 @@ export interface CarouselProps {
   ) => void;
   opacityScale?: number;
   pauseOnHover: boolean; // migrated
-  renderAnnounceSlideMessage?: RenderAnnounceSlideMessage; // change it to be mandatory when you update the default prop
+  renderAnnounceSlideMessage: RenderAnnounceSlideMessage; // migrated
   renderBottomCenterControls: RenderControls; // migrated
   renderBottomLeftControls?: RenderControls; // migrated
   renderBottomRightControls?: RenderControls; // migrated
@@ -262,7 +262,7 @@ export type TransitionProps = Pick<
     | 'hasInteraction'
     | 'isWrappingAround'
     | 'left'
-    | 'slideCount'
+    | 'count'
     | 'slideHeight'
     | 'slideWidth'
     | 'slidesToShow'

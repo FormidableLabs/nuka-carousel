@@ -5,6 +5,7 @@ import { CarouselProps, Directions } from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
 import { getIndexes } from './utils';
+import AnnounceSlide from './announce-slide';
 
 const Carousel = (props: CarouselProps): React.ReactElement => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -260,12 +261,22 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     return slides;
   };
 
+
+  const [slide] = getIndexes(
+    currentSlide,
+    currentSlide - props.slidesToScroll,
+    count
+  );
   return (
     <div style={{
       position: 'relative',
       padding: props.withoutControls ? 0 : '0 60px 50px'
     }}>
-
+      {!props.autoplay && (
+        <AnnounceSlide
+          message={props.renderAnnounceSlideMessage({ currentSlide: slide, count })}
+        />
+      )}
       <div
         className={['slider-frame', props.className || ''].join(' ').trim()}
         style={{
