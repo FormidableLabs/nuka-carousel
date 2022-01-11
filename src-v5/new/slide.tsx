@@ -5,8 +5,10 @@ const getSlideWidth = (count: number, wrapAround?: boolean): string =>
 
 const getSlideStyles = (
   count: number,
+  isCurrentSlide: boolean,
   wrapAround?: boolean,
-  cellSpacing?: number
+  cellSpacing?: number,
+  animation?: 'zoom'
 ): CSSProperties => {
   const width = getSlideWidth(count, wrapAround);
 
@@ -14,7 +16,8 @@ const getSlideStyles = (
     width,
     height: '100%',
     display: 'inline-block',
-    padding: `0 ${cellSpacing ? cellSpacing / 2 : 0}px`
+    padding: `0 ${cellSpacing ? cellSpacing / 2 : 0}px`,
+    // transform: `${animation ? `scale(${isCurrentSlide ? 1 : 0.85})` : 'initial'}`
   };
 };
 
@@ -23,20 +26,25 @@ const Slide = ({
   children,
   typeOfSlide,
   wrapAround,
-  cellSpacing
+  cellSpacing,
+  animation
 }: {
   count: number;
   children: ReactNode | ReactNode[];
   typeOfSlide?: 'prev-cloned' | 'next-cloned';
   wrapAround?: boolean;
   cellSpacing?: number;
-}): JSX.Element => (
-  <div
-    className={`slide ${typeOfSlide || ''}`}
-    style={getSlideStyles(count, wrapAround, cellSpacing)}
-  >
-    {children}
-  </div>
-);
+  animation?: 'zoom'
+}): JSX.Element => {
+  const isCurrentSlide = false
+  return (
+    <div
+      className={`slide ${typeOfSlide || ''}`}
+      style={getSlideStyles(count, isCurrentSlide, wrapAround, cellSpacing, animation)}
+    >
+      {children}
+    </div>
+  );
+}
 
 export default Slide;
