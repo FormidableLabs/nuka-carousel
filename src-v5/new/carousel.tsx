@@ -21,6 +21,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const nextSlide = () => {
+    // TODO: change the boundary for cellAlign=center and right
     // boundary
     if (
       !(
@@ -244,10 +245,13 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
       <Slide
         key={index}
         count={count}
+        isCurrentSlide={props.wrapAround ? (currentSlide === index || currentSlide === index + count || currentSlide === index - count) : currentSlide === index}
         typeOfSlide={typeOfSlide}
         wrapAround={props.wrapAround}
         cellSpacing={props.cellSpacing}
         animation={props.animation}
+        speed={props.speed}
+        zoomScale={props.zoomScale}
       >
         {child}
       </Slide>

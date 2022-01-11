@@ -183,7 +183,7 @@ type RenderControls = (props: ControlProps) => ReactElement;
 
 export interface CarouselProps {
   afterSlide: (index: number) => void; // migrated
-  animation?: 'zoom';
+  animation?: 'zoom'; // migrated
   autoGenerateStyleTag: boolean; // deprecated
   autoplay: boolean; // migrated
   autoplayInterval: number; // migrated
@@ -237,7 +237,7 @@ export interface CarouselProps {
   width: string; // to be deprecated
   withoutControls: boolean; // migrated
   wrapAround: boolean; // migrated
-  zoomScale?: number;
+  zoomScale?: number; // migrated
 }
 
 export type TransitionProps = Pick<

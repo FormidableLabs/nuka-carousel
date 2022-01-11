@@ -21,18 +21,44 @@ const getTransition = (
   direction: Directions | null,
   initialValue: number,
   currentSlide: number,
+  cellAlign: 'left' | 'right' | 'center',
   wrapAround?: boolean
 ): number => {
   if (direction === Directions.Next || direction === Directions.Prev) {
-    if (wrapAround) {
-      const slideTransition = 100 / (3 * count);
-      const currentTransition =
-        initialValue - slideTransition * (currentSlide - 1);
 
-      return currentTransition - slideTransition;
+    if (cellAlign === Alignment.Left) {
+
+      if (wrapAround) {
+        const slideTransition = 100 / (3 * count);
+        const currentTransition =
+          initialValue - slideTransition * (currentSlide - 1);
+  
+        return currentTransition - slideTransition;
+      }
+      const slideTransition = (100 / count) * currentSlide;
+      return -(slideTransition + initialValue);
+
+    } else if (cellAlign === Alignment.Center) {
+      if (wrapAround) {
+        const slideTransition = 100 / (3 * count);
+        const currentTransition =
+          initialValue - slideTransition * (currentSlide - 1);
+        
+        return currentTransition - slideTransition;
+      }
+      const slideTransition = (100 / count) * currentSlide;
+      return initialValue - slideTransition;
+    } else if (cellAlign === Alignment.Right) {
+      if (wrapAround) {
+        const slideTransition = 100 / (3 * count);
+        const currentTransition =
+          initialValue - slideTransition * (currentSlide - 1);
+        
+        return currentTransition - slideTransition;
+      }
+      const slideTransition = (100 / count) * currentSlide;
+      return initialValue - slideTransition;
     }
-    const slideTransition = (100 / count) * currentSlide;
-    return -(slideTransition + initialValue);
   }
 
   return initialValue;
@@ -55,6 +81,7 @@ const getPositioning = (
       direction,
       initialValue,
       currentSlide,
+      cellAlign,
       wrapAround
     );
     const draggableMove = move
@@ -77,6 +104,7 @@ const getPositioning = (
       direction,
       initialValue,
       currentSlide,
+      cellAlign,
       wrapAround
     );
     const draggableMove = move
@@ -101,8 +129,10 @@ const getPositioning = (
       direction,
       initialValue,
       currentSlide,
+      cellAlign,
       wrapAround
     );
+
     const draggableMove = move
       ? `calc(${horizontalMove}% - ${move}px)`
       : `${horizontalMove}%`;
