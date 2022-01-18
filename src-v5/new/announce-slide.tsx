@@ -1,27 +1,28 @@
-import React, { CSSProperties } from 'react';
+import React, { AriaAttributes, CSSProperties } from 'react';
+
+const styles: CSSProperties = {
+  position: 'absolute',
+  width: '1px',
+  height: '1px',
+  overflow: 'hidden',
+  padding: 0,
+  margin: '-1px',
+  clip: 'rect(0, 0, 0, 0)',
+  whiteSpace: 'nowrap',
+  border: 0
+};
 
 const AnnounceSlide = ({
-  message
+  message,
+  ariaLive = 'polite'
 }: {
   message: string;
-}): React.ReactElement => {
-  const styles: CSSProperties = {
-    position: 'absolute',
-    width: '1px',
-    height: '1px',
-    overflow: 'hidden',
-    padding: 0,
-    margin: '-1px',
-    clip: 'rect(0, 0, 0, 0)',
-    whiteSpace: 'nowrap',
-    border: 0
-  };
-  return (
-    <div aria-live="polite" aria-atomic="true" style={styles} tabIndex={-1}>
-      {message}
-    </div>
-  );
-};
+  ariaLive: AriaAttributes['aria-live'];
+}): React.ReactElement => (
+  <div aria-live={ariaLive} aria-atomic="true" style={styles} tabIndex={-1}>
+    {message}
+  </div>
+);
 
 export const defaultRenderAnnounceSlideMessage = ({
   currentSlide,

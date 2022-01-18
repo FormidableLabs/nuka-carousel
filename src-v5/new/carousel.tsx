@@ -276,14 +276,14 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
         padding: props.withoutControls ? 0 : '0 60px 50px'
       }}
     >
-      {!props.autoplay && (
-        <AnnounceSlide
-          message={props.renderAnnounceSlideMessage({
-            currentSlide: slide,
-            count
-          })}
-        />
-      )}
+      <AnnounceSlide
+        ariaLive={props.autoplay && !pause ? 'off' : 'polite'}
+        message={props.renderAnnounceSlideMessage({
+          currentSlide: slide,
+          count
+        })}
+      />
+
       <div
         className={['slider-frame', props.className || ''].join(' ').trim()}
         style={{
