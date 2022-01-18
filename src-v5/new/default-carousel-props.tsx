@@ -34,7 +34,13 @@ const defaultProps = {
   getControlsContainerStyles: () => ({}),
   height: 'inherit',
   heightMode: HeightMode.Max,
-  keyCodeConfig: {},
+  keyCodeConfig: {
+    nextSlide: [39, 68, 38, 87],
+    previousSlide: [37, 65, 40, 83],
+    firstSlide: [81],
+    lastSlide: [69],
+    pause: [32]
+  },
   onDragStart: () => {
     // do nothing
   },

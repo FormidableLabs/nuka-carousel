@@ -119,6 +119,14 @@ export interface KeyCodeConfig {
   previousSlide?: number[];
 }
 
+export type KeyCodeFunction =
+  | 'nextSlide'
+  | 'previousSlide'
+  | 'firstSlide'
+  | 'lastSlide'
+  | 'pause'
+  | null;
+
 export interface KeyCodeMap {
   [key: number]: keyof KeyCodeConfig;
 }
@@ -183,8 +191,8 @@ type RenderControls = (props: ControlProps) => ReactElement;
 
 export interface CarouselProps {
   afterSlide: (index: number) => void; // migrated
-  animation?: 'zoom'; // migrated
-  autoGenerateStyleTag: boolean; // deprecated
+  animation?: 'zoom' | 'fade'; // migrated
+  autoGenerateStyleTag: boolean; // to be deprecated
   autoplay: boolean; // migrated
   autoplayInterval: number; // migrated
   autoplayReverse: boolean; // migrated
@@ -195,22 +203,22 @@ export interface CarouselProps {
   className?: string; // migrated
   defaultControlsConfig: DefaultControlsConfig; // migrated, needs more testing
   disableAnimation: boolean; // migrated
-  disableEdgeSwiping: boolean;
+  disableEdgeSwiping: boolean; // migrated
   dragging: boolean; // migrated
   easing: D3EasingFunctions;
   edgeEasing: D3EasingFunctions;
-  enableKeyboardControls: boolean;
+  enableKeyboardControls: boolean; // migrated
   framePadding: string; // to be deprecated
-  getControlsContainerStyles: (key: Positions) => CSSProperties;
+  getControlsContainerStyles: (key: Positions) => CSSProperties; // to be deprecated
   height: string; // to be deprecated
   heightMode: HeightMode; // to be deprecated
   initialSlideHeight?: number; // to be deprecated
   initialSlideWidth?: number; // to be deprecated
   innerRef?: MutableRefObject<HTMLDivElement>; // migrated
-  keyCodeConfig: KeyCodeConfig;
+  keyCodeConfig: KeyCodeConfig; // migrated
   onDragStart: (
     e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
-  ) => void;
+  ) => void; // migrated
   opacityScale?: number;
   pauseOnHover: boolean; // migrated
   renderAnnounceSlideMessage: RenderAnnounceSlideMessage; // migrated
@@ -225,14 +233,14 @@ export interface CarouselProps {
   renderTopRightControls?: RenderControls; // migrated
   scrollMode: ScrollMode; // to be deprecated
   slideIndex: number; // to be deprecated
-  slideOffset: number;
+  slideOffset: number; // to be deprecated
   slidesToScroll: number; // migrated
   slidesToShow: number; // migrated
   slideWidth: number | string; // to be deprecated
   speed: number; // migrated
   style: CSSProperties; // migrated
   swiping: boolean; // migrated
-  transitionMode: TransitionMode;
+  transitionMode: TransitionMode; // to be deprecated
   vertical: boolean;
   width: string; // to be deprecated
   withoutControls: boolean; // migrated

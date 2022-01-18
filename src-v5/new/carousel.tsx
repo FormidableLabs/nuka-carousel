@@ -1,10 +1,12 @@
+/* eslint-disable complexity */
+
 import React, { useEffect, useState, useRef } from 'react';
 import Slide from './slide';
 import { getSliderListStyles } from './slider-list';
-import { CarouselProps, Directions } from './types';
+import { CarouselProps, Directions, KeyCodeFunction } from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
-import { getIndexes } from './utils';
+import { getIndexes, addEvent, removeEvent } from './utils';
 import AnnounceSlide from './announce-slide';
 
 const Carousel = (props: CarouselProps): React.ReactElement => {
@@ -14,11 +16,14 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   const [pause, setPause] = useState<boolean>(false);
   const [dragging, setDragging] = useState<boolean>(false);
   const [move, setMove] = useState<number>(0);
+  const [keyboardMove, setKeyboardMove] = useState<KeyCodeFunction>(null);
   const carouselWidth = useRef<number | null>(null);
-  const prevMove = useRef<number>(0);
-  const carouselEl = useRef<HTMLDivElement>(null);
 
   const count = React.Children.count(props.children);
+
+  const focus = useRef<boolean>(false);
+  const prevMove = useRef<number>(0);
+  const carouselEl = useRef<HTMLDivElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const nextSlide = () => {
@@ -118,11 +123,63 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   }, [currentSlide]);
 
   useEffect(() => {
+    if (props.enableKeyboardControls && keyboardMove && focus.current) {
+      switch (keyboardMove) {
+        case 'nextSlide':
+          nextSlide(); // set boundaries for !wrapAround
+          break;
+        case 'previousSlide':
+          prevSlide(); // set boundaries for !wrapAround
+          break;
+        case 'firstSlide':
+          setCurrentSlide(0);
+          break;
+        case 'lastSlide':
+          setCurrentSlide(count - props.slidesToShow);
+          break;
+        case 'pause':
+          if (pause && props.autoplay) {
+            setPause(false);
+            break;
+          } else if (props.autoplay) {
+            setPause(true);
+            break;
+          }
+          break;
+      }
+      setKeyboardMove(null);
+    }
+  }, [keyboardMove]);
+
+  const onKeyPress = (e: Event) => {
+    if (
+      props.enableKeyboardControls &&
+      focus.current &&
+      (e as KeyboardEvent).keyCode
+    ) {
+      const keyConfig = props.keyCodeConfig;
+      for (const func in keyConfig) {
+        if (keyConfig[func].includes((e as KeyboardEvent).keyCode)) {
+          setKeyboardMove(func as KeyCodeFunction);
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
     if (carouselEl && carouselEl.current) {
       carouselWidth.current = carouselEl.current.offsetWidth;
     } else if (props.innerRef) {
       carouselWidth.current = props.innerRef.current.offsetWidth;
     }
+
+    if (props.enableKeyboardControls) {
+      addEvent(document, 'keydown', onKeyPress);
+    }
+
+    return () => {
+      removeEvent(document, 'keydown', onKeyPress);
+    };
   }, []);
 
   const onTouchStart = () => {
@@ -161,19 +218,31 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     if (dragging) {
       const moveValue = (carouselWidth?.current || 0) - e.touches[0].pageX;
       const newPrevValue = moveValue - prevMove.current;
-
       props.onDragStart(e);
-      setMove(
+
+      const moveState =
         newPrevValue > 20 && newPrevValue > -20
           ? move + 20
-          : move + newPrevValue
-      );
+          : move + newPrevValue;
+
+      if (
+        !props.wrapAround &&
+        props.disableEdgeSwiping &&
+        ((currentSlide <= 0 && moveState <= 0) ||
+          (moveState > 0 && currentSlide >= count - props.slidesToShow))
+      ) {
+        return;
+      }
+
+      setMove(moveState);
       prevMove.current = moveValue;
     }
   };
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     e?.preventDefault();
+    const carouselRef = props.innerRef || carouselEl;
+    carouselRef?.current?.focus();
 
     if (!props.dragging) {
       return;
@@ -181,6 +250,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
 
     setDragging(true);
   };
+
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!props.dragging) {
       return;
@@ -194,11 +264,21 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
 
       props.onDragStart(e);
 
-      setMove(
+      const moveState =
         newPrevValue > 20 && newPrevValue > -20
           ? move + 20
-          : move + newPrevValue
-      );
+          : move + newPrevValue;
+
+      if (
+        !props.wrapAround &&
+        props.disableEdgeSwiping &&
+        ((currentSlide <= 0 && moveState <= 0) ||
+          (moveState > 0 && currentSlide >= count - props.slidesToShow))
+      ) {
+        return;
+      }
+
+      setMove(moveState);
       prevMove.current = moveValue;
     }
   };
@@ -239,27 +319,33 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   };
 
   const renderSlides = (typeOfSlide?: 'prev-cloned' | 'next-cloned') => {
-    const slides = React.Children.map(props.children, (child, index) => (
-      <Slide
-        key={index}
-        count={count}
-        isCurrentSlide={
-          props.wrapAround
-            ? currentSlide === index ||
-              currentSlide === index + count ||
-              currentSlide === index - count
-            : currentSlide === index
-        }
-        typeOfSlide={typeOfSlide}
-        wrapAround={props.wrapAround}
-        cellSpacing={props.cellSpacing}
-        animation={props.animation}
-        speed={props.speed}
-        zoomScale={props.zoomScale}
-      >
-        {child}
-      </Slide>
-    ));
+    const slides = React.Children.map(props.children, (child, index) => {
+      const isCurrentSlide = props.wrapAround
+        ? currentSlide === index ||
+          currentSlide === index + count ||
+          currentSlide === index - count
+        : currentSlide === index;
+
+      return (
+        <Slide
+          key={`${typeOfSlide}-${index}`}
+          count={count}
+          currentSlide={currentSlide}
+          index={index}
+          isCurrentSlide={isCurrentSlide}
+          typeOfSlide={typeOfSlide}
+          wrapAround={props.wrapAround}
+          cellSpacing={props.cellSpacing}
+          animation={props.animation}
+          slidesToShow={props.slidesToShow}
+          speed={props.speed}
+          zoomScale={props.zoomScale}
+          cellAlign={props.cellAlign}
+        >
+          {child}
+        </Slide>
+      );
+    });
 
     return slides;
   };
@@ -269,6 +355,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     currentSlide - props.slidesToScroll,
     count
   );
+
   return (
     <div
       style={{
@@ -290,8 +377,14 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
           overflow: 'hidden',
           width: '100%',
           position: 'relative',
+          outline: 'none',
           ...props.style
         }}
+        aria-label="carousel-slider"
+        role="region"
+        tabIndex={0}
+        onFocus={() => (focus.current = true)}
+        onBlur={() => (focus.current = false)}
         ref={props.innerRef || carouselEl}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
