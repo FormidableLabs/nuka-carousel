@@ -21,7 +21,8 @@ const renderControls = (
   count: number,
   currentSlide: number,
   nextSlide: () => void,
-  prevSlide: () => void
+  prevSlide: () => void,
+  slidesToScroll: number
 ): React.ReactElement[] | null => {
   if (props.withoutControls) {
     return null;
@@ -58,7 +59,7 @@ const renderControls = (
           previousSlide: () => prevSlide(),
           scrollMode: props.scrollMode,
           slideCount: count,
-          slidesToScroll: props.slidesToScroll,
+          slidesToScroll,
           slidesToShow: props.slidesToShow || 1,
           vertical: props.vertical,
           wrapAround: props.wrapAround
