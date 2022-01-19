@@ -16,12 +16,14 @@ const getSlideStyles = (
 ): CSSProperties => {
   const width = getSlideWidth(count, wrapAround);
   const visibleSlideOpacity = isVisibleSlide ? 1 : 0;
+  const animationSpeed = animation === 'fade' ? 200 : 500;
+
   return {
     width,
     height: '100%',
     display: 'inline-block',
     padding: `0 ${cellSpacing ? cellSpacing / 2 : 0}px`,
-    transition: animation ? `${speed || 500}ms ease 0s` : 'none',
+    transition: animation ? `${speed || animationSpeed}ms ease 0s` : 'none',
     transform: `${
       animation === 'zoom'
         ? `scale(${isCurrentSlide ? 1 : zoomScale || 0.85})`

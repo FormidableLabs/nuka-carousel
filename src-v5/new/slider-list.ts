@@ -148,7 +148,8 @@ export const getSliderListStyles = (
   cellAlign?: 'left' | 'right' | 'center',
   wrapAround?: boolean,
   speed?: number,
-  move?: number
+  move?: number,
+  slideAnimation?: 'fade' | 'zoom'
 ): CSSProperties => {
   const count = React.Children.count(children);
 
@@ -166,7 +167,10 @@ export const getSliderListStyles = (
   return {
     width,
     textAlign: 'left',
-    transition: animation ? `${speed || 500}ms ease 0s` : 'none',
+    transition:
+      animation && slideAnimation !== 'fade'
+        ? `${speed || 500}ms ease 0s`
+        : 'none',
     transform: positioning
   };
 };

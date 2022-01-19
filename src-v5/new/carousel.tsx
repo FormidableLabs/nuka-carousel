@@ -26,6 +26,9 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   const carouselEl = useRef<HTMLDivElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const slidesToScroll =
+    props.animation === 'fade' ? props.slidesToShow : props.slidesToScroll;
+
   const nextSlide = () => {
     // TODO: change the boundary for cellAlign=center and right
     // boundary
@@ -38,7 +41,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     ) {
       const [slide, endSlide] = getIndexes(
         currentSlide,
-        currentSlide + props.slidesToScroll,
+        currentSlide + slidesToScroll,
         count
       );
 
@@ -46,7 +49,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
       !props.disableAnimation && setAnimation(true);
 
       setDirection(Directions.Next);
-      setCurrentSlide(currentSlide + props.slidesToScroll);
+      setCurrentSlide(currentSlide + slidesToScroll);
 
       setTimeout(
         () => {
@@ -63,13 +66,13 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     if (!(props.autoplay && !props.wrapAround && currentSlide > 0)) {
       const [slide, endSlide] = getIndexes(
         currentSlide,
-        currentSlide - props.slidesToScroll,
+        currentSlide - slidesToScroll,
         count
       );
       props.beforeSlide(slide, endSlide);
       !props.disableAnimation && setAnimation(true);
       setDirection(Directions.Prev);
-      setCurrentSlide(currentSlide - props.slidesToScroll);
+      setCurrentSlide(currentSlide - slidesToScroll);
       setTimeout(
         () => {
           props.afterSlide(currentSlide);
@@ -352,7 +355,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
 
   const [slide] = getIndexes(
     currentSlide,
-    currentSlide - props.slidesToScroll,
+    currentSlide - slidesToScroll,
     count
   );
 
@@ -406,7 +409,8 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
             props.cellAlign,
             props.wrapAround,
             props.speed,
-            move
+            move,
+            props.animation
           )}
         >
           {props.wrapAround ? renderSlides('prev-cloned') : null}
@@ -414,7 +418,14 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
           {props.wrapAround ? renderSlides('next-cloned') : null}
         </div>
       </div>
-      {renderControls(props, count, currentSlide, nextSlide, prevSlide)}
+      {renderControls(
+        props,
+        count,
+        currentSlide,
+        nextSlide,
+        prevSlide,
+        slidesToScroll
+      )}
     </div>
   );
 };
