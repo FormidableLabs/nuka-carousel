@@ -162,7 +162,11 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     ) {
       const keyConfig = props.keyCodeConfig;
       for (const func in keyConfig) {
-        if (keyConfig[func].includes((e as KeyboardEvent).keyCode)) {
+        if (
+          keyConfig[func as keyof typeof keyConfig]?.includes(
+            (e as KeyboardEvent).keyCode
+          )
+        ) {
           setKeyboardMove(func as KeyCodeFunction);
         }
       }
