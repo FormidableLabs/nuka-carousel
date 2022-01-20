@@ -38,4 +38,3 @@ jobs:
           yarn run check
           yarn run test
           yarn run test-e2e
-          yarn run test:e2e:ci
