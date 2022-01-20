@@ -193,13 +193,13 @@ export interface CarouselProps {
   afterSlide: (index: number) => void; // migrated
   animation?: 'zoom' | 'fade'; // migrated
   autoGenerateStyleTag: boolean; // to be deprecated
-  autoplay: boolean; // migrated
-  autoplayInterval: number; // migrated
-  autoplayReverse: boolean; // migrated
+  autoplay: boolean; // migrated - tested for !wrapAround
+  autoplayInterval: number; // migrated - tested for !wrapAround
+  autoplayReverse: boolean; // migrated - tested for !wrapAround
   beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void; // migrated
   cellAlign: Alignment; // migrated
   cellSpacing: number; // migrated
-  children: ReactNode | ReactNode[]; // migrated
+  children: ReactNode | ReactNode[]; // migrated - tested
   className?: string; // migrated
   defaultControlsConfig: DefaultControlsConfig; // migrated, needs more testing
   disableAnimation: boolean; // migrated
@@ -220,7 +220,7 @@ export interface CarouselProps {
     e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => void; // migrated
   opacityScale?: number;
-  pauseOnHover: boolean; // migrated
+  pauseOnHover: boolean; // migrated - tested
   renderAnnounceSlideMessage: RenderAnnounceSlideMessage; // migrated
   renderBottomCenterControls: RenderControls; // migrated
   renderBottomLeftControls?: RenderControls; // migrated
@@ -235,7 +235,7 @@ export interface CarouselProps {
   slideIndex: number; // to be deprecated
   slideOffset: number; // to be deprecated
   slidesToScroll: number; // migrated
-  slidesToShow: number; // migrated
+  slidesToShow: number; // migrated - tested for !wrapAround
   slideWidth: number | string; // to be deprecated
   speed: number; // migrated
   style: CSSProperties; // migrated

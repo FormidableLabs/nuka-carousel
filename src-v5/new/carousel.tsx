@@ -10,7 +10,11 @@ import { getIndexes, addEvent, removeEvent } from './utils';
 import AnnounceSlide from './announce-slide';
 
 const Carousel = (props: CarouselProps): React.ReactElement => {
-  const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const count = React.Children.count(props.children);
+
+  const [currentSlide, setCurrentSlide] = useState<number>(
+    props.autoplayReverse ? count - props.slidesToShow : 0
+  );
   const [animation, setAnimation] = useState<boolean>(false);
   const [direction, setDirection] = useState<Directions | null>(null);
   const [pause, setPause] = useState<boolean>(false);
@@ -18,8 +22,6 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   const [move, setMove] = useState<number>(0);
   const [keyboardMove, setKeyboardMove] = useState<KeyCodeFunction>(null);
   const carouselWidth = useRef<number | null>(null);
-
-  const count = React.Children.count(props.children);
 
   const focus = useRef<boolean>(false);
   const prevMove = useRef<number>(0);
@@ -32,13 +34,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   const nextSlide = () => {
     // TODO: change the boundary for cellAlign=center and right
     // boundary
-    if (
-      !(
-        props.autoplay &&
-        !props.wrapAround &&
-        currentSlide < count - props.slidesToShow
-      )
-    ) {
+    if (currentSlide < count - props.slidesToShow) {
       const [slide, endSlide] = getIndexes(
         currentSlide,
         currentSlide + slidesToScroll,
@@ -63,7 +59,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
 
   const prevSlide = () => {
     // boundary
-    if (!(props.autoplay && !props.wrapAround && currentSlide > 0)) {
+    if (currentSlide > 0) {
       const [slide, endSlide] = getIndexes(
         currentSlide,
         currentSlide - slidesToScroll,
@@ -87,7 +83,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     if (
       props.autoplay &&
       currentSlide >= 0 &&
-      currentSlide < count - props.slidesToShow &&
+      currentSlide <= count - props.slidesToShow &&
       !pause
     ) {
       timer.current = setTimeout(() => {
@@ -322,7 +318,6 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     if (props.pauseOnHover) {
       setPause(false);
     }
-    onMouseUp();
   };
 
   const renderSlides = (typeOfSlide?: 'prev-cloned' | 'next-cloned') => {
@@ -365,10 +360,13 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
 
   return (
     <div
+      className={'slider-container'}
       style={{
         position: 'relative',
         padding: props.withoutControls ? 0 : '0 60px 50px'
       }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <AnnounceSlide
         ariaLive={props.autoplay && !pause ? 'off' : 'polite'}
@@ -393,8 +391,6 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
         onFocus={() => (focus.current = true)}
         onBlur={() => (focus.current = false)}
         ref={props.innerRef || carouselEl}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
         onMouseUp={onMouseUp}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}

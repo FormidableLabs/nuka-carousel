@@ -18,44 +18,41 @@ const getSliderListWidth = (
 
 const getTransition = (
   count: number,
-  direction: Directions | null,
   initialValue: number,
   currentSlide: number,
   cellAlign: 'left' | 'right' | 'center',
   wrapAround?: boolean
 ): number => {
-  if (direction === Directions.Next || direction === Directions.Prev) {
-    if (cellAlign === Alignment.Left) {
-      if (wrapAround) {
-        const slideTransition = 100 / (3 * count);
-        const currentTransition =
-          initialValue - slideTransition * (currentSlide - 1);
+  if (cellAlign === Alignment.Left) {
+    if (wrapAround) {
+      const slideTransition = 100 / (3 * count);
+      const currentTransition =
+        initialValue - slideTransition * (currentSlide - 1);
 
-        return currentTransition - slideTransition;
-      }
-      const slideTransition = (100 / count) * currentSlide;
-      return -(slideTransition + initialValue);
-    } else if (cellAlign === Alignment.Center) {
-      if (wrapAround) {
-        const slideTransition = 100 / (3 * count);
-        const currentTransition =
-          initialValue - slideTransition * (currentSlide - 1);
-
-        return currentTransition - slideTransition;
-      }
-      const slideTransition = (100 / count) * currentSlide;
-      return initialValue - slideTransition;
-    } else if (cellAlign === Alignment.Right) {
-      if (wrapAround) {
-        const slideTransition = 100 / (3 * count);
-        const currentTransition =
-          initialValue - slideTransition * (currentSlide - 1);
-
-        return currentTransition - slideTransition;
-      }
-      const slideTransition = (100 / count) * currentSlide;
-      return initialValue - slideTransition;
+      return currentTransition - slideTransition;
     }
+    const slideTransition = (100 / count) * currentSlide;
+    return -(slideTransition + initialValue);
+  } else if (cellAlign === Alignment.Center) {
+    if (wrapAround) {
+      const slideTransition = 100 / (3 * count);
+      const currentTransition =
+        initialValue - slideTransition * (currentSlide - 1);
+
+      return currentTransition - slideTransition;
+    }
+    const slideTransition = (100 / count) * currentSlide;
+    return initialValue - slideTransition;
+  } else if (cellAlign === Alignment.Right) {
+    if (wrapAround) {
+      const slideTransition = 100 / (3 * count);
+      const currentTransition =
+        initialValue - slideTransition * (currentSlide - 1);
+
+      return currentTransition - slideTransition;
+    }
+    const slideTransition = (100 / count) * currentSlide;
+    return initialValue - slideTransition;
   }
 
   return initialValue;
@@ -75,7 +72,6 @@ const getPositioning = (
     const initialValue = wrapAround ? -(3 * (100 / count)) : 0;
     const horizontalMove = getTransition(
       count,
-      direction,
       initialValue,
       currentSlide,
       cellAlign,
@@ -98,7 +94,6 @@ const getPositioning = (
 
     const horizontalMove = getTransition(
       count,
-      direction,
       initialValue,
       currentSlide,
       cellAlign,
@@ -123,7 +118,6 @@ const getPositioning = (
 
     const horizontalMove = getTransition(
       count,
-      direction,
       initialValue,
       currentSlide,
       cellAlign,
