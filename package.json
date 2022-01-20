@@ -92,6 +92,7 @@
     "test": "jest test --config jest.unit.config.js",
     "test-e2e": "jest test --config jest.e2e.config.js",
     "test:e2e": "cypress open",
+    "test:e2e:ci": "cypress run",
     "version": "npm run build",
     "storybook": "start-storybook -p 6006",
     "storybook-build": "build-storybook",

@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactNode } from 'react';
-import { Alignment, Directions } from './types';
+import { Alignment } from './types';
 
 const getSliderListWidth = (
   count: number,
@@ -63,13 +63,12 @@ const getPositioning = (
   cellAlign: 'left' | 'right' | 'center',
   slidesToShow: number,
   count: number,
-  direction: Directions | null,
   currentSlide: number,
   wrapAround?: boolean,
   move?: number
 ): string => {
   if (!cellAlign || cellAlign === Alignment.Left) {
-    const initialValue = wrapAround ? -(3 * (100 / count)) : 0;
+    const initialValue = wrapAround ? -(count * (100 / (3 * count))) : 0;
     const horizontalMove = getTransition(
       count,
       initialValue,
@@ -135,7 +134,6 @@ const getPositioning = (
 
 export const getSliderListStyles = (
   children: ReactNode | ReactNode[],
-  direction: Directions | null,
   currentSlide: number,
   animation: boolean,
   slidesToShow?: number,
@@ -152,7 +150,6 @@ export const getSliderListStyles = (
     cellAlign || Alignment.Left,
     slidesToShow || 1,
     count,
-    direction,
     currentSlide,
     wrapAround,
     move
