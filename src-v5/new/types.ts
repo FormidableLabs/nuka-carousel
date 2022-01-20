@@ -234,8 +234,8 @@ export interface CarouselProps {
   scrollMode: ScrollMode; // to be deprecated
   slideIndex: number; // to be deprecated
   slideOffset: number; // to be deprecated
-  slidesToScroll: number; // migrated
-  slidesToShow: number; // migrated - tested for !wrapAround
+  slidesToScroll: number; // migrated - tested for !wrapAround
+  slidesToShow: number; // migrated - tested
   slideWidth: number | string; // to be deprecated
   speed: number; // migrated
   style: CSSProperties; // migrated
@@ -244,7 +244,7 @@ export interface CarouselProps {
   vertical: boolean;
   width: string; // to be deprecated
   withoutControls: boolean; // migrated
-  wrapAround: boolean; // migrated
+  wrapAround: boolean; // migrated - tested
   zoomScale?: number; // migrated
 }
 

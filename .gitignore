@@ -35,3 +35,6 @@ es
 lib
 yarn-error.log*
 package-lock.json
+
+cypress/screenshots
+cypress/videos

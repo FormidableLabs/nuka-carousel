@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Slide from './slide';
 import { getSliderListStyles } from './slider-list';
-import { CarouselProps, Directions, KeyCodeFunction } from './types';
+import { CarouselProps, KeyCodeFunction } from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
 import { getIndexes, addEvent, removeEvent } from './utils';
@@ -16,7 +16,6 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     props.autoplayReverse ? count - props.slidesToShow : 0
   );
   const [animation, setAnimation] = useState<boolean>(false);
-  const [direction, setDirection] = useState<Directions | null>(null);
   const [pause, setPause] = useState<boolean>(false);
   const [dragging, setDragging] = useState<boolean>(false);
   const [move, setMove] = useState<number>(0);
@@ -34,7 +33,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   const nextSlide = () => {
     // TODO: change the boundary for cellAlign=center and right
     // boundary
-    if (currentSlide < count - props.slidesToShow) {
+    if (props.wrapAround || currentSlide < count - props.slidesToShow) {
       const [slide, endSlide] = getIndexes(
         currentSlide,
         currentSlide + slidesToScroll,
@@ -44,7 +43,6 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
       props.beforeSlide(slide, endSlide);
       !props.disableAnimation && setAnimation(true);
 
-      setDirection(Directions.Next);
       setCurrentSlide(currentSlide + slidesToScroll);
 
       setTimeout(
@@ -59,7 +57,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
 
   const prevSlide = () => {
     // boundary
-    if (currentSlide > 0) {
+    if (props.wrapAround || currentSlide > 0) {
       const [slide, endSlide] = getIndexes(
         currentSlide,
         currentSlide - slidesToScroll,
@@ -67,7 +65,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
       );
       props.beforeSlide(slide, endSlide);
       !props.disableAnimation && setAnimation(true);
-      setDirection(Directions.Prev);
+
       setCurrentSlide(currentSlide - slidesToScroll);
       setTimeout(
         () => {
@@ -402,7 +400,6 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
           className="slider-list"
           style={getSliderListStyles(
             props.children,
-            direction,
             currentSlide,
             animation,
             props.slidesToShow,

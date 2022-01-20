@@ -106,6 +106,44 @@ context('Carousel', () => {
       cy.get('button').contains('Next').should('not.be.disabled');
     });
 
+    it('should render carousel with 6 slides and 2 visible slides and slides to scroll equal to 2', () => {
+      const params = {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      };
+
+      cy.visit(
+        `http://localhost:3000/?slides=6&params=${JSON.stringify(params)}`
+      );
+
+      cy.get('.slide.slide-visible')
+        .should('have.length', 2)
+        .find('img')
+        .first()
+        .should('have.attr', 'data-slide', 'Slide 1');
+
+      cy.get('button').contains('Prev').should('be.disabled');
+      cy.get('button').contains('Next').should('not.be.disabled').click();
+
+      cy.get('.slide.slide-visible')
+        .should('have.length', 2)
+        .find('img')
+        .first()
+        .should('have.attr', 'data-slide', 'Slide 3');
+
+      cy.get('button').contains('Prev').should('not.be.disabled');
+      cy.get('button').contains('Next').should('not.be.disabled').click();
+
+      cy.get('.slide.slide-visible')
+        .should('have.length', 2)
+        .find('img')
+        .first()
+        .should('have.attr', 'data-slide', 'Slide 5');
+
+      cy.get('button').contains('Prev').should('not.be.disabled');
+      cy.get('button').contains('Next').should('be.disabled');
+    });
+
     it('should render carousel with 6 slides and 3 visible slides and go through all of the slides with autoplay and without clicking the Next button', () => {
       const params = {
         slidesToShow: 3,
@@ -242,6 +280,25 @@ context('Carousel', () => {
         .find('img')
         .first()
         .should('have.attr', 'data-slide', 'Slide 4');
+    });
+    it('should render carousel with 5 slides and 2 visible slides without controls', () => {
+      const params = {
+        slidesToShow: 2,
+        withoutControls: true
+      };
+
+      cy.visit(
+        `http://localhost:3000/?slides=5&params=${JSON.stringify(params)}`
+      );
+
+      cy.get('.slide.slide-visible')
+        .should('have.length', 2)
+        .find('img')
+        .first()
+        .should('have.attr', 'data-slide', 'Slide 1');
+
+      cy.get('button').should('not.exist');
+      cy.get('.paging-item').should('not.exist');
     });
   });
 });

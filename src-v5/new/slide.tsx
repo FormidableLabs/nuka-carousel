@@ -40,22 +40,22 @@ const isVisibleSlide = (
   cellAlign: Alignment
 ) => {
   if (slidesToShow === 1) {
-    return false;
+    return index === currentSlide;
   }
 
   if (cellAlign === Alignment.Left) {
-    return index < currentSlide + slidesToShow && index > currentSlide;
+    return index < currentSlide + slidesToShow && index >= currentSlide;
   }
 
   if (cellAlign === Alignment.Center) {
     return (
-      (index >= currentSlide - slidesToShow / 2 && index < currentSlide) ||
+      (index >= currentSlide - slidesToShow / 2 && index <= currentSlide) ||
       (index > currentSlide && index <= currentSlide + slidesToShow / 2)
     );
   }
 
   if (cellAlign === Alignment.Right) {
-    return index < currentSlide && index > currentSlide - slidesToShow;
+    return index <= currentSlide && index > currentSlide - slidesToShow;
   }
 
   return false;
@@ -119,12 +119,12 @@ const Slide = ({
   return (
     <div
       className={`slide ${typeOfSlide || ''} ${
-        isCurrentSlide || isVisible ? 'slide-visible' : ''
+        isVisible ? 'slide-visible' : ''
       }`}
       style={getSlideStyles(
         count,
         isCurrentSlide,
-        isCurrentSlide || isVisible,
+        isVisible,
         wrapAround,
         cellSpacing,
         animation,
