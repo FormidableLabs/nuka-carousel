@@ -12,7 +12,9 @@ import AnnounceSlide from './announce-slide';
 const Carousel = (props: CarouselProps): React.ReactElement => {
   const count = React.Children.count(props.children);
 
-  const [currentSlide, setCurrentSlide] = useState<number>(props.autoplayReverse ? count - props.slidesToShow : 0);
+  const [currentSlide, setCurrentSlide] = useState<number>(
+    props.autoplayReverse ? count - props.slidesToShow : 0
+  );
   const [animation, setAnimation] = useState<boolean>(false);
   const [direction, setDirection] = useState<Directions | null>(null);
   const [pause, setPause] = useState<boolean>(false);
