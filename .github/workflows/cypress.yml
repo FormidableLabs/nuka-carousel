@@ -15,5 +15,5 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: npm run start:next
+          start: cd ./examples/nextjs && npm install && npm run dev
           browser: chrome
