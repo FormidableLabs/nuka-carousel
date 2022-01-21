@@ -15,7 +15,5 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: 
-            run: | 
-              cd ./examples/nextjs && yarn install && yarn dev
+          start: yarn run start:next:ci
           browser: chrome
