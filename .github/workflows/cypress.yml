@@ -17,3 +17,5 @@ jobs:
         with:
           start: yarn run start:next:ci
           browser: chrome
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 60
