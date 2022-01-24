@@ -89,7 +89,6 @@
     "start:next": "cd ./examples/nextjs && yarn dev",
     "start:next:ci": "cd ./examples/nextjs && yarn install && yarn dev",
     "test": "jest test --config jest.unit.config.js",
-    "test-e2e": "jest test --config jest.e2e.config.js",
     "test:e2e": "cypress open",
     "test:e2e:ci": "cypress run",
     "version": "npm run build",

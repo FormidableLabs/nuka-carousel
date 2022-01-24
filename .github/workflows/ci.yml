@@ -37,4 +37,3 @@ jobs:
         run: |
           yarn run check
           yarn run test
-          yarn run test-e2e
