@@ -13,8 +13,7 @@
     "d3-ease": "^1.0.3",
     "exenv": "^1.2.0",
     "prop-types": "^15.6.0",
-    "react-move": "^6.5.0",
-    "wicg-inert": "^3.1.0"
+    "react-move": "^6.5.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",
@@ -55,9 +54,7 @@
     "eslint-plugin-react": "^7.27.1",
     "jest": "^24.7.1",
     "jest-enzyme": "^7.0.2",
-    "jest-puppeteer-preset": "^2.0.1",
     "prettier": "2.1.2",
-    "puppeteer": "^5.5.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "typescript": "^4.5.2",
@@ -91,7 +88,6 @@
     "start:next": "cd ./examples/nextjs && yarn dev",
     "start:next:ci": "cd ./examples/nextjs && yarn install && yarn dev",
     "test": "jest test --config jest.unit.config.js",
-    "test-e2e": "jest test --config jest.e2e.config.js",
     "test:e2e": "cypress open",
     "test:e2e:ci": "cypress run",
     "version": "npm run build",

@@ -1,5 +1,4 @@
 import React from 'react';
-import 'wicg-inert';
 import PropTypes from 'prop-types';
 import ExecutionEnvironment from 'exenv';
 import Animate from 'react-move/Animate';
