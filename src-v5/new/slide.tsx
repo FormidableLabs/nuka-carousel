@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { CSSProperties, ReactNode, useRef, useEffect } from 'react';
 import { Alignment } from './types';
 
 const getSlideWidth = (count: number, wrapAround?: boolean): string =>
@@ -116,8 +116,22 @@ const Slide = ({
     cellAlign
   );
 
+  const slideRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const node = slideRef.current;
+    if (node) {
+      if (isVisible) {
+        node.removeAttribute('inert');
+      } else {
+        node.setAttribute('inert', 'true');
+      }
+    }
+  }, [isVisible]);
+
   return (
     <div
+      ref={slideRef}
       className={`slide ${typeOfSlide || ''} ${
         isVisible ? 'slide-visible' : ''
       }`}
