@@ -29,51 +29,40 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
 
   const slidesToScroll =
     props.animation === 'fade' ? props.slidesToShow : props.slidesToScroll;
+  const dragThreshold = (carouselWidth.current || 0) / 5;
+  const carouselRef = props.innerRef || carouselEl;
+
+  const moveSlide = (to?: number) => {
+    const [slide, endSlide] = getIndexes(
+      currentSlide,
+      currentSlide - slidesToScroll,
+      count
+    );
+    to && props.beforeSlide(slide, endSlide);
+    !props.disableAnimation && setAnimation(true);
+
+    setCurrentSlide(to ?? currentSlide);
+    setTimeout(
+      () => {
+        to && props.afterSlide(currentSlide);
+        !props.disableAnimation && setAnimation(false);
+      },
+      !props.disableAnimation ? props.speed || 500 : 40
+    ); // if animation is disabled decrease the speed to 40
+  };
 
   const nextSlide = () => {
     // TODO: change the boundary for cellAlign=center and right
     // boundary
     if (props.wrapAround || currentSlide < count - props.slidesToShow) {
-      const [slide, endSlide] = getIndexes(
-        currentSlide,
-        currentSlide + slidesToScroll,
-        count
-      );
-
-      props.beforeSlide(slide, endSlide);
-      !props.disableAnimation && setAnimation(true);
-
-      setCurrentSlide(currentSlide + slidesToScroll);
-
-      setTimeout(
-        () => {
-          props.afterSlide(currentSlide);
-          !props.disableAnimation && setAnimation(false);
-        },
-        !props.disableAnimation ? props.speed || 500 : 40
-      );
+      moveSlide(currentSlide + slidesToScroll);
     }
   };
 
   const prevSlide = () => {
     // boundary
     if (props.wrapAround || currentSlide > 0) {
-      const [slide, endSlide] = getIndexes(
-        currentSlide,
-        currentSlide - slidesToScroll,
-        count
-      );
-      props.beforeSlide(slide, endSlide);
-      !props.disableAnimation && setAnimation(true);
-
-      setCurrentSlide(currentSlide - slidesToScroll);
-      setTimeout(
-        () => {
-          props.afterSlide(currentSlide);
-          !props.disableAnimation && setAnimation(false);
-        },
-        !props.disableAnimation ? props.speed || 500 : 40
-      ); // if animation is disabled decrease the speed to 40
+      moveSlide(currentSlide - slidesToScroll);
     }
   };
 
@@ -183,6 +172,28 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     };
   }, []);
 
+  const handleDragEnd = () => {
+    if (!props.dragging || !dragging) return;
+
+    setDragging(false);
+
+    if (Math.abs(move) <= dragThreshold) {
+      moveSlide();
+      setMove(0);
+      prevMove.current = 0;
+      return;
+    }
+
+    if (move > 0) {
+      nextSlide();
+    } else {
+      prevSlide();
+    }
+
+    setMove(0);
+    prevMove.current = 0;
+  };
+
   const onTouchStart = () => {
     if (!props.swiping) {
       return;
@@ -191,25 +202,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   };
 
   const onTouchEnd = () => {
-    if (!props.dragging) {
-      return;
-    }
-    if (dragging) {
-      setDragging(false);
-      if (move > 0) {
-        if (!props.wrapAround && currentSlide < count - props.slidesToShow) {
-          nextSlide();
-        } else if (props.wrapAround) {
-          nextSlide();
-        }
-      } else if (!props.wrapAround && currentSlide > 0) {
-        prevSlide();
-      } else if (props.wrapAround) {
-        prevSlide();
-      }
-      setMove(0);
-      prevMove.current = 0;
-    }
+    handleDragEnd();
   };
 
   const onTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -242,7 +235,6 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     e?.preventDefault();
-    const carouselRef = props.innerRef || carouselEl;
     carouselRef?.current?.focus();
 
     if (!props.dragging) {
@@ -253,57 +245,41 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!props.dragging) {
+    if (!props.dragging || !dragging) return;
+
+    const offsetX =
+      e.clientX - (carouselRef.current?.getBoundingClientRect().left || 0);
+    const moveValue = ((carouselWidth?.current || 0) - offsetX) * 0.8;
+    const newPrevValue = moveValue - prevMove.current;
+
+    props.onDragStart(e);
+
+    const moveState = move + newPrevValue;
+
+    // Exit drag early if passed threshold
+    if (Math.abs(move) > dragThreshold) {
+      handleDragEnd();
       return;
     }
-    if (dragging) {
-      const carouselRef = props.innerRef || carouselEl;
-      const offsetX =
-        e.clientX - (carouselRef.current?.getBoundingClientRect().left || 0);
-      const moveValue = (carouselWidth?.current || 0) - offsetX;
-      const newPrevValue = moveValue - prevMove.current;
 
-      props.onDragStart(e);
-
-      const moveState =
-        newPrevValue > 20 && newPrevValue > -20
-          ? move + 20
-          : move + newPrevValue;
-
-      if (
-        !props.wrapAround &&
-        props.disableEdgeSwiping &&
-        ((currentSlide <= 0 && moveState <= 0) ||
-          (moveState > 0 && currentSlide >= count - props.slidesToShow))
-      ) {
-        return;
-      }
-
-      setMove(moveState);
-      prevMove.current = moveValue;
+    if (
+      !props.wrapAround &&
+      props.disableEdgeSwiping &&
+      ((currentSlide <= 0 && moveState <= 0) ||
+        (moveState > 0 && currentSlide >= count - props.slidesToShow))
+    ) {
+      return;
     }
+
+    if (prevMove.current !== 0) {
+      setMove(moveState);
+    }
+    prevMove.current = moveValue;
   };
+
   const onMouseUp = (e?: React.MouseEvent<HTMLDivElement>) => {
     e?.preventDefault();
-    if (!props.dragging) {
-      return;
-    }
-    if (dragging) {
-      setDragging(false);
-      if (move > 0) {
-        if (!props.wrapAround && currentSlide < count - props.slidesToShow) {
-          nextSlide();
-        } else if (props.wrapAround) {
-          nextSlide();
-        }
-      } else if (!props.wrapAround && currentSlide > 0) {
-        prevSlide();
-      } else if (props.wrapAround) {
-        prevSlide();
-      }
-      setMove(0);
-      prevMove.current = 0;
-    }
+    handleDragEnd();
   };
 
   const onMouseEnter = () => {
@@ -392,6 +368,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
         onMouseUp={onMouseUp}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
+        onMouseLeave={onMouseUp}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
         onTouchMove={onTouchMove}
