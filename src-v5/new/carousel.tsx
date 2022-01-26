@@ -205,10 +205,6 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     setDragging(true);
   };
 
-  const onTouchEnd = () => {
-    handleDragEnd();
-  };
-
   const handlePointerMove = (m: number) => {
     if (!props.dragging || !dragging) return;
 
@@ -362,7 +358,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseUp}
         onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
+        onTouchEnd={handleDragEnd}
         onTouchMove={onTouchMove}
       >
         <div
