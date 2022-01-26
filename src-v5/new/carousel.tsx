@@ -56,6 +56,8 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     // boundary
     if (props.wrapAround || currentSlide < count - props.slidesToShow) {
       moveSlide(currentSlide + slidesToScroll);
+    } else {
+      moveSlide();
     }
   };
 
@@ -63,6 +65,8 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     // boundary
     if (props.wrapAround || currentSlide > 0) {
       moveSlide(currentSlide - slidesToScroll);
+    } else {
+      moveSlide();
     }
   };
 
@@ -237,9 +241,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     e?.preventDefault();
     carouselRef?.current?.focus();
 
-    if (!props.dragging) {
-      return;
-    }
+    if (!props.dragging) return;
 
     setDragging(true);
   };
@@ -268,6 +270,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
       ((currentSlide <= 0 && moveState <= 0) ||
         (moveState > 0 && currentSlide >= count - props.slidesToShow))
     ) {
+      prevMove.current = moveValue;
       return;
     }
 
