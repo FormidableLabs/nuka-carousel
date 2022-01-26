@@ -209,54 +209,11 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     handleDragEnd();
   };
 
-  const onTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (!props.dragging) {
-      return;
-    }
-    if (dragging) {
-      const moveValue = (carouselWidth?.current || 0) - e.touches[0].pageX;
-      const newPrevValue = moveValue - prevMove.current;
-      props.onDragStart(e);
-
-      const moveState =
-        newPrevValue > 20 && newPrevValue > -20
-          ? move + 20
-          : move + newPrevValue;
-
-      if (
-        !props.wrapAround &&
-        props.disableEdgeSwiping &&
-        ((currentSlide <= 0 && moveState <= 0) ||
-          (moveState > 0 && currentSlide >= count - props.slidesToShow))
-      ) {
-        return;
-      }
-
-      setMove(moveState);
-      prevMove.current = moveValue;
-    }
-  };
-
-  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    e?.preventDefault();
-    carouselRef?.current?.focus();
-
-    if (!props.dragging) return;
-
-    setDragging(true);
-  };
-
-  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handlePointerMove = (m: number) => {
     if (!props.dragging || !dragging) return;
 
-    const offsetX =
-      e.clientX - (carouselRef.current?.getBoundingClientRect().left || 0);
-    const moveValue = ((carouselWidth?.current || 0) - offsetX) * 0.8;
-    const newPrevValue = moveValue - prevMove.current;
-
-    props.onDragStart(e);
-
-    const moveState = move + newPrevValue;
+    const moveValue = m * 0.75; // Friction
+    const moveState = move + (moveValue - prevMove.current);
 
     // Exit drag early if passed threshold
     if (Math.abs(move) > dragThreshold) {
@@ -277,7 +234,39 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     if (prevMove.current !== 0) {
       setMove(moveState);
     }
+
     prevMove.current = moveValue;
+  };
+
+  const onTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!props.dragging || !dragging) return;
+
+    props.onDragStart(e);
+
+    const moveValue = (carouselWidth?.current || 0) - e.touches[0].pageX;
+
+    handlePointerMove(moveValue);
+  };
+
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    e?.preventDefault();
+    carouselRef?.current?.focus();
+
+    if (!props.dragging) return;
+
+    setDragging(true);
+  };
+
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!props.dragging || !dragging) return;
+
+    props.onDragStart(e);
+
+    const offsetX =
+      e.clientX - (carouselRef.current?.getBoundingClientRect().left || 0);
+    const moveValue = (carouselWidth?.current || 0) - offsetX;
+
+    handlePointerMove(moveValue);
   };
 
   const onMouseUp = (e?: React.MouseEvent<HTMLDivElement>) => {
