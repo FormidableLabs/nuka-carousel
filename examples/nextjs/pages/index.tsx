@@ -19,26 +19,18 @@ const Home = ({ urlParams }) => {
   const colorsArray = colors.slice(0, Number(urlParams.slides || 9));
 
   const slides = colorsArray.map((color, index) => (
-    <div style={{ position: 'relative' }} key={color}>
-      <button
-        style={{ position: 'absolute', inset: 0, margin: 'auto', height: 30 }}
-      >
-        Test control
-      </button>
-      <img
-        src={`https://via.placeholder.com/800/${color}/ffffff/&text=slide${
-          index + 1
-        }`}
-        alt={`Slide ${index + 1}`}
-        key={color}
-        data-slide={`Slide ${index + 1}`}
-        style={{
-          width: '100%',
-          height: 400,
-          objectFit: 'cover'
-        }}
-      />
-    </div>
+    <img
+      src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${
+        index + 1
+      }`}
+      alt={`Slide ${index + 1}`}
+      key={color}
+      data-slide={`Slide ${index + 1}`}
+      style={{
+        width: '100%',
+        height: 400
+      }}
+    />
   ));
 
   const carouselParams = urlParams.params ? JSON.parse(urlParams.params) : {};
@@ -56,15 +48,7 @@ const Home = ({ urlParams }) => {
 
       <main className={styles.main}>
         <h1>Nuka Carousel - SSR Example Formidable Labs</h1>
-        <Carousel
-          enableKeyboardControls
-          wrapAround
-          slidesToShow={3}
-          // slidesToScroll={3}
-          {...carouselParams}
-        >
-          {slides}
-        </Carousel>
+        <Carousel {...carouselParams}>{slides}</Carousel>
       </main>
     </div>
   );
