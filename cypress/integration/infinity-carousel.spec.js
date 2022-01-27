@@ -445,7 +445,7 @@ context('Infinity Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 3');
 
-      cy.wait(101git0);
+      cy.wait(1010);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
