@@ -71,16 +71,36 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   };
 
   useEffect(() => {
-    if (
-      props.autoplay &&
-      currentSlide >= 0 &&
-      currentSlide <= count - props.slidesToShow &&
-      !pause
-    ) {
+    if (props.autoplay && !animation && props.wrapAround) {
+      if (currentSlide > count) {
+        setCurrentSlide(currentSlide - count);
+        if (timer?.current) {
+          clearTimeout(timer.current);
+        }
+      } else if (currentSlide < 0) {
+        setCurrentSlide(count - -currentSlide);
+        if (timer?.current) {
+          clearTimeout(timer.current);
+        }
+      }
+    }
+  }, [animation, currentSlide]);
+
+  useEffect(() => {
+    if (props.autoplay && !pause) {
       timer.current = setTimeout(() => {
         if (props.autoplayReverse) {
-          prevSlide();
-        } else {
+          if (!props.wrapAround && currentSlide > 0) {
+            prevSlide();
+          } else if (props.wrapAround) {
+            prevSlide();
+          }
+        } else if (
+          !props.wrapAround &&
+          currentSlide < count - props.slidesToShow
+        ) {
+          nextSlide();
+        } else if (props.wrapAround) {
           nextSlide();
         }
       }, props.autoplayInterval);
@@ -94,16 +114,16 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
 
   useEffect(() => {
     // makes the loop infinity
-    if (props.wrapAround) {
-      // if animation is disabled decrease the speed to 40
-      const speed = !props.disableAnimation ? props.speed || 500 : 40;
+    if (props.wrapAround && !props.autoplay) {
+      // if animation is disabled decrease the speed to 0
+      const speed = !props.disableAnimation ? props.speed || 500 : 0;
 
       if (currentSlide <= -props.slidesToShow) {
         // prev
         setTimeout(() => {
           setCurrentSlide(count - -currentSlide);
         }, speed + 10);
-      } else if (currentSlide >= count + props.slidesToShow) {
+      } else if (currentSlide >= count) {
         // next
         setTimeout(() => {
           setCurrentSlide(currentSlide - count);
