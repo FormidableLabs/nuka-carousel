@@ -399,7 +399,7 @@ context('Infinity Carousel', () => {
         .should('have.attr', 'data-slide', 'Slide 3');
     });
 
-    it.only('should render infinity carousel with 5 slides and 3 visible slides and go through all of the slides with autoplay and without clicking the Next button and when hover the slider should pause', () => {
+    it('should render infinity carousel with 5 slides and 3 visible slides and go through all of the slides with autoplay and without clicking the Next button and when hover the slider should pause', () => {
       const params = {
         slidesToShow: 3,
         autoplay: true,
