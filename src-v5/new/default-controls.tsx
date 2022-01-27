@@ -26,7 +26,7 @@ export const prevButtonDisabled = ({
 
   // inifite carousel with visible slide equal or less than all slides
   if (wrapAround) {
-    return true;
+    return false;
   }
 
   // if the first slide is not visible return false (button is not disabled)
@@ -78,7 +78,7 @@ export const nextButtonDisabled = ({
 
   // inifite carousel with visible slide equal or less than all slides
   if (wrapAround) {
-    return true;
+    return false;
   }
 
   // if the last slide is not visible return false (button is not disabled)
