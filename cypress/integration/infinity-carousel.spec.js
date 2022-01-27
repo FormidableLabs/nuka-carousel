@@ -399,7 +399,7 @@ context('Infinity Carousel', () => {
         .should('have.attr', 'data-slide', 'Slide 3');
     });
 
-    it('should render infinity carousel with 5 slides and 3 visible slides and go through all of the slides with autoplay and without clicking the Next button and when hover the slider should pause', () => {
+    it.only('should render infinity carousel with 5 slides and 3 visible slides and go through all of the slides with autoplay and without clicking the Next button and when hover the slider should pause', () => {
       const params = {
         slidesToShow: 3,
         autoplay: true,
@@ -418,7 +418,7 @@ context('Infinity Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 1');
 
-      cy.wait(1010);
+      cy.wait(1050);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -437,7 +437,7 @@ context('Infinity Carousel', () => {
 
       cy.get('.slider-container').trigger('mouseout');
 
-      cy.wait(1010);
+      cy.wait(1050);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -445,7 +445,7 @@ context('Infinity Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 3');
 
-      cy.wait(1010);
+      cy.wait(1050);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
