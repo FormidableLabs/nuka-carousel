@@ -1,7 +1,6 @@
-// TODO: Needs refactoring
 /* eslint-disable complexity */
 import React, { CSSProperties } from 'react';
-import { Alignment, ControlProps } from './types';
+import { ControlProps } from './types';
 
 const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
   border: 0,
@@ -122,19 +121,14 @@ export const NextButton = (props: ControlProps) => {
   );
 };
 
-export const getDotIndexes = (
-  slideCount: number,
-  slidesToScroll: number,
-  slidesToShow: number,
-  cellAlign: Alignment
-) => {
+export const getDotIndexes = (slideCount: number, slidesToScroll: number) => {
   const dotIndexes = [];
   const scrollSlides = slidesToScroll === 0 ? 1 : slidesToScroll;
 
   for (let i = 0; i < slideCount; i += scrollSlides) {
     dotIndexes.push(i);
   }
-  
+
   return dotIndexes;
 };
 
@@ -156,12 +150,7 @@ export const PagingDots = (props: ControlProps) => {
     fill: 'black'
   });
 
-  const indexes = getDotIndexes(
-    props.slideCount,
-    props.slidesToScroll,
-    props.slidesToShow,
-    props.cellAlign
-  );
+  const indexes = getDotIndexes(props.slideCount, props.slidesToScroll);
   const {
     pagingDotsContainerClassName,
     pagingDotsClassName,
