@@ -85,11 +85,10 @@ const getPositioning = (
     const right = slidesToShow > 1 ? (100 / count) * (slidesToShow - 1) : 0;
 
     // if wrapAround is enabled
-    const startingPoint = 3 * (100 / count);
-    const rightAlignedFirstSlide = (100 / (count * 3)) * (slidesToShow - 1);
-    const initialValue = wrapAround
-      ? -(startingPoint - rightAlignedFirstSlide)
-      : right;
+    const rightAlignedFirstSlide =
+      -(count * (100 / (3 * count))) + (slidesToShow - 1) * (100 / (3 * count));
+
+    const initialValue = wrapAround ? rightAlignedFirstSlide : right;
 
     const horizontalMove = getTransition(
       count,
@@ -108,12 +107,11 @@ const getPositioning = (
       slidesToShow > 1 ? (100 / count) * Math.floor(slidesToShow / 2) : 0;
 
     // if wrapAround is enabled
-    const startingPoint = 3 * (100 / count);
     const centerAlignedFirstSlide =
-      (100 / (count * 3)) * Math.floor(slidesToShow / 2);
-    const initialValue = wrapAround
-      ? -(startingPoint - centerAlignedFirstSlide)
-      : center;
+      -(count * (100 / (3 * count))) +
+      Math.floor(slidesToShow / 2) * (100 / (3 * count));
+
+    const initialValue = wrapAround ? centerAlignedFirstSlide : center;
 
     const horizontalMove = getTransition(
       count,

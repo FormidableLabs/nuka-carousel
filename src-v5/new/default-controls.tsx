@@ -195,7 +195,11 @@ export const PagingDots = (props: ControlProps) => {
   return (
     <ul className={pagingDotsContainerClassName} style={listStyles}>
       {indexes.map((index, i) => {
-        let isActive = props.currentSlide === index;
+        let isActive =
+          props.currentSlide === index ||
+          props.currentSlide - props.slideCount === index ||
+          props.currentSlide + props.slideCount === index;
+
         // the below condition checks and sets navigation dots active if the current slide falls in the current index range
         if (props.currentSlide < index && props.currentSlide > indexes[i - 1]) {
           isActive = true;

@@ -404,6 +404,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
         props,
         count,
         currentSlide,
+        moveSlide,
         nextSlide,
         prevSlide,
         slidesToScroll
