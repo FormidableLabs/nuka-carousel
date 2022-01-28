@@ -129,37 +129,12 @@ export const getDotIndexes = (
   cellAlign: Alignment
 ) => {
   const dotIndexes = [];
-  let lastDotIndex = slideCount - slidesToShow;
-  const slidesToShowIsDecimal = slidesToShow % 1 !== 0;
-
-  switch (cellAlign) {
-    case Alignment.Center:
-    case Alignment.Right:
-      lastDotIndex += slidesToShow - 1;
-      break;
-  }
-  // the below condition includes the last index if slidesToShow is decimal
-  if (cellAlign === Alignment.Left && slidesToShowIsDecimal) {
-    lastDotIndex += slidesToShow - 1;
-  }
-
-  if (lastDotIndex < 0) {
-    return [0];
-  }
-
   const scrollSlides = slidesToScroll === 0 ? 1 : slidesToScroll;
 
-  for (let i = 0; i < lastDotIndex; i += scrollSlides) {
+  for (let i = 0; i < slideCount; i += scrollSlides) {
     dotIndexes.push(i);
   }
-
-  // the below condition includes the last index if slidesToShow is not decimal and cellAlign = left
-  if (cellAlign === 'left' && !slidesToShowIsDecimal) {
-    lastDotIndex = slideCount - (slideCount % slidesToShow || slidesToShow);
-  }
-  if (!dotIndexes.includes(lastDotIndex)) {
-    dotIndexes.push(lastDotIndex);
-  }
+  
   return dotIndexes;
 };
 
