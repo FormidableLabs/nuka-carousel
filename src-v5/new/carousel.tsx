@@ -26,6 +26,14 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
   const prevMove = useRef<number>(0);
   const carouselEl = useRef<HTMLDivElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isMounted = useRef<boolean>(true);
+
+  useEffect(
+    () => () => {
+      isMounted.current = false;
+    },
+    []
+  );
 
   const slidesToScroll =
     props.animation === 'fade' ? props.slidesToShow : props.slidesToScroll;
@@ -44,6 +52,7 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     setCurrentSlide(to ?? currentSlide);
     setTimeout(
       () => {
+        if (!isMounted.current) return;
         to && props.afterSlide(currentSlide);
         !props.disableAnimation && setAnimation(false);
       },
@@ -84,6 +93,12 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
         }
       }
     }
+
+    return () => {
+      if (timer.current) {
+        clearTimeout(timer.current);
+      }
+    };
   }, [animation, currentSlide]);
 
   useEffect(() => {
@@ -110,6 +125,12 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
     if (props.autoplay && pause && timer?.current) {
       clearTimeout(timer.current);
     }
+
+    return () => {
+      if (timer.current) {
+        clearTimeout(timer.current);
+      }
+    };
   }, [currentSlide, pause]);
 
   useEffect(() => {
@@ -121,11 +142,13 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
       if (currentSlide <= -props.slidesToShow) {
         // prev
         setTimeout(() => {
+          if (!isMounted.current) return;
           setCurrentSlide(count - -currentSlide);
         }, speed + 10);
       } else if (currentSlide >= count) {
         // next
         setTimeout(() => {
+          if (!isMounted.current) return;
           setCurrentSlide(currentSlide - count);
         }, speed + 10);
       }
