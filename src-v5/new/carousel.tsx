@@ -93,12 +93,6 @@ const Carousel = (props: CarouselProps): React.ReactElement => {
         }
       }
     }
-
-    return () => {
-      if (timer.current) {
-        clearTimeout(timer.current);
-      }
-    };
   }, [animation, currentSlide]);
 
   useEffect(() => {
