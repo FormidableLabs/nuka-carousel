@@ -145,7 +145,7 @@ context('Infinity Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 1');
 
-      cy.get('.paging-item').should('have.length', 2);
+      cy.get('.paging-item').should('have.length', 4);
 
       cy.get('button').contains('Prev').should('not.be.disabled');
       cy.get('button').contains('Next').should('not.be.disabled').click();
@@ -470,7 +470,7 @@ context('Infinity Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 1');
 
-      cy.get('.paging-item').should('have.length', 1);
+      cy.get('.paging-item').should('have.length', 4);
 
       cy.get('button').contains('Prev').should('not.be.disabled');
       cy.get('button').contains('Next').should('not.be.disabled').click();
