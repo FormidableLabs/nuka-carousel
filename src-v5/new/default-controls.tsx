@@ -1,7 +1,6 @@
-// TODO: Needs refactoring
 /* eslint-disable complexity */
 import React, { CSSProperties } from 'react';
-import { Alignment, ControlProps } from './types';
+import { ControlProps } from './types';
 
 const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
   border: 0,
@@ -122,44 +121,14 @@ export const NextButton = (props: ControlProps) => {
   );
 };
 
-export const getDotIndexes = (
-  slideCount: number,
-  slidesToScroll: number,
-  slidesToShow: number,
-  cellAlign: Alignment
-) => {
+export const getDotIndexes = (slideCount: number, slidesToScroll: number) => {
   const dotIndexes = [];
-  let lastDotIndex = slideCount - slidesToShow;
-  const slidesToShowIsDecimal = slidesToShow % 1 !== 0;
-
-  switch (cellAlign) {
-    case Alignment.Center:
-    case Alignment.Right:
-      lastDotIndex += slidesToShow - 1;
-      break;
-  }
-  // the below condition includes the last index if slidesToShow is decimal
-  if (cellAlign === Alignment.Left && slidesToShowIsDecimal) {
-    lastDotIndex += slidesToShow - 1;
-  }
-
-  if (lastDotIndex < 0) {
-    return [0];
-  }
-
   const scrollSlides = slidesToScroll === 0 ? 1 : slidesToScroll;
 
-  for (let i = 0; i < lastDotIndex; i += scrollSlides) {
+  for (let i = 0; i < slideCount; i += scrollSlides) {
     dotIndexes.push(i);
   }
 
-  // the below condition includes the last index if slidesToShow is not decimal and cellAlign = left
-  if (cellAlign === 'left' && !slidesToShowIsDecimal) {
-    lastDotIndex = slideCount - (slideCount % slidesToShow || slidesToShow);
-  }
-  if (!dotIndexes.includes(lastDotIndex)) {
-    dotIndexes.push(lastDotIndex);
-  }
   return dotIndexes;
 };
 
@@ -181,12 +150,7 @@ export const PagingDots = (props: ControlProps) => {
     fill: 'black'
   });
 
-  const indexes = getDotIndexes(
-    props.slideCount,
-    props.slidesToScroll,
-    props.slidesToShow,
-    props.cellAlign
-  );
+  const indexes = getDotIndexes(props.slideCount, props.slidesToScroll);
   const {
     pagingDotsContainerClassName,
     pagingDotsClassName,
@@ -195,7 +159,11 @@ export const PagingDots = (props: ControlProps) => {
   return (
     <ul className={pagingDotsContainerClassName} style={listStyles}>
       {indexes.map((index, i) => {
-        let isActive = props.currentSlide === index;
+        let isActive =
+          props.currentSlide === index ||
+          props.currentSlide - props.slideCount === index ||
+          props.currentSlide + props.slideCount === index;
+
         // the below condition checks and sets navigation dots active if the current slide falls in the current index range
         if (props.currentSlide < index && props.currentSlide > indexes[i - 1]) {
           isActive = true;
