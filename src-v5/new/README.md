@@ -3,13 +3,13 @@
 
 # [v5] nuka-carousel
 
-The goal for nuka-carousel v5 is too refactor the whole library, build it with TypeScript and React hooks, address most of the active issues, reduce the size of the library and support server-side rendering.
+The goal for nuka-carousel v5 is to refactor the whole library, build it with TypeScript and React hooks, address most of the active issues, reduce the size of the library and support server-side rendering.
 
 
 **Improvements**
 
-- **Support server-side rendering**. Currently in v4 all of the slides are positioned with `position: absolute`, which doesn't render the slides appropriately when javascript is disabled and there are flickering when the front-end is hydrated. This forced users to hardcode properties for the carousel like `initialSlideHeight` and `initialSlideWidth`. In v5 all slides are positioned with dynamic width, so the slides and carousel can fully responsive and rendered correctly on server as well.
-- Rewritten the library to **TypeScript** and **React Hooks** for obvious reasons.
+- **Support server-side rendering**. Currently in v4 all of the slides are positioned with `position: absolute`, which doesn't render the slides appropriately when javascript is disabled and there are flickering when the front-end is hydrated. This forced users to hardcode properties for the carousel like `initialSlideHeight` and `initialSlideWidth`. In v5 all slides are positioned with dynamic width, so the slides and carousel can be fully responsive and rendered correctly on server as well.
+- Rewritten the library with **TypeScript** and **React Hooks** for obvious reasons.
 - **Reduce the size of the library and its dependencies**. Currently v4 has 5 dependencies - `prop-types`, `d3-ease`, `wicg-inert`, `exenv` and `react-move`. We are looking to use only `d3-ease` in v5, but definitely after bumping the version of it to the latest. 
   - `prop-types` is replaced with usage of TypeScript.
   - `exenv` is not maintained anymore and will be removed with v5 as a dependency of nuka-carousel.

@@ -9,7 +9,7 @@ import defaultProps from './default-carousel-props';
 import { getIndexes, addEvent, removeEvent } from './utils';
 import AnnounceSlide from './announce-slide';
 
-const Carousel = (props: CarouselProps): React.ReactElement => {
+export const Carousel = (props: CarouselProps): React.ReactElement => {
   const count = React.Children.count(props.children);
 
   const [currentSlide, setCurrentSlide] = useState<number>(
