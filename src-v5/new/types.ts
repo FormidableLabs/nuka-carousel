@@ -214,7 +214,7 @@ export interface CarouselProps {
   renderTopLeftControls?: RenderControls; // migrated
   renderTopRightControls?: RenderControls; // migrated
   // scrollMode: ScrollMode; // to be deprecated
-  slideIndex: number; // to be deprecated
+  slideIndex: number; // ???
   slideOffset: number; // to be deprecated
   slidesToScroll: number; // migrated - tested for !wrapAround
   slidesToShow: number; // migrated - tested
