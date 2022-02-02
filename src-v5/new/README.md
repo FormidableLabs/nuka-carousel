@@ -1,4 +1,3 @@
-[![Maintenance Status][maintenance-image]](#maintenance-status)
 
 > This page is under construction! Expect new updates soon!
 
