@@ -64,7 +64,7 @@ context('Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 1');
 
-      cy.get('.paging-item').should('have.length', 4);
+      cy.get('.paging-item').should('have.length', 6);
 
       cy.get('button').contains('Prev').should('be.disabled');
       cy.get('button').contains('Next').should('not.be.disabled').click();

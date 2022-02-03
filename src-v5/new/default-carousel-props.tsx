@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Alignment,
-  ControlProps,
-  D3EasingFunctions,
-  HeightMode,
-  ScrollMode,
-  TransitionMode
-} from './types';
+import { Alignment, ControlProps, D3EasingFunctions } from './types';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import { defaultRenderAnnounceSlideMessage } from './announce-slide';
 
@@ -32,8 +25,6 @@ const defaultProps = {
   enableKeyboardControls: false,
   framePadding: '0px',
   getControlsContainerStyles: () => ({}),
-  height: 'inherit',
-  heightMode: HeightMode.Max,
   keyCodeConfig: {
     nextSlide: [39, 68, 38, 87],
     previousSlide: [37, 65, 40, 83],
@@ -53,7 +44,6 @@ const defaultProps = {
     <PreviousButton {...props} />
   ),
   renderCenterRightControls: (props: ControlProps) => <NextButton {...props} />,
-  scrollMode: ScrollMode.Remainder,
   slideIndex: 0,
   slideOffset: 25,
   slidesToScroll: 1,
@@ -62,7 +52,6 @@ const defaultProps = {
   speed: 500,
   style: {},
   swiping: true,
-  transitionMode: TransitionMode.Scroll,
   vertical: false,
   width: '100%',
   withoutControls: false,
