@@ -32,23 +32,6 @@ export enum Positions {
   BottomRight = 'BottomRight'
 }
 
-export enum ScrollMode {
-  Page = 'page',
-  Remainder = 'remainder'
-}
-
-export enum HeightMode {
-  First = 'first',
-  Max = 'max',
-  Current = 'current'
-}
-
-export enum TransitionMode {
-  Scroll = 'scroll',
-  Fade = 'fade',
-  Scroll3D = 'scroll3d'
-}
-
 type SlideChildren = {
   offsetHeight: number;
 };
@@ -166,7 +149,6 @@ export interface ControlProps {
   left?: number; // obsolete
   nextSlide: () => void;
   previousSlide: () => void;
-  scrollMode: ScrollMode;
   slideCount: number;
   slidesToScroll: number;
   slidesToShow: number;
@@ -211,7 +193,7 @@ export interface CarouselProps {
   framePadding: string; // to be deprecated
   getControlsContainerStyles: (key: Positions) => CSSProperties; // to be deprecated
   height: string; // to be deprecated
-  heightMode: HeightMode; // to be deprecated
+  // heightMode: HeightMode; // to be deprecated
   initialSlideHeight?: number; // to be deprecated
   initialSlideWidth?: number; // to be deprecated
   innerRef?: MutableRefObject<HTMLDivElement>; // migrated
@@ -231,8 +213,8 @@ export interface CarouselProps {
   renderTopCenterControls?: RenderControls; // migrated
   renderTopLeftControls?: RenderControls; // migrated
   renderTopRightControls?: RenderControls; // migrated
-  scrollMode: ScrollMode; // to be deprecated
-  slideIndex: number; // to be deprecated
+  // scrollMode: ScrollMode; // to be deprecated
+  slideIndex: number; // ???
   slideOffset: number; // to be deprecated
   slidesToScroll: number; // migrated - tested for !wrapAround
   slidesToShow: number; // migrated - tested
@@ -240,7 +222,7 @@ export interface CarouselProps {
   speed: number; // migrated
   style: CSSProperties; // migrated
   swiping: boolean; // migrated
-  transitionMode: TransitionMode; // to be deprecated
+  // transitionMode: TransitionMode; // to be deprecated
   vertical: boolean;
   width: string; // to be deprecated
   withoutControls: boolean; // migrated
@@ -255,7 +237,6 @@ export type TransitionProps = Pick<
   | 'cellSpacing'
   | 'children'
   | 'dragging'
-  | 'heightMode'
   | 'opacityScale'
   | 'slideOffset'
   | 'slidesToScroll'
