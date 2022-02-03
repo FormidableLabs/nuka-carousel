@@ -61,9 +61,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   };
 
   const nextSlide = () => {
-    // TODO: change the boundary for cellAlign=center and right
-    // boundary
-    if (props.wrapAround || currentSlide < count - props.slidesToShow) {
+    if (props.wrapAround || currentSlide <= count) {
       moveSlide(currentSlide + slidesToScroll);
     } else {
       moveSlide();

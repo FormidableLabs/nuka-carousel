@@ -68,7 +68,7 @@ export const nextButtonDisabled = ({
   currentSlide,
   slideCount,
   slidesToShow,
-  wrapAround
+  wrapAround,
 }: ControlProps) => {
   // inifite carousel with visible slides that are less than all slides
   if (wrapAround && slidesToShow < slideCount) {
@@ -81,7 +81,7 @@ export const nextButtonDisabled = ({
   }
 
   // if the last slide is not visible return false (button is not disabled)
-  if (currentSlide + slidesToShow < slideCount) {
+  if (currentSlide < slideCount - 1) {
     return false;
   }
 
