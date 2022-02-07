@@ -104,15 +104,19 @@ const getPositioning = (
   }
   if (cellAlign === Alignment.Center) {
     const center =
-      slidesToShow > 1 ? ((100 / count) * Math.floor(slidesToShow / 2)) : 0;
+      slidesToShow > 1 ? (100 / count) * Math.floor(slidesToShow / 2) : 0;
 
-    const validatedCenter = slidesToShow % 2 === 0 ? center - ((100 / count) / 2) : center;
+    const validatedCenter =
+      slidesToShow % 2 === 0 ? center - 100 / count / 2 : center;
     // if wrapAround is enabled
     const centerAlignedFirstSlide =
       -(count * (100 / (3 * count))) +
       Math.floor(slidesToShow / 2) * (100 / (3 * count));
 
-    const wrapAroundCenter = slidesToShow % 2 === 0 ? centerAlignedFirstSlide  - ((100 / (3 * count)) / 2) : centerAlignedFirstSlide;
+    const wrapAroundCenter =
+      slidesToShow % 2 === 0
+        ? centerAlignedFirstSlide - 100 / (3 * count) / 2
+        : centerAlignedFirstSlide;
     const initialValue = wrapAround ? wrapAroundCenter : validatedCenter;
 
     const horizontalMove = getTransition(
