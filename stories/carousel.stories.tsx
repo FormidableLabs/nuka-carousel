@@ -54,7 +54,8 @@ const Template: ComponentStory<typeof Carousel> = ({
       alt={`Slide ${index + 1}`}
       key={color}
       style={{
-        height: getHeight(args.heightMode, index)
+        height: getHeight(args.heightMode, index),
+        width: '100%'
       }}
     />
   ));
