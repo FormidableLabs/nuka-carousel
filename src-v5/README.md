@@ -39,5 +39,7 @@ The following list of parameters will be deprecated in v5. The main reason is th
 
 - Vertical carousel
 - Responsive object for slidesToShow property
-- 
+- SlidesToShow to support decimal numbers
+- Easing
+
 
