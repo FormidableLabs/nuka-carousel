@@ -21,15 +21,16 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.10.4",
     "@babel/plugin-transform-object-assign": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.10.4",
+    "@babel/plugin-transform-typescript": "^7.16.8",
     "@babel/polyfill": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
-    "@storybook/addon-actions": "^6.4.8",
-    "@storybook/addon-essentials": "^6.4.8",
-    "@storybook/addon-links": "^6.4.8",
-    "@storybook/builder-webpack5": "^6.4.8",
-    "@storybook/manager-webpack5": "^6.4.8",
-    "@storybook/react": "^6.4.8",
+    "@storybook/addon-actions": "^6.4.18",
+    "@storybook/addon-essentials": "^6.4.18",
+    "@storybook/addon-links": "^6.4.18",
+    "@storybook/builder-webpack5": "^6.4.18",
+    "@storybook/manager-webpack5": "^6.4.18",
+    "@storybook/react": "^6.4.18",
     "@types/d3-ease": "^3.0.0",
     "@types/exenv": "^1.2.0",
     "@types/react": "^16.9.56",
@@ -61,7 +62,7 @@
     "url-loader": "^4.1.1",
     "webpack": "5.61.0",
     "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.4.0"
+    "webpack-dev-server": "^4.6.0"
   },
   "peerDependencies": {
     "react": "^0.14.9 || ^15.3.0 || ^16.0.0 || ^17.0.1",
@@ -71,6 +72,10 @@
     "jsdom": "^14.0.0"
   },
   "scripts": {
+    "build-v5": "builder concurrent --buffer build-v5-lib build-v5-es",
+    "build-v5-babel": "babel src-v5 --extensions .ts,.tsx",
+    "build-v5-es": "builder run  --env \"{\\\"BABEL_ENV\\\":\\\"esm\\\"}\" build-v5-babel -- -d es-v5",
+    "build-v5-lib": "builder run build-v5-babel -- -d lib-v5",
     "build": "builder concurrent --buffer build-lib build-es",
     "build-babel": "babel src",
     "build-dist": "webpack --config webpack.dist.config.js --mode production",
