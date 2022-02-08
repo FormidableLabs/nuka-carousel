@@ -1,7 +1,6 @@
 /* eslint-disable complexity */
 import React, { CSSProperties } from 'react';
-import { getAlignmentOffset } from './utilities/style-utilities';
-import { Alignment, ControlProps } from './types';
+import { ControlProps } from './types';
 
 const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
   border: 0,
@@ -13,20 +12,40 @@ const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
   cursor: disabled ? 'not-allowed' : 'pointer'
 });
 
+export const prevButtonDisabled = ({
+  currentSlide,
+  slideCount,
+  slidesToShow,
+  wrapAround
+}: ControlProps) => {
+  // inifite carousel with visible slides that are less than all slides
+  if (wrapAround && slidesToShow < slideCount) {
+    return false;
+  }
+
+  // inifite carousel with visible slide equal or less than all slides
+  if (wrapAround) {
+    return false;
+  }
+
+  // if the first slide is not visible return false (button is not disabled)
+  if (currentSlide !== 0) {
+    return false;
+  }
+
+  return true;
+};
+
 export const PreviousButton = (props: ControlProps) => {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    props.previousSlide();
+    props?.previousSlide();
   };
 
-  const {
-    prevButtonClassName,
-    prevButtonStyle = {},
-    prevButtonText
-  } = props.defaultControlsConfig;
+  const { prevButtonClassName, prevButtonStyle = {}, prevButtonText } =
+    props.defaultControlsConfig || {};
 
-  const disabled =
-    (props.currentSlide === 0 && !props.wrapAround) || props.slideCount === 0;
+  const disabled = prevButtonDisabled(props);
 
   return (
     <button
@@ -46,49 +65,28 @@ export const PreviousButton = (props: ControlProps) => {
 };
 
 export const nextButtonDisabled = ({
-  cellAlign,
-  cellSpacing,
   currentSlide,
-  frameWidth,
-  positionValue,
   slideCount,
   slidesToShow,
-  slideWidth,
-  wrapAround,
-  scrollMode,
-  slidesToScroll
-}: ControlProps & { positionValue: number }) => {
-  let buttonDisabled = false;
-
-  if (!wrapAround) {
-    const alignmentOffset = getAlignmentOffset(currentSlide, {
-      cellAlign,
-      cellSpacing,
-      frameWidth,
-      slideWidth
-    });
-
-    const relativePosition = positionValue - alignmentOffset;
-
-    const width = slideWidth + cellSpacing;
-    const endOffset =
-      cellAlign === 'center' ? 2 * alignmentOffset : alignmentOffset;
-    const endPosition = -width * slideCount + width * slidesToShow - endOffset;
-
-    buttonDisabled =
-      relativePosition < endPosition ||
-      Math.abs(relativePosition - endPosition) < 0.01;
+  slidesToScroll,
+  wrapAround
+}: ControlProps) => {
+  // inifite carousel with visible slides that are less than all slides
+  if (wrapAround && slidesToShow < slideCount) {
+    return false;
   }
-  // return true if its last slide or slideCount =0
-  const lastSlide =
-    currentSlide > 0 && currentSlide + slidesToScroll >= slideCount;
-  if (
-    (lastSlide && !wrapAround && scrollMode === 'remainder') ||
-    slideCount === 0
-  ) {
-    return (buttonDisabled = true);
+
+  // inifite carousel with visible slide equal or less than all slides
+  if (wrapAround) {
+    return false;
   }
-  return buttonDisabled;
+
+  // if the last slide is not visible return false (button is not disabled)
+  if (currentSlide < slideCount - slidesToScroll) {
+    return false;
+  }
+
+  return true;
 };
 
 export const NextButton = (props: ControlProps) => {
@@ -97,7 +95,7 @@ export const NextButton = (props: ControlProps) => {
     props.nextSlide();
   };
 
-  const { defaultControlsConfig, left, top, vertical } = props;
+  const { defaultControlsConfig } = props;
 
   const {
     nextButtonClassName,
@@ -105,10 +103,7 @@ export const NextButton = (props: ControlProps) => {
     nextButtonText
   } = defaultControlsConfig;
 
-  const disabled = nextButtonDisabled({
-    ...props,
-    positionValue: vertical ? top : left
-  });
+  const disabled = nextButtonDisabled(props);
 
   return (
     <button
@@ -127,44 +122,14 @@ export const NextButton = (props: ControlProps) => {
   );
 };
 
-export const getDotIndexes = (
-  slideCount: number,
-  slidesToScroll: number,
-  slidesToShow: number,
-  cellAlign: Alignment
-) => {
+export const getDotIndexes = (slideCount: number, slidesToScroll: number) => {
   const dotIndexes = [];
-  let lastDotIndex = slideCount - slidesToShow;
-  const slidesToShowIsDecimal = slidesToShow % 1 !== 0;
-
-  switch (cellAlign) {
-    case Alignment.Center:
-    case Alignment.Right:
-      lastDotIndex += slidesToShow - 1;
-      break;
-  }
-  // the below condition includes the last index if slidesToShow is decimal
-  if (cellAlign === Alignment.Left && slidesToShowIsDecimal) {
-    lastDotIndex += slidesToShow - 1;
-  }
-
-  if (lastDotIndex < 0) {
-    return [0];
-  }
-
   const scrollSlides = slidesToScroll === 0 ? 1 : slidesToScroll;
 
-  for (let i = 0; i < lastDotIndex; i += scrollSlides) {
+  for (let i = 0; i < slideCount; i += scrollSlides) {
     dotIndexes.push(i);
   }
 
-  // the below condition includes the last index if slidesToShow is not decimal and cellAlign = left
-  if (cellAlign === 'left' && !slidesToShowIsDecimal) {
-    lastDotIndex = slideCount - (slideCount % slidesToShow || slidesToShow);
-  }
-  if (!dotIndexes.includes(lastDotIndex)) {
-    dotIndexes.push(lastDotIndex);
-  }
   return dotIndexes;
 };
 
@@ -186,12 +151,7 @@ export const PagingDots = (props: ControlProps) => {
     fill: 'black'
   });
 
-  const indexes = getDotIndexes(
-    props.slideCount,
-    props.slidesToScroll,
-    props.slidesToShow,
-    props.cellAlign
-  );
+  const indexes = getDotIndexes(props.slideCount, props.slidesToScroll);
   const {
     pagingDotsContainerClassName,
     pagingDotsClassName,
@@ -200,7 +160,11 @@ export const PagingDots = (props: ControlProps) => {
   return (
     <ul className={pagingDotsContainerClassName} style={listStyles}>
       {indexes.map((index, i) => {
-        let isActive = props.currentSlide === index;
+        let isActive =
+          props.currentSlide === index ||
+          props.currentSlide - props.slideCount === index ||
+          props.currentSlide + props.slideCount === index;
+
         // the below condition checks and sets navigation dots active if the current slide falls in the current index range
         if (props.currentSlide < index && props.currentSlide > indexes[i - 1]) {
           isActive = true;

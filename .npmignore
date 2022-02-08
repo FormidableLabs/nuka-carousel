@@ -1,6 +1,8 @@
 /*
 !/lib
 !/es
+!/lib-v5
+!/es-v5
 **/test/
 **/*.spec.js
 !package.json
