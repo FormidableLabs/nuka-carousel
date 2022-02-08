@@ -93,7 +93,7 @@ context('Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 4');
 
-      cy.get('button').contains('Next').should('be.disabled');
+      cy.get('button').contains('Next').should('not.be.disabled');
       cy.get('button').contains('Prev').should('not.be.disabled').click();
 
       cy.get('.slide.slide-visible')

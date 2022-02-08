@@ -33,6 +33,8 @@ bower_components/
 dist
 es
 lib
+es-v5
+lib-v5
 yarn-error.log*
 package-lock.json
 
