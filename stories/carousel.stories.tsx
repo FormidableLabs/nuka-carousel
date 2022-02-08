@@ -2,8 +2,8 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import Carousel from '../src';
-import { Carousel as CarouselV5 } from '../src-v5/new/carousel';
-import { CarouselProps, ControlProps, HeightMode } from '../src-v5';
+import { Carousel as CarouselV5 } from '../src-v5/carousel';
+import { CarouselProps, ControlProps } from '../src-v5';
 
 export default {
   title: 'Nuka Carousel/Carousel',
@@ -28,19 +28,19 @@ const colors = [
   'aa231f'
 ];
 
-const getHeight = (heightMode: HeightMode, index: number) => {
-  switch (heightMode) {
-    case 'first': {
-      return index === 0 ? '600px' : '400px';
-    }
-    case 'current': {
-      return 100 * (index + 1);
-    }
-    default: {
-      return '400px';
-    }
-  }
-};
+// const getHeight = (heightMode: any, index: number) => {
+//   switch (heightMode) {
+//     case 'first': {
+//       return index === 0 ? '600px' : '400px';
+//     }
+//     case 'current': {
+//       return 100 * (index + 1);
+//     }
+//     default: {
+//       return '400px';
+//     }
+//   }
+// };
 
 const Template: ComponentStory<typeof Carousel> = ({
   storySlideCount = 9,
@@ -54,7 +54,7 @@ const Template: ComponentStory<typeof Carousel> = ({
       alt={`Slide ${index + 1}`}
       key={color}
       style={{
-        height: getHeight(args.heightMode, index),
+        // height: getHeight(args.heightMode, index),
         width: '100%'
       }}
     />

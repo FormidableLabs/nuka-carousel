@@ -13,6 +13,13 @@ export enum Alignment {
   Left = 'left'
 }
 
+export enum Directions {
+  Next = 'next',
+  Prev = 'prev',
+  Up = 'up',
+  Down = 'down'
+}
+
 export enum Positions {
   TopLeft = 'TopLeft',
   TopCenter = 'TopCenter',
@@ -23,23 +30,6 @@ export enum Positions {
   BottomLeft = 'BottomLeft',
   BottomCenter = 'BottomCenter',
   BottomRight = 'BottomRight'
-}
-
-export enum ScrollMode {
-  Page = 'page',
-  Remainder = 'remainder'
-}
-
-export enum HeightMode {
-  First = 'first',
-  Max = 'max',
-  Current = 'current'
-}
-
-export enum TransitionMode {
-  Scroll = 'scroll',
-  Fade = 'fade',
-  Scroll3D = 'scroll3d'
 }
 
 type SlideChildren = {
@@ -112,6 +102,14 @@ export interface KeyCodeConfig {
   previousSlide?: number[];
 }
 
+export type KeyCodeFunction =
+  | 'nextSlide'
+  | 'previousSlide'
+  | 'firstSlide'
+  | 'lastSlide'
+  | 'pause'
+  | null;
+
 export interface KeyCodeMap {
   [key: number]: keyof KeyCodeConfig;
 }
@@ -128,7 +126,7 @@ export interface CarouselState {
   left: number;
   pauseOnHover?: boolean;
   resetWrapAroundPosition: boolean;
-  slideCount: number;
+  count: number;
   slideHeight: number | 'auto';
   slidesToScroll: number;
   slidesToShow: number;
@@ -138,7 +136,7 @@ export interface CarouselState {
 }
 
 type RenderAnnounceSlideMessage = (
-  props: Pick<CarouselState, 'currentSlide' | 'slideCount'>
+  props: Pick<CarouselState, 'currentSlide' | 'count'>
 ) => string;
 
 export interface ControlProps {
@@ -146,17 +144,16 @@ export interface ControlProps {
   cellSpacing: number;
   currentSlide: number;
   defaultControlsConfig: DefaultControlsConfig;
-  frameWidth: number | null;
+  frameWidth?: number | null; // obsolete
   goToSlide: (index: number) => void;
-  left: number;
+  left?: number; // obsolete
   nextSlide: () => void;
   previousSlide: () => void;
-  scrollMode: ScrollMode;
   slideCount: number;
   slidesToScroll: number;
   slidesToShow: number;
-  slideWidth: number;
-  top: number;
+  slideWidth?: number; // obsolete
+  top?: number; // obsolete
   vertical: boolean;
   wrapAround: boolean;
 }
@@ -175,64 +172,62 @@ export type RenderControlFunctionNames =
 type RenderControls = (props: ControlProps) => ReactElement;
 
 export interface CarouselProps {
-  afterSlide: (index: number) => void;
-  animation?: 'zoom';
-  autoGenerateStyleTag: boolean;
-  autoplay: boolean;
-  autoplayInterval: number;
-  autoplayReverse: boolean;
-  beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void;
-  cellAlign: Alignment;
-  cellSpacing: number;
-  children: ReactNode | ReactNode[];
-  className?: string;
-  defaultControlsConfig: DefaultControlsConfig;
-  disableAnimation: boolean;
-  disableEdgeSwiping: boolean;
-  dragging: boolean;
+  afterSlide: (index: number) => void; // migrated
+  animation?: 'zoom' | 'fade'; // migrated
+  autoGenerateStyleTag: boolean; // to be deprecated
+  autoplay: boolean; // migrated - tested for !wrapAround
+  autoplayInterval: number; // migrated - tested for !wrapAround
+  autoplayReverse: boolean; // migrated - tested for !wrapAround
+  beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void; // migrated
+  cellAlign: Alignment; // migrated
+  cellSpacing: number; // migrated
+  children: ReactNode | ReactNode[]; // migrated - tested
+  className?: string; // migrated
+  defaultControlsConfig: DefaultControlsConfig; // migrated, needs more testing
+  disableAnimation: boolean; // migrated
+  disableEdgeSwiping: boolean; // migrated
+  dragging: boolean; // migrated
   easing: D3EasingFunctions;
   edgeEasing: D3EasingFunctions;
-  enableKeyboardControls: boolean;
-  framePadding: string;
-  getControlsContainerStyles: (key: Positions) => CSSProperties;
-  height: string;
-  heightMode: HeightMode;
-  initialSlideHeight?: number;
-  initialSlideWidth?: number;
-  innerRef?: MutableRefObject<HTMLDivElement>;
-  keyCodeConfig: KeyCodeConfig;
+  enableKeyboardControls: boolean; // migrated
+  framePadding: string; // to be deprecated
+  getControlsContainerStyles: (key: Positions) => CSSProperties; // to be deprecated
+  height: string; // to be deprecated
+  // heightMode: HeightMode; // to be deprecated
+  initialSlideHeight?: number; // to be deprecated
+  initialSlideWidth?: number; // to be deprecated
+  innerRef?: MutableRefObject<HTMLDivElement>; // migrated
+  keyCodeConfig: KeyCodeConfig; // migrated
   onDragStart: (
     e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
-  ) => void;
-  onResize: () => void;
+  ) => void; // migrated
   opacityScale?: number;
-  pauseOnHover: boolean;
-  renderAnnounceSlideMessage: RenderAnnounceSlideMessage;
-  renderBottomCenterControls: RenderControls;
-  renderBottomLeftControls?: RenderControls;
-  renderBottomRightControls?: RenderControls;
-  renderCenterCenterControls?: RenderControls;
-  renderCenterLeftControls: RenderControls;
-  renderCenterRightControls: RenderControls;
-  renderTopCenterControls?: RenderControls;
-  renderTopLeftControls?: RenderControls;
-  renderTopRightControls?: RenderControls;
-  scrollMode: ScrollMode;
-  slideIndex: number;
-  slideListMargin: number;
-  slideOffset: number;
-  slidesToScroll: 'auto' | number;
-  slidesToShow: number;
-  slideWidth: number | string;
-  speed: number;
-  style: CSSProperties;
-  swiping: boolean;
-  transitionMode: TransitionMode;
+  pauseOnHover: boolean; // migrated - tested
+  renderAnnounceSlideMessage: RenderAnnounceSlideMessage; // migrated
+  renderBottomCenterControls: RenderControls; // migrated
+  renderBottomLeftControls?: RenderControls; // migrated
+  renderBottomRightControls?: RenderControls; // migrated
+  renderCenterCenterControls?: RenderControls; // migrated
+  renderCenterLeftControls: RenderControls; // migrated
+  renderCenterRightControls: RenderControls; // migrated
+  renderTopCenterControls?: RenderControls; // migrated
+  renderTopLeftControls?: RenderControls; // migrated
+  renderTopRightControls?: RenderControls; // migrated
+  // scrollMode: ScrollMode; // to be deprecated
+  slideIndex: number; // ???
+  slideOffset: number; // to be deprecated
+  slidesToScroll: number; // migrated - tested for !wrapAround
+  slidesToShow: number; // migrated - tested
+  slideWidth: number | string; // to be deprecated
+  speed: number; // migrated
+  style: CSSProperties; // migrated
+  swiping: boolean; // migrated
+  // transitionMode: TransitionMode; // to be deprecated
   vertical: boolean;
-  width: string;
-  withoutControls: boolean;
-  wrapAround: boolean;
-  zoomScale?: number;
+  width: string; // to be deprecated
+  withoutControls: boolean; // migrated
+  wrapAround: boolean; // migrated - tested
+  zoomScale?: number; // migrated
 }
 
 export type TransitionProps = Pick<
@@ -242,9 +237,7 @@ export type TransitionProps = Pick<
   | 'cellSpacing'
   | 'children'
   | 'dragging'
-  | 'heightMode'
   | 'opacityScale'
-  | 'slideListMargin'
   | 'slideOffset'
   | 'slidesToScroll'
   | 'vertical'
@@ -258,7 +251,7 @@ export type TransitionProps = Pick<
     | 'hasInteraction'
     | 'isWrappingAround'
     | 'left'
-    | 'slideCount'
+    | 'count'
     | 'slideHeight'
     | 'slideWidth'
     | 'slidesToShow'
