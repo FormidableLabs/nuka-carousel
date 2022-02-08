@@ -28,19 +28,19 @@ const colors = [
   'aa231f'
 ];
 
-const getHeight = (heightMode: any, index: number) => {
-  switch (heightMode) {
-    case 'first': {
-      return index === 0 ? '600px' : '400px';
-    }
-    case 'current': {
-      return 100 * (index + 1);
-    }
-    default: {
-      return '400px';
-    }
-  }
-};
+// const getHeight = (heightMode: any, index: number) => {
+//   switch (heightMode) {
+//     case 'first': {
+//       return index === 0 ? '600px' : '400px';
+//     }
+//     case 'current': {
+//       return 100 * (index + 1);
+//     }
+//     default: {
+//       return '400px';
+//     }
+//   }
+// };
 
 const Template: ComponentStory<typeof Carousel> = ({
   storySlideCount = 9,

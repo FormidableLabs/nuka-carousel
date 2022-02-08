@@ -1,7 +1,7 @@
 import 'wicg-inert';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import Carousel from '../../../lib-v5/';
+import Carousel from '../../../src-v5/';
 
 const colors = [
   '7732bb',
