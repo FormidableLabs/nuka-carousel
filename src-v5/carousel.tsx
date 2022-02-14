@@ -37,7 +37,8 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
 
   const slidesToScroll =
     props.animation === 'fade' ? props.slidesToShow : props.slidesToScroll;
-  const dragThreshold = (carouselWidth.current || 0) / 5;
+  const dragThreshold = ((carouselWidth.current || 0) / props.slidesToShow) / 2;
+
   const carouselRef = props.innerRef || carouselEl;
 
   const moveSlide = (to?: number) => {
