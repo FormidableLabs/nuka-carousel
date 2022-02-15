@@ -132,8 +132,8 @@ const Slide = ({
   return (
     <div
       ref={slideRef}
-      className={`slide ${typeOfSlide || ''} ${
-        isVisible ? 'slide-visible' : ''
+      className={`slide${typeOfSlide ? ` ${typeOfSlide}` : ''}${
+        isVisible ? ' slide-visible' : ''
       }`}
       style={getSlideStyles(
         count,
