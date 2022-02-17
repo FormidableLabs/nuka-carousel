@@ -1,10 +1,42 @@
-
-> This page is under construction! Expect new updates soon!
-
 # [v5] nuka-carousel
 
-The goal for nuka-carousel v5 is to refactor the whole library, build it with TypeScript and React hooks, address most of the active issues, reduce the size of the library and support server-side rendering.
+nuka-carousel@5 is live and you can use it as well. We are appreciating your feedback, feel free to raise issues or start discussion.
 
+
+**Usage**
+`npm install nuka-carousel@5.0.2`
+or
+`yarn add nuka-carousel@5.0.2`
+
+> Migration guide from v4 to v5 is under development, please raise any questions in the Issues tab of the repository.
+
+**Demo**
+- You can test nuka-carousel@5 default behaviour [here](https://nuka-carousel.vercel.app/)
+```
+  <Carousel>
+    <img src="/image1.png" />
+    <img src="/image2.png" />
+    <img src="/image3.png" />
+    <img src="/image4.png" />
+    <img src="/image5.png" />
+  </Carousel>
+```
+
+- Infinity nuka-carousel@5 with 3 slides to show. [link](https://nuka-carousel.vercel.app/?slides=6&params=%7B%22wrapAround%22:true,%22slidesToShow%22:3%7D)
+```
+  <Carousel
+    wrapAround={true}
+    slidesToShow={3}
+  >
+    <img src="/image1.png" />
+    <img src="/image2.png" />
+    <img src="/image3.png" />
+    <img src="/image4.png" />
+    <img src="/image5.png" />
+  </Carousel> 
+```
+
+- You can play with `&params` url parameter to add or remove any carousel parameters and see how the carousel behaves. We are looking to build a proper documentation page with many examples and code snippets.
 
 **Improvements**
 

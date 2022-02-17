@@ -2,8 +2,7 @@
 
 # nuka-carousel
 
-> :warning: We are currently working on the new version of the library (**v5**). The goal of the new version is to remove most of nuka-carousel dependencies,
-> make it more performant, support server-side rendering and reduce parameters, but not functionalities. You can read more about [nuka-carousel v5 here](https://github.com/FormidableLabs/nuka-carousel/tree/main/src-v5). 
+> :warning: nuka-carousel v5 beta is published and you can install it like this `npm install nuka-carousel@5.0.2`. Please check the [v5 documentation](https://github.com/FormidableLabs/nuka-carousel/tree/main/src-v5) for more details. 
 
 A Pure ReactJS Carousel Component
 

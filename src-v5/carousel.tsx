@@ -62,7 +62,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   };
 
   const nextSlide = () => {
-    if (props.wrapAround || currentSlide <= count) {
+    if (props.wrapAround || currentSlide < count - props.slidesToScroll) {
       moveSlide(currentSlide + slidesToScroll);
     } else {
       moveSlide();
