@@ -1,6 +1,6 @@
 # [v5] nuka-carousel
 
-nuka-carousel@5 is live and you can use it as well. We are appreciating your feedback, feel free to raise issues or discussions.
+nuka-carousel@5 is live and you can use it as well. We are appreciating your feedback, feel free to raise issues or start discussion.
 
 
 **Usage**
