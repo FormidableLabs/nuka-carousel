@@ -6,6 +6,12 @@ context('Carousel', () => {
     it('should render carousel with 4 slides and only 1 visible slide and go through all of the slides', () => {
       cy.visit('http://localhost:3000/?slides=4');
 
+      cy.get('.slider-frame').should(
+        'have.attr',
+        'aria-label',
+        'carousel-slider'
+      );
+
       cy.get('.slide.slide-visible')
         .should('have.length', 1)
         .find('img')
@@ -51,13 +57,19 @@ context('Carousel', () => {
 
     it('should render carousel with 6 slides and 3 visible slides and go through all of the slides', () => {
       const params = {
-        slidesToShow: 3
+        slidesToShow: 3,
+        frameAriaLabel: 'test-aria-label'
       };
 
       cy.visit(
         `http://localhost:3000/?slides=6&params=${JSON.stringify(params)}`
       );
 
+      cy.get('.slider-frame').should(
+        'have.attr',
+        'aria-label',
+        'test-aria-label'
+      );
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
         .find('img')

@@ -67,6 +67,10 @@ The following list of parameters will be deprecated in v5. The main reason is th
 - transitionMode
 - width
 
+**New parameters**
+
+- frameAriaLabel - customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page. (Included in v5.0.3)
+
 **What about v5.1**
 
 - Vertical carousel

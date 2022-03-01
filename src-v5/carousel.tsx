@@ -383,7 +383,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
           outline: 'none',
           ...props.style
         }}
-        aria-label="carousel-slider"
+        aria-label={props.frameAriaLabel}
         role="region"
         tabIndex={0}
         onFocus={() => (focus.current = true)}
