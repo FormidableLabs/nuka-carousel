@@ -183,7 +183,6 @@ export interface CarouselProps {
   cellSpacing: number; // migrated
   children: ReactNode | ReactNode[]; // migrated - tested
   className?: string; // migrated
-  containerStyle?: CSSProperties; // new prop in v5
   defaultControlsConfig: DefaultControlsConfig; // migrated, needs more testing
   disableAnimation: boolean; // migrated
   disableEdgeSwiping: boolean; // migrated

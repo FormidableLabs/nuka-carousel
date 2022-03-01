@@ -16,7 +16,6 @@ const defaultProps = {
   },
   cellAlign: Alignment.Left,
   cellSpacing: 0,
-  containerStyle: {},
   defaultControlsConfig: {},
   disableAnimation: false,
   disableEdgeSwiping: false,
