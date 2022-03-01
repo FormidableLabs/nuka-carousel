@@ -360,8 +360,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
     <div
       className={'slider-container'}
       style={{
-        position: 'relative',
-        padding: props.withoutControls ? 0 : '0 60px 50px'
+        position: 'relative'
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
