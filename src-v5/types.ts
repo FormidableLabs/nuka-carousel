@@ -190,6 +190,7 @@ export interface CarouselProps {
   easing: D3EasingFunctions;
   edgeEasing: D3EasingFunctions;
   enableKeyboardControls: boolean; // migrated
+  frameAriaLabel?: string; // new prop for v5
   framePadding: string; // to be deprecated
   getControlsContainerStyles: (key: Positions) => CSSProperties; // to be deprecated
   height: string; // to be deprecated

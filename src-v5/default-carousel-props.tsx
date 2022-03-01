@@ -23,6 +23,7 @@ const defaultProps = {
   easing: D3EasingFunctions.EaseCircleOut,
   edgeEasing: D3EasingFunctions.EaseElasticOut,
   enableKeyboardControls: false,
+  frameAriaLabel: 'carousel-slider',
   getControlsContainerStyles: () => ({}),
   keyCodeConfig: {
     nextSlide: [39, 68, 38, 87],
