@@ -200,8 +200,14 @@ export interface CarouselProps {
   innerRef?: MutableRefObject<HTMLDivElement>; // migrated
   keyCodeConfig: KeyCodeConfig; // migrated
   onDragStart: (
-    e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+    e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => void; // migrated
+  onDrag: (
+    e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+  ) => void;
+  onDragEnd: (
+    e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+  ) => void;
   opacityScale?: number;
   pauseOnHover: boolean; // migrated - tested
   renderAnnounceSlideMessage: RenderAnnounceSlideMessage; // migrated

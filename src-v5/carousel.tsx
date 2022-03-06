@@ -212,10 +212,13 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
     };
   }, []);
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (
+    e?: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+  ) => {
     if (!props.dragging || !dragging) return;
 
     setDragging(false);
+    props.onDragEnd(e);
 
     if (Math.abs(move) <= dragThreshold) {
       moveSlide();
@@ -234,11 +237,12 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
     prevMove.current = 0;
   };
 
-  const onTouchStart = () => {
+  const onTouchStart = (e?: React.TouchEvent<HTMLDivElement>) => {
     if (!props.swiping) {
       return;
     }
     setDragging(true);
+    props.onDragStart(e);
   };
 
   const handlePointerMove = (m: number) => {
@@ -287,12 +291,13 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
     if (!props.dragging) return;
 
     setDragging(true);
+    props.onDragStart(e);
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!props.dragging || !dragging) return;
 
-    props.onDragStart(e);
+    props.onDrag(e);
 
     const offsetX =
       e.clientX - (carouselRef.current?.getBoundingClientRect().left || 0);
@@ -301,9 +306,9 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
     handlePointerMove(moveValue);
   };
 
-  const onMouseUp = (e?: React.MouseEvent<HTMLDivElement>) => {
+  const onMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
     e?.preventDefault();
-    handleDragEnd();
+    handleDragEnd(e);
   };
 
   const onMouseEnter = () => {
