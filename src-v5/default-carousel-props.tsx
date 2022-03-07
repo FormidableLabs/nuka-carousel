@@ -35,6 +35,12 @@ const defaultProps = {
   onDragStart: () => {
     // do nothing
   },
+  onDrag: () => {
+    // do nothing
+  },
+  onDragEnd: () => {
+    // do nothing
+  },
   pauseOnHover: true,
   renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
   renderBottomCenterControls: (props: ControlProps) => (
