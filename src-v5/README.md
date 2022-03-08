@@ -11,7 +11,7 @@ or
 > Migration guide from v4 to v5 is under development, please raise any questions in the Issues tab of the repository.
 
 **Demo**
-- You can test nuka-carousel@5 default behaviour [here](https://nuka-carousel.vercel.app/)
+- You can test nuka-carousel@5 default behaviour [here](https://nuka-carousel-next.vercel.app/)
 ```
   <Carousel>
     <img src="/image1.png" />
@@ -22,7 +22,7 @@ or
   </Carousel>
 ```
 
-- Infinity nuka-carousel@5 with 3 slides to show. [link](https://nuka-carousel.vercel.app/?slides=6&params=%7B%22wrapAround%22:true,%22slidesToShow%22:3%7D)
+- Infinity nuka-carousel@5 with 3 slides to show. [link](https://nuka-carousel-next.vercel.app/?slides=6&params=%7B%22wrapAround%22:true,%22slidesToShow%22:3%7D)
 ```
   <Carousel
     wrapAround={true}
