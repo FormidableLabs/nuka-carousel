@@ -51,7 +51,7 @@ const Home = ({ urlParams }) => {
         <Carousel {...carouselParams}>{slides}</Carousel>
       </main>
       <footer>
-        <a target="_blank" rel="noopener noreferrer" href="https://vercel.com?utm_source=formidablelabs&utm_campaign=oss">
+        <a target="_blank" rel="noopener noreferrer" href="https://vercel.com?utm_source=nuka-carousel&utm_campaign=oss">
           <img
             alt="Powered by Vercel"
             src="/powered-by-vercel.svg"
