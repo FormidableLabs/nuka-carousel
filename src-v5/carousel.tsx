@@ -285,11 +285,11 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   };
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    e?.preventDefault();
-    carouselRef?.current?.focus();
-
     if (!props.dragging) return;
 
+    e?.preventDefault();
+    carouselRef?.current?.focus();
+    
     setDragging(true);
     props.onDragStart(e);
   };
