@@ -289,7 +289,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
 
     e?.preventDefault();
     carouselRef?.current?.focus();
-    
+
     setDragging(true);
     props.onDragStart(e);
   };
