@@ -2,7 +2,7 @@
 
 # nuka-carousel
 
-> :warning: nuka-carousel v5 beta is published and you can install it like this `npm install nuka-carousel@5.0.5`. Please check the [v5 documentation](https://github.com/FormidableLabs/nuka-carousel/tree/main/src-v5) for more details. 
+> :warning: nuka-carousel v5 beta is published and you can install it like this `npm install nuka-carousel@5.0.6`. Please check the [v5 documentation](https://github.com/FormidableLabs/nuka-carousel/tree/main/src-v5) for more details. 
 
 A Pure ReactJS Carousel Component
 

@@ -4,9 +4,9 @@ nuka-carousel@5 is live and you can use it as well. We are appreciating your fee
 
 
 **Usage**
-`npm install nuka-carousel@5.0.5`
+`npm install nuka-carousel@5.0.6`
 or
-`yarn add nuka-carousel@5.0.5`
+`yarn add nuka-carousel@5.0.6`
 
 > Migration guide from v4 to v5 is under development, please raise any questions in the Issues tab of the repository.
 
