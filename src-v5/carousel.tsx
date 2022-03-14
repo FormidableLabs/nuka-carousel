@@ -42,27 +42,30 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   const carouselRef = props.innerRef || carouselEl;
 
   const moveSlide = (to?: number) => {
-    const [slide, endSlide] = getIndexes(
+    const [slide] = getIndexes(
       currentSlide,
       currentSlide - slidesToScroll,
       count
     );
-    to && props.beforeSlide(slide, endSlide);
+
+    const nextIndex = () => {
+      const index = to ?? currentSlide;
+      if (index < 0) {
+        return index + count;
+      }
+      if (index === count) {
+        return 0;
+      }
+      return index;
+    };
+
+    typeof to === 'number' && props.beforeSlide(slide, nextIndex());
     !props.disableAnimation && setAnimation(true);
     setCurrentSlide(to ?? currentSlide);
     setTimeout(
       () => {
         if (!isMounted.current) return;
-
-        let nextIndex = to ?? currentSlide;
-        if (nextIndex < 0) {
-          nextIndex += count;
-        }
-        if (nextIndex === count) {
-          nextIndex = 0;
-        }
-
-        typeof to === 'number' && props.afterSlide(nextIndex);
+        typeof to === 'number' && props.afterSlide(nextIndex());
         !props.disableAnimation && setAnimation(false);
       },
       !props.disableAnimation ? props.speed || 500 : 40
