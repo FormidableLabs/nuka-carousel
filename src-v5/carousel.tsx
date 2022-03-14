@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Slide from './slide';
 import { getSliderListStyles } from './slider-list';
 import { CarouselProps, KeyCodeFunction } from './types';
