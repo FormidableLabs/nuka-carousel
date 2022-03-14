@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import Slide from './slide';
 import { getSliderListStyles } from './slider-list';
 import { CarouselProps, KeyCodeFunction } from './types';
@@ -41,14 +41,8 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
 
   const carouselRef = props.innerRef || carouselEl;
 
-  const moveSlide = (to?: number) => {
-    const [slide] = getIndexes(
-      currentSlide,
-      currentSlide - slidesToScroll,
-      count
-    );
-
-    const nextIndex = () => {
+  const getNextIndex = useCallback(
+    (to?: number) => {
       const index = to ?? currentSlide;
       if (index < 0) {
         return index + count;
@@ -57,15 +51,25 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
         return 0;
       }
       return index;
-    };
+    },
+    [count, currentSlide]
+  );
 
-    typeof to === 'number' && props.beforeSlide(slide, nextIndex());
+  const moveSlide = (to?: number) => {
+    const [slide] = getIndexes(
+      currentSlide,
+      currentSlide - slidesToScroll,
+      count
+    );
+
+    const nextIndex = getNextIndex(to);
+    typeof to === 'number' && props.beforeSlide(slide, nextIndex);
     !props.disableAnimation && setAnimation(true);
     setCurrentSlide(to ?? currentSlide);
     setTimeout(
       () => {
         if (!isMounted.current) return;
-        typeof to === 'number' && props.afterSlide(nextIndex());
+        typeof to === 'number' && props.afterSlide(nextIndex);
         !props.disableAnimation && setAnimation(false);
       },
       !props.disableAnimation ? props.speed || 500 : 40
