@@ -49,12 +49,20 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
     );
     to && props.beforeSlide(slide, endSlide);
     !props.disableAnimation && setAnimation(true);
-
     setCurrentSlide(to ?? currentSlide);
     setTimeout(
       () => {
         if (!isMounted.current) return;
-        to && props.afterSlide(currentSlide);
+
+        let nextIndex = to ?? currentSlide;
+        if (nextIndex < 0) {
+          nextIndex += count;
+        }
+        if (nextIndex === count) {
+          nextIndex = 0;
+        }
+
+        typeof to === 'number' && props.afterSlide(nextIndex);
         !props.disableAnimation && setAnimation(false);
       },
       !props.disableAnimation ? props.speed || 500 : 40
