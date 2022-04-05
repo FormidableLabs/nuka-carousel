@@ -41,6 +41,11 @@ export interface Slide {
   offsetHeight: number;
 }
 
+export enum ScrollMode {
+  page = 'page',
+  reminder = 'reminder',
+}
+
 export enum D3EasingFunctions {
   EaseLinear = 'easeLinear',
   EaseQuad = 'easeQuad',
@@ -149,6 +154,7 @@ export interface ControlProps {
   left?: number; // obsolete
   nextSlide: () => void;
   previousSlide: () => void;
+  scrollMode: ScrollMode;
   slideCount: number;
   slidesToScroll: number;
   slidesToShow: number;
@@ -220,7 +226,7 @@ export interface CarouselProps {
   renderTopCenterControls?: RenderControls; // migrated
   renderTopLeftControls?: RenderControls; // migrated
   renderTopRightControls?: RenderControls; // migrated
-  // scrollMode: ScrollMode; // to be deprecated
+  scrollMode: ScrollMode; // migrated
   slideIndex: number; // ???
   slideOffset: number; // to be deprecated
   slidesToScroll: number; // migrated - tested for !wrapAround

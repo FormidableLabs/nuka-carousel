@@ -12,7 +12,12 @@ const colors = [
   'aa231f',
   'e3bc13',
   'db7c00',
-  'aa231f'
+  'aa231f',
+  'ccc',
+  'ddd',
+  '000',
+  '111',
+  '222'
 ];
 
 const Home = ({ urlParams }) => {
