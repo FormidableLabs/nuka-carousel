@@ -122,13 +122,17 @@ export const NextButton = (props: ControlProps) => {
   );
 };
 
-export const getDotIndexes = (slideCount: number, slidesToScroll: number, scrollMode: ScrollMode) => {
+export const getDotIndexes = (
+  slideCount: number,
+  slidesToScroll: number,
+  scrollMode: ScrollMode
+) => {
   const dotIndexes = [];
   const scrollSlides = slidesToScroll === 0 ? 1 : slidesToScroll;
 
   for (let i = 0; i < slideCount; i += scrollSlides) {
     if (scrollMode === ScrollMode.reminder && i + scrollSlides > slideCount) {
-      dotIndexes.push(i - (scrollSlides - (slideCount - i)))
+      dotIndexes.push(i - (scrollSlides - (slideCount - i)));
     } else {
       dotIndexes.push(i);
     }
@@ -155,7 +159,11 @@ export const PagingDots = (props: ControlProps) => {
     fill: 'black'
   });
 
-  const indexes = getDotIndexes(props.slideCount, props.slidesToScroll, props.scrollMode);
+  const indexes = getDotIndexes(
+    props.slideCount,
+    props.slidesToScroll,
+    props.scrollMode
+  );
   const {
     pagingDotsContainerClassName,
     pagingDotsClassName,

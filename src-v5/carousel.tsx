@@ -6,7 +6,13 @@ import { getSliderListStyles } from './slider-list';
 import { CarouselProps, KeyCodeFunction } from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
-import { getIndexes, addEvent, removeEvent, getNextMoveIndex, getPrevMoveIndex } from './utils';
+import {
+  getIndexes,
+  addEvent,
+  removeEvent,
+  getNextMoveIndex,
+  getPrevMoveIndex
+} from './utils';
 import AnnounceSlide from './announce-slide';
 
 export const Carousel = (props: CarouselProps): React.ReactElement => {
@@ -78,7 +84,13 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
 
   const nextSlide = () => {
     if (props.wrapAround || currentSlide < count - props.slidesToScroll) {
-      const nextPosition = getNextMoveIndex(props.scrollMode, props.wrapAround, currentSlide, count, props.slidesToScroll)
+      const nextPosition = getNextMoveIndex(
+        props.scrollMode,
+        props.wrapAround,
+        currentSlide,
+        count,
+        props.slidesToScroll
+      );
       moveSlide(nextPosition);
     } else {
       moveSlide();
@@ -88,7 +100,12 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   const prevSlide = () => {
     // boundary
     if (props.wrapAround || currentSlide > 0) {
-      const prevPosition = getPrevMoveIndex(props.scrollMode, props.wrapAround, currentSlide, props.slidesToScroll)
+      const prevPosition = getPrevMoveIndex(
+        props.scrollMode,
+        props.wrapAround,
+        currentSlide,
+        props.slidesToScroll
+      );
       moveSlide(prevPosition);
     } else {
       moveSlide();
