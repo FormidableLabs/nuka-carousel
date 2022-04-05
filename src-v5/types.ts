@@ -124,7 +124,6 @@ export interface CarouselState {
   currentSlide: number;
   dragging: boolean;
   easing: (normalizedTime: number) => number;
-  frameWidth: number | null;
   hasFocus: boolean;
   hasInteraction: boolean;
   isWrappingAround: boolean;
@@ -132,10 +131,8 @@ export interface CarouselState {
   pauseOnHover?: boolean;
   resetWrapAroundPosition: boolean;
   count: number;
-  slideHeight: number | 'auto';
   slidesToScroll: number;
   slidesToShow: number;
-  slideWidth: number;
   top: number;
   wrapToIndex: number | null;
 }
@@ -149,17 +146,13 @@ export interface ControlProps {
   cellSpacing: number;
   currentSlide: number;
   defaultControlsConfig: DefaultControlsConfig;
-  frameWidth?: number | null; // obsolete
   goToSlide: (index: number) => void;
-  left?: number; // obsolete
   nextSlide: () => void;
   previousSlide: () => void;
   scrollMode: ScrollMode;
   slideCount: number;
   slidesToScroll: number;
   slidesToShow: number;
-  slideWidth?: number; // obsolete
-  top?: number; // obsolete
   vertical: boolean;
   wrapAround: boolean;
 }
@@ -178,31 +171,24 @@ export type RenderControlFunctionNames =
 type RenderControls = (props: ControlProps) => ReactElement;
 
 export interface CarouselProps {
-  afterSlide: (index: number) => void; // migrated
-  animation?: 'zoom' | 'fade'; // migrated
-  autoGenerateStyleTag: boolean; // to be deprecated
-  autoplay: boolean; // migrated - tested for !wrapAround
-  autoplayInterval: number; // migrated - tested for !wrapAround
-  autoplayReverse: boolean; // migrated - tested for !wrapAround
-  beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void; // migrated
-  cellAlign: Alignment; // migrated
-  cellSpacing: number; // migrated
-  children: ReactNode | ReactNode[]; // migrated - tested
-  className?: string; // migrated
-  defaultControlsConfig: DefaultControlsConfig; // migrated, needs more testing
-  disableAnimation: boolean; // migrated
-  disableEdgeSwiping: boolean; // migrated
-  dragging: boolean; // migrated
-  easing: D3EasingFunctions;
-  edgeEasing: D3EasingFunctions;
-  enableKeyboardControls: boolean; // migrated
-  frameAriaLabel?: string; // new prop for v5
-  framePadding: string; // to be deprecated
-  getControlsContainerStyles: (key: Positions) => CSSProperties; // to be deprecated
-  height: string; // to be deprecated
-  // heightMode: HeightMode; // to be deprecated
-  initialSlideHeight?: number; // to be deprecated
-  initialSlideWidth?: number; // to be deprecated
+  afterSlide: (index: number) => void;
+  animation?: 'zoom' | 'fade';
+  autoplay: boolean;
+  autoplayInterval: number;
+  autoplayReverse: boolean;
+  beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void;
+  cellAlign: Alignment;
+  cellSpacing: number;
+  children: ReactNode | ReactNode[];
+  className?: string;
+  defaultControlsConfig: DefaultControlsConfig;
+  disableAnimation: boolean;
+  disableEdgeSwiping: boolean;
+  dragging: boolean;
+  // easing: D3EasingFunctions;
+  // edgeEasing: D3EasingFunctions;
+  enableKeyboardControls: boolean;
+  frameAriaLabel?: string;
   innerRef?: MutableRefObject<HTMLDivElement>; // migrated
   keyCodeConfig: KeyCodeConfig; // migrated
   onDragStart: (
@@ -214,7 +200,7 @@ export interface CarouselProps {
   onDragEnd: (
     e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => void;
-  opacityScale?: number;
+  opacityScale?: number; // deprecated???
   pauseOnHover: boolean; // migrated - tested
   renderAnnounceSlideMessage: RenderAnnounceSlideMessage; // migrated
   renderBottomCenterControls: RenderControls; // migrated
@@ -229,15 +215,12 @@ export interface CarouselProps {
   scrollMode: ScrollMode; // migrated
   slideIndex: number; // ???
   slideOffset: number; // to be deprecated
-  slidesToScroll: number; // migrated - tested for !wrapAround
-  slidesToShow: number; // migrated - tested
-  slideWidth: number | string; // to be deprecated
+  slidesToScroll: number;
+  slidesToShow: number;
   speed: number; // migrated
   style: CSSProperties; // migrated
   swiping: boolean; // migrated
-  // transitionMode: TransitionMode; // to be deprecated
   vertical: boolean;
-  width: string; // to be deprecated
   withoutControls: boolean; // migrated
   wrapAround: boolean; // migrated - tested
   zoomScale?: number; // migrated
@@ -260,13 +243,8 @@ export type TransitionProps = Pick<
   Pick<
     CarouselState,
     | 'currentSlide'
-    | 'frameWidth'
     | 'hasInteraction'
     | 'isWrappingAround'
-    | 'left'
     | 'count'
-    | 'slideHeight'
-    | 'slideWidth'
     | 'slidesToShow'
-    | 'top'
   > & { deltaX: number; deltaY: number };
