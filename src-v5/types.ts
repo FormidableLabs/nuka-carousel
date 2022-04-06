@@ -202,16 +202,16 @@ export interface CarouselProps {
   ) => void;
   pauseOnHover: boolean;
   renderAnnounceSlideMessage: RenderAnnounceSlideMessage;
-  renderBottomCenterControls: RenderControls; // migrated
-  renderBottomLeftControls?: RenderControls; // migrated
-  renderBottomRightControls?: RenderControls; // migrated
-  renderCenterCenterControls?: RenderControls; // migrated
-  renderCenterLeftControls: RenderControls; // migrated
-  renderCenterRightControls: RenderControls; // migrated
-  renderTopCenterControls?: RenderControls; // migrated
-  renderTopLeftControls?: RenderControls; // migrated
-  renderTopRightControls?: RenderControls; // migrated
-  scrollMode: ScrollMode; // migrated
+  renderBottomCenterControls: RenderControls;
+  renderBottomLeftControls?: RenderControls;
+  renderBottomRightControls?: RenderControls;
+  renderCenterCenterControls?: RenderControls;
+  renderCenterLeftControls: RenderControls;
+  renderCenterRightControls: RenderControls;
+  renderTopCenterControls?: RenderControls;
+  renderTopLeftControls?: RenderControls;
+  renderTopRightControls?: RenderControls;
+  scrollMode: ScrollMode;
   slideIndex: number; // ???
   slidesToScroll: number;
   slidesToShow: number;

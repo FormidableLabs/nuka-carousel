@@ -3,6 +3,8 @@
 Small, fast and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site
 
 ![Nuka Carousel Animated Example](https://i.imgur.com/UwP5gle.gif)
+
+> If you are looking for v4 documentation, you can find it [here](https://github.com/FormidableLabs/nuka-carousel/blob/main/V4-DOCUMENTATION.md)
 ### Install
 
 To add `nuka-carousel` to your project run the following command in your project folder.
@@ -86,6 +88,7 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 | onDragEnd | `(e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture event at the ent of swiping/dragging slides | |
 | pauseOnHover | `boolean` | Pause autoPlay when mouse is over carousel. | `true` |
 | renderAnnounceSlideMessage | `(props: Pick<CarouselState, 'currentSlide' | 'count'>) => string` | Renders message in the ARIA live region that is announcing the current slide on slide change | Render function that returns `"Slide {currentSlide + 1} of {slideCount}"` |
+| scrollMode | `'page' | 'remainder'` | Set `scrollMode="remainder"` if you don't want to see the white space when you scroll to the end of a non-infinite carousel. scrollMode property is ignored when wrapAround is enabled | `'page'` |
 | slideIndex | `number` | Manually set the index of the slide to be shown | |
 | slidesToScroll | `number` | Slides to scroll at once. The property is overridden to `slidesToShow` when `animation="fade"` | 1 |
 | slidesToShow | `number` | Number of slides to show at once. Will be cast to an `integer` when `animation="fade"` | 1 |

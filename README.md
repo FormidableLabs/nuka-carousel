@@ -88,6 +88,7 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 | onDragEnd | `(e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture event at the ent of swiping/dragging slides | |
 | pauseOnHover | `boolean` | Pause autoPlay when mouse is over carousel. | `true` |
 | renderAnnounceSlideMessage | `(props: Pick<CarouselState, 'currentSlide' | 'count'>) => string` | Renders message in the ARIA live region that is announcing the current slide on slide change | Render function that returns `"Slide {currentSlide + 1} of {slideCount}"` |
+| scrollMode | `'page' | 'remainder'` | Set `scrollMode="remainder"` if you don't want to see the white space when you scroll to the end of a non-infinite carousel. scrollMode property is ignored when wrapAround is enabled | `'page'` |
 | slideIndex | `number` | Manually set the index of the slide to be shown | |
 | slidesToScroll | `number` | Slides to scroll at once. The property is overridden to `slidesToShow` when `animation="fade"` | 1 |
 | slidesToShow | `number` | Number of slides to show at once. Will be cast to an `integer` when `animation="fade"` | 1 |
@@ -211,7 +212,7 @@ export default class extends React.Component {
 ``` -->
 ### Depreceted v4 parameters
 
-The following list of parameters are deprecated in v5. The main reason is that there is other approach which you can use to achieve the same thing, without increasing the complexity of the library. For example: `width` the width of the carousel can be easily manipulated by the parent container where developer placed the carousel. `scrollMode` can be achieved easily with `slidesToScroll` property and etc. We are open for discussions if you really need some of these parameters. Feel free to raise an issue or start discussion in the repository, so we can help.
+The following list of parameters are deprecated in v5. The main reason is that there is other approach which you can use to achieve the same thing, without increasing the complexity of the library. For example: `width` the width of the carousel can be easily manipulated by the parent container where developer placed the carousel. We are open for discussions if you really need some of these parameters. Feel free to raise an issue or start discussion in the repository, so we can help.
 
 - autoGenerateStyleTag
 - framePadding
