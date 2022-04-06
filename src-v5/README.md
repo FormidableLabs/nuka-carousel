@@ -52,7 +52,7 @@ or
 
 **Depreceted parameters**
 
-The following list of parameters will be deprecated in v5. The main reason is that there is other approach which you can use to achieve the same thing, without increasing the complexity of the library. For example: `width` the width of the carousel can be easily manipulated by the parent container where developer placed the carousel. `scrollMode` can be achieved easily with `slidesToScroll` property and etc. We are open for discussions if you really need some of these parameters. Feel free to raise an issue or start discussion in the repository, so we can help.
+The following list of parameters will be deprecated in v5. The main reason is that there is other approach which you can use to achieve the same thing, without increasing the complexity of the library. For example: `width` the width of the carousel can be easily manipulated by the parent container where developer placed the carousel. We are open for discussions if you really need some of these parameters. Feel free to raise an issue or start discussion in the repository, so we can help.
 
 - autoGenerateStyleTag
 - framePadding
@@ -61,7 +61,6 @@ The following list of parameters will be deprecated in v5. The main reason is th
 - heightMode
 - initialSlideHeight
 - initialSlideWidth
-- scrollMode
 - slideOffset
 - slideWidth
 - transitionMode

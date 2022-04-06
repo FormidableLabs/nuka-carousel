@@ -50,6 +50,7 @@ const defaultProps = {
     <PreviousButton {...props} />
   ),
   renderCenterRightControls: (props: ControlProps) => <NextButton {...props} />,
+  scrollMode: 'page',
   slideIndex: 0,
   slideOffset: 25,
   slidesToScroll: 1,

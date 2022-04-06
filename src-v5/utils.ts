@@ -1,3 +1,5 @@
+import { ScrollMode } from './types';
+
 export const getIndexes = (
   slide: number,
   endSlide: number,
@@ -53,4 +55,40 @@ export const removeEvent = (
   } else {
     elem[`on${type}`] = null;
   }
+};
+
+export const getNextMoveIndex = (
+  scrollMode: ScrollMode,
+  wrapAround: boolean,
+  currentSlide: number,
+  count: number,
+  slidesToScroll: number
+) => {
+  if (
+    !wrapAround &&
+    scrollMode === ScrollMode.remainder &&
+    count < currentSlide + slidesToScroll * 2
+  ) {
+    const remindedSlides = count - (currentSlide + slidesToScroll);
+    return currentSlide + remindedSlides;
+  }
+
+  return currentSlide + slidesToScroll;
+};
+
+export const getPrevMoveIndex = (
+  scrollMode: ScrollMode,
+  wrapAround: boolean,
+  currentSlide: number,
+  slidesToScroll: number
+) => {
+  if (
+    !wrapAround &&
+    scrollMode === ScrollMode.remainder &&
+    currentSlide - slidesToScroll < 0
+  ) {
+    return 0;
+  }
+
+  return currentSlide - slidesToScroll;
 };

@@ -57,6 +57,7 @@ const renderControls = (
           goToSlide: (index) => moveSlide(index),
           nextSlide: () => nextSlide(),
           previousSlide: () => prevSlide(),
+          scrollMode: props.scrollMode,
           slideCount: count,
           slidesToScroll,
           slidesToShow: props.slidesToShow || 1,

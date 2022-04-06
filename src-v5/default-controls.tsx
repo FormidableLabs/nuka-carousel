@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import React, { CSSProperties } from 'react';
-import { ControlProps } from './types';
+import { ControlProps, ScrollMode } from './types';
 
 const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
   border: 0,
@@ -122,12 +122,20 @@ export const NextButton = (props: ControlProps) => {
   );
 };
 
-export const getDotIndexes = (slideCount: number, slidesToScroll: number) => {
+export const getDotIndexes = (
+  slideCount: number,
+  slidesToScroll: number,
+  scrollMode: ScrollMode
+) => {
   const dotIndexes = [];
   const scrollSlides = slidesToScroll === 0 ? 1 : slidesToScroll;
 
   for (let i = 0; i < slideCount; i += scrollSlides) {
-    dotIndexes.push(i);
+    if (scrollMode === ScrollMode.remainder && i + scrollSlides > slideCount) {
+      dotIndexes.push(i - (scrollSlides - (slideCount - i)));
+    } else {
+      dotIndexes.push(i);
+    }
   }
 
   return dotIndexes;
@@ -151,7 +159,11 @@ export const PagingDots = (props: ControlProps) => {
     fill: 'black'
   });
 
-  const indexes = getDotIndexes(props.slideCount, props.slidesToScroll);
+  const indexes = getDotIndexes(
+    props.slideCount,
+    props.slidesToScroll,
+    props.scrollMode
+  );
   const {
     pagingDotsContainerClassName,
     pagingDotsClassName,
