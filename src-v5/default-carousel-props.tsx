@@ -24,7 +24,6 @@ const defaultProps = {
   edgeEasing: D3EasingFunctions.EaseElasticOut,
   enableKeyboardControls: false,
   frameAriaLabel: 'carousel-slider',
-  getControlsContainerStyles: () => ({}),
   keyCodeConfig: {
     nextSlide: [39, 68, 38, 87],
     previousSlide: [37, 65, 40, 83],
@@ -52,7 +51,6 @@ const defaultProps = {
   renderCenterRightControls: (props: ControlProps) => <NextButton {...props} />,
   scrollMode: 'page',
   slideIndex: 0,
-  slideOffset: 25,
   slidesToScroll: 1,
   slidesToShow: 1,
   speed: 500,

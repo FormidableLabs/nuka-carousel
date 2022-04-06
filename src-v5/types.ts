@@ -185,24 +185,23 @@ export interface CarouselProps {
   disableAnimation: boolean;
   disableEdgeSwiping: boolean;
   dragging: boolean;
-  // easing: D3EasingFunctions;
-  // edgeEasing: D3EasingFunctions;
+  easing: D3EasingFunctions; // not migrated yet
+  edgeEasing: D3EasingFunctions; // not migrated yet
   enableKeyboardControls: boolean;
   frameAriaLabel?: string;
-  innerRef?: MutableRefObject<HTMLDivElement>; // migrated
-  keyCodeConfig: KeyCodeConfig; // migrated
+  innerRef?: MutableRefObject<HTMLDivElement>;
+  keyCodeConfig: KeyCodeConfig;
   onDragStart: (
     e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
-  ) => void; // migrated
+  ) => void;
   onDrag: (
     e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => void;
   onDragEnd: (
     e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => void;
-  opacityScale?: number; // deprecated???
-  pauseOnHover: boolean; // migrated - tested
-  renderAnnounceSlideMessage: RenderAnnounceSlideMessage; // migrated
+  pauseOnHover: boolean;
+  renderAnnounceSlideMessage: RenderAnnounceSlideMessage;
   renderBottomCenterControls: RenderControls; // migrated
   renderBottomLeftControls?: RenderControls; // migrated
   renderBottomRightControls?: RenderControls; // migrated
@@ -214,37 +213,13 @@ export interface CarouselProps {
   renderTopRightControls?: RenderControls; // migrated
   scrollMode: ScrollMode; // migrated
   slideIndex: number; // ???
-  slideOffset: number; // to be deprecated
   slidesToScroll: number;
   slidesToShow: number;
-  speed: number; // migrated
-  style: CSSProperties; // migrated
-  swiping: boolean; // migrated
-  vertical: boolean;
-  withoutControls: boolean; // migrated
-  wrapAround: boolean; // migrated - tested
-  zoomScale?: number; // migrated
+  speed: number;
+  style: CSSProperties;
+  swiping: boolean;
+  vertical: boolean; // not migrated yet
+  withoutControls: boolean;
+  wrapAround: boolean;
+  zoomScale?: number;
 }
-
-export type TransitionProps = Pick<
-  CarouselProps,
-  | 'animation'
-  | 'cellAlign'
-  | 'cellSpacing'
-  | 'children'
-  | 'dragging'
-  | 'opacityScale'
-  | 'slideOffset'
-  | 'slidesToScroll'
-  | 'vertical'
-  | 'wrapAround'
-  | 'zoomScale'
-> &
-  Pick<
-    CarouselState,
-    | 'currentSlide'
-    | 'hasInteraction'
-    | 'isWrappingAround'
-    | 'count'
-    | 'slidesToShow'
-  > & { deltaX: number; deltaY: number };
