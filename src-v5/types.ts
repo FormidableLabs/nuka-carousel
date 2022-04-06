@@ -43,7 +43,7 @@ export interface Slide {
 
 export enum ScrollMode {
   page = 'page',
-  reminder = 'reminder'
+  remainder = 'remainder'
 }
 
 export enum D3EasingFunctions {

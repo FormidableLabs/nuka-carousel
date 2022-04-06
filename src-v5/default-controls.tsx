@@ -131,7 +131,7 @@ export const getDotIndexes = (
   const scrollSlides = slidesToScroll === 0 ? 1 : slidesToScroll;
 
   for (let i = 0; i < slideCount; i += scrollSlides) {
-    if (scrollMode === ScrollMode.reminder && i + scrollSlides > slideCount) {
+    if (scrollMode === ScrollMode.remainder && i + scrollSlides > slideCount) {
       dotIndexes.push(i - (scrollSlides - (slideCount - i)));
     } else {
       dotIndexes.push(i);
