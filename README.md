@@ -72,7 +72,7 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 | autoplayInterval | `number` | Interval for autoplay iteration in milliseconds. | `3000`  |
 | autoplayReverse | `boolean` | Only meaningful when `autoplay` is already true. When `autoplayReverse` is also true, autorotation cycles through slides indexes from high to low. | `false` |
 | beforeSlide | `(currentSlideIndex: number, endSlideIndex: number) => void` | Hook to be called before a slide is changed | `() => {}` |
-| cellAlign | `'left' | 'center' | 'right'` | When displaying more than one slide, sets which position to anchor the current slide to. | `left` |
+| cellAlign | `'left' \| 'center' \| 'right'` | When displaying more than one slide, sets which position to anchor the current slide to. | `left` |
 | cellSpacing | `number` | Space between slides, as an integer, but reflected as `px` | `0` |
 | className | `string` | Slider frame class name | `''` |
 | defaultControlsConfig | <pre lang="json">interface DefaultControlsConfig  { <br/> containerClassName?: string; <br/> nextButtonClassName?: string; <br/> nextButtonStyle?: CSSProperties; <br/> nextButtonText?: string; <br/> pagingDotsClassName?: string; <br/> pagingDotsContainerClassName?: string; <br/> pagingDotsStyle?: CSSProperties; <br/> prevButtonClassName?: string; <br/> prevButtonStyle?: CSSProperties; <br/> prevButtonText?: string; <br/>}</pre> | This prop lets you apply custom classes and styles to the default `Container`. `Next`, `Previous`, and `Paging Dots` controls. More information on how to customize these controls can be found below.| `{}` |
@@ -88,7 +88,7 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 | onDragEnd | `(e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture event at the ent of swiping/dragging slides | |
 | pauseOnHover | `boolean` | Pause autoPlay when mouse is over carousel. | `true` |
 | renderAnnounceSlideMessage | `(props: Pick<CarouselState, 'currentSlide' | 'count'>) => string` | Renders message in the ARIA live region that is announcing the current slide on slide change | Render function that returns `"Slide {currentSlide + 1} of {slideCount}"` |
-| scrollMode | `'page' | 'remainder'` | Set `scrollMode="remainder"` if you don't want to see the white space when you scroll to the end of a non-infinite carousel. scrollMode property is ignored when wrapAround is enabled | `'page'` |
+| scrollMode | `'page' \| 'remainder'` | Set `scrollMode="remainder"` if you don't want to see the white space when you scroll to the end of a non-infinite carousel. scrollMode property is ignored when wrapAround is enabled | `'page'` |
 | slideIndex | `number` | Manually set the index of the slide to be shown | |
 | slidesToScroll | `number` | Slides to scroll at once. The property is overridden to `slidesToShow` when `animation="fade"` | 1 |
 | slidesToShow | `number` | Number of slides to show at once. Will be cast to an `integer` when `animation="fade"` | 1 |
