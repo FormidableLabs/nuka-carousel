@@ -1,5 +1,7 @@
 # nuka-carousel
 
+[![Maintenance Status][maintenance-image]](#maintenance-status)
+
 Small, fast and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site
 
 ![Nuka Carousel Animated Example](https://i.imgur.com/UwP5gle.gif)
@@ -244,6 +246,6 @@ See the [Contribution Docs](CONTRIBUTING.md).
 
 **Active:** Formidable is actively working on this project, and we expect to continue for work for the foreseeable future. Bug reports, feature requests and pull requests are welcome.
 
-[maintenance-image]: https://img.shields.io/badge/maintenance-active-green.svg
+[maintenance-image]: https://img.shields.io/badge/maintenance-active-green.svg?color=brightgreen&style=flat
 
 
