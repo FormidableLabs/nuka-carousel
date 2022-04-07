@@ -82,7 +82,13 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 | enableKeyboardControls | `boolean` | When set to `true` will enable keyboard controls when the carousel has focus. If the carousel does not have focus, keyboard controls will be ignored. | `false` |
 | frameAriaLabel | `string` | Customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page. | `''` |
 | innerRef | `MutableRefObject<HTMLDivElement>` | React `ref` that should be set on the carousel element | |
-| keyCodeConfig | <pre lang="json">interface KeyCodeConfig { <br/>  firstSlide?: number[]; <br/>  lastSlide?: number[];<br/>  nextSlide?: number[]; <br/>  pause?: number[]; <br/>  previousSlide?: number[]; <br/>}</pre> | If `enableKeyboardControls` prop is true, you can pass configuration for the keyCode so you can override the default keyboard keys configured. | `{ nextSlide: [39, 68, 38, 87], previousSlide: [37, 65, 40, 83], firstSlide: [81], lastSlide: [69], pause: [32] }` |
+| keyCodeConfig | <code>interface KeyCodeConfig {
+  firstSlide?: number[];
+  lastSlide?: number[];
+  nextSlide?: number[]; 
+  pause?: number[]; 
+  previousSlide?: number[];
+}</code> | If `enableKeyboardControls` prop is true, you can pass configuration for the keyCode so you can override the default keyboard keys configured. | `{ nextSlide: [39, 68, 38, 87], previousSlide: [37, 65, 40, 83], firstSlide: [81], lastSlide: [69], pause: [32] }` |
 | onDragStart | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture event at the start of swiping/dragging slides | |
 | onDrag | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture swiping/dragging event on slides | |
 | onDragEnd | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture event at the ent of swiping/dragging slides | |
@@ -132,7 +138,7 @@ A set of eight render props for rendering controls in different positions around
 
 #### renderAnnounceSlideMessage
 
-`React.PropTypes.func`
+`(props: Pick<CarouselState, 'currentSlide' \| 'count'>) => string`
 
 `renderAnnounceSlideMessage` render prop is a special case of the `render*Controls` props. It's responsibility is to render ARIA live announcement message to improve accessibility. The prop will announce the message you pass in every time the slide changes with `VoiceOver` enabled on your machine. The function returns only `slideCount` and `currentSlide` values.
 
@@ -149,17 +155,18 @@ A set of eight render props for rendering controls in different positions around
 #### defaultControlsConfig
 
 ```
-React.PropTypes.shape({
-  nextButtonClassName: PropTypes.string,
-  nextButtonStyle: PropTypes.object,
-  nextButtonText: PropTypes.string,
-  prevButtonClassName: PropTypes.string,
-  prevButtonStyle: PropTypes.object,
-  prevButtonText: PropTypes.string,
-  pagingDotsContainerClassName: PropTypes.string,
-  pagingDotsClassName: PropTypes.string,
-  pagingDotsStyle: PropTypes.object
-})
+interface DefaultControlsConfig {
+  containerClassName?: string;
+  nextButtonClassName?: string;
+  nextButtonStyle?: CSSProperties;
+  nextButtonText?: string;
+  pagingDotsClassName?: string;
+  pagingDotsContainerClassName?: string;
+  pagingDotsStyle?: CSSProperties;
+  prevButtonClassName?: string;
+  prevButtonStyle?: CSSProperties;
+  prevButtonText?: string;
+}
 ```
 
 The default controls used by Nuka are the `Previous` button, `Next` button, and `PagingDots` control. The visual look and text of these controls can be modified with props as described below:
