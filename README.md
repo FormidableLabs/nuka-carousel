@@ -1,13 +1,10 @@
-[![Maintenance Status][maintenance-image]](#maintenance-status)
-
 # nuka-carousel
 
-> :warning: nuka-carousel v5 beta is published and you can install it like this `npm install nuka-carousel@5.0.6`. Please check the [v5 documentation](https://github.com/FormidableLabs/nuka-carousel/tree/main/src-v5) for more details. 
-
-A Pure ReactJS Carousel Component
+Small, fast and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site
 
 ![Nuka Carousel Animated Example](https://i.imgur.com/UwP5gle.gif)
 
+> If you are looking for v4 documentation, you can find it [here](https://github.com/FormidableLabs/nuka-carousel/blob/main/V4-DOCUMENTATION.md)
 ### Install
 
 To add `nuka-carousel` to your project run the following command in your project folder.
@@ -22,116 +19,90 @@ OR
 $ npm install nuka-carousel
 ```
 
+> Migration guide from v4 to v5 is under development, please raise any questions in the Issues tab of the repository.
+
 ### Example
 
+You can test nuka-carousel default behaviour. [Link](https://nuka-carousel-next.vercel.app/)
 ```jsx
-import React from 'react';
-import Carousel from 'nuka-carousel';
-
-export default class extends React.Component {
-  render() {
-    return (
-      <Carousel>
-        <img src="https://via.placeholder.com/400/ffffff/c0392b/&text=slide1" />
-        <img src="https://via.placeholder.com/400/ffffff/c0392b/&text=slide2" />
-        <img src="https://via.placeholder.com/400/ffffff/c0392b/&text=slide3" />
-        <img src="https://via.placeholder.com/400/ffffff/c0392b/&text=slide4" />
-        <img src="https://via.placeholder.com/400/ffffff/c0392b/&text=slide5" />
-        <img src="https://via.placeholder.com/400/ffffff/c0392b/&text=slide6" />
-      </Carousel>
-    );
-  }
-}
+  <Carousel>
+    <img src="/image1.png" />
+    <img src="/image2.png" />
+    <img src="/image3.png" />
+    <img src="/image4.png" />
+    <img src="/image5.png" />
+  </Carousel>
 ```
 
-### Running demo locally
-
-The demo can be launched on your local machine via `webpack-dev-server`. Once you have cloned this repo locally, run the following:
-
-```bash
-yarn
-yarn build
-yarn start
+Infinity nuka-carousel@5 with 3 slides to show. [Link](https://nuka-carousel-next.vercel.app/?slides=6&params=%7B%22wrapAround%22:true,%22slidesToShow%22:3%7D)
+```jsx
+  <Carousel
+    wrapAround={true}
+    slidesToShow={3}
+  >
+    <img src="/image1.png" />
+    <img src="/image2.png" />
+    <img src="/image3.png" />
+    <img src="/image4.png" />
+    <img src="/image5.png" />
+  </Carousel> 
 ```
 
-You can access the application on your localhost at the following url: <a href="http://localhost:8080/demo" target="_blank">Local Demo</a>
+You can play with `&params` url parameter to add or remove any carousel parameters and see how the carousel behaves. We are looking to build a proper documentation page with many examples and code snippets.
 
-Or on CodeSandBox: [![Edit silly-rhodes-5pr2i](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/silly-rosalind-6y7f3)
+### Improvements in v5
 
-### Running Storybook
+- **Support server-side rendering**. Currently in v4 all of the slides are positioned with `position: absolute`, which doesn't render the slides appropriately when javascript is disabled and there are flickering when the front-end is hydrated. This forced users to hardcode properties for the carousel like `initialSlideHeight` and `initialSlideWidth`. In v5 all slides are positioned with dynamic width, so the slides and carousel can be fully responsive and rendered correctly on server as well.
+- Rewritten the library with **TypeScript** and **React Hooks** for obvious reasons.
+- **Reduce the size of the library and its dependencies**. Currently v4 has 5 dependencies - `prop-types`, `d3-ease`, `wicg-inert`, `exenv` and `react-move`. We are looking to use only `d3-ease` in v5.1, but definitely after bumping the version of it to the latest. 
+  - `prop-types` is replaced with usage of TypeScript.
+  - `exenv` is not maintained anymore and is removed with v5 as a dependency of nuka-carousel.
+  - `wicg-inert` doesn't have specified license, so we are going to remove it from our dependencies. [More info here](https://github.com/WICG/inert/issues/168). We are still supporting `inert` and we will have an example and more detailed documentation how you can use it with nuka-carousel v5.
+  - `react-move` nothing personal, we just decided to go for our custom approach of animations in order to reduce the size of the library.
+- **Fixed issues**. We fixed a lot of the issues that we currently have in v4. You can see the full list with fixed issues in our v5 project. [Link](https://github.com/FormidableLabs/nuka-carousel/projects/1)
 
-Once you have cloned this repo locally, run the following to launch Storybook:
-
-```bash
-yarn
-yarn storybook
-```
-
-You can access Storybook on your localhost at the following url: <a href="http://localhost:6006/" target="_blank">Storybook</a>
-
-### Keyboard Controls
-
-| Key Combination            | Function                                            |
-| -------------------------- | --------------------------------------------------- |
-| Right/Up Arrow or D/W key  | Next slide                                          |
-| Left/Down Arrow or A/S key | Previous slide                                      |
-| Q key                      | First slide                                         |
-| E key                      | Last slide                                          |
-| SpaceBar                   | When `autoplay={true}` pauses and unpauses carousel |
-
-- Keyboard shortcuts are disabled as a default. To enable them set `enableKeyboardControls` prop to `true`.
-- `keyCodeConfig` prop can be used to configure the default keyCodes
 
 ### Props
 
-| Name                       | PropType                                                                                                                                                                                                                                                                                                                                                                                                            | Description                                                                                                                                                                                                                                                                                 | Default                                                                                                            |
+| Name | Type | Description |Default |
 | :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------- |
-| afterSlide                 | `React.PropTypes.func`                                                                                                                                                                                                                                                                                                                                                                                              | Hook to be called after a slide is changed.                                                                                                                                                                                                                                                 |                                                                                                                    |
-| animation                  | `React.PropTypes.oneOf(['zoom'])`                                                                                                                                                                                                                                                                                                                                                                                   | Adds a zoom effect on the currently visible slide. A `transform: scale(0.85)` is set as default, however, the scale can be customized using `zoomScale` prop. Property is applied on all slides except the current 1. Use `cellAlign` to align the slide with zoom effect where you'd like. |                                                                                                                    |
-| autoGenerateStyleTag       | `React.PropTypes.bool`                                                                                                                                                                                                                                                                                                                                                                                              | When set to `true`, it will generate a `style` tag to help ensure images are displayed properly. Set to `false` if you don't want or need the style tag generated.                                                                                                                          | `true`                                                                                                             |
-| autoplay                   | `React.PropTypes.bool`                                                                                                                                                                                                                                                                                                                                                                                              | Autoplay mode active.                                                                                                                                                                                                                                                                       | `false`                                                                                                            |
-| autoplayInterval           | `React.PropTypes.number`                                                                                                                                                                                                                                                                                                                                                                                            | Interval for autoplay iteration.                                                                                                                                                                                                                                                            | `3000 milliseconds`                                                                                                |
-| autoplayReverse            | `React.PropTypes.bool`                                                                                                                                                                                                                                                                                                                                                                                              | Only meaningful when `autoplay` is already true. When `autoplayReverse` is also true, autorotation cycles through slides indexes from high to low.                                                                                                                                          | `false`                                                                                                            |
-| beforeSlide                | `React.PropTypes.func`                                                                                                                                                                                                                                                                                                                                                                                              | Hook to be called before a slide is changed                                                                                                                                                                                                                                                 |                                                                                                                    |
-| cellAlign                  | `React.PropTypes.oneOf(['left', 'center', 'right'])`                                                                                                                                                                                                                                                                                                                                                                | When displaying more than one slide, sets which position to anchor the current slide to. **Is overridden to `left` when `transitionMode="fade"`**                                                                                                                                           |                                                                                                                    |
-| cellSpacing                | `React.PropTypes.number`                                                                                                                                                                                                                                                                                                                                                                                            | Space between slides, as an integer, but reflected as `px`                                                                                                                                                                                                                                  |                                                                                                                    |
-| enableKeyboardControls     | `React.PropTypes.bool`                                                                                                                                                                                                                                                                                                                                                                                              | When set to `true` will enable keyboard controls when the carousel has focus. If the carousel does not have focus, keyboard controls will be ignored.                                                                                                                                       | `false`                                                                                                            |
-| keyCodeConfig              | `PropTypes.exact({ previousSlide: PropTypes.arrayOf(PropTypes.number), nextSlide: PropTypes.arrayOf(PropTypes.number), firstSlide: PropTypes.arrayOf(PropTypes.number), lastSlide: PropTypes.arrayOf(PropTypes.number), pause: PropTypes.arrayOf(PropTypes.number) })`                                                                                                                                              | If `enableKeyboardControls` prop is true, you can pass configuration for the keyCode so you can override the default keyboard keys configured.                                                                                                                                              | `{ nextSlide: [39, 68, 38, 87], previousSlide: [37, 65, 40, 83], firstSlide: [81], lastSlide: [69], pause: [32] }` |
-| getControlsContainerStyles | `React.PropTypes.func`                                                                                                                                                                                                                                                                                                                                                                                              | callback function to provide style to controls containers                                                                                                                                                                                                                                   |                                                                                                                    |
-| defaultControlsConfig      | `React.PropTypes.shape({ containerClassName: PropTypes.string, nextButtonClassName: PropTypes.string, nextButtonStyle: Proptypes.object, nextButtonText: PropTypes.string, prevButtonClassName: PropTypes.string, prevButtonStyle: PropTypes.object, prevButtonText: PropTypes.string, pagingDotsContainerClassName: PropTypes.string, pagingDotsClassName: PropTypes.string, pagingDotsStyle: PropTypes.object })` | This prop lets you apply custom classes and styles to the default `Container`. `Next`, `Previous`, and `Paging Dots` controls. More information on how to customize these controls can be found below.                                                                                      | `{}`                                                                                                               |
-| disableAnimation           | `React.PropTypes.bool`                                                                                                                                                                                                                                                                                                                                                                                              | When set to `true`, will disable animation.                                                                                                                                                                                                                                                 | `false`                                                                                                            |
-| disableEdgeSwiping         | `React.PropTypes.bool`                                                                                                                                                                                                                                                                                                                                                                                              | When set to `true`, will disable swiping before first slide and after last slide.                                                                                                                                                                                                           | `false`                                                                                                            |
-| dragging                   | `React.PropTypes.bool`                                                                                                                                                                                                                                                                                                                                                                                              | Enable mouse swipe/dragging.                                                                                                                                                                                                                                                                | `true`                                                                                                             |
-| easing                     | `React.PropTypes.string`                                                                                                                                                                                                                                                                                                                                                                                            | Animation easing function. See valid easings here: [D3 Easing Functions](https://github.com/d3/d3-ease)                                                                                                                                                                                     |                                                                                                                    |
-| edgeEasing                 | `React.PropTypes.string`                                                                                                                                                                                                                                                                                                                                                                                            | Animation easing function when swipe exceeds edge. See valid easings here: [D3 Easing Functions](https://github.com/d3/d3-ease)                                                                                                                                                             |                                                                                                                    |
-| frameOverflow              | `React.PropTypes.string`                                                                                                                                                                                                                                                                                                                                                                                            | Used to set overflow style property on slider frame.                                                                                                                                                                                                                                        | `hidden`                                                                                                           |
-| framePadding               | `React.PropTypes.string`                                                                                                                                                                                                                                                                                                                                                                                            | Used to set the margin of the slider frame. Accepts any string dimension value such as `"0px 20px"` or `"500px"`                                                                                                                                                                            |                                                                                                                    |
-| heightMode                 | `React.PropTypes.oneOf(['first', 'current', 'max'])`                                                                                                                                                                                                                                                                                                                                                                | Change the height of the slides based either on the first slide, the current slide, or the maximum height of all slides. Overrides height set by `initialSlideHeight`                                                                                                                       |                                                                                                                    |
-| innerRef                   | `React.PropTypes.oneOfType([ React.PropTypes.func, React.PropTypes.shape({ current: React.PropTypes.elementType })])`                                                                                                                                                                                                                                                                                               | React `ref` that should be set on the carousel element                                                                                                                                                                                                                                      |                                                                                                                    |
-| initialSlideHeight         | `React.PropTypes.number`                                                                                                                                                                                                                                                                                                                                                                                            | Initial height of the slides in pixels.                                                                                                                                                                                                                                                     | `100`                                                                                                              |
-| initialSlideWidth          | `React.PropTypes.number`                                                                                                                                                                                                                                                                                                                                                                                            | Initial width of the slides in pixels                                                                                                                                                                                                                                                       |                                                                                                                    |
-| pauseOnHover               | `React.PropTypes.bool`                                                                                                                                                                                                                                                                                                                                                                                              | Pause autoPlay when mouse is over carousel.                                                                                                                                                                                                                                                 | `true`                                                                                                             |
-| renderAnnounceSlideMessage | `React.PropTypes.func`                                                                                                                                                                                                                                                                                                                                                                                              | Renders message in the ARIA live region that is announcing the current slide on slide change                                                                                                                                                                                                | Render function that returns `"Slide {currentSlide + 1} of {slideCount}"`                                          |
-| scrollMode                 | `React.PropTypes.oneOf(['page', 'remainder'])`                                                                                                                                                                                                                                                                                                                                                                      | When `scrollMode` is set to `remainder`, the carousel will only scroll the amount of slides necessary without showing blank slides. If `scrollMode` is set to `page` then `slidesToScroll` will equal `slidesToShow` and the final page may contain blank slides.                           | `remainder`                                                                                                        |
-| slideIndex                 | `React.PropTypes.number`                                                                                                                                                                                                                                                                                                                                                                                            | Manually set the index of the slide to be shown                                                                                                                                                                                                                                             |                                                                                                                    |
-| slideOffset                | `React.PropTypes.number`                                                                                                                                                                                                                                                                                                                                                                                            | While using prop `animation = "zoom"`, you can configure space around current slide with slideOffset.                                                                                                                                                                                       | 25                                                                                                                 |
-| slidesToScroll             | `React.PropTypes.oneOfType([ React.PropTypes.number, React.PropTypes.oneOf(['auto'])])`                                                                                                                                                                                                                                                                                                                             | Slides to scroll at once. Set to `"auto"` to always scroll the current number of visible slides. Is overridden to `slidesToShow` when `transitionMode="fade"`                                                                                                                               |                                                                                                                    |
-| slidesToShow               | `React.PropTypes.number`                                                                                                                                                                                                                                                                                                                                                                                            | Number of slides to show at once. Will be cast to an `integer` when `transitionMode="fade"`                                                                                                                                                                                                 |                                                                                                                    |
-| slideWidth                 | `React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number])`                                                                                                                                                                                                                                                                                                                                       | Manually set slideWidth. If you want hard pixel widths, use a string like `slideWidth="20px"`, and if you prefer a percentage of the container, use a decimal integer like `slideWidth={0.8}`                                                                                               |                                                                                                                    |
-| speed                      | `React.PropTypes.number`                                                                                                                                                                                                                                                                                                                                                                                            | Animation duration/Transition speed in milliseconds                                                                                                                                                                                                                                         |                                                                                                                    |
-| swiping                    | `React.PropTypes.bool`                                                                                                                                                                                                                                                                                                                                                                                              | Enable touch swipe/dragging                                                                                                                                                                                                                                                                 | `true`                                                                                                             |
-| transitionMode             | `React.PropTypes.oneOf(['scroll', 'fade', 'scroll3d'])`                                                                                                                                                                                                                                                                                                                                                             | Set the way slides transition from one to the next.                                                                                                                                                                                                                                         | `scroll`                                                                                                           |
-| vertical                   | `React.PropTypes.bool`                                                                                                                                                                                                                                                                                                                                                                                              | Enable the slides to transition vertically                                                                                                                                                                                                                                                  |                                                                                                                    |
-| width                      | `React.PropTypes.string`                                                                                                                                                                                                                                                                                                                                                                                            | Used to hardcode the slider width. Accepts any string dimension value such as `"80%"` or `"500px"`                                                                                                                                                                                          |                                                                                                                    |
-| withoutControls            | `React.PropTypes.bool`                                                                                                                                                                                                                                                                                                                                                                                              | Used to remove all controls at once. Overwrites the `render[Top, Right, Bottom, Left]CenterControls()`.                                                                                                                                                                                     | `false`                                                                                                            |
-| wrapAround                 | `React.PropTypes.bool`                                                                                                                                                                                                                                                                                                                                                                                              | Sets infinite wrapAround mode. An option similar to repeat or infinite in other libs.                                                                                                                                                                                                       | `false`                                                                                                            |
-| zoomScale                  | `React.PropTypes.number`                                                                                                                                                                                                                                                                                                                                                                                            | Adds a number value to set the scale of zoom when `animation === "zoom"`. The number value should be set in a range of (0,1). The default value is set to `zoomScale: 0.85`                                                                                                                 |
-| opacityScale               | `React.PropTypes.number`                                                                                                                                                                                                                                                                                                                                                                                            | Adds a number value to set the scale of the opacity for the 'scroll3d' transition mode. The number value should be set in a range of (0,1). The default value is set to `opacityScale: 0.65`                                                                                                |
-| onDragStart                | `React.PropTypes.func`                                                                                                                                                                                                                                                                                                                                                                                              | Adds a callback to capture event at the start of swiping/dragging slides                                                                                                                                                                                                                    |
+| afterSlide | `(index: number) => void`| Hook to be called after a slide is changed. |`() => {}`|
+| animation | `'zoom' \| 'fade'`| Adds a zoom effect on the currently visible slide or change the animation to `fade`. A `transform: scale(0.85)` is set as default when you are using zoom, however, the scale can be customized using `zoomScale` prop. Property is applied on all slides except the current 1. Use `cellAlign` to align the slide with zoom effect where you'd like. ||
+| autoplay | `boolean` | Autoplay mode active. | `false`|
+| autoplayInterval | `number` | Interval for autoplay iteration in milliseconds. | `3000`  |
+| autoplayReverse | `boolean` | Only meaningful when `autoplay` is already true. When `autoplayReverse` is also true, autorotation cycles through slides indexes from high to low. | `false` |
+| beforeSlide | `(currentSlideIndex: number, endSlideIndex: number) => void` | Hook to be called before a slide is changed | `() => {}` |
+| cellAlign | `'left' \| 'center' \| 'right'` | When displaying more than one slide, sets which position to anchor the current slide to. | `left` |
+| cellSpacing | `number` | Space between slides, as an integer, but reflected as `px` | `0` |
+| className | `string` | Slider frame class name | `''` |
+| defaultControlsConfig | <pre>interface DefaultControlsConfig  { &#13; containerClassName?: string; &#13; nextButtonClassName?: string; &#13; nextButtonStyle?: CSSProperties; &#13; nextButtonText?: string; &#13; pagingDotsClassName?: string; &#13; pagingDotsContainerClassName?: string; &#13; pagingDotsStyle?: CSSProperties; &#13; prevButtonClassName?: string; &#13; prevButtonStyle?: CSSProperties; &#13; prevButtonText?: string; &#13;}</pre> | This prop lets you apply custom classes and styles to the default `Container`. `Next`, `Previous`, and `Paging Dots` controls. More information on how to customize these controls can be found below.| `{}` |
+| disableAnimation | `boolean` | When set to `true`, will disable animation. | `false` |
+| disableEdgeSwiping | `boolean` | When set to `true`, will disable swiping before first slide and after last slide. | `false` |
+| dragging | `boolean` | Enable mouse swipe/dragging. | `true` |
+| enableKeyboardControls | `boolean` | When set to `true` will enable keyboard controls when the carousel has focus. If the carousel does not have focus, keyboard controls will be ignored. | `false` |
+| frameAriaLabel | `string` | Customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page. | `''` |
+| innerRef | `MutableRefObject<HTMLDivElement>` | React `ref` that should be set on the carousel element | |
+| keyCodeConfig | <pre>interface KeyCodeConfig { &#13;  firstSlide?: number[]; &#13;  lastSlide?: number[];&#13;  nextSlide?: number[]; &#13;  pause?: number[]; &#13;  previousSlide?: number[]; &#13;}</pre> | If `enableKeyboardControls` prop is true, you can pass configuration for the keyCode so you can override the default keyboard keys configured. | `{ nextSlide: [39, 68, 38, 87], previousSlide: [37, 65, 40, 83], firstSlide: [81], lastSlide: [69], pause: [32] }` |
+| onDragStart | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture event at the start of swiping/dragging slides | |
+| onDrag | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture swiping/dragging event on slides | |
+| onDragEnd | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture event at the ent of swiping/dragging slides | |
+| pauseOnHover | `boolean` | Pause autoPlay when mouse is over carousel. | `true` |
+| renderAnnounceSlideMessage | `(props: Pick<CarouselState, 'currentSlide' \| 'count'>) => string` | Renders message in the ARIA live region that is announcing the current slide on slide change | Render function that returns `"Slide {currentSlide + 1} of {slideCount}"` |
+| scrollMode | `'page' \| 'remainder'` | Set `scrollMode="remainder"` if you don't want to see the white space when you scroll to the end of a non-infinite carousel. scrollMode property is ignored when wrapAround is enabled | `'page'` |
+| slideIndex | `number` | Manually set the index of the slide to be shown | |
+| slidesToScroll | `number` | Slides to scroll at once. The property is overridden to `slidesToShow` when `animation="fade"` | 1 |
+| slidesToShow | `number` | Number of slides to show at once. Will be cast to an `integer` when `animation="fade"` | 1 |
+| speed | `number` | Animation duration/Transition speed in milliseconds | `500` |
+| style  | `CSSProperties` | Add inline style to the carousel frame | `{}` |
+| swiping  | `boolean` | Enable touch swipe/dragging | `true` |
+| withoutControls | `boolean` | Used to remove all controls at once. Overwrites the `render[Top, Right, Bottom, Left]CenterControls()`. | `false` |
+| wrapAround | `boolean` | Sets infinite wrapAround mode. An option similar to repeat or infinite in other libs. | `false` |
+| zoomScale | `number` | Adds a number value to set the scale of zoom when `animation === "zoom"`. The number value should be set in a range of (0,1). | `0.85` |
+
 
 #### render\*Controls
 
-`React.PropTypes.func`
+Type: `(props: ControlProps) => ReactElement`
 
 A set of eight render props for rendering controls in different positions around the carousel.
 
@@ -161,7 +132,7 @@ A set of eight render props for rendering controls in different positions around
 
 #### renderAnnounceSlideMessage
 
-`React.PropTypes.func`
+`(props: Pick<CarouselState, 'currentSlide' \| 'count'>) => string`
 
 `renderAnnounceSlideMessage` render prop is a special case of the `render*Controls` props. It's responsibility is to render ARIA live announcement message to improve accessibility. The prop will announce the message you pass in every time the slide changes with `VoiceOver` enabled on your machine. The function returns only `slideCount` and `currentSlide` values.
 
@@ -175,47 +146,21 @@ A set of eight render props for rendering controls in different positions around
 </Carousel>
 ```
 
-#### getControlsContainerStyles
-
-`React.PropTypes.func`
-
-`getControlsContainerStyles` is a function prop that will be called with a key argument being one of the following: `TopLeft` | `TopCenter` | `TopRight` | `CenterLeft` | `CenterCenter` | `CenterRight` | `BottomLeft` | `BottomCenter` | `BottomRight`.
-The function will then return CSS Properties.
-
-```jsx
-<Carousel
-  getControlsContainerStyles={(key) => {
-     switch (key) {
-        case 'TopLeft':
-          return {
-            backgroundColor: "red",
-          };
-        default:
-          // will apply all other keys
-          return {
-            backgroundColor: "blue",
-          };
-      }
-  }} />
->
-  {/* Carousel Content */}
-</Carousel>
-```
-
 #### defaultControlsConfig
 
 ```
-React.PropTypes.shape({
-  nextButtonClassName: PropTypes.string,
-  nextButtonStyle: PropTypes.object,
-  nextButtonText: PropTypes.string,
-  prevButtonClassName: PropTypes.string,
-  prevButtonStyle: PropTypes.object,
-  prevButtonText: PropTypes.string,
-  pagingDotsContainerClassName: PropTypes.string,
-  pagingDotsClassName: PropTypes.string,
-  pagingDotsStyle: PropTypes.object
-})
+interface DefaultControlsConfig {
+  containerClassName?: string;
+  nextButtonClassName?: string;
+  nextButtonStyle?: CSSProperties;
+  nextButtonText?: string;
+  pagingDotsClassName?: string;
+  pagingDotsContainerClassName?: string;
+  pagingDotsStyle?: CSSProperties;
+  prevButtonClassName?: string;
+  prevButtonStyle?: CSSProperties;
+  prevButtonText?: string;
+}
 ```
 
 The default controls used by Nuka are the `Previous` button, `Next` button, and `PagingDots` control. The visual look and text of these controls can be modified with props as described below:
@@ -236,7 +181,7 @@ defaultControlsConfig={{
 }}
 ```
 
-### External Control of Carousel State
+<!-- ### External Control of Carousel State
 
 You can control the state of the carousel from your parent component as shown below:
 
@@ -265,22 +210,31 @@ export default class extends React.Component {
     );
   }
 }
-```
+``` -->
+### Depreceted v4 parameters
 
-### TypeScript
+The following list of parameters are deprecated in v5. The main reason is that there is other approach which you can use to achieve the same thing, without increasing the complexity of the library. For example: `width` the width of the carousel can be easily manipulated by the parent container where developer placed the carousel. We are open for discussions if you really need some of these parameters. Feel free to raise an issue or start discussion in the repository, so we can help.
 
-TypeScript type definitions are now shipped with nuka-carousel. You can use them directly from the library.
+- autoGenerateStyleTag
+- framePadding
+- getControlsContainerStyles
+- height
+- heightMode
+- initialSlideHeight
+- initialSlideWidth
+- slideOffset
+- slideWidth
+- transitionMode
+- width
 
-### Resizing Height
+### New parameters in v5
 
-#### How resizing works
+- frameAriaLabel - customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page. (Included in v5.0.3)
 
-In componentDidMount, the initial dimensions are assigned to each slide:
+### What about v5.1
 
-- Width: `initialSlideWidth` || `slideWidth` || (`slidesToShow` / width of container)
-- Height: `initialSlideHeight`
+- We created a brand new project for v5.1 where you can see all the new features that will be added and what is their status. [Link](https://github.com/FormidableLabs/nuka-carousel/projects/2)
 
-After the component completes mounting with the accurate width, it tries to calculate the desired height of the content (`current`, `first`, `max`). If that calculation fails (perhaps because slide images are still loading), it'll wait a bit and try again. Once successful, that measurement then replaces `initialSlideHeight` with the measured height in pixels.
 
 ### Contributing
 

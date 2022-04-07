@@ -124,7 +124,6 @@ export interface CarouselState {
   currentSlide: number;
   dragging: boolean;
   easing: (normalizedTime: number) => number;
-  frameWidth: number | null;
   hasFocus: boolean;
   hasInteraction: boolean;
   isWrappingAround: boolean;
@@ -132,10 +131,8 @@ export interface CarouselState {
   pauseOnHover?: boolean;
   resetWrapAroundPosition: boolean;
   count: number;
-  slideHeight: number | 'auto';
   slidesToScroll: number;
   slidesToShow: number;
-  slideWidth: number;
   top: number;
   wrapToIndex: number | null;
 }
@@ -149,17 +146,13 @@ export interface ControlProps {
   cellSpacing: number;
   currentSlide: number;
   defaultControlsConfig: DefaultControlsConfig;
-  frameWidth?: number | null; // obsolete
   goToSlide: (index: number) => void;
-  left?: number; // obsolete
   nextSlide: () => void;
   previousSlide: () => void;
   scrollMode: ScrollMode;
   slideCount: number;
   slidesToScroll: number;
   slidesToShow: number;
-  slideWidth?: number; // obsolete
-  top?: number; // obsolete
   vertical: boolean;
   wrapAround: boolean;
 }
@@ -178,95 +171,55 @@ export type RenderControlFunctionNames =
 type RenderControls = (props: ControlProps) => ReactElement;
 
 export interface CarouselProps {
-  afterSlide: (index: number) => void; // migrated
-  animation?: 'zoom' | 'fade'; // migrated
-  autoGenerateStyleTag: boolean; // to be deprecated
-  autoplay: boolean; // migrated - tested for !wrapAround
-  autoplayInterval: number; // migrated - tested for !wrapAround
-  autoplayReverse: boolean; // migrated - tested for !wrapAround
-  beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void; // migrated
-  cellAlign: Alignment; // migrated
-  cellSpacing: number; // migrated
-  children: ReactNode | ReactNode[]; // migrated - tested
-  className?: string; // migrated
-  defaultControlsConfig: DefaultControlsConfig; // migrated, needs more testing
-  disableAnimation: boolean; // migrated
-  disableEdgeSwiping: boolean; // migrated
-  dragging: boolean; // migrated
-  easing: D3EasingFunctions;
-  edgeEasing: D3EasingFunctions;
-  enableKeyboardControls: boolean; // migrated
-  frameAriaLabel?: string; // new prop for v5
-  framePadding: string; // to be deprecated
-  getControlsContainerStyles: (key: Positions) => CSSProperties; // to be deprecated
-  height: string; // to be deprecated
-  // heightMode: HeightMode; // to be deprecated
-  initialSlideHeight?: number; // to be deprecated
-  initialSlideWidth?: number; // to be deprecated
-  innerRef?: MutableRefObject<HTMLDivElement>; // migrated
-  keyCodeConfig: KeyCodeConfig; // migrated
+  afterSlide: (index: number) => void;
+  animation?: 'zoom' | 'fade';
+  autoplay: boolean;
+  autoplayInterval: number;
+  autoplayReverse: boolean;
+  beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void;
+  cellAlign: Alignment;
+  cellSpacing: number;
+  children: ReactNode | ReactNode[];
+  className?: string;
+  defaultControlsConfig: DefaultControlsConfig;
+  disableAnimation: boolean;
+  disableEdgeSwiping: boolean;
+  dragging: boolean;
+  easing: D3EasingFunctions; // not migrated yet
+  edgeEasing: D3EasingFunctions; // not migrated yet
+  enableKeyboardControls: boolean;
+  frameAriaLabel?: string;
+  innerRef?: MutableRefObject<HTMLDivElement>;
+  keyCodeConfig: KeyCodeConfig;
   onDragStart: (
     e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
-  ) => void; // migrated
+  ) => void;
   onDrag: (
     e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => void;
   onDragEnd: (
     e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => void;
-  opacityScale?: number;
-  pauseOnHover: boolean; // migrated - tested
-  renderAnnounceSlideMessage: RenderAnnounceSlideMessage; // migrated
-  renderBottomCenterControls: RenderControls; // migrated
-  renderBottomLeftControls?: RenderControls; // migrated
-  renderBottomRightControls?: RenderControls; // migrated
-  renderCenterCenterControls?: RenderControls; // migrated
-  renderCenterLeftControls: RenderControls; // migrated
-  renderCenterRightControls: RenderControls; // migrated
-  renderTopCenterControls?: RenderControls; // migrated
-  renderTopLeftControls?: RenderControls; // migrated
-  renderTopRightControls?: RenderControls; // migrated
-  scrollMode: ScrollMode; // migrated
+  pauseOnHover: boolean;
+  renderAnnounceSlideMessage: RenderAnnounceSlideMessage;
+  renderBottomCenterControls: RenderControls;
+  renderBottomLeftControls?: RenderControls;
+  renderBottomRightControls?: RenderControls;
+  renderCenterCenterControls?: RenderControls;
+  renderCenterLeftControls: RenderControls;
+  renderCenterRightControls: RenderControls;
+  renderTopCenterControls?: RenderControls;
+  renderTopLeftControls?: RenderControls;
+  renderTopRightControls?: RenderControls;
+  scrollMode: ScrollMode;
   slideIndex: number; // ???
-  slideOffset: number; // to be deprecated
-  slidesToScroll: number; // migrated - tested for !wrapAround
-  slidesToShow: number; // migrated - tested
-  slideWidth: number | string; // to be deprecated
-  speed: number; // migrated
-  style: CSSProperties; // migrated
-  swiping: boolean; // migrated
-  // transitionMode: TransitionMode; // to be deprecated
-  vertical: boolean;
-  width: string; // to be deprecated
-  withoutControls: boolean; // migrated
-  wrapAround: boolean; // migrated - tested
-  zoomScale?: number; // migrated
+  slidesToScroll: number;
+  slidesToShow: number;
+  speed: number;
+  style: CSSProperties;
+  swiping: boolean;
+  vertical: boolean; // not migrated yet
+  withoutControls: boolean;
+  wrapAround: boolean;
+  zoomScale?: number;
 }
-
-export type TransitionProps = Pick<
-  CarouselProps,
-  | 'animation'
-  | 'cellAlign'
-  | 'cellSpacing'
-  | 'children'
-  | 'dragging'
-  | 'opacityScale'
-  | 'slideOffset'
-  | 'slidesToScroll'
-  | 'vertical'
-  | 'wrapAround'
-  | 'zoomScale'
-> &
-  Pick<
-    CarouselState,
-    | 'currentSlide'
-    | 'frameWidth'
-    | 'hasInteraction'
-    | 'isWrappingAround'
-    | 'left'
-    | 'count'
-    | 'slideHeight'
-    | 'slideWidth'
-    | 'slidesToShow'
-    | 'top'
-  > & { deltaX: number; deltaY: number };

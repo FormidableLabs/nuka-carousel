@@ -45,8 +45,7 @@ const renderControls = (
           .join(' ')
           .trim()}
         style={{
-          ...getDecoratorStyles(control.key),
-          ...props.getControlsContainerStyles(control.key)
+          ...getDecoratorStyles(control.key)
         }}
       >
         {props[control.funcName]?.({
