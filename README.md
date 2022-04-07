@@ -83,11 +83,11 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 | frameAriaLabel | `string` | Customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page. | `''` |
 | innerRef | `MutableRefObject<HTMLDivElement>` | React `ref` that should be set on the carousel element | |
 | keyCodeConfig | <pre lang="json">interface KeyCodeConfig { <br/>  firstSlide?: number[]; <br/>  lastSlide?: number[];<br/>  nextSlide?: number[]; <br/>  pause?: number[]; <br/>  previousSlide?: number[]; <br/>}</pre> | If `enableKeyboardControls` prop is true, you can pass configuration for the keyCode so you can override the default keyboard keys configured. | `{ nextSlide: [39, 68, 38, 87], previousSlide: [37, 65, 40, 83], firstSlide: [81], lastSlide: [69], pause: [32] }` |
-| onDragStart | `(e?: React.TouchEvent\<HTMLDivElement\> \| React.MouseEvent\<HTMLDivElement\>) => void;` | Adds a callback to capture event at the start of swiping/dragging slides | |
-| onDrag | `(e?: React.TouchEvent\<HTMLDivElement\> \| React.MouseEvent\<HTMLDivElement\>) => void;` | Adds a callback to capture swiping/dragging event on slides | |
-| onDragEnd | `(e?: React.TouchEvent\<HTMLDivElement\> \| React.MouseEvent\<HTMLDivElement\>) => void;` | Adds a callback to capture event at the ent of swiping/dragging slides | |
+| onDragStart | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture event at the start of swiping/dragging slides | |
+| onDrag | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture swiping/dragging event on slides | |
+| onDragEnd | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture event at the ent of swiping/dragging slides | |
 | pauseOnHover | `boolean` | Pause autoPlay when mouse is over carousel. | `true` |
-| renderAnnounceSlideMessage | `(props: Pick\<CarouselState, 'currentSlide' \| 'count'\>) => string` | Renders message in the ARIA live region that is announcing the current slide on slide change | Render function that returns `"Slide {currentSlide + 1} of {slideCount}"` |
+| renderAnnounceSlideMessage | `(props: Pick<CarouselState, 'currentSlide' \| 'count'>) => string` | Renders message in the ARIA live region that is announcing the current slide on slide change | Render function that returns `"Slide {currentSlide + 1} of {slideCount}"` |
 | scrollMode | `'page' \| 'remainder'` | Set `scrollMode="remainder"` if you don't want to see the white space when you scroll to the end of a non-infinite carousel. scrollMode property is ignored when wrapAround is enabled | `'page'` |
 | slideIndex | `number` | Manually set the index of the slide to be shown | |
 | slidesToScroll | `number` | Slides to scroll at once. The property is overridden to `slidesToShow` when `animation="fade"` | 1 |
