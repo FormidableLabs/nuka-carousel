@@ -4,6 +4,8 @@
 
 Small, fast and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site
 
+<img src="/nuka-logo.png" width="200"/>
+
 ![Nuka Carousel Animated Example](https://i.imgur.com/UwP5gle.gif)
 
 > If you are looking for v4 documentation, you can find it [here](https://github.com/FormidableLabs/nuka-carousel/blob/main/V4-DOCUMENTATION.md)
