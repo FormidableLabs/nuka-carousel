@@ -137,7 +137,7 @@ const Slide = ({
     }
     if (adaptiveHeight && node && isVisible) {
       const slideHeight = node.getBoundingClientRect()?.height;
-      if (slideHeight !== frameHeight) {
+      if (slideHeight > frameHeight) {
         setFrameHeight(slideHeight);
       }
     }
