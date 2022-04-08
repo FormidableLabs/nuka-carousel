@@ -95,7 +95,7 @@ const Slide = ({
   cellAlign,
   setFrameHeight,
   frameHeight,
-  adaptiveHeight,
+  adaptiveHeight
 }: {
   count: number;
   children: ReactNode | ReactNode[];
@@ -110,9 +110,9 @@ const Slide = ({
   slidesToShow: number;
   zoomScale?: number;
   cellAlign: Alignment;
-  setFrameHeight: (h: number) => void,
-  frameHeight: number,
-  adaptiveHeight: boolean
+  setFrameHeight: (h: number) => void;
+  frameHeight: number;
+  adaptiveHeight: boolean;
 }): JSX.Element => {
   const customIndex = wrapAround
     ? generateIndex(index, count, typeOfSlide)
@@ -138,7 +138,7 @@ const Slide = ({
     if (adaptiveHeight && node && isVisible) {
       const slideHeight = node.getBoundingClientRect()?.height;
       if (slideHeight !== frameHeight) {
-        setFrameHeight(slideHeight)
+        setFrameHeight(slideHeight);
       }
     }
   }, [isVisible]);
