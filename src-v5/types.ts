@@ -171,6 +171,7 @@ export type RenderControlFunctionNames =
 type RenderControls = (props: ControlProps) => ReactElement;
 
 export interface CarouselProps {
+  adaptiveHeight: boolean;
   afterSlide: (index: number) => void;
   animation?: 'zoom' | 'fade';
   autoplay: boolean;

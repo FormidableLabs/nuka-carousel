@@ -66,6 +66,7 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 
 | Name | Type | Description |Default |
 | :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------- |
+| adaptiveHeight | `boolean`| If it's set to true, the carousel will adapt its height to the visible slides. | `false` |
 | afterSlide | `(index: number) => void`| Hook to be called after a slide is changed. |`() => {}`|
 | animation | `'zoom' \| 'fade'`| Adds a zoom effect on the currently visible slide or change the animation to `fade`. A `transform: scale(0.85)` is set as default when you are using zoom, however, the scale can be customized using `zoomScale` prop. Property is applied on all slides except the current 1. Use `cellAlign` to align the slide with zoom effect where you'd like. ||
 | autoplay | `boolean` | Autoplay mode active. | `false`|
@@ -230,6 +231,8 @@ The following list of parameters are deprecated in v5. The main reason is that t
 ### New parameters in v5
 
 - frameAriaLabel - customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page. (Included in v5.0.3)
+
+- adaptiveHeight - this property is useful if you have slides with different height. The carousel with adapth its height to the slides. Replacement of `heightMode="current"` v4 property. (Included in v5.0.9)
 
 ### What about v5.1
 

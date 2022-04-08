@@ -12,7 +12,8 @@ const getSlideStyles = (
   cellSpacing?: number,
   animation?: 'zoom' | 'fade',
   speed?: number,
-  zoomScale?: number
+  zoomScale?: number,
+  adaptiveHeight?: boolean
 ): CSSProperties => {
   const width = getSlideWidth(count, wrapAround);
   const visibleSlideOpacity = isVisibleSlide ? 1 : 0;
@@ -22,6 +23,7 @@ const getSlideStyles = (
     width,
     height: '100%',
     display: 'inline-block',
+    verticalAlign: adaptiveHeight ? 'top' : 'inherit',
     padding: `0 ${cellSpacing ? cellSpacing / 2 : 0}px`,
     transition: animation ? `${speed || animationSpeed}ms ease 0s` : 'none',
     transform: `${
@@ -90,7 +92,10 @@ const Slide = ({
   speed,
   slidesToShow,
   zoomScale,
-  cellAlign
+  cellAlign,
+  setFrameHeight,
+  frameHeight,
+  adaptiveHeight,
 }: {
   count: number;
   children: ReactNode | ReactNode[];
@@ -105,6 +110,9 @@ const Slide = ({
   slidesToShow: number;
   zoomScale?: number;
   cellAlign: Alignment;
+  setFrameHeight: (h: number) => void,
+  frameHeight: number,
+  adaptiveHeight: boolean
 }): JSX.Element => {
   const customIndex = wrapAround
     ? generateIndex(index, count, typeOfSlide)
@@ -127,6 +135,12 @@ const Slide = ({
         node.setAttribute('inert', 'true');
       }
     }
+    if (adaptiveHeight && node && isVisible) {
+      const slideHeight = node.getBoundingClientRect()?.height;
+      if (slideHeight !== frameHeight) {
+        setFrameHeight(slideHeight)
+      }
+    }
   }, [isVisible]);
 
   return (
@@ -143,7 +157,8 @@ const Slide = ({
         cellSpacing,
         animation,
         speed,
-        zoomScale
+        zoomScale,
+        adaptiveHeight
       )}
     >
       {children}
