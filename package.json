@@ -81,7 +81,7 @@
     "build-es": "builder run  --env \"{\\\"BABEL_ENV\\\":\\\"esm\\\"}\" build-babel -- -d es",
     "build-lib": "builder run build-babel -- -d lib",
     "build-watch": "builder concurrent build-lib build-es -- --watch",
-    "check": "npm run lint && npm run check-typescript && npm run test",
+    "check": "npm run lint && npm run check-typescript",
     "check-typescript": "tsc --noEmit",
     "lint": "eslint --ext .js,.ts,.tsx .",
     "lint-fix": "eslint --ext .js,.ts,.tsx . --fix",
