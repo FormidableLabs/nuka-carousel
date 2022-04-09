@@ -25,6 +25,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   const [pause, setPause] = useState<boolean>(false);
   const [dragging, setDragging] = useState<boolean>(false);
   const [move, setMove] = useState<number>(0);
+  const [frameHeight, setFrameHeight] = useState<number>(0);
   const [keyboardMove, setKeyboardMove] = useState<KeyCodeFunction>(null);
   const carouselWidth = useRef<number | null>(null);
 
@@ -380,6 +381,9 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
           speed={props.speed}
           zoomScale={props.zoomScale}
           cellAlign={props.cellAlign}
+          setFrameHeight={setFrameHeight}
+          frameHeight={frameHeight}
+          adaptiveHeight={props.adaptiveHeight}
         >
           {child}
         </Slide>
@@ -419,6 +423,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
           width: '100%',
           position: 'relative',
           outline: 'none',
+          height: props.adaptiveHeight ? `${frameHeight}px` : 'auto',
           ...props.style
         }}
         aria-label={props.frameAriaLabel}

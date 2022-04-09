@@ -4,6 +4,7 @@ import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import { defaultRenderAnnounceSlideMessage } from './announce-slide';
 
 const defaultProps = {
+  adaptiveHeight: false,
   afterSlide: () => {
     // do nothing
   },
