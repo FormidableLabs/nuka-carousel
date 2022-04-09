@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import Carousel from '../src/index';
-import ReactDom from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 // eslint-disable-next-line complexity
 export default function App() {
@@ -266,4 +266,7 @@ export default function App() {
   );
 }
 
-ReactDom.render(<App />, document.getElementById('content'));
+const container = document.getElementById('content');
+const root = createRoot(container);
+
+root.render(<App />);
