@@ -2,6 +2,7 @@ import 'wicg-inert';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Carousel from '../../../src-v5/';
+import { useState } from 'react';
 
 const colors = [
   '7732bb',
@@ -21,21 +22,24 @@ const colors = [
 ];
 
 const Home = ({ urlParams }) => {
+  const [inputValue, setInputValue] = useState('')
   const colorsArray = colors.slice(0, Number(urlParams.slides || 9));
 
   const slides = colorsArray.map((color, index) => (
-    <img
-      src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${
-        index + 1
-      }`}
-      alt={`Slide ${index + 1}`}
-      key={color}
-      data-slide={`Slide ${index + 1}`}
-      style={{
-        width: '100%',
-        height: 400
-      }}
-    />
+    <div key={color}>
+      <input value={inputValue} onChange={e => setInputValue(e.target.value)} />
+      <img
+        src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${
+          index + 1
+        }`}
+        alt={`Slide ${index + 1}`}
+        data-slide={`Slide ${index + 1}`}
+        style={{
+          width: '100%',
+          height: 400
+        }}
+      />
+    </div>
   ));
 
   const carouselParams = urlParams.params ? JSON.parse(urlParams.params) : {};

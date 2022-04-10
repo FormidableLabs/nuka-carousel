@@ -42,6 +42,11 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
     []
   );
 
+  useEffect(() => {
+    // disable img draggable attribute by default, this will improve the dragging
+    document.querySelectorAll('.slider-list img').forEach(el => el.setAttribute('draggable', 'false'))
+  }, [])
+
   const slidesToScroll =
     props.animation === 'fade' ? props.slidesToShow : props.slidesToScroll;
   const dragThreshold = (carouselWidth.current || 0) / props.slidesToShow / 2;
@@ -187,10 +192,10 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
     if (props.enableKeyboardControls && keyboardMove && focus.current) {
       switch (keyboardMove) {
         case 'nextSlide':
-          nextSlide(); // set boundaries for !wrapAround
+          nextSlide();
           break;
         case 'previousSlide':
-          prevSlide(); // set boundaries for !wrapAround
+          prevSlide();
           break;
         case 'firstSlide':
           setCurrentSlide(0);
@@ -322,7 +327,6 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!props.dragging) return;
 
-    e?.preventDefault();
     carouselRef?.current?.focus();
 
     setDragging(true);
