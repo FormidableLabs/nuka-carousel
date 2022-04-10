@@ -44,8 +44,10 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
 
   useEffect(() => {
     // disable img draggable attribute by default, this will improve the dragging
-    document.querySelectorAll('.slider-list img').forEach(el => el.setAttribute('draggable', 'false'))
-  }, [])
+    document
+      .querySelectorAll('.slider-list img')
+      .forEach((el) => el.setAttribute('draggable', 'false'));
+  }, []);
 
   const slidesToScroll =
     props.animation === 'fade' ? props.slidesToShow : props.slidesToScroll;
