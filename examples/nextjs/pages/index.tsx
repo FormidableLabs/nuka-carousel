@@ -28,8 +28,8 @@ const Home = ({ urlParams }) => {
       src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${
         index + 1
       }`}
-      alt={`Slide ${index + 1}`}
       key={color}
+      alt={`Slide ${index + 1}`}
       data-slide={`Slide ${index + 1}`}
       style={{
         width: '100%',
