@@ -35,12 +35,12 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isMounted = useRef<boolean>(true);
 
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
       isMounted.current = false;
-    },
-    []
-  );
+    };
+  }, []);
 
   useEffect(() => {
     // disable img draggable attribute by default, this will improve the dragging
