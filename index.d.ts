@@ -103,6 +103,12 @@ export type CarouselRenderControl = (
 
 export interface CarouselProps {
   /**
+   * If it's set to true, the carousel will
+   * adapt its height to the visible slides.
+   */
+  adaptiveHeight?: boolean;
+
+  /**
    * Hook to be called after a slide is changed
    * @param index Index of the current slide
    */
