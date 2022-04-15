@@ -1,16 +1,8 @@
-// Definitions by: Roman Charugin <https://github.com/Romic>
-//                 Alex Smith <https://github.com/altaudio>
-//                 matt-sungwook <https://github.com/matt-sungwook>
-
 import * as React from 'react';
 
 export type CarouselScrollModeProp = 'page' | 'remainder';
 
 export type CarouselCellAlignProp = 'left' | 'center' | 'right';
-
-export type CarouselHeightModeProp = 'first' | 'current' | 'max';
-
-export type CarouselTransitionModeProp = 'fade' | 'scroll' | 'scroll3d';
 
 export type CarouselSlidesToScrollProp = number | 'auto';
 
@@ -103,21 +95,20 @@ export type CarouselRenderControl = (
 
 export interface CarouselProps {
   /**
+  * If it's set to true, the carousel will adapt its height to the visible slides.
+  */
+  adaptiveHeight?: boolean
+
+  /**
    * Hook to be called after a slide is changed
    * @param index Index of the current slide
    */
   afterSlide?: (index: number) => void;
 
   /**
-   * Adds a zoom effect on the currently visible slide.
+   * Adds a zoom or fade effect on the currently visible slide.
    */
-  animation?: 'zoom';
-
-  /**
-   * Will generate a style tag to help ensure images are displayed properly
-   * @default true
-   */
-  autoGenerateStyleTag?: boolean;
+  animation?: 'zoom' | 'fade';
 
   /**
    * Autoplay mode active
@@ -161,26 +152,6 @@ export interface CarouselProps {
   className?: string;
 
   /**
-   * When set to true, disable keyboard controls
-   * @default false
-   */
-  enableKeyboardControls?: boolean;
-
-  /**
-   * When enableKeyboardControls is enabled, Configure keyCodes for corresponding slide actions as array of keyCodes
-   */
-  keyCodeConfig?: {
-    [slideAction in CarouselSlideActions]?: number[];
-  };
-
-  /**
-   * Optional callback to apply styles to the container of a control.
-   */
-  getControlsContainerStyles?: (
-    key: CarouselControlContainerProp
-  ) => React.CSSProperties;
-
-  /**
    * This prop lets you apply custom classes and styles to the default Next, Previous, and Paging Dots controls
    */
   defaultControlsConfig?: {
@@ -195,7 +166,7 @@ export interface CarouselProps {
     pagingDotsClassName?: string;
     pagingDotsStyle?: React.CSSProperties;
   };
-
+  
   /**
    * Disable slides animation
    * @default false
@@ -226,25 +197,15 @@ export interface CarouselProps {
   edgeEasing?: string;
 
   /**
-   * Used to set overflow style property on slider frame
-   * @default 'hidden'
+   * When set to true, disable keyboard controls
+   * @default false
    */
-  frameOverflow?: string;
+  enableKeyboardControls?: boolean;
 
   /**
-   * Used to set the margin of the slider frame.
-   * Accepts any string dimension value such as "0px 20px" or "500px"
-   * @example '0px 20px'
-   * @example '500px'
+   * Customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page.
    */
-  framePadding?: string;
-
-  /**
-   * Used to hardcode the slider height
-   * @example '80%'
-   * @example '500px'
-   */
-  height?: string;
+  frameAriaLabel?: string;
 
   /**
    * Ref to pass to carousel element
@@ -252,36 +213,26 @@ export interface CarouselProps {
   innerRef?: React.RefObject<HTMLInputElement>;
 
   /**
-   * Change the height of the slides based either on the first slide,
-   * the current slide, or the maximum height of all slides.
+   * When enableKeyboardControls is enabled, Configure keyCodes for corresponding slide actions as array of keyCodes
    */
-  heightMode?: CarouselHeightModeProp;
-
-  /**
-   * Initial height of the slides (px)
-   */
-  initialSlideHeight?: number;
-
-  /**
-   * Initial width of the slides (px)
-   */
-  initialSlideWidth?: number;
+  keyCodeConfig?: {
+    [slideAction in CarouselSlideActions]?: number[];
+  };
 
   /**
    * optional callback function
    */
-  onDragStart?: (e?: Event) => void;
+  onDragStart?: (e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => void;
 
   /**
-   * Window onResize callback
+   * optional callback function
    */
-  onResize?: () => void;
-
+  onDrag?: (e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => void;
+  
   /**
-   * Adds a number value to set the scale of the opacity for the 'scroll3d' transition mode.
-   * @default 0.65
+   * optional callback function
    */
-  opacityScale?: number;
+  onDragEnd?: (e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => void;
 
   /**
    * Pause autoPlay when mouse is over carousel
@@ -354,14 +305,7 @@ export interface CarouselProps {
   slideIndex?: number;
 
   /**
-   * While using prop animation = "zoom", you can
-   * configure space around current slide with slideOffset.
-   */
-  slideOffset?: number;
-
-  /**
-   * Slides to scroll at once. Set to "auto"
-   * to always scroll the current number of visible slides
+   * Slides to scroll at once.
    */
   slidesToScroll?: CarouselSlidesToScrollProp;
 
@@ -369,13 +313,6 @@ export interface CarouselProps {
    * Slides to show at once
    */
   slidesToShow?: number;
-
-  /**
-   * Manually set slideWidth
-   * @example '20px'
-   * @example 0.8
-   */
-  slideWidth?: CarouselSlideWidthProp;
 
   /**
    * Animation duration
@@ -393,21 +330,9 @@ export interface CarouselProps {
   swiping?: boolean;
 
   /**
-   * Set the way slides transition from one to the next
-   */
-  transitionMode?: CarouselTransitionModeProp;
-
-  /**
    * Enable the slides to transition vertically
    */
   vertical?: boolean;
-
-  /**
-   * Used to hardcode the slider width
-   * @example '80%'
-   * @example '500px'
-   */
-  width?: string;
 
   /**
    * Sets infinite wrapAround mode
@@ -445,17 +370,7 @@ export interface CarouselState {
    */
   easing: string;
 
-  /**
-   * Current frame width
-   */
-  frameWidth: number;
-
   isWrappingAround: boolean;
-
-  /**
-   * Current left value
-   */
-  left: number;
 
   pauseOnHover: boolean;
 
@@ -475,11 +390,6 @@ export interface CarouselState {
    * Current slide width
    */
   slideWidth: CarouselSlideWidthProp;
-
-  /**
-   * Current top value
-   */
-  top: number;
 
   /**
    * Is infinite mode enabled
