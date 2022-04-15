@@ -95,9 +95,9 @@ export type CarouselRenderControl = (
 
 export interface CarouselProps {
   /**
-  * If it's set to true, the carousel will adapt its height to the visible slides.
-  */
-  adaptiveHeight?: boolean
+   * If it's set to true, the carousel will adapt its height to the visible slides.
+   */
+  adaptiveHeight?: boolean;
 
   /**
    * Hook to be called after a slide is changed
@@ -166,7 +166,7 @@ export interface CarouselProps {
     pagingDotsClassName?: string;
     pagingDotsStyle?: React.CSSProperties;
   };
-  
+
   /**
    * Disable slides animation
    * @default false
@@ -222,17 +222,23 @@ export interface CarouselProps {
   /**
    * optional callback function
    */
-  onDragStart?: (e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => void;
+  onDragStart?: (
+    e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+  ) => void;
 
   /**
    * optional callback function
    */
-  onDrag?: (e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => void;
-  
+  onDrag?: (
+    e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+  ) => void;
+
   /**
    * optional callback function
    */
-  onDragEnd?: (e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => void;
+  onDragEnd?: (
+    e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+  ) => void;
 
   /**
    * Pause autoPlay when mouse is over carousel
