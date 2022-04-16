@@ -121,6 +121,12 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   };
 
   useEffect(() => {
+    if (typeof props.slideIndex === 'number' && !props.autoplayReverse) {
+      moveSlide(props.slideIndex);
+    }
+  }, [props.slideIndex]);
+
+  useEffect(() => {
     if (props.autoplay && !animation && props.wrapAround) {
       if (currentSlide > count) {
         setCurrentSlide(currentSlide - count);
