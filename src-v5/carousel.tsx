@@ -121,7 +121,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   };
 
   useEffect(() => {
-    if (typeof props.slideIndex === 'number') {
+    if (typeof props.slideIndex === 'number' && !props.autoplayReverse) {
       moveSlide(props.slideIndex);
     }
   }, [props.slideIndex]);
