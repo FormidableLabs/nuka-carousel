@@ -19,8 +19,6 @@ export default function App() {
   const [autoplay, setAutoplay] = useState(false);
   const [cellAlign, setCellAlign] = useState('left');
   const [cellSpacing, setCellSpacing] = useState(0);
-  const [dragging, setDragging] = useState(true);
-  const [enableKeyboardControls, setEnableKeyboardControls] = useState(false);
   const [heightMode, setHeightMode] = useState('max');
   const [length, setLength] = useState(colors.length);
   const [scrollMode, setScrollMode] = useState('remainder');
@@ -67,33 +65,33 @@ export default function App() {
     />
   ));
 
-  const carouselProps = {
-    animation,
-    autoplay,
-    cellAlign,
-    cellSpacing,
-    dragging,
-    enableKeyboardControls,
-    heightMode,
-    scrollMode,
-    slideIndex,
-    slideListMargin: 0,
-    slidesToScroll,
-    slidesToShow,
-    transitionMode,
-    withoutControls,
-    wrapAround,
-    zoomScale: Number(zoomScale || 0),
-    renderAnnounceSlideMessage: ({ currentSlide, slideCount }) =>
-      `Showing slide ${currentSlide + 1} of ${slideCount}`,
-    renderTopCenterControls: ({ currentSlide }) =>
-      renderTopControls(currentSlide)
-  };
-
   return (
     <div style={{ width: '50%', margin: 'auto' }}>
       <h2 style={{ textAlign: 'center' }}>Nuka Carousel Demo</h2>
-      <Carousel {...carouselProps}>{slides}</Carousel>
+      <Carousel
+        cellSpacing={cellSpacing}
+        animation={animation}
+        autoplay={autoplay}
+        cellAlign={cellAlign}
+        heightMode={heightMode}
+        scrollMode={scrollMode}
+        slideIndex={slideIndex}
+        slideListMargin={0}
+        slidesToScroll={slidesToScroll}
+        slidesToShow={slidesToShow}
+        transitionMode={transitionMode}
+        withoutControls={withoutControls}
+        wrapAround={wrapAround}
+        zoomScale={Number(zoomScale || 0)}
+        renderAnnounceSlideMessage={({ currentSlide, slideCount }) =>
+          `Showing slide ${currentSlide + 1} of ${slideCount}`
+        }
+        renderTopCenterControls={({ currentSlide }) =>
+          renderTopControls(currentSlide)
+        }
+      >
+        {slides}
+      </Carousel>
       <div
         style={{
           display: 'flex',
@@ -103,7 +101,7 @@ export default function App() {
         }}
       >
         <div>
-          {slides.map((_, idx) => (
+          {slides.map((slide, idx) => (
             <button key={idx} onClick={() => setSlideIndex(idx)}>
               {idx + 1}
             </button>
@@ -131,7 +129,7 @@ export default function App() {
               setLength((prevLength) => (prevLength === 9 ? 3 : 9))
             }
           >
-            Toggle Show 3 Slides Only ({length})
+            Toggle Show 3 Slides Only
           </button>
           <button
             onClick={() =>
@@ -140,18 +138,15 @@ export default function App() {
               )
             }
           >
-            Toggle Fade ({transitionMode === 'fade' ? 'On' : 'Off'})
-          </button>
-          <button onClick={() => setDragging((prevDragging) => !prevDragging)}>
-            Toggle Dragging ({dragging ? 'On' : 'Off'})
+            Toggle Fade {transitionMode === 'fade' ? 'Off' : 'On'}
           </button>
           <button
             onClick={() => setWrapAround((prevWrapAround) => !prevWrapAround)}
           >
-            Toggle Wrap Around ({wrapAround ? 'On' : 'Off'})
+            Toggle Wrap Around: {wrapAround.toString()}
           </button>
           <button onClick={() => setAutoplay((prevAutoPlay) => !prevAutoPlay)}>
-            Toggle Autoplay ({autoplay === true ? 'On' : 'Off'})
+            Toggle Autoplay {autoplay === true ? 'Off' : 'On'}
           </button>
         </div>
 
@@ -171,8 +166,8 @@ export default function App() {
                   setSlidesToScroll(slidesToScroll === 'auto' ? 1 : 'auto');
                 }}
               >
-                Toggle Drag Multiple (
-                {slidesToShow > 1 && slidesToScroll === 'auto' ? 'On' : 'Off'})
+                Toggle Drag Multiple{' '}
+                {slidesToShow > 1 && slidesToScroll === 'auto' ? 'Off' : 'On'}
               </button>
               <button
                 onClick={() =>
@@ -181,7 +176,7 @@ export default function App() {
                   )
                 }
               >
-                Toggle Partially Visible Slides ({slidesToShow})
+                Toggle Partially Visible Slides
               </button>
               <button
                 onClick={() =>
@@ -190,7 +185,7 @@ export default function App() {
                   )
                 }
               >
-                Toggle Height Mode ({heightMode})
+                Toggle Height Mode: {heightMode}
               </button>
               <button
                 onClick={() =>
@@ -199,18 +194,7 @@ export default function App() {
                   )
                 }
               >
-                Toggle Controls ({`${withoutControls ? 'On' : 'Off'}`})
-              </button>
-              <button
-                onClick={() =>
-                  setEnableKeyboardControls(
-                    (prevWithoutKeyboardControls) =>
-                      !prevWithoutKeyboardControls
-                  )
-                }
-              >
-                Toggle Keyboard Controls (
-                {`${enableKeyboardControls ? 'On' : 'Off'}`})
+                Toggle Controls
               </button>
             </div>
             <div
@@ -235,7 +219,7 @@ export default function App() {
                   setCellAlign('center');
                 }}
               >
-                Toggle Zoom Animation ({animation === 'zoom' ? 'On' : 'Off'})
+                Toggle Zoom Animation {animation === 'zoom' ? 'Off' : 'On'}
               </button>
               <button
                 onClick={() => {
@@ -245,7 +229,7 @@ export default function App() {
                   setCellAlign('center');
                 }}
               >
-                Toggle SlidesToScroll ({slidesToScroll === 1 ? 2 : 1})
+                Toggle SlidesToScroll {slidesToScroll === 1 ? 2 : 1}
               </button>
               <button
                 onClick={() => {
@@ -254,7 +238,7 @@ export default function App() {
                   );
                 }}
               >
-                Increase Slides to Show ({slidesToShow})
+                Increase Slides to Show: {slidesToShow}
               </button>
               <button
                 onClick={() =>
@@ -263,7 +247,7 @@ export default function App() {
                   )
                 }
               >
-                Toggle ScrollMode ({scrollMode})
+                Toggle ScrollMode: {scrollMode}
               </button>
               <button
                 onClick={() =>
@@ -272,30 +256,11 @@ export default function App() {
                   )
                 }
               >
-                Toggle Cellspacing ({cellSpacing > 0 ? 'On' : 'Off'})
+                Toggle Cellspacing {cellSpacing > 0 ? 'Off' : 'On'}
               </button>
             </div>
           </>
         )}
-      </div>
-
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginTop: '20px',
-          fontSize: '14px'
-        }}
-      >
-        <pre
-          style={{
-            backgroundColor: '#e6e6e6',
-            padding: '20px',
-            borderRadius: '5px'
-          }}
-        >
-          {JSON.stringify(carouselProps, null, 2)}
-        </pre>
       </div>
     </div>
   );
