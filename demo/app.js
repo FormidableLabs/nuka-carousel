@@ -19,6 +19,7 @@ export default function App() {
   const [autoplay, setAutoplay] = useState(false);
   const [cellAlign, setCellAlign] = useState('left');
   const [cellSpacing, setCellSpacing] = useState(0);
+  const [dragging, setDragging] = useState(true);
   const [enableKeyboardControls, setEnableKeyboardControls] = useState(false);
   const [heightMode, setHeightMode] = useState('max');
   const [length, setLength] = useState(colors.length);
@@ -71,6 +72,7 @@ export default function App() {
     autoplay,
     cellAlign,
     cellSpacing,
+    dragging,
     enableKeyboardControls,
     heightMode,
     scrollMode,
@@ -139,6 +141,9 @@ export default function App() {
             }
           >
             Toggle Fade ({transitionMode === 'fade' ? 'On' : 'Off'})
+          </button>
+          <button onClick={() => setDragging((prevDragging) => !prevDragging)}>
+            Toggle Dragging ({dragging ? 'On' : 'Off'})
           </button>
           <button
             onClick={() => setWrapAround((prevWrapAround) => !prevWrapAround)}
