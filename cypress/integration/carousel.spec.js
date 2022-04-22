@@ -157,6 +157,8 @@ context('Carousel', () => {
     });
 
     it('should render carousel with 6 slides and 3 visible slides and go through all of the slides with autoplay and without clicking the Next button', () => {
+      const now = new Date();
+
       const params = {
         slidesToShow: 3,
         autoplay: true,
@@ -167,13 +169,15 @@ context('Carousel', () => {
         `http://localhost:3000/?slides=6&params=${JSON.stringify(params)}`
       );
 
+      cy.clock(now);
+
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
         .find('img')
         .first()
         .should('have.attr', 'data-slide', 'Slide 1');
 
-      cy.wait(1020);
+      cy.tick(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -181,7 +185,7 @@ context('Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 2');
 
-      cy.wait(1020);
+      cy.tick(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -189,7 +193,7 @@ context('Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 3');
 
-      cy.wait(1020);
+      cy.tick(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -199,6 +203,8 @@ context('Carousel', () => {
     });
 
     it('should render carousel with 6 slides and 3 visible slides and go through all of the slides starting from the last slide with autoplay and without clicking the Prev button', () => {
+      const now = new Date();
+
       const params = {
         slidesToShow: 3,
         autoplay: true,
@@ -210,20 +216,22 @@ context('Carousel', () => {
         `http://localhost:3000/?slides=6&params=${JSON.stringify(params)}`
       );
 
+      cy.clock(now);
+
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
         .find('img')
         .first()
         .should('have.attr', 'data-slide', 'Slide 4');
 
-      cy.wait(1020);
+      cy.tick(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
         .find('img')
         .first()
         .should('have.attr', 'data-slide', 'Slide 3');
-      cy.wait(1020);
+      cy.tick(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -231,7 +239,7 @@ context('Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 2');
 
-      cy.wait(1020);
+      cy.tick(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -241,6 +249,8 @@ context('Carousel', () => {
     });
 
     it('should render carousel with 6 slides and 3 visible slides and go through all of the slides with autoplay and without clicking the Next button and when hover the slider should pause', () => {
+      const now = new Date();
+
       const params = {
         slidesToShow: 3,
         autoplay: true,
@@ -252,13 +262,15 @@ context('Carousel', () => {
         `http://localhost:3000/?slides=6&params=${JSON.stringify(params)}`
       );
 
+      cy.clock(now);
+
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
         .find('img')
         .first()
         .should('have.attr', 'data-slide', 'Slide 1');
 
-      cy.wait(1020);
+      cy.tick(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -267,7 +279,8 @@ context('Carousel', () => {
         .should('have.attr', 'data-slide', 'Slide 2');
 
       cy.get('.slider-container').trigger('mouseover');
-      cy.wait(1500);
+
+      cy.tick(1500);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -277,7 +290,7 @@ context('Carousel', () => {
 
       cy.get('.slider-container').trigger('mouseout');
 
-      cy.wait(1020);
+      cy.tick(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -285,7 +298,7 @@ context('Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 3');
 
-      cy.wait(1020);
+      cy.tick(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
