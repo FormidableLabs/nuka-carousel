@@ -26,7 +26,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   const [dragging, setDragging] = useState<boolean>(false);
   const [move, setMove] = useState<number>(0);
   const [frameHeight, setFrameHeight] = useState<number>(0);
-  const visibleHeights = useRef<SlideHeight[]>([])
+  const visibleHeights = useRef<SlideHeight[]>([]);
   const [keyboardMove, setKeyboardMove] = useState<KeyCodeFunction>(null);
   const carouselWidth = useRef<number | null>(null);
 

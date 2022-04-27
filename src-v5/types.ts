@@ -39,7 +39,7 @@ type SlideChildren = {
 export type SlideHeight = {
   height: number;
   slideIndex: number;
-}
+};
 
 export interface Slide {
   children?: [SlideChildren];

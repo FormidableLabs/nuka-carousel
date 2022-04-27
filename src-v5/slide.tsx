@@ -1,4 +1,10 @@
-import React, { CSSProperties, ReactNode, useRef, useEffect, MutableRefObject } from 'react';
+import React, {
+  CSSProperties,
+  ReactNode,
+  useRef,
+  useEffect,
+  MutableRefObject
+} from 'react';
 import { Alignment, SlideHeight } from './types';
 
 const getSlideWidth = (count: number, wrapAround?: boolean): string =>
@@ -127,29 +133,38 @@ const Slide = ({
 
   const slideRef = useRef<HTMLDivElement>(null);
 
+  // eslint-disable-next-line complexity
   useEffect(() => {
     const node = slideRef.current;
     if (node) {
+      const slideHeight = node.getBoundingClientRect()?.height;
       if (isVisible) {
         node.removeAttribute('inert');
       } else {
         node.setAttribute('inert', 'true');
       }
-    }
-    if (adaptiveHeight && node && isVisible && slidesToShow === 1) {
-      const slideHeight = node.getBoundingClientRect()?.height;
-      if (slideHeight !== frameHeight) {
-        setFrameHeight(slideHeight)
-      }
-    } else if (adaptiveHeight && node && isVisible && slidesToShow > 1) {
-      const slideHeight = node.getBoundingClientRect()?.height;
-      visibleHeights.current = [...visibleHeights.current, {
-        height: slideHeight,
-        slideIndex: customIndex
-      }]
-    } else if (adaptiveHeight && !isVisible) {
-      if (visibleHeights.current.findIndex(v => v.slideIndex === customIndex) > -1) {
-        visibleHeights.current = visibleHeights.current.filter(v => v.slideIndex !== customIndex)
+
+      if (adaptiveHeight && isVisible && slidesToShow === 1) {
+        if (slideHeight !== frameHeight) {
+          setFrameHeight(slideHeight);
+        }
+      } else if (adaptiveHeight && isVisible && slidesToShow > 1) {
+        visibleHeights.current = [
+          ...visibleHeights.current,
+          {
+            height: slideHeight,
+            slideIndex: customIndex
+          }
+        ];
+      } else if (
+        adaptiveHeight &&
+        !isVisible &&
+        visibleHeights.current.findIndex((v) => v.slideIndex === customIndex) >
+          -1
+      ) {
+        visibleHeights.current = visibleHeights.current.filter(
+          (v) => v.slideIndex !== customIndex
+        );
       }
     }
   }, [isVisible]);
@@ -159,15 +174,15 @@ const Slide = ({
       const newFrameHeight = visibleHeights.current.reduce((acc, value) => {
         if (acc >= value.height) {
           return acc;
-        } 
+        }
         return value.height;
-      }, 0)
+      }, 0);
 
       if (newFrameHeight !== frameHeight) {
-        setFrameHeight(newFrameHeight)
+        setFrameHeight(newFrameHeight);
       }
     }
-  }, [adaptiveHeight, visibleHeights.current])
+  }, [adaptiveHeight, visibleHeights.current]);
 
   return (
     <div
