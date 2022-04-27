@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Slide from './slide';
 import { getSliderListStyles } from './slider-list';
-import { CarouselProps, KeyCodeFunction } from './types';
+import { CarouselProps, KeyCodeFunction, SlideHeight } from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
 import {
@@ -26,6 +26,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   const [dragging, setDragging] = useState<boolean>(false);
   const [move, setMove] = useState<number>(0);
   const [frameHeight, setFrameHeight] = useState<number>(0);
+  const visibleHeights = useRef<SlideHeight[]>([])
   const [keyboardMove, setKeyboardMove] = useState<KeyCodeFunction>(null);
   const carouselWidth = useRef<number | null>(null);
 
@@ -395,6 +396,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
           cellAlign={props.cellAlign}
           setFrameHeight={setFrameHeight}
           frameHeight={frameHeight}
+          visibleHeights={visibleHeights}
           adaptiveHeight={props.adaptiveHeight}
         >
           {child}
