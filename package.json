@@ -3,8 +3,8 @@
   "version": "5.0.13",
   "description": "Pure React Carousel",
   "main": "index.js",
-  "module": "es/index.js",
-  "jsnext:main": "es/index.js",
+  "module": "es-v5/index.js",
+  "jsnext:main": "es-v5/index.js",
   "types": "index.d.ts",
   "engines": {
     "node": ">=12.0.0"
