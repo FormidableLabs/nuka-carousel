@@ -36,6 +36,11 @@ type SlideChildren = {
   offsetHeight: number;
 };
 
+export type SlideHeight = {
+  height: number;
+  slideIndex: number;
+};
+
 export interface Slide {
   children?: [SlideChildren];
   offsetHeight: number;
