@@ -147,6 +147,11 @@ export interface CarouselProps {
   cellSpacing?: number;
 
   /**
+   * Explicit children prop to resolve issue with @types/react v18
+   */
+  children?: React.ReactNode;
+
+  /**
    * Additional className
    */
   className?: string;

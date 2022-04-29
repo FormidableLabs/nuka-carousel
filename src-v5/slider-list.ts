@@ -166,6 +166,7 @@ export const getSliderListStyles = (
       animation && slideAnimation !== 'fade'
         ? `${speed || 500}ms ease 0s`
         : 'none',
-    transform: positioning
+    transform: positioning,
+    display: 'flex'
   };
 };

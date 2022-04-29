@@ -1,5 +1,11 @@
-import React, { CSSProperties, ReactNode, useRef, useEffect } from 'react';
-import { Alignment } from './types';
+import React, {
+  CSSProperties,
+  ReactNode,
+  useRef,
+  useEffect,
+  MutableRefObject
+} from 'react';
+import { Alignment, SlideHeight } from './types';
 
 const getSlideWidth = (count: number, wrapAround?: boolean): string =>
   `${wrapAround ? 100 / (3 * count) : 100 / count}%`;
@@ -21,9 +27,8 @@ const getSlideStyles = (
 
   return {
     width,
-    height: '100%',
-    display: 'inline-block',
-    verticalAlign: adaptiveHeight ? 'top' : 'inherit',
+    flex: 1,
+    height: adaptiveHeight ? '100%' : 'auto',
     padding: `0 ${cellSpacing ? cellSpacing / 2 : 0}px`,
     transition: animation ? `${speed || animationSpeed}ms ease 0s` : 'none',
     transform: `${
@@ -95,6 +100,7 @@ const Slide = ({
   cellAlign,
   setFrameHeight,
   frameHeight,
+  visibleHeights,
   adaptiveHeight
 }: {
   count: number;
@@ -112,6 +118,7 @@ const Slide = ({
   cellAlign: Alignment;
   setFrameHeight: (h: number) => void;
   frameHeight: number;
+  visibleHeights: MutableRefObject<SlideHeight[]>;
   adaptiveHeight: boolean;
 }): JSX.Element => {
   const customIndex = wrapAround
@@ -126,22 +133,56 @@ const Slide = ({
 
   const slideRef = useRef<HTMLDivElement>(null);
 
+  // eslint-disable-next-line complexity
   useEffect(() => {
     const node = slideRef.current;
     if (node) {
+      const slideHeight = node.getBoundingClientRect()?.height;
       if (isVisible) {
         node.removeAttribute('inert');
       } else {
         node.setAttribute('inert', 'true');
       }
-    }
-    if (adaptiveHeight && node && isVisible) {
-      const slideHeight = node.getBoundingClientRect()?.height;
-      if (slideHeight > frameHeight) {
-        setFrameHeight(slideHeight);
+
+      if (adaptiveHeight && isVisible && slidesToShow === 1) {
+        if (slideHeight !== frameHeight) {
+          setFrameHeight(slideHeight);
+        }
+      } else if (adaptiveHeight && isVisible && slidesToShow > 1) {
+        visibleHeights.current = [
+          ...visibleHeights.current,
+          {
+            height: slideHeight,
+            slideIndex: customIndex
+          }
+        ];
+      } else if (
+        adaptiveHeight &&
+        !isVisible &&
+        visibleHeights.current.findIndex((v) => v.slideIndex === customIndex) >
+          -1
+      ) {
+        visibleHeights.current = visibleHeights.current.filter(
+          (v) => v.slideIndex !== customIndex
+        );
       }
     }
   }, [isVisible]);
+
+  useEffect(() => {
+    if (adaptiveHeight && slidesToShow > 1) {
+      const newFrameHeight = visibleHeights.current.reduce((acc, value) => {
+        if (acc >= value.height) {
+          return acc;
+        }
+        return value.height;
+      }, 0);
+
+      if (newFrameHeight !== frameHeight) {
+        setFrameHeight(newFrameHeight);
+      }
+    }
+  }, [adaptiveHeight, visibleHeights.current]);
 
   return (
     <div
