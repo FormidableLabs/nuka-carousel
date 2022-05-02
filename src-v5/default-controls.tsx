@@ -42,8 +42,11 @@ export const PreviousButton = (props: ControlProps) => {
     props?.previousSlide();
   };
 
-  const { prevButtonClassName, prevButtonStyle = {}, prevButtonText } =
-    props.defaultControlsConfig || {};
+  const {
+    prevButtonClassName,
+    prevButtonStyle = {},
+    prevButtonText
+  } = props.defaultControlsConfig || {};
 
   const disabled = prevButtonDisabled(props);
 

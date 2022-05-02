@@ -17,9 +17,8 @@ export default class ScrollTransition3D extends React.Component {
     let targetPosition = 0;
     let offset = 0;
     if (index !== this.props.currentSlide) {
-      const relativeDistanceToCurrentSlide = this.getRelativeDistanceToCurrentSlide(
-        index
-      );
+      const relativeDistanceToCurrentSlide =
+        this.getRelativeDistanceToCurrentSlide(index);
       targetPosition =
         (this.props.slideWidth + this.props.cellSpacing) *
           relativeDistanceToCurrentSlide -

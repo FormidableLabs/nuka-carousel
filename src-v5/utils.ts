@@ -26,32 +26,32 @@ export const getIndexes = (
 export const addEvent = (
   elem: Window | Document,
   type: string,
-  eventHandle: EventListener
+  eventHandler: EventListener
 ): void => {
   if (elem === null || typeof elem === 'undefined') {
     return;
   }
   if (elem.addEventListener) {
-    elem.addEventListener(type, eventHandle, false);
+    elem.addEventListener(type, eventHandler, false);
   } else if (elem.attachEvent) {
-    elem.attachEvent(`on${type}`, eventHandle);
+    elem.attachEvent(`on${type}`, eventHandler);
   } else {
-    elem[`on${type}`] = eventHandle;
+    elem[`on${type}`] = eventHandler;
   }
 };
 
 export const removeEvent = (
   elem: Window | Document,
   type: string,
-  eventHandle: EventListener
+  eventHandler: EventListener
 ): void => {
   if (elem === null || typeof elem === 'undefined') {
     return;
   }
   if (elem.removeEventListener) {
-    elem.removeEventListener(type, eventHandle, false);
+    elem.removeEventListener(type, eventHandler, false);
   } else if (elem.detachEvent) {
-    elem.detachEvent(`on${type}`, eventHandle);
+    elem.detachEvent(`on${type}`, eventHandler);
   } else {
     elem[`on${type}`] = null;
   }

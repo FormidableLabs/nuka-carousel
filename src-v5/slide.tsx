@@ -141,7 +141,7 @@ const Slide = ({
         setFrameHeight(slideHeight);
       }
     }
-  }, [isVisible]);
+  }, [adaptiveHeight, frameHeight, isVisible, setFrameHeight]);
 
   return (
     <div
