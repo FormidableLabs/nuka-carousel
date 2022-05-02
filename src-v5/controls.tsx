@@ -20,7 +20,7 @@ const renderControls = (
   props: CarouselProps,
   count: number,
   currentSlide: number,
-  moveSlide: (to: number) => void,
+  moveSlide: (to?: number) => void,
   nextSlide: () => void,
   prevSlide: () => void,
   slidesToScroll: number
