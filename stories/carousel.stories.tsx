@@ -76,7 +76,7 @@ const Template: ComponentStory<typeof Carousel> = ({
         <p>
           Carousel v5 <abbr title="Work in Progress">(WIP)</abbr>
         </p>
-        <CarouselV5 {...(args as any)}>{slides}</CarouselV5>
+        <CarouselV5 {...args}>{slides}</CarouselV5>
       </div>
     </div>
   );

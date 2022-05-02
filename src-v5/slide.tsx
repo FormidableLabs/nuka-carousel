@@ -168,7 +168,7 @@ const Slide = ({
         );
       }
     }
-  }, [isVisible]);
+  }, [adaptiveHeight, frameHeight, isVisible, setFrameHeight]);
 
   useEffect(() => {
     if (adaptiveHeight && slidesToShow > 1) {
