@@ -117,13 +117,12 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   );
 
   const moveSlide = useCallback(
-    (to?: number) => {
+    (to: number) => {
       const nextIndex = getNextIndex(to);
       typeof to === 'number' && beforeSlide(slide, nextIndex);
 
       !disableAnimation && setAnimationEnabled(true);
 
-      console.log({ to });
       if (typeof to === 'number') {
         setCurrentSlide(to);
       }
@@ -164,8 +163,6 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
 
   const prevSlide = useCallback(() => {
     // boundary
-
-    console.log('prevSlide', { wrapAround, currentSlide });
     if (wrapAround || currentSlide > 0) {
       const prevPosition = getPrevMoveIndex(
         scrollMode,
