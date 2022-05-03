@@ -197,8 +197,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
 
   useEffect(() => {
     if (autoplay && !pause) {
-      timer.current = setInterval(() => {
-        // verify this setInterval
+      timer.current = setTimeout(() => {
         if (autoplayReverse) {
           if (!wrapAround && currentSlide > 0) {
             prevSlide();
