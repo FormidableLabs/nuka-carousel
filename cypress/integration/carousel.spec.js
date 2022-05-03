@@ -156,7 +156,7 @@ context('Carousel', () => {
       cy.get('button').contains('Next').should('be.disabled');
     });
 
-    it('should render carousel with 6 slides and 3 visible slides and go through all of the slides with autoplay and without clicking the Next button', () => {
+    it.only('should render carousel with 6 slides and 3 visible slides and go through all of the slides with autoplay and without clicking the Next button', () => {
       const now = new Date();
 
       const params = {
@@ -169,15 +169,13 @@ context('Carousel', () => {
         `http://localhost:3000/?slides=6&params=${JSON.stringify(params)}`
       );
 
-      cy.clock(now);
-
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
         .find('img')
         .first()
         .should('have.attr', 'data-slide', 'Slide 1');
 
-      cy.tick(1020);
+      cy.wait(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -185,7 +183,7 @@ context('Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 2');
 
-      cy.tick(1020);
+      cy.wait(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -193,7 +191,7 @@ context('Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 3');
 
-      cy.tick(1020);
+      cy.wait(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -216,22 +214,20 @@ context('Carousel', () => {
         `http://localhost:3000/?slides=6&params=${JSON.stringify(params)}`
       );
 
-      cy.clock(now);
-
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
         .find('img')
         .first()
         .should('have.attr', 'data-slide', 'Slide 4');
 
-      cy.tick(1020);
+      cy.wait(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
         .find('img')
         .first()
         .should('have.attr', 'data-slide', 'Slide 3');
-      cy.tick(1020);
+      cy.wait(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -239,7 +235,7 @@ context('Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 2');
 
-      cy.tick(1020);
+      cy.wait(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -262,15 +258,13 @@ context('Carousel', () => {
         `http://localhost:3000/?slides=6&params=${JSON.stringify(params)}`
       );
 
-      cy.clock(now);
-
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
         .find('img')
         .first()
         .should('have.attr', 'data-slide', 'Slide 1');
 
-      cy.tick(1020);
+      cy.wait(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -280,7 +274,7 @@ context('Carousel', () => {
 
       cy.get('.slider-container').trigger('mouseover');
 
-      cy.tick(1500);
+      cy.wait(1500);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -290,7 +284,7 @@ context('Carousel', () => {
 
       cy.get('.slider-container').trigger('mouseout');
 
-      cy.tick(1020);
+      cy.wait(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -298,7 +292,7 @@ context('Carousel', () => {
         .first()
         .should('have.attr', 'data-slide', 'Slide 3');
 
-      cy.tick(1020);
+      cy.wait(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
