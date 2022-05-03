@@ -156,9 +156,7 @@ context('Carousel', () => {
       cy.get('button').contains('Next').should('be.disabled');
     });
 
-    it.only('should render carousel with 6 slides and 3 visible slides and go through all of the slides with autoplay and without clicking the Next button', () => {
-      const now = new Date();
-
+    it('should render carousel with 6 slides and 3 visible slides and go through all of the slides with autoplay and without clicking the Next button', () => {
       const params = {
         slidesToShow: 3,
         autoplay: true,
@@ -201,8 +199,6 @@ context('Carousel', () => {
     });
 
     it('should render carousel with 6 slides and 3 visible slides and go through all of the slides starting from the last slide with autoplay and without clicking the Prev button', () => {
-      const now = new Date();
-
       const params = {
         slidesToShow: 3,
         autoplay: true,
@@ -245,8 +241,6 @@ context('Carousel', () => {
     });
 
     it('should render carousel with 6 slides and 3 visible slides and go through all of the slides with autoplay and without clicking the Next button and when hover the slider should pause', () => {
-      const now = new Date();
-
       const params = {
         slidesToShow: 3,
         autoplay: true,
