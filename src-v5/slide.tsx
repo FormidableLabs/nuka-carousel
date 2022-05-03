@@ -36,6 +36,7 @@ const getSlideStyles = (
         ? `scale(${isCurrentSlide ? 1 : zoomScale || 0.85})`
         : 'initial'
     }`,
+    touchAction: 'none',
     opacity: animation === 'fade' ? visibleSlideOpacity : 1
   };
 };
