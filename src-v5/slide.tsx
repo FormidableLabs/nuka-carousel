@@ -168,7 +168,15 @@ const Slide = ({
         );
       }
     }
-  }, [adaptiveHeight, frameHeight, isVisible, setFrameHeight]);
+  }, [
+    adaptiveHeight,
+    customIndex,
+    frameHeight,
+    isVisible,
+    setFrameHeight,
+    slidesToShow,
+    visibleHeights
+  ]);
 
   useEffect(() => {
     if (adaptiveHeight && slidesToShow > 1) {
@@ -183,7 +191,13 @@ const Slide = ({
         setFrameHeight(newFrameHeight);
       }
     }
-  }, [adaptiveHeight, visibleHeights.current]);
+  }, [
+    adaptiveHeight,
+    frameHeight,
+    setFrameHeight,
+    slidesToShow,
+    visibleHeights
+  ]);
 
   return (
     <div
