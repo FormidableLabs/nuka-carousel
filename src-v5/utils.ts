@@ -62,17 +62,18 @@ export const getNextMoveIndex = (
   wrapAround: boolean,
   currentSlide: number,
   count: number,
-  slidesToScroll: number
+  slidesToScroll: number,
+  slidesToShow: number
 ) => {
   if (
     !wrapAround &&
     scrollMode === ScrollMode.remainder &&
-    count < currentSlide + slidesToScroll * 2
+    count < currentSlide + (slidesToScroll + slidesToShow)
   ) {
-    const remindedSlides = count - (currentSlide + slidesToScroll);
+    const remindedSlides =
+      count - (currentSlide + slidesToScroll) - (slidesToShow - slidesToScroll);
     return currentSlide + remindedSlides;
   }
-
   return currentSlide + slidesToScroll;
 };
 
