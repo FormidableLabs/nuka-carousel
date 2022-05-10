@@ -1,5 +1,5 @@
 /* eslint-disable complexity */
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useCallback, useMemo } from 'react';
 import { ControlProps, ScrollMode } from './types';
 
 const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
@@ -69,8 +69,17 @@ export const nextButtonDisabled = ({
   slideCount,
   slidesToShow,
   slidesToScroll,
-  wrapAround
+  wrapAround,
+  scrollMode
 }: ControlProps) => {
+  // remainder scroll mode
+  if (
+    !wrapAround &&
+    scrollMode === ScrollMode.remainder &&
+    currentSlide >= slideCount - slidesToShow
+  ) {
+    return true;
+  }
   // inifite carousel with visible slides that are less than all slides
   if (wrapAround && slidesToShow < slideCount) {
     return false;
@@ -125,17 +134,33 @@ export const NextButton = (props: ControlProps) => {
 export const getDotIndexes = (
   slideCount: number,
   slidesToScroll: number,
-  scrollMode: ScrollMode
+  scrollMode: ScrollMode,
+  slidesToShow: number,
+  wrapAround: boolean
 ) => {
   const dotIndexes = [];
   const scrollSlides = slidesToScroll === 0 ? 1 : slidesToScroll;
 
   for (let i = 0; i < slideCount; i += scrollSlides) {
-    if (scrollMode === ScrollMode.remainder && i + scrollSlides > slideCount) {
-      dotIndexes.push(i - (scrollSlides - (slideCount - i)));
-    } else {
+    if (
+      !(
+        !wrapAround &&
+        scrollMode === ScrollMode.remainder &&
+        i > slideCount - slidesToShow
+      )
+    ) {
       dotIndexes.push(i);
     }
+  }
+
+  // check if the slidesToShow is float value, if true add the last dot (remainder scroll mode)
+  if (
+    !wrapAround &&
+    scrollMode === ScrollMode.remainder &&
+    slidesToShow % 1 !== 0
+  ) {
+    const lastIndex = dotIndexes[dotIndexes.length - 1];
+    dotIndexes.push(lastIndex + (slidesToShow % 1));
   }
 
   return dotIndexes;
@@ -151,24 +176,41 @@ export const PagingDots = (props: ControlProps) => {
     listStyleType: 'none'
   };
 
-  const getButtonStyles = (active: boolean) => ({
-    cursor: 'pointer',
-    opacity: active ? 1 : 0.5,
-    background: 'transparent',
-    border: 'none',
-    fill: 'black'
-  });
-
-  const indexes = getDotIndexes(
-    props.slideCount,
-    props.slidesToScroll,
-    props.scrollMode
+  const getButtonStyles = useCallback(
+    (active: boolean) => ({
+      cursor: 'pointer',
+      opacity: active ? 1 : 0.5,
+      background: 'transparent',
+      border: 'none',
+      fill: 'black'
+    }),
+    []
   );
+
+  const indexes = useMemo(
+    () =>
+      getDotIndexes(
+        props.slideCount,
+        props.slidesToScroll,
+        props.scrollMode,
+        props.slidesToShow,
+        props.wrapAround
+      ),
+    [
+      props.slideCount,
+      props.slidesToScroll,
+      props.scrollMode,
+      props.slidesToShow,
+      props.wrapAround
+    ]
+  );
+
   const {
     pagingDotsContainerClassName,
     pagingDotsClassName,
     pagingDotsStyle = {}
   } = props.defaultControlsConfig;
+
   return (
     <ul className={pagingDotsContainerClassName} style={listStyles}>
       {indexes.map((index, i) => {
