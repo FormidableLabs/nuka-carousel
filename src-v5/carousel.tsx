@@ -17,7 +17,6 @@ import AnnounceSlide from './announce-slide';
 
 export const Carousel = (props: CarouselProps): React.ReactElement => {
   const count = React.Children.count(props.children);
-
   const [currentSlide, setCurrentSlide] = useState<number>(
     props.autoplayReverse ? count - props.slidesToShow : props.slideIndex
   );
@@ -98,7 +97,8 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
         props.wrapAround,
         currentSlide,
         count,
-        props.slidesToScroll
+        props.slidesToScroll,
+        props.slidesToShow
       );
       moveSlide(nextPosition);
     } else {
