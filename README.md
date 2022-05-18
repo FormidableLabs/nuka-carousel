@@ -87,12 +87,14 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 | frameAriaLabel | `string` | Customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page. | `''` |
 | innerRef | `MutableRefObject<HTMLDivElement>` | React `ref` that should be set on the carousel element | |
 | keyCodeConfig | <pre>interface KeyCodeConfig { &#13;  firstSlide?: number[]; &#13;  lastSlide?: number[];&#13;  nextSlide?: number[]; &#13;  pause?: number[]; &#13;  previousSlide?: number[]; &#13;}</pre> | If `enableKeyboardControls` prop is true, you can pass configuration for the keyCode so you can override the default keyboard keys configured. | `{ nextSlide: [39, 68, 38, 87], previousSlide: [37, 65, 40, 83], firstSlide: [81], lastSlide: [69], pause: [32] }` |
+| listClassName | `string` | Extra className to be added to the scrollable list wrapper | |
 | onDragStart | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture event at the start of swiping/dragging slides | |
 | onDrag | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture swiping/dragging event on slides | |
 | onDragEnd | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture event at the ent of swiping/dragging slides | |
 | pauseOnHover | `boolean` | Pause autoPlay when mouse is over carousel. | `true` |
 | renderAnnounceSlideMessage | `(props: Pick<CarouselState, 'currentSlide' \| 'count'>) => string` | Renders message in the ARIA live region that is announcing the current slide on slide change | Render function that returns `"Slide {currentSlide + 1} of {slideCount}"` |
 | scrollMode | `'page' \| 'remainder'` | Set `scrollMode="remainder"` if you don't want to see the white space when you scroll to the end of a non-infinite carousel. scrollMode property is ignored when wrapAround is enabled | `'page'` |
+| slideClassName | `string` | Extra className to be added to the container for each slide | |
 | slideIndex | `number` | Manually set the index of the slide to be shown | |
 | slidesToScroll | `number` | Slides to scroll at once. The property is overridden to `slidesToShow` when `animation="fade"` | 1 |
 | slidesToShow | `number` | Number of slides to show at once. Will be cast to an `integer` when `animation="fade"` | 1 |
@@ -185,25 +187,31 @@ defaultControlsConfig={{
 }}
 ```
 
-<!-- ### External Control of Carousel State
+### External Control of Carousel State
 
-You can control the state of the carousel from your parent component as shown below:
+You can control the state of the carousel from your parent component using methods from the `carouselRef`.
 
-```jsx
-import React from 'react';
-import Carousel from 'nuka-carousel';
+```tsx
+import React, { useRef, useState } from 'react';
+import Carousel, { CarouselRef } from 'nuka-carousel';
 
-export default class extends React.Component {
-  state = {
-    slideIndex: 0
+function MyComponent() {
+  const numSlides = 6;
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const carouselRef = useRef<CarouselRef>(null);
+
+  const advanceTwoSlides = () => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    if (currentSlide + 2 < numSlides) {
+      carousel.moveSlide(currentSlide + 2);
+    }
   };
 
-  render() {
-    return (
-      <Carousel
-        slideIndex={this.state.slideIndex}
-        afterSlide={(slideIndex) => this.setState({ slideIndex })}
-      >
+  return (
+    <>
+      <button onClick={advanceTwoSlides}>Advance two slides</button>
+      <Carousel ref={carouselRef} afterSlide={setCurrentSlide}>
         <img src="https://via.placeholder.com/400/ffffff/c0392b/&text=slide1" />
         <img src="https://via.placeholder.com/400/ffffff/c0392b/&text=slide2" />
         <img src="https://via.placeholder.com/400/ffffff/c0392b/&text=slide3" />
@@ -211,10 +219,13 @@ export default class extends React.Component {
         <img src="https://via.placeholder.com/400/ffffff/c0392b/&text=slide5" />
         <img src="https://via.placeholder.com/400/ffffff/c0392b/&text=slide6" />
       </Carousel>
-    );
-  }
+    </>
+  );
 }
-``` -->
+
+export default MyComponent;
+```
+
 ### Depreceted v4 parameters
 
 The following list of parameters are deprecated in v5. The main reason is that there is other approach which you can use to achieve the same thing, without increasing the complexity of the library. For example: `width` the width of the carousel can be easily manipulated by the parent container where developer placed the carousel. We are open for discussions if you really need some of these parameters. Feel free to raise an issue or start discussion in the repository, so we can help.
