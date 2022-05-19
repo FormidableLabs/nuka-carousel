@@ -191,13 +191,7 @@ const Slide = ({
         setFrameHeight(newFrameHeight);
       }
     }
-  }, [
-    adaptiveHeight,
-    frameHeight,
-    setFrameHeight,
-    slidesToShow,
-    visibleHeights
-  ]);
+  }, [adaptiveHeight, visibleHeights.current]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div
