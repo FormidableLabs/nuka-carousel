@@ -175,14 +175,14 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
     }
   }, [currentSlide, moveSlide, propsSlidesToScroll, scrollMode, wrapAround]);
 
-  // Why is this needed?
-  // useEffect(() => {
-  //   if (typeof slideIndex === 'number' && !autoplayReverse) {
-  //     moveSlide(slideIndex);
-  //   }
-  // }, [slideIndex, autoplayReverse, moveSlide]);
+  // When user changed the slideIndex property from outside.
+  useEffect(() => {
+    if (typeof slideIndex === 'number' && !autoplayReverse) {
+      moveSlide(slideIndex);
+    }
+  }, [slideIndex, autoplayReverse]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Why is this needed?
+  // Makes the carousel infinity when autoplay and wrapAround are enabled
   useEffect(() => {
     if (autoplay && !animationEnabled && wrapAround) {
       if (currentSlide > count) {
@@ -239,11 +239,11 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
     nextSlide
   ]);
 
+  // Makes the carousel infinity when wrapAround is enabled, but autoplay is disabled
   useEffect(() => {
     let prevTimeout: ReturnType<typeof setTimeout> | null = null;
     let nextTimeout: ReturnType<typeof setTimeout> | null = null;
 
-    // makes the loop infinity
     if (wrapAround && !autoplay) {
       // if animation is disabled decrease the speed to 0
       const speed = !disableAnimation ? propsSpeed || 500 : 0;
