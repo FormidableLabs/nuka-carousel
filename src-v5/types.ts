@@ -191,6 +191,7 @@ export interface CarouselProps {
   disableAnimation: boolean;
   disableEdgeSwiping: boolean;
   dragging: boolean;
+  dragThreshold: number;
   easing: D3EasingFunctions; // not migrated yet
   edgeEasing: D3EasingFunctions; // not migrated yet
   enableKeyboardControls: boolean;
