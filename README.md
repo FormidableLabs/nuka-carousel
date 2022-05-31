@@ -82,6 +82,7 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 | disableAnimation | `boolean` | When set to `true`, will disable animation. | `false` |
 | disableEdgeSwiping | `boolean` | When set to `true`, will disable swiping before first slide and after last slide. | `false` |
 | dragging | `boolean` | Enable mouse swipe/dragging. | `true` |
+| dragThreshold | `number` | The percentage (from 0 to 1) of a slide that the user needs to drag before a slide change is triggered. | `0.5` |
 | enableKeyboardControls | `boolean` | When set to `true` will enable keyboard controls when the carousel has focus. If the carousel does not have focus, keyboard controls will be ignored. | `false` |
 | frameAriaLabel | `string` | Customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page. | `''` |
 | innerRef | `MutableRefObject<HTMLDivElement>` | React `ref` that should be set on the carousel element | |
