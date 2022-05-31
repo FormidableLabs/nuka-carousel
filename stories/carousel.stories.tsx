@@ -87,6 +87,11 @@ const Template: Story<CarouselProps & StoryProps> = ({
   );
 };
 
+// We disable no-explicit-any so that we can use v4 Carousel props in Storybook
+// stories. This can be deleted when we no longer want to support the v4
+// Carousel in Storybook stories.
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /* Stories - add common combinations of props here! */
 export const Default = Template.bind({});
 Default.args = {};
