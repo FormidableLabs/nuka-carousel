@@ -1,14 +1,19 @@
 import React from 'react';
-import { Alignment, ControlProps, D3EasingFunctions } from './types';
+import {
+  Alignment,
+  ControlProps,
+  D3EasingFunctions,
+  ScrollMode,
+  CarouselProps
+} from './types';
 import { PagingDots, PreviousButton, NextButton } from './default-controls';
 import { defaultRenderAnnounceSlideMessage } from './announce-slide';
 
-const defaultProps = {
+const defaultProps: CarouselProps = {
   adaptiveHeight: false,
   afterSlide: () => {
     // do nothing
   },
-  autoGenerateStyleTag: true,
   autoplay: false,
   autoplayInterval: 3000,
   autoplayReverse: false,
@@ -21,6 +26,7 @@ const defaultProps = {
   disableAnimation: false,
   disableEdgeSwiping: false,
   dragging: true,
+  dragThreshold: 0.5,
   easing: D3EasingFunctions.EaseCircleOut,
   edgeEasing: D3EasingFunctions.EaseElasticOut,
   enableKeyboardControls: false,
@@ -50,7 +56,7 @@ const defaultProps = {
     <PreviousButton {...props} />
   ),
   renderCenterRightControls: (props: ControlProps) => <NextButton {...props} />,
-  scrollMode: 'page',
+  scrollMode: ScrollMode.page,
   slideIndex: 0,
   slidesToScroll: 1,
   slidesToShow: 1,
