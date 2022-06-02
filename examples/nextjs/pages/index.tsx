@@ -10,9 +10,9 @@ const colors = [
   'e3bc13',
   'db7c00',
   'aa231f',
-  'e3bc13',
-  'db7c00',
-  'aa231f',
+  'e3ac4a',
+  'db7c3e',
+  'ab23ff',
   'ccc',
   'ddd',
   '000',
@@ -25,9 +25,7 @@ const Home = ({ urlParams }) => {
 
   const slides = colorsArray.map((color, index) => (
     <img
-      src={`https://via.placeholder.com/400/${color}/ffffff/&text=slide${
-        index + 1
-      }`}
+      src={`/images/${color}.png`}
       key={color}
       alt={`Slide ${index + 1}`}
       data-slide={`Slide ${index + 1}`}
