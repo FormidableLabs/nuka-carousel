@@ -117,7 +117,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   );
 
   const moveSlide = useCallback(
-    (to: number) => {
+    (to?: number) => {
       const nextIndex = getNextIndex(to);
       typeof to === 'number' && beforeSlide(slide, nextIndex);
 
@@ -158,7 +158,8 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
     moveSlide,
     propsSlidesToScroll,
     scrollMode,
-    wrapAround
+    wrapAround,
+    slidesToShow
   ]);
 
   const prevSlide = useCallback(() => {
