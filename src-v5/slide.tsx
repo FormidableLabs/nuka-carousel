@@ -168,7 +168,15 @@ const Slide = ({
         );
       }
     }
-  }, [isVisible]);
+  }, [
+    adaptiveHeight,
+    customIndex,
+    frameHeight,
+    isVisible,
+    setFrameHeight,
+    slidesToShow,
+    visibleHeights
+  ]);
 
   useEffect(() => {
     if (adaptiveHeight && slidesToShow > 1) {
@@ -183,7 +191,7 @@ const Slide = ({
         setFrameHeight(newFrameHeight);
       }
     }
-  }, [adaptiveHeight, visibleHeights.current]);
+  }, [adaptiveHeight, visibleHeights.current]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div

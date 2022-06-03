@@ -267,6 +267,7 @@ context('Carousel', () => {
         .should('have.attr', 'data-slide', 'Slide 2');
 
       cy.get('.slider-container').trigger('mouseover');
+
       cy.wait(1500);
 
       cy.get('.slide.slide-visible')

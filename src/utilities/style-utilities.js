@@ -1,6 +1,7 @@
 import React from 'react';
 
-export const getImgTagStyles = () => `.slider-slide > img { width: 100%; display: block; }
+export const getImgTagStyles =
+  () => `.slider-slide > img { width: 100%; display: block; }
           .slider-slide > img:focus { margin: auto; }`;
 
 export const getSlideHeight = (props) => {
