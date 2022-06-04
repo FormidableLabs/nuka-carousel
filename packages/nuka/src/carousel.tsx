@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  useMemo
+} from 'react';
 import Slide from './slide';
 import AnnounceSlide from './announce-slide';
 import { getSliderListStyles } from './slider-list';
@@ -17,6 +23,7 @@ import {
   getNextMoveIndex,
   getPrevMoveIndex
 } from './utils';
+import { useStateWithRef } from './hooks';
 
 interface KeyboardEvent {
   keyCode: number;
@@ -79,8 +86,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const [pause, setPause] = useState<boolean>(false);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [move, setMove] = useState<number>(0);
-  const [frameHeight, setFrameHeight] = useState<number>(0);
-  const visibleHeights = useRef<SlideHeight[]>([]);
   const [keyboardMove, setKeyboardMove] = useState<KeyCodeFunction>(null);
   const carouselWidth = useRef<number | null>(null);
 
@@ -525,6 +530,10 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     }
   }, [pauseOnHover]);
 
+  const { frameHeight, handleVisibleSlideHeightChange } = useFrameHeight({
+    adaptiveHeight
+  });
+
   const renderSlides = (typeOfSlide?: 'prev-cloned' | 'next-cloned') => {
     const slides = React.Children.map(children, (child, index) => {
       const isCurrentSlide = wrapAround
@@ -548,9 +557,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           speed={propsSpeed}
           zoomScale={zoomScale}
           cellAlign={cellAlign}
-          setFrameHeight={setFrameHeight}
-          frameHeight={frameHeight}
-          visibleHeights={visibleHeights}
+          onVisibleSlideHeightChange={handleVisibleSlideHeightChange}
           adaptiveHeight={adaptiveHeight}
         >
           {child}
@@ -595,7 +602,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           width: '100%',
           position: 'relative',
           outline: 'none',
-          height: adaptiveHeight ? `${frameHeight}px` : 'auto',
+          height: frameHeight,
           ...style
         }}
         aria-label={frameAriaLabel}
@@ -633,6 +640,64 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       </div>
     </div>
   );
+};
+
+/**
+ * Adjust the frame height based on the visible slides' height if
+ * `adaptiveHeight` is enabled. Otherwise, just returns `auto`.
+ */
+const useFrameHeight = ({
+  adaptiveHeight
+}: {
+  adaptiveHeight: boolean;
+}): {
+  /**
+   * Callback that can be passed to Slides to allow them to update the
+   * `visibleHeights` variable.
+   */
+  handleVisibleSlideHeightChange: (
+    slideIndex: number,
+    height: number | null
+  ) => unknown;
+
+  /** CSS height of the frame container */
+  frameHeight: string;
+} => {
+  const [visibleHeights, setVisibleHeights, visibleHeightsRef] =
+    useStateWithRef<SlideHeight[]>([]);
+
+  const handleVisibleSlideHeightChange = useCallback(
+    (slideIndex: number, height: number | null) => {
+      // Use the ref's value since it's always the latest value
+      const latestVisibleHeights = visibleHeightsRef.current;
+      let newVisibleHeights: SlideHeight[];
+      if (height === null) {
+        newVisibleHeights = latestVisibleHeights.filter(
+          (slideHeight) => slideHeight.slideIndex !== slideIndex
+        );
+      } else {
+        newVisibleHeights = [...latestVisibleHeights, { slideIndex, height }];
+      }
+      setVisibleHeights(newVisibleHeights);
+    },
+    [setVisibleHeights, visibleHeightsRef]
+  );
+
+  const frameHeight = useMemo(() => {
+    if (adaptiveHeight) {
+      const maxHeight = visibleHeights.reduce((acc, value) => {
+        if (acc >= value.height) {
+          return acc;
+        }
+        return value.height;
+      }, 0);
+      return `${maxHeight}px`;
+    } else {
+      return 'auto';
+    }
+  }, [adaptiveHeight, visibleHeights]);
+
+  return { handleVisibleSlideHeightChange, frameHeight };
 };
 
 Carousel.defaultProps = defaultProps;

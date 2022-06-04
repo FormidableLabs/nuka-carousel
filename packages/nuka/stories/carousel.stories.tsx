@@ -19,6 +19,7 @@ export default {
 /* Set up story template */
 interface StoryProps {
   storySlideCount: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+  slideHeights?: number[];
 }
 
 const colors = [
@@ -35,6 +36,7 @@ const colors = [
 
 const Template: Story<InternalCarouselProps & StoryProps> = ({
   storySlideCount = 9,
+  slideHeights,
   ...args
 }) => {
   const slides = colors.slice(0, storySlideCount).map((color, index) => (
@@ -45,6 +47,7 @@ const Template: Story<InternalCarouselProps & StoryProps> = ({
       alt={`Slide ${index + 1}`}
       key={color}
       style={{
+        height: slideHeights?.[index] ?? undefined,
         width: '100%'
       }}
     />
@@ -194,6 +197,20 @@ CellAlignRightWrapAround.args = {
   slidesToShow: 2.5,
   cellAlign: Alignment.Right,
   wrapAround: true
+};
+
+export const AdaptiveHeight = Template.bind({});
+AdaptiveHeight.args = {
+  adaptiveHeight: true,
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
+};
+
+export const AdaptiveHeightThreeSlides = Template.bind({});
+AdaptiveHeightThreeSlides.args = {
+  adaptiveHeight: true,
+  slidesToShow: 3,
+  slidesToScroll: 3,
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
 };
 
 export const KeyboardControls = Template.bind({});
