@@ -3,7 +3,7 @@ import { ComponentMeta, Story } from '@storybook/react';
 
 import Carousel from '../src';
 import { Carousel as CarouselV5 } from '../src-v5/carousel';
-import { Alignment, CarouselProps, ControlProps } from '../src-v5';
+import { Alignment, InternalCarouselProps, ControlProps } from '../src-v5';
 
 export default {
   title: 'Nuka Carousel/Carousel',
@@ -43,11 +43,11 @@ const colors = [
 //   }
 // };
 
-const Template: Story<CarouselProps & StoryProps> = ({
+const Template: Story<InternalCarouselProps & StoryProps> = ({
   storySlideCount = 9,
   slideHeights,
   ...args
-}: CarouselProps & StoryProps) => {
+}: InternalCarouselProps & StoryProps) => {
   const slides = colors.slice(0, storySlideCount).map((color, index) => (
     <img
       src={`https://via.placeholder.com/800/${color}/ffffff/&text=slide${
