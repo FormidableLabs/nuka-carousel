@@ -67,83 +67,35 @@ const getPositioning = (
   wrapAround?: boolean,
   move?: number
 ): string => {
-  if (!cellAlign || cellAlign === Alignment.Left) {
-    const initialValue = wrapAround ? -(count * (100 / (3 * count))) : 0;
-    const horizontalMove = getTransition(
-      count,
-      initialValue,
-      currentSlide,
-      cellAlign,
-      wrapAround
-    );
-    const draggableMove = move
-      ? `calc(${horizontalMove}% - ${move}px)`
-      : `${horizontalMove}%`;
-    return `translate3d(${draggableMove}, 0, 0)`;
-  }
-  if (cellAlign === Alignment.Right) {
-    const right = slidesToShow > 1 ? (100 / count) * (slidesToShow - 1) : 0;
+  // When wrapAround is enabled, we show the slides 3 times
+  const totalCount = wrapAround ? 3 * count : count;
+  const slideSize = 100 / totalCount;
+  let initialValue = wrapAround ? -count * slideSize : 0;
 
-    // if wrapAround is enabled
-    const rightAlignedFirstSlide =
-      -(count * (100 / (3 * count))) + (slidesToShow - 1) * (100 / (3 * count));
-
-    const initialValue = wrapAround ? rightAlignedFirstSlide : right;
-
-    const horizontalMove = getTransition(
-      count,
-      initialValue,
-      currentSlide,
-      cellAlign,
-      wrapAround
-    );
-    const draggableMove = move
-      ? `calc(${horizontalMove}% - ${move}px)`
-      : `${horizontalMove}%`;
-    return `translate3d(${draggableMove}, 0, 0)`;
-  }
-  if (cellAlign === Alignment.Center) {
-    let initialValue: number;
-    if (wrapAround) {
-      // Logic for the `wrapAround` branch hasn't been tested for v5, and may
-      // need work
-      const centerAlignedFirstSlide =
-        -(count * (100 / (3 * count))) +
-        Math.floor(slidesToShow / 2) * (100 / (3 * count));
-      initialValue =
-        slidesToShow % 2 === 0
-          ? centerAlignedFirstSlide - 100 / (3 * count) / 2
-          : centerAlignedFirstSlide;
-    } else {
-      // If slidesToShow is 1.5, we need 0.25 of a slide of margin.
-      // If slidesToShow is 2.6, we need 0.3 of a slide of margin.
-      //
-      // eslint-disable-next-line no-lonely-if
-      if (slidesToShow <= 1) {
-        initialValue = 0;
-      } else {
-        const slideSize = 100 / count;
-        const excessSlides = slidesToShow - Math.floor(slidesToShow);
-        const excessLeftSlides = excessSlides / 2;
-        initialValue = excessLeftSlides * slideSize;
-      }
-    }
-
-    const horizontalMove = getTransition(
-      count,
-      initialValue,
-      currentSlide,
-      cellAlign,
-      wrapAround
-    );
-
-    const draggableMove = move
-      ? `calc(${horizontalMove}% - ${move}px)`
-      : `${horizontalMove}%`;
-    return `translate3d(${draggableMove}, 0, 0)`;
+  if (cellAlign === Alignment.Right && slidesToShow > 1) {
+    const excessSlides = slidesToShow - 1;
+    initialValue += slideSize * excessSlides;
   }
 
-  return 'translate3d(0, 0, 0)';
+  if (cellAlign === Alignment.Center && slidesToShow > 1) {
+    const excessSlides = slidesToShow - 1;
+    // Half of excess is on left and half is on right when centered
+    const excessLeftSlides = excessSlides / 2;
+    initialValue += slideSize * excessLeftSlides;
+  }
+
+  const horizontalMove = getTransition(
+    count,
+    initialValue,
+    currentSlide,
+    cellAlign,
+    wrapAround
+  );
+
+  const draggableMove = move
+    ? `calc(${horizontalMove}% - ${move}px)`
+    : `${horizontalMove}%`;
+  return `translate3d(${draggableMove}, 0, 0)`;
 };
 
 export const getSliderListStyles = (

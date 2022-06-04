@@ -187,8 +187,27 @@ DragMultipleSlides.args = {
 
 export const CellAlignCenter = Template.bind({});
 CellAlignCenter.args = {
-  slidesToShow: 1.5,
+  slidesToShow: 2.5,
+  cellAlign: 'center'
+};
+
+export const CellAlignCenterWrapAround = Template.bind({});
+CellAlignCenterWrapAround.args = {
+  slidesToShow: 2.5,
   cellAlign: 'center',
+  wrapAround: true
+};
+
+export const CellAlignRight = Template.bind({});
+CellAlignRight.args = {
+  slidesToShow: 2.5,
+  cellAlign: 'right'
+};
+
+export const CellAlignRightWrapAround = Template.bind({});
+CellAlignRightWrapAround.args = {
+  slidesToShow: 2.5,
+  cellAlign: 'right',
   wrapAround: true
 };
 
