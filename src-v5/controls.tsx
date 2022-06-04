@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React, { Fragment } from 'react';
 import { getDecoratorStyles } from './control-styles';
-import { CarouselProps, Positions, RenderControlFunctionNames } from './types';
+import {
+  InternalCarouselProps,
+  Positions,
+  RenderControlFunctionNames
+} from './types';
 
 type ControlMap = { funcName: RenderControlFunctionNames; key: Positions }[];
 const controlsMap: ControlMap = [
@@ -17,7 +21,7 @@ const controlsMap: ControlMap = [
 ];
 
 const renderControls = (
-  props: CarouselProps,
+  props: InternalCarouselProps,
   count: number,
   currentSlide: number,
   moveSlide: (to: number) => void,

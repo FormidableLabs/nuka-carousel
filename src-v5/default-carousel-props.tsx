@@ -1,15 +1,15 @@
 import React from 'react';
 import {
   Alignment,
+  InternalCarouselProps,
   ControlProps,
   D3EasingFunctions,
-  ScrollMode,
-  CarouselProps
+  ScrollMode
 } from './types';
-import { PagingDots, PreviousButton, NextButton } from './default-controls';
+import { NextButton, PagingDots, PreviousButton } from './default-controls';
 import { defaultRenderAnnounceSlideMessage } from './announce-slide';
 
-const defaultProps: CarouselProps = {
+const defaultProps: InternalCarouselProps = {
   adaptiveHeight: false,
   afterSlide: () => {
     // do nothing

@@ -2,7 +2,12 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Slide from './slide';
 import AnnounceSlide from './announce-slide';
 import { getSliderListStyles } from './slider-list';
-import { CarouselProps, KeyCodeFunction, SlideHeight } from './types';
+import {
+  CarouselProps,
+  InternalCarouselProps,
+  KeyCodeFunction,
+  SlideHeight
+} from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
 import {
@@ -17,7 +22,18 @@ interface KeyboardEvent {
   keyCode: number;
 }
 
-export const Carousel = (props: CarouselProps): React.ReactElement => {
+export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
+  /**
+   * We need this cast because we want the component's properties to seem
+   * optional to external users, but always-present for the internal
+   * implementation.
+   *
+   * This cast is safe due to the `Carousel.defaultProps = defaultProps;`
+   * statement below. That guarantees all the properties are present, since
+   * `defaultProps` has type `InternalCarouselProps`.
+   */
+  const props = rawProps as InternalCarouselProps;
+
   const {
     adaptiveHeight,
     afterSlide,

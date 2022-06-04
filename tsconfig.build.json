@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "outDir": "types-v5"
+  },
+  "include": [
+    "globals.d.ts",
+    "src-v5/**/*.ts",
+    "src-v5/**/*.tsx",
+  ],
+}
