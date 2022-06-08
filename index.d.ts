@@ -188,6 +188,11 @@ export interface CarouselProps {
    * Enable mouse swipe/dragging
    */
   dragging?: boolean;
+  
+  /**
+   * The percentage (from 0 to 1) of a slide that the user needs to drag before a slide change is triggered.
+   */
+  dragThreshold?: number;
 
   /**
    * Animation easing function
