@@ -205,6 +205,13 @@ AdaptiveHeight.args = {
   slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
 };
 
+export const AdaptiveHeightWrapAround = Template.bind({});
+AdaptiveHeightWrapAround.args = {
+  adaptiveHeight: true,
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290],
+  wrapAround: true
+};
+
 export const AdaptiveHeightThreeSlides = Template.bind({});
 AdaptiveHeightThreeSlides.args = {
   adaptiveHeight: true,

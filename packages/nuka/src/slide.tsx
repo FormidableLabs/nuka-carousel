@@ -127,7 +127,6 @@ const Slide = ({
 
   const slideRef = useRef<HTMLDivElement>(null);
 
-  // eslint-disable-next-line complexity
   const prevIsVisibleRef = useRef(false);
   useEffect(() => {
     const node = slideRef.current;
@@ -141,9 +140,9 @@ const Slide = ({
 
       const prevIsVisible = prevIsVisibleRef.current;
       if (isVisible && !prevIsVisible) {
-        onVisibleSlideHeightChange(index, slideHeight);
+        onVisibleSlideHeightChange(customIndex, slideHeight);
       } else if (!isVisible && prevIsVisible) {
-        onVisibleSlideHeightChange(index, null);
+        onVisibleSlideHeightChange(customIndex, null);
       }
 
       prevIsVisibleRef.current = isVisible;
@@ -151,7 +150,6 @@ const Slide = ({
   }, [
     adaptiveHeight,
     customIndex,
-    index,
     isVisible,
     onVisibleSlideHeightChange,
     slidesToShow

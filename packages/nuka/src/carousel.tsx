@@ -1,29 +1,18 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-  useMemo
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Slide from './slide';
 import AnnounceSlide from './announce-slide';
 import { getSliderListStyles } from './slider-list';
-import {
-  CarouselProps,
-  InternalCarouselProps,
-  KeyCodeFunction,
-  SlideHeight
-} from './types';
+import { CarouselProps, InternalCarouselProps, KeyCodeFunction } from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
 import {
-  getIndexes,
   addEvent,
-  removeEvent,
+  getIndexes,
   getNextMoveIndex,
-  getPrevMoveIndex
+  getPrevMoveIndex,
+  removeEvent
 } from './utils';
-import { useStateWithRef } from './hooks';
+import { useFrameHeight } from './hooks/use-frame-height';
 
 interface KeyboardEvent {
   keyCode: number;
@@ -640,64 +629,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       </div>
     </div>
   );
-};
-
-/**
- * Adjust the frame height based on the visible slides' height if
- * `adaptiveHeight` is enabled. Otherwise, just returns `auto`.
- */
-const useFrameHeight = ({
-  adaptiveHeight
-}: {
-  adaptiveHeight: boolean;
-}): {
-  /**
-   * Callback that can be passed to Slides to allow them to update the
-   * `visibleHeights` variable.
-   */
-  handleVisibleSlideHeightChange: (
-    slideIndex: number,
-    height: number | null
-  ) => unknown;
-
-  /** CSS height of the frame container */
-  frameHeight: string;
-} => {
-  const [visibleHeights, setVisibleHeights, visibleHeightsRef] =
-    useStateWithRef<SlideHeight[]>([]);
-
-  const handleVisibleSlideHeightChange = useCallback(
-    (slideIndex: number, height: number | null) => {
-      // Use the ref's value since it's always the latest value
-      const latestVisibleHeights = visibleHeightsRef.current;
-      let newVisibleHeights: SlideHeight[];
-      if (height === null) {
-        newVisibleHeights = latestVisibleHeights.filter(
-          (slideHeight) => slideHeight.slideIndex !== slideIndex
-        );
-      } else {
-        newVisibleHeights = [...latestVisibleHeights, { slideIndex, height }];
-      }
-      setVisibleHeights(newVisibleHeights);
-    },
-    [setVisibleHeights, visibleHeightsRef]
-  );
-
-  const frameHeight = useMemo(() => {
-    if (adaptiveHeight) {
-      const maxHeight = visibleHeights.reduce((acc, value) => {
-        if (acc >= value.height) {
-          return acc;
-        }
-        return value.height;
-      }, 0);
-      return `${maxHeight}px`;
-    } else {
-      return 'auto';
-    }
-  }, [adaptiveHeight, visibleHeights]);
-
-  return { handleVisibleSlideHeightChange, frameHeight };
 };
 
 Carousel.defaultProps = defaultProps;
