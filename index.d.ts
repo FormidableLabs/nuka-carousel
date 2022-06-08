@@ -190,6 +190,11 @@ export interface CarouselProps {
   dragging?: boolean;
 
   /**
+   * The percentage (from 0 to 1) of a slide that the user needs to drag before a slide change is triggered.
+   */
+  dragThreshold?: number;
+
+  /**
    * Animation easing function
    * @see https://github.com/d3/d3-ease
    */
