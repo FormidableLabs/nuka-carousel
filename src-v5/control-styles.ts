@@ -1,18 +1,23 @@
 import { CSSProperties } from 'react';
 import { Positions } from './types';
 
+const commonStyles: CSSProperties = {
+  position: 'absolute',
+  zIndex: 1
+};
+
 export const getDecoratorStyles = (pos: Positions): CSSProperties => {
   switch (pos) {
     case Positions.TopLeft: {
       return {
-        position: 'absolute',
+        ...commonStyles,
         top: 0,
         left: 0
       };
     }
     case Positions.TopCenter: {
       return {
-        position: 'absolute',
+        ...commonStyles,
         top: 0,
         left: '50%',
         transform: 'translateX(-50%)',
@@ -22,14 +27,14 @@ export const getDecoratorStyles = (pos: Positions): CSSProperties => {
     }
     case Positions.TopRight: {
       return {
-        position: 'absolute',
+        ...commonStyles,
         top: 0,
         right: 0
       };
     }
     case Positions.CenterLeft: {
       return {
-        position: 'absolute',
+        ...commonStyles,
         top: '50%',
         left: 0,
         transform: 'translateY(-50%)',
@@ -39,7 +44,7 @@ export const getDecoratorStyles = (pos: Positions): CSSProperties => {
     }
     case Positions.CenterCenter: {
       return {
-        position: 'absolute',
+        ...commonStyles,
         top: '50%',
         left: '50%',
         transform: 'translate(-50%,-50%)',
@@ -49,7 +54,7 @@ export const getDecoratorStyles = (pos: Positions): CSSProperties => {
     }
     case Positions.CenterRight: {
       return {
-        position: 'absolute',
+        ...commonStyles,
         top: '50%',
         right: 0,
         transform: 'translateY(-50%)',
@@ -59,14 +64,14 @@ export const getDecoratorStyles = (pos: Positions): CSSProperties => {
     }
     case Positions.BottomLeft: {
       return {
-        position: 'absolute',
+        ...commonStyles,
         bottom: 0,
         left: 0
       };
     }
     case Positions.BottomCenter: {
       return {
-        position: 'absolute',
+        ...commonStyles,
         bottom: 0,
         left: '50%',
         transform: 'translateX(-50%)',
@@ -76,14 +81,14 @@ export const getDecoratorStyles = (pos: Positions): CSSProperties => {
     }
     case Positions.BottomRight: {
       return {
-        position: 'absolute',
+        ...commonStyles,
         bottom: 0,
         right: 0
       };
     }
     default: {
       return {
-        position: 'absolute',
+        ...commonStyles,
         top: 0,
         left: 0
       };

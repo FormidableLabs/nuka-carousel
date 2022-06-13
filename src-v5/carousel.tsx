@@ -562,6 +562,16 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
         })}
       />
 
+      {renderControls(
+        props,
+        count,
+        currentSlide,
+        moveSlide,
+        nextSlide,
+        prevSlide,
+        slidesToScroll
+      )}
+
       <div
         className={['slider-frame', className || ''].join(' ').trim()}
         style={{
@@ -605,15 +615,6 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
           {wrapAround ? renderSlides('next-cloned') : null}
         </div>
       </div>
-      {renderControls(
-        props,
-        count,
-        currentSlide,
-        moveSlide,
-        nextSlide,
-        prevSlide,
-        slidesToScroll
-      )}
     </div>
   );
 };
