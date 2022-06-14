@@ -299,7 +299,7 @@ export default class Carousel extends React.Component {
         e.touches[0].pageY,
         this.props.vertical
       );
-      if (direction !== 0) {
+      if (direction !== 0 && e.cancelable) {
         e.preventDefault();
       }
     }
