@@ -76,9 +76,17 @@ The following list of parameters are deprecated in v5. The main reason is that t
 
   In v4 
 
-
-
 **width**
   > v4 documentation *Used to hardcode the slider width. Accepts any string dimension value such as "80%" or "500px"*
   
   Same as `height` property. Developers can control the width of the carousel using wrapper parent element or className/style properties.
+
+
+### New parameters in v5
+
+**adaptiveHeight** 
+
+**dragThreshold**
+
+**frameAriaLabel**
+
