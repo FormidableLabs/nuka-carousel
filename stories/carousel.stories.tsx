@@ -1,9 +1,9 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, Story } from '@storybook/react';
 
 import Carousel from '../src';
 import { Carousel as CarouselV5 } from '../src-v5/carousel';
-import { CarouselProps, ControlProps } from '../src-v5';
+import { Alignment, CarouselProps, ControlProps } from '../src-v5';
 
 export default {
   title: 'Nuka Carousel/Carousel',
@@ -14,6 +14,7 @@ export default {
 /* Set up story template */
 interface StoryProps {
   storySlideCount: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+  slideHeights?: number[];
 }
 
 const colors = [
@@ -42,8 +43,9 @@ const colors = [
 //   }
 // };
 
-const Template: ComponentStory<typeof Carousel> = ({
+const Template: Story<CarouselProps & StoryProps> = ({
   storySlideCount = 9,
+  slideHeights,
   ...args
 }: CarouselProps & StoryProps) => {
   const slides = colors.slice(0, storySlideCount).map((color, index) => (
@@ -54,7 +56,7 @@ const Template: ComponentStory<typeof Carousel> = ({
       alt={`Slide ${index + 1}`}
       key={color}
       style={{
-        // height: getHeight(args.heightMode, index),
+        height: slideHeights?.[index] ?? undefined,
         width: '100%'
       }}
     />
@@ -82,6 +84,11 @@ const Template: ComponentStory<typeof Carousel> = ({
   );
 };
 
+// We disable no-explicit-any so that we can use v4 Carousel props in Storybook
+// stories. This can be deleted when we no longer want to support the v4
+// Carousel in Storybook stories.
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /* Stories - add common combinations of props here! */
 export const Default = Template.bind({});
 Default.args = {};
@@ -93,19 +100,22 @@ Vertical.args = {
 
 export const FadeTransition = Template.bind({});
 FadeTransition.args = {
+  // Cast to any for v4-only prop
   transitionMode: 'fade'
-};
+} as any;
 
 export const Scroll3DTransition = Template.bind({});
 Scroll3DTransition.args = {
+  // Cast to any for v4-only prop
   transitionMode: 'scroll3d'
-};
+} as any;
 
 export const ZoomAnimation = Template.bind({});
 ZoomAnimation.args = {
   animation: 'zoom',
-  cellAlign: 'center',
-  slideOffset: 60
+  cellAlign: Alignment.Center,
+  // Cast to any for v4-only prop
+  ...({ slideOffset: 60 } as any)
 };
 
 export const WrapAround = Template.bind({});
@@ -182,49 +192,74 @@ ScrollMultipleSlides.args = {
 export const DragMultipleSlides = Template.bind({});
 DragMultipleSlides.args = {
   slidesToShow: 3,
-  slidesToScroll: 'auto'
+  // 'auto' is a v4-only setting
+  ...({ slidesToScroll: 'auto' } as any)
 };
 
 export const CellAlignCenter = Template.bind({});
 CellAlignCenter.args = {
   slidesToShow: 2.5,
-  cellAlign: 'center'
+  cellAlign: Alignment.Center
 };
 
 export const CellAlignCenterWrapAround = Template.bind({});
 CellAlignCenterWrapAround.args = {
   slidesToShow: 2.5,
-  cellAlign: 'center',
+  cellAlign: Alignment.Center,
   wrapAround: true
 };
 
 export const CellAlignRight = Template.bind({});
 CellAlignRight.args = {
   slidesToShow: 2.5,
-  cellAlign: 'right'
+  cellAlign: Alignment.Right
 };
 
 export const CellAlignRightWrapAround = Template.bind({});
 CellAlignRightWrapAround.args = {
   slidesToShow: 2.5,
-  cellAlign: 'right',
+  cellAlign: Alignment.Right,
   wrapAround: true
 };
 
 export const FramePadding = Template.bind({});
 FramePadding.args = {
+  // Cast to any for v4-only prop
   framePadding: '20px'
+} as any;
+
+export const AdaptiveHeight = Template.bind({});
+AdaptiveHeight.args = {
+  adaptiveHeight: true,
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
+};
+
+export const AdaptiveHeightWrapAround = Template.bind({});
+AdaptiveHeightWrapAround.args = {
+  adaptiveHeight: true,
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290],
+  wrapAround: true
+};
+
+export const AdaptiveHeightThreeSlides = Template.bind({});
+AdaptiveHeightThreeSlides.args = {
+  adaptiveHeight: true,
+  slidesToShow: 3,
+  slidesToScroll: 3,
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
 };
 
 export const CurrentHeightMode = Template.bind({});
 CurrentHeightMode.args = {
+  // Cast to any for v4-only prop
   heightMode: 'current'
-};
+} as any;
 
 export const FirstHeightMode = Template.bind({});
 FirstHeightMode.args = {
+  // Cast to any for v4-only prop
   heightMode: 'first'
-};
+} as any;
 
 export const KeyboardControls = Template.bind({});
 KeyboardControls.args = {

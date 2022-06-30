@@ -28,7 +28,7 @@
       "jsx": true
     }
   },
-  "plugins": [ "react", "react-hooks", "prettier", "@typescript-eslint" ],
+  "plugins": ["react", "react-hooks", "prettier", "@typescript-eslint"],
   "rules": {
     "max-params": 0,
     "max-statements": 0,
@@ -43,7 +43,7 @@
     "react/no-string-refs": 0,
     "react/no-did-update-set-state": 0,
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/exhaustive-deps": "error",
     "@typescript-eslint/no-unused-vars": ["error"],
     "@typescript-eslint/no-var-requires": 0
   }

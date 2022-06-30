@@ -1,17 +1,18 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Slide from './slide';
 import AnnounceSlide from './announce-slide';
 import { getSliderListStyles } from './slider-list';
-import { CarouselProps, KeyCodeFunction, SlideHeight } from './types';
+import { CarouselProps, KeyCodeFunction } from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
 import {
-  getIndexes,
   addEvent,
-  removeEvent,
+  getIndexes,
   getNextMoveIndex,
-  getPrevMoveIndex
+  getPrevMoveIndex,
+  removeEvent
 } from './utils';
+import { useFrameHeight } from './hooks/use-frame-height';
 
 interface KeyboardEvent {
   keyCode: number;
@@ -63,8 +64,6 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
   const [pause, setPause] = useState<boolean>(false);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [move, setMove] = useState<number>(0);
-  const [frameHeight, setFrameHeight] = useState<number>(0);
-  const visibleHeights = useRef<SlideHeight[]>([]);
   const [keyboardMove, setKeyboardMove] = useState<KeyCodeFunction>(null);
   const carouselWidth = useRef<number | null>(null);
 
@@ -509,6 +508,10 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
     }
   }, [pauseOnHover]);
 
+  const { frameHeight, handleVisibleSlideHeightChange } = useFrameHeight({
+    adaptiveHeight
+  });
+
   const renderSlides = (typeOfSlide?: 'prev-cloned' | 'next-cloned') => {
     const slides = React.Children.map(children, (child, index) => {
       const isCurrentSlide = wrapAround
@@ -532,9 +535,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
           speed={propsSpeed}
           zoomScale={zoomScale}
           cellAlign={cellAlign}
-          setFrameHeight={setFrameHeight}
-          frameHeight={frameHeight}
-          visibleHeights={visibleHeights}
+          onVisibleSlideHeightChange={handleVisibleSlideHeightChange}
           adaptiveHeight={adaptiveHeight}
         >
           {child}
@@ -579,7 +580,7 @@ export const Carousel = (props: CarouselProps): React.ReactElement => {
           width: '100%',
           position: 'relative',
           outline: 'none',
-          height: adaptiveHeight ? `${frameHeight}px` : 'auto',
+          height: frameHeight,
           ...style
         }}
         aria-label={frameAriaLabel}
