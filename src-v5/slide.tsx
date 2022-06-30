@@ -36,7 +36,6 @@ const getSlideStyles = (
         ? `scale(${isCurrentSlide ? 1 : zoomScale || 0.85})`
         : 'initial'
     }`,
-    touchAction: 'none',
     opacity: animation === 'fade' ? visibleSlideOpacity : 1
   };
 };
@@ -193,12 +192,14 @@ const Slide = ({
     }
   }, [adaptiveHeight, visibleHeights.current]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const currentSlideClass = isCurrentSlide && isVisible ? ' slide-current' : '';
+
   return (
     <div
       ref={slideRef}
-      className={`slide${typeOfSlide ? ` ${typeOfSlide}` : ''}${
-        isVisible ? ' slide-visible' : ''
-      }`}
+      className={`slide${currentSlideClass}${
+        typeOfSlide ? ` ${typeOfSlide}` : ''
+      }${isVisible ? ' slide-visible' : ''}`}
       style={getSlideStyles(
         count,
         isCurrentSlide,
