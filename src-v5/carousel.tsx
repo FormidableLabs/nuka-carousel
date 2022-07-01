@@ -215,11 +215,13 @@ export const Carousel = React.forwardRef<CarouselRef, CarouselProps>(
     );
 
     // When user changed the slideIndex property from outside.
+    const prevMovedToSlideIndex = useRef(slideIndex);
     useEffect(() => {
-      if (typeof slideIndex === 'number' && !autoplayReverse) {
+      if (slideIndex !== prevMovedToSlideIndex.current && !autoplayReverse) {
         moveSlide(slideIndex);
+        prevMovedToSlideIndex.current = slideIndex;
       }
-    }, [slideIndex, autoplayReverse]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [slideIndex, currentSlide, autoplayReverse, moveSlide]);
 
     // Makes the carousel infinity when autoplay and wrapAround are enabled
     useEffect(() => {
