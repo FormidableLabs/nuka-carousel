@@ -58,7 +58,6 @@ const getTransition = (
   return initialValue;
 };
 
-// eslint-disable-next-line complexity
 const getPositioning = (
   cellAlign: 'left' | 'right' | 'center',
   slidesToShow: number,
@@ -66,7 +65,7 @@ const getPositioning = (
   currentSlide: number,
   wrapAround?: boolean,
   move?: number
-): string => {
+): string | undefined => {
   // When wrapAround is enabled, we show the slides 3 times
   const totalCount = wrapAround ? 3 * count : count;
   const slideSize = 100 / totalCount;
@@ -91,6 +90,12 @@ const getPositioning = (
     cellAlign,
     wrapAround
   );
+
+  // Special-case this. It's better to return undefined rather than a
+  // transform of 0 pixels since transforms can cause flickering in chrome.
+  if (move === 0 && horizontalMove === 0) {
+    return undefined;
+  }
 
   const draggableMove = move
     ? `calc(${horizontalMove}% - ${move}px)`
@@ -127,7 +132,7 @@ export const getSliderListStyles = (
     transition:
       animation && slideAnimation !== 'fade'
         ? `${speed || 500}ms ease 0s`
-        : 'none',
+        : undefined,
     transform: positioning,
     display: 'flex'
   };

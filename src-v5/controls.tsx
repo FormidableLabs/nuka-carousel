@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import React, { Fragment } from 'react';
-import { getDecoratorStyles } from './control-styles';
+import { getControlContainerStyles } from './control-styles';
 import {
   InternalCarouselProps,
   Positions,
@@ -42,31 +41,36 @@ const renderControls = (
     return (
       <div
         key={control.funcName}
-        className={[
-          `slider-control-${control.key.toLowerCase()}`,
-          props.defaultControlsConfig.containerClassName || ''
-        ]
-          .join(' ')
-          .trim()}
-        style={{
-          ...getDecoratorStyles(control.key)
-        }}
+        style={getControlContainerStyles(control.key)}
       >
-        {props[control.funcName]?.({
-          cellAlign: props.cellAlign,
-          cellSpacing: props.cellSpacing,
-          currentSlide,
-          defaultControlsConfig: props.defaultControlsConfig || {},
-          goToSlide: (index) => moveSlide(index),
-          nextSlide: () => nextSlide(),
-          previousSlide: () => prevSlide(),
-          scrollMode: props.scrollMode,
-          slideCount: count,
-          slidesToScroll,
-          slidesToShow: props.slidesToShow || 1,
-          vertical: props.vertical,
-          wrapAround: props.wrapAround
-        })}
+        <div
+          key={control.funcName}
+          className={[
+            `slider-control-${control.key.toLowerCase()}`,
+            props.defaultControlsConfig.containerClassName || ''
+          ]
+            .join(' ')
+            .trim()}
+          // The container has `pointerEvents: 'none'` so we need to override
+          // that to make sure the controls are clickable.
+          style={{ pointerEvents: 'auto' }}
+        >
+          {props[control.funcName]?.({
+            cellAlign: props.cellAlign,
+            cellSpacing: props.cellSpacing,
+            currentSlide,
+            defaultControlsConfig: props.defaultControlsConfig || {},
+            goToSlide: (index) => moveSlide(index),
+            nextSlide: () => nextSlide(),
+            previousSlide: () => prevSlide(),
+            scrollMode: props.scrollMode,
+            slideCount: count,
+            slidesToScroll,
+            slidesToShow: props.slidesToShow || 1,
+            vertical: props.vertical,
+            wrapAround: props.wrapAround
+          })}
+        </div>
       </div>
     );
   });
