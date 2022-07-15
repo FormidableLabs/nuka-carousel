@@ -5,8 +5,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
     "plugin:cypress/recommended",
-    "plugin:react/recommended",
-    "jest-enzyme"
+    "plugin:react/recommended"
   ],
   "env": {
     "node": true,
