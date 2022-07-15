@@ -8,7 +8,7 @@
   },
   "include": [
     "globals.d.ts",
-    "src-v5/**/*.ts",
-    "src-v5/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
   ],
 }

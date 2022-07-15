@@ -2,8 +2,8 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import Carousel from '../src';
-import { Carousel as CarouselV5 } from '../src-v5/carousel';
-import { InternalCarouselProps, ControlProps } from '../src-v5';
+import { Carousel as CarouselV5 } from '../src/carousel';
+import { InternalCarouselProps, ControlProps } from '../src';
 
 export default {
   title: 'Nuka Carousel/Carousel',
