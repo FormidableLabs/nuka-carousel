@@ -1,7 +1,11 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import Carousel, { InternalCarouselProps, ControlProps } from '../src';
+import Carousel, {
+  Alignment,
+  ControlProps,
+  InternalCarouselProps
+} from '../src';
 
 export default {
   title: 'Nuka Carousel/Carousel',
@@ -26,19 +30,19 @@ const colors = [
   'aa231f'
 ];
 
-// const getHeight = (heightMode: any, index: number) => {
-//   switch (heightMode) {
-//     case 'first': {
-//       return index === 0 ? '600px' : '400px';
-//     }
-//     case 'current': {
-//       return 100 * (index + 1);
-//     }
-//     default: {
-//       return '400px';
-//     }
-//   }
-// };
+const getHeight = (heightMode: any, index: number) => {
+  switch (heightMode) {
+    case 'first': {
+      return index === 0 ? '600px' : '400px';
+    }
+    case 'current': {
+      return 100 * (index + 1);
+    }
+    default: {
+      return '400px';
+    }
+  }
+};
 
 const Template: ComponentStory<typeof Carousel> = ({
   storySlideCount = 9,
@@ -52,7 +56,7 @@ const Template: ComponentStory<typeof Carousel> = ({
       alt={`Slide ${index + 1}`}
       key={color}
       style={{
-        // height: getHeight(args.heightMode, index),
+        height: '400px',
         width: '100%'
       }}
     />
@@ -66,16 +70,7 @@ const Template: ComponentStory<typeof Carousel> = ({
         overflow: 'hidden'
       }}
     >
-      <div style={{ width: '50%' }}>
-        <p>Carousel</p>
-        <Carousel {...args}>{slides}</Carousel>
-      </div>
-      <div style={{ width: '50%' }}>
-        <p>
-          Carousel v5 <abbr title="Work in Progress">(WIP)</abbr>
-        </p>
-        <Carousel {...args}>{slides}</Carousel>
-      </div>
+      <Carousel {...args}>{slides}</Carousel>
     </div>
   );
 };
@@ -89,21 +84,20 @@ Vertical.args = {
   vertical: true
 };
 
-export const FadeTransition = Template.bind({});
-FadeTransition.args = {
-  transitionMode: 'fade'
-};
+// export const FadeTransition = Template.bind({});
+// FadeTransition.args = {
+//   transitionMode: 'fade'
+// };
 
-export const Scroll3DTransition = Template.bind({});
-Scroll3DTransition.args = {
-  transitionMode: 'scroll3d'
-};
+// export const Scroll3DTransition = Template.bind({});
+// Scroll3DTransition.args = {
+//   transitionMode: 'scroll3d'
+// };
 
 export const ZoomAnimation = Template.bind({});
 ZoomAnimation.args = {
   animation: 'zoom',
-  cellAlign: 'center',
-  slideOffset: 60
+  cellAlign: Alignment.Center
 };
 
 export const WrapAround = Template.bind({});
@@ -179,49 +173,33 @@ ScrollMultipleSlides.args = {
 
 export const DragMultipleSlides = Template.bind({});
 DragMultipleSlides.args = {
-  slidesToShow: 3,
-  slidesToScroll: 'auto'
+  slidesToShow: 3
 };
 
 export const CellAlignCenter = Template.bind({});
 CellAlignCenter.args = {
   slidesToShow: 2.5,
-  cellAlign: 'center'
+  cellAlign: Alignment.Center
 };
 
 export const CellAlignCenterWrapAround = Template.bind({});
 CellAlignCenterWrapAround.args = {
   slidesToShow: 2.5,
-  cellAlign: 'center',
+  cellAlign: Alignment.Center,
   wrapAround: true
 };
 
 export const CellAlignRight = Template.bind({});
 CellAlignRight.args = {
   slidesToShow: 2.5,
-  cellAlign: 'right'
+  cellAlign: Alignment.Right
 };
 
 export const CellAlignRightWrapAround = Template.bind({});
 CellAlignRightWrapAround.args = {
   slidesToShow: 2.5,
-  cellAlign: 'right',
+  cellAlign: Alignment.Right,
   wrapAround: true
-};
-
-export const FramePadding = Template.bind({});
-FramePadding.args = {
-  framePadding: '20px'
-};
-
-export const CurrentHeightMode = Template.bind({});
-CurrentHeightMode.args = {
-  heightMode: 'current'
-};
-
-export const FirstHeightMode = Template.bind({});
-FirstHeightMode.args = {
-  heightMode: 'first'
 };
 
 export const KeyboardControls = Template.bind({});
