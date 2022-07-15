@@ -1,15 +1,13 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import Carousel from '../src';
-import { Carousel as CarouselV5 } from '../src/carousel';
-import { InternalCarouselProps, ControlProps } from '../src';
+import Carousel, { InternalCarouselProps, ControlProps } from '../src';
 
 export default {
   title: 'Nuka Carousel/Carousel',
-  component: CarouselV5,
-  args: CarouselV5.defaultProps
-} as ComponentMeta<typeof CarouselV5>;
+  component: Carousel,
+  args: Carousel.defaultProps
+} as ComponentMeta<typeof Carousel>;
 
 /* Set up story template */
 interface StoryProps {
@@ -76,7 +74,7 @@ const Template: ComponentStory<typeof Carousel> = ({
         <p>
           Carousel v5 <abbr title="Work in Progress">(WIP)</abbr>
         </p>
-        <CarouselV5 {...args}>{slides}</CarouselV5>
+        <Carousel {...args}>{slides}</Carousel>
       </div>
     </div>
   );
