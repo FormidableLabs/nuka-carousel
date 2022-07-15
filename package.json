@@ -73,7 +73,6 @@
     "build-es": "builder run  --env \"{\\\"BABEL_ENV\\\":\\\"esm\\\"}\" build-babel -- -d es",
     "build-lib": "builder run build-babel -- -d lib",
     "build-ts": "tsc --project tsconfig.build.json",
-    "build-dist": "webpack --config webpack.dist.config.js --mode production",
     "build-watch": "builder concurrent build-lib build-es -- --watch",
     "check": "npm run lint && npm run check-typescript",
     "check-typescript": "tsc --noEmit",

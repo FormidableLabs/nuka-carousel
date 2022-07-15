@@ -4,7 +4,7 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "noEmit": false,
-    "outDir": "types-v5"
+    "outDir": "types"
   },
   "include": [
     "globals.d.ts",

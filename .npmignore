@@ -1,7 +1,7 @@
 /*
-!/lib-v5
-!/es-v5
-!/types-v5
+!/lib
+!/es
+!/types
 **/test/
 **/*.spec.js
 !package.json

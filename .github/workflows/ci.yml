@@ -32,8 +32,6 @@ jobs:
       - name: Build
         run: |
           yarn run build
-          yarn run build-v5
-          yarn run build-dist
       - name: Check
         run: |
           yarn run check

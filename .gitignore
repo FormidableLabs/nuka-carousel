@@ -30,12 +30,9 @@ $RECYCLE.BIN/
 node_modules/
 bower_components/
 .tmp
-dist
 es
 lib
-es-v5
-lib-v5
-types-v5
+types
 yarn-error.log*
 package-lock.json
 
