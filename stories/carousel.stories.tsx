@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, Story } from '@storybook/react';
 
 import Carousel, {
   Alignment,
@@ -10,7 +10,10 @@ import Carousel, {
 export default {
   title: 'Nuka Carousel/Carousel',
   component: Carousel,
-  args: Carousel.defaultProps
+  args: {
+    storySlideCount: 9,
+    ...Carousel.defaultProps
+  }
 } as ComponentMeta<typeof Carousel>;
 
 /* Set up story template */
@@ -30,24 +33,10 @@ const colors = [
   'aa231f'
 ];
 
-const getHeight = (heightMode: any, index: number) => {
-  switch (heightMode) {
-    case 'first': {
-      return index === 0 ? '600px' : '400px';
-    }
-    case 'current': {
-      return 100 * (index + 1);
-    }
-    default: {
-      return '400px';
-    }
-  }
-};
-
-const Template: ComponentStory<typeof Carousel> = ({
+const Template: Story<InternalCarouselProps & StoryProps> = ({
   storySlideCount = 9,
   ...args
-}: InternalCarouselProps & StoryProps) => {
+}) => {
   const slides = colors.slice(0, storySlideCount).map((color, index) => (
     <img
       src={`https://via.placeholder.com/800/${color}/ffffff/&text=slide${
@@ -56,7 +45,6 @@ const Template: ComponentStory<typeof Carousel> = ({
       alt={`Slide ${index + 1}`}
       key={color}
       style={{
-        height: '400px',
         width: '100%'
       }}
     />
@@ -65,12 +53,18 @@ const Template: ComponentStory<typeof Carousel> = ({
     <div
       style={{
         display: 'flex',
-        gap: '40px',
-        padding: '0 20px',
-        overflow: 'hidden'
+        justifyContent: 'center',
+        alignItems: 'center'
       }}
     >
-      <Carousel {...args}>{slides}</Carousel>
+      <div
+        style={{
+          maxWidth: 600,
+          margin: '0px auto'
+        }}
+      >
+        <Carousel {...args}>{slides}</Carousel>
+      </div>
     </div>
   );
 };
