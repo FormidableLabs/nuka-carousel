@@ -4,11 +4,11 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "noEmit": false,
-    "outDir": "types-v5"
+    "outDir": "types"
   },
   "include": [
     "globals.d.ts",
-    "src-v5/**/*.ts",
-    "src-v5/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
   ],
 }

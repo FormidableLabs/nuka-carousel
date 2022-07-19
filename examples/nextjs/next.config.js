@@ -5,7 +5,7 @@ module.exports = () => {
     webpack(config, { defaultLoaders }) {
       config.module.rules.push({
         test: /\.(js|jsx|ts|tsx)$/,
-        include: [path.resolve(__dirname, '../../src-v5')],
+        include: [path.resolve(__dirname, '../../src')],
         use: [defaultLoaders.babel]
       });
 
