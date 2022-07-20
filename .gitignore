@@ -38,3 +38,4 @@ package-lock.json
 
 cypress/screenshots
 cypress/videos
+/packages/nuka/cypress/videos

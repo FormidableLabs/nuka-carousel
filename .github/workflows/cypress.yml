@@ -8,14 +8,27 @@ jobs:
     container:
       image: cypress/browsers:node16.5.0-chrome94-ff93
       options: --user 1001
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
+      - uses: pnpm/action-setup@v2.2.2
         with:
-          start: yarn run start:next:ci
-          browser: chrome
-          wait-on: 'http://localhost:3000'
-          wait-on-timeout: 60
+          version: 7
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build nuka-carousel
+        run: pnpm build
+
+      - name: Install the Cypress binary
+        run: npx cypress install
+
+      - name: Cypress run
+        run: pnpm run test:ci-with-server

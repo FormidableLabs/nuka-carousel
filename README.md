@@ -215,32 +215,6 @@ export default class extends React.Component {
   }
 }
 ``` -->
-### Depreceted v4 parameters
-
-The following list of parameters are deprecated in v5. The main reason is that there is other approach which you can use to achieve the same thing, without increasing the complexity of the library. For example: `width` the width of the carousel can be easily manipulated by the parent container where developer placed the carousel. We are open for discussions if you really need some of these parameters. Feel free to raise an issue or start discussion in the repository, so we can help.
-
-- autoGenerateStyleTag
-- framePadding
-- getControlsContainerStyles
-- height
-- heightMode
-- initialSlideHeight
-- initialSlideWidth
-- slideOffset
-- slideWidth
-- transitionMode
-- width
-
-### New parameters in v5
-
-- frameAriaLabel - customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page. (Included in v5.0.3)
-
-- adaptiveHeight - this property is useful if you have slides with different height. The carousel with adapth its height to the slides. Replacement of `heightMode="current"` v4 property. (Included in v5.0.9)
-
-### What about v5.1
-
-- We created a brand new project for v5.1 where you can see all the new features that will be added and what is their status. [Link](https://github.com/FormidableLabs/nuka-carousel/projects/2)
-
 
 ### Contributing
 

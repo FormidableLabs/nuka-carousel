@@ -1,7 +1,9 @@
 import 'wicg-inert';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import Carousel from '../../../src/';
+import Carousel from 'nuka-carousel';
+import Image from 'next/image';
+import { GetServerSideProps } from 'next';
 
 const colors = [
   '7732bb',
@@ -20,7 +22,10 @@ const colors = [
   '222'
 ];
 
-const Home = ({ urlParams }) => {
+type HomeProps = {
+  urlParams: Record<string, string>;
+};
+const Home = ({ urlParams }: HomeProps) => {
   const colorsArray = colors.slice(0, Number(urlParams.slides || 9));
 
   const slides = colorsArray.map((color, index) => (
@@ -36,12 +41,14 @@ const Home = ({ urlParams }) => {
     />
   ));
 
-  const carouselParams = urlParams.params ? JSON.parse(urlParams.params) : {};
+  const carouselParams = urlParams.params
+    ? JSON.parse(urlParams.params)
+    : {};
 
   return (
     <div className={styles.container}>
       <Head>
-        <title>Nuka Carousel | Formidable Labs</title>
+        <title>Nuka Carousel | Formidable</title>
         <meta
           name="description"
           content="Nuka Carousel example with Next.js - Formidable Labs"
@@ -50,27 +57,26 @@ const Home = ({ urlParams }) => {
       </Head>
 
       <main className={styles.main}>
-        <h1>Nuka Carousel - SSR Example Formidable Labs</h1>
+        <h1>Nuka Carousel Demo using NextJS</h1>
         <Carousel {...carouselParams}>{slides}</Carousel>
       </main>
       <footer>
-        <a target="_blank" rel="noopener noreferrer" href="https://vercel.com?utm_source=nuka-carousel&utm_campaign=oss">
-          <img
-            alt="Powered by Vercel"
-            src="/powered-by-vercel.svg"
-          />
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://vercel.com?utm_source=nuka-carousel&utm_campaign=oss"
+        >
+          <Image alt="Powered by Vercel" src="/powered-by-vercel.svg" width={100} height={20}/>
         </a>
       </footer>
     </div>
   );
 };
 
-export async function getServerSideProps(context) {
-  return {
-    props: {
-      urlParams: context.query
-    }
-  };
-}
+export const getServerSideProps: GetServerSideProps = async (context) => ({
+  props: {
+    urlParams: context.query
+  }
+});
 
 export default Home;
