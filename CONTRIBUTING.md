@@ -45,7 +45,7 @@ $ pnpm run test
 And E2E tests (you _must_ be on `node@8+`):
 
 ```sh
-$ pnpm run test-e2e
+$ pnpm run test
 ```
 
 ## Release

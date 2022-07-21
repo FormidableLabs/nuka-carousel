@@ -41,9 +41,7 @@ const Home = ({ urlParams }: HomeProps) => {
     />
   ));
 
-  const carouselParams = urlParams.params
-    ? JSON.parse(urlParams.params)
-    : {};
+  const carouselParams = urlParams.params ? JSON.parse(urlParams.params) : {};
 
   return (
     <div className={styles.container}>
@@ -66,7 +64,12 @@ const Home = ({ urlParams }: HomeProps) => {
           rel="noopener noreferrer"
           href="https://vercel.com?utm_source=nuka-carousel&utm_campaign=oss"
         >
-          <Image alt="Powered by Vercel" src="/powered-by-vercel.svg" width={100} height={20}/>
+          <Image
+            alt="Powered by Vercel"
+            src="/powered-by-vercel.svg"
+            width={100}
+            height={20}
+          />
         </a>
       </footer>
     </div>
