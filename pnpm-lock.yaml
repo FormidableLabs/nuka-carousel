@@ -49,14 +49,14 @@ importers:
       eslint: ^8.14.0
       eslint-config-next: 12.2.2
       next: ^12.1.4
-      nuka-carousel: '*'
+      nuka-carousel: workspace:nuka-carousel@*
       react: ^18.0.0
       react-dom: ^18.0.0
       typescript: ^4.5.2
       wicg-inert: ^3.1.1
     dependencies:
       next: 12.2.2_biqbaboplfbrettd7655fr4n2y
-      nuka-carousel: 5.1.3_biqbaboplfbrettd7655fr4n2y
+      nuka-carousel: link:../../packages/nuka
       wicg-inert: 3.1.2
     devDependencies:
       eslint: 8.20.0
@@ -10602,17 +10602,6 @@ packages:
     dependencies:
       boolbase: 1.0.0
     dev: true
-
-  /nuka-carousel/5.1.3_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-5neL/NjqrB/TQIQEHcmRaODhZvTyEyPr9kgi8NTTxP/gqos9YusmXQVOHNbCAlEFjBo8rsxbOdfhnvrmQS0Bog==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      react: ^15.3.0 || ^16.0.0 || ^17.0.1 || ^18.0.0
-      react-dom: ^15.3.0 || ^16.0.0 || ^17.0.1 || ^18.0.0
-    dependencies:
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-    dev: false
 
   /num2fraction/1.2.2:
     resolution: {integrity: sha512-Y1wZESM7VUThYY+4W+X4ySH2maqcA+p7UR+w8VWNWVAd6lwuXXWz/w/Cz43J/dI2I+PS6wD5N+bJUF+gjWvIqg==}

@@ -23,6 +23,12 @@ Run the NextJS example on `localhost:3000`
 $ pnpm run start:nextjs
 ```
 
+To make changes to the Nuka Carousel library and have those changes reflect in the NextJS demo app also run
+
+```sh
+$ pnpm run build:watch
+```
+
 Run Storybook on `localhost:6006`
 
 ```sh

@@ -2,6 +2,7 @@
   "name": "nuka-carousel-monorepo",
   "scripts": {
     "build": "pnpm run --filter nuka-carousel build",
+    "build:watch": "pnpm run --filter nuka-carousel build:watch",
     "build-storybook": "pnpm run --filter nuka-carousel storybook:build",
     "lint": "pnpm run --parallel lint",
     "lint:fix": "pnpm run --parallel lint --fix",
