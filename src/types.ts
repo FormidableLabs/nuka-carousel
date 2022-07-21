@@ -145,65 +145,65 @@ export interface ControlProps {
   /**
    * When displaying more than one slide, sets which position to anchor the current slide to.
    */
-  cellAlign: Alignment;
+  cellAlign?: Alignment;
 
   /**
    * Space between slides, as an integer, but reflected as px
    */
-  cellSpacing: number;
+  cellSpacing?: number;
 
   /**
    * Current slide index
    */
-  currentSlide: number;
+  currentSlide?: number;
 
   /**
    * This prop lets you apply custom classes and styles to the default Next, Previous, and Paging Dots controls
    */
-  defaultControlsConfig: DefaultControlsConfig;
+  defaultControlsConfig?: DefaultControlsConfig;
 
   /**
    * Go to X slide method
    * @param index Slide's index to go
    */
-  goToSlide: (index: number) => void;
+  goToSlide?: (index: number) => void;
 
   /**
    * Go to the next slide method
    */
-  nextSlide: () => void;
+  nextSlide?: () => void;
 
   /**
    * Go to the previous slide method
    */
-  previousSlide: () => void;
-  scrollMode: ScrollMode;
+  previousSlide?: () => void;
+  scrollMode?: ScrollMode;
 
   /**
    * Total amount of slides
    */
-  slideCount: number;
+  slideCount?: number;
 
   /**
    * Slides to scroll at once
    */
-  slidesToScroll: number;
+  slidesToScroll?: number;
 
   /**
    * Slides to show at once
    */
-  slidesToShow: number;
+  slidesToShow?: number;
 
   /**
    * Enable the slides to transition vertically
    */
-  vertical: boolean;
+  vertical?: boolean;
 
   /**
    * Sets infinite wrapAround mode
    * @default false
    */
-  wrapAround: boolean;
+  wrapAround?: boolean;
 }
 
 export type RenderControlFunctionNames =
