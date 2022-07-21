@@ -1,5 +1,5 @@
 import { SlideHeight } from '../types';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useStateWithRef } from './use-state-with-ref';
 
 /**
@@ -7,9 +7,11 @@ import { useStateWithRef } from './use-state-with-ref';
  * `adaptiveHeight` is enabled. Otherwise, just returns `auto`.
  */
 export const useFrameHeight = ({
-  adaptiveHeight
+  adaptiveHeight,
+  slidesToShow
 }: {
   adaptiveHeight: boolean;
+  slidesToShow: number;
 }): {
   /**
    * Callback that can be passed to Slides to allow them to update the
@@ -22,9 +24,17 @@ export const useFrameHeight = ({
 
   /** CSS height of the frame container */
   frameHeight: string;
+
+  /**
+   * Whether heights for all slides have been calculated and we can manually
+   * set frame height.
+   */
+  areHeightsCalculated: boolean;
 } => {
   const [visibleHeights, setVisibleHeights, visibleHeightsRef] =
     useStateWithRef<SlideHeight[]>([]);
+
+  const [areHeightsCalculated, setAreHeightsCalculated] = useState(false);
 
   const handleVisibleSlideHeightChange = useCallback(
     (slideIndex: number, height: number | null) => {
@@ -39,6 +49,10 @@ export const useFrameHeight = ({
         newVisibleHeights = [...latestVisibleHeights, { slideIndex, height }];
       }
       setVisibleHeights(newVisibleHeights);
+
+      if (newVisibleHeights.length === Math.ceil(slidesToShow)) {
+        setAreHeightsCalculated(true);
+      }
     },
     [setVisibleHeights, visibleHeightsRef]
   );
@@ -57,5 +71,9 @@ export const useFrameHeight = ({
     }
   }, [adaptiveHeight, visibleHeights]);
 
-  return { handleVisibleSlideHeightChange, frameHeight };
+  return {
+    handleVisibleSlideHeightChange,
+    frameHeight,
+    areHeightsCalculated
+  };
 };
