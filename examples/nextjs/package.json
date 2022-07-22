@@ -1,5 +1,5 @@
 {
-  "name": "next",
+  "name": "nuka-carousel-nextjs-example",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,10 +10,14 @@
   },
   "dependencies": {
     "next": "^12.1.4",
-    "wicg-inert": "^3.1.1"
+    "wicg-inert": "^3.1.1",
+    "nuka-carousel": "*"
   },
   "devDependencies": {
-    "eslint": "7",
-    "eslint-config-next": "12.0.4"
+    "eslint": "^8.14.0",
+    "eslint-config-next": "12.2.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "typescript": "^4.5.2"
   }
 }

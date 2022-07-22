@@ -5,7 +5,7 @@ import Carousel, {
   Alignment,
   ControlProps,
   InternalCarouselProps
-} from '../src';
+} from '../src/index';
 
 export default {
   title: 'Nuka Carousel/Carousel',

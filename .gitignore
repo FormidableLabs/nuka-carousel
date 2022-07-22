@@ -1,5 +1,6 @@
 ### SublimeText ###
 *.sublime-workspace
+.idea
 
 ### OSX ###
 .DS_Store
@@ -38,3 +39,4 @@ package-lock.json
 
 cypress/screenshots
 cypress/videos
+/packages/nuka/cypress/videos

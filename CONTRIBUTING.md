@@ -3,27 +3,36 @@
 ## Install
 
 ```sh
-$ yarn
+$ pnpm install
 ```
 
 ## Build source
 
-Build the publish Babel sources:
+Build the published Babel sources:
 
 ```sh
 # One time build
-$ yarn run build
-
-# Watch
-$ yarn run build-watch
+$ pnpm run build
 ```
 
-## Running the demo
+## Running the demos
 
-Run the webpack-dev-server on http://localhost:8080
+Run the NextJS example on `localhost:3000`
 
 ```sh
-$ yarn start
+$ pnpm run start:nextjs
+```
+
+To make changes to the Nuka Carousel library and have those changes reflect in the NextJS demo app also run
+
+```sh
+$ pnpm run build:watch
+```
+
+Run Storybook on `localhost:6006`
+
+```sh
+$ pnpm run start:nextjs
 ```
 
 ## Tests
@@ -32,17 +41,17 @@ Basics:
 
 ```sh
 # Everything
-$ yarn run check
+$ pnpm run check
 
 # ... which really runs
-$ yarn run lint
-$ yarn run test
+$ pnpm run lint
+$ pnpm run test
 ```
 
 And E2E tests (you _must_ be on `node@8+`):
 
 ```sh
-$ yarn run test-e2e
+$ pnpm run test
 ```
 
 ## Release

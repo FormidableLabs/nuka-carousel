@@ -10,28 +10,38 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-
+    name: Check and build codebase
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        node-version: [16.x]
-
+        node-version: [ 14.x, 16.x, 18.x ]
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Installation
-        run: yarn install --frozen-lockfile --non-interactive
-        env:
-          CI: true
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7
 
-      - name: Build
-        run: |
-          yarn run build
-      - name: Check
-        run: |
-          yarn run check
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('./pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Check Code ${{ matrix.node-version }}
+        run: pnpm check:ci
+
+      - name: Build ${{ matrix.node-version }}
+        run: pnpm build
