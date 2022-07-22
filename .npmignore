@@ -1,9 +1,0 @@
-/*
-!./lib
-!./es
-!./types
-**/test/
-**/*.spec.js
-!./package.json
-!./LICENSE
-!./README.md
