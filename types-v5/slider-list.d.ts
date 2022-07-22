@@ -1,0 +1,2 @@
+import { CSSProperties, ReactNode } from 'react';
+export declare const getSliderListStyles: (children: ReactNode | ReactNode[], currentSlide: number, animation: boolean, slidesToShow?: number | undefined, cellAlign?: "left" | "center" | "right" | undefined, wrapAround?: boolean | undefined, speed?: number | undefined, move?: number | undefined, slideAnimation?: "zoom" | "fade" | undefined) => CSSProperties;
