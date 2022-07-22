@@ -552,10 +552,11 @@ export const Carousel = React.forwardRef<CarouselRef, CarouselProps>(
     const {
       frameHeight,
       handleVisibleSlideHeightChange,
-      areHeightsCalculated,
+      receivedInitialHeights
     } = useFrameHeight({
       adaptiveHeight,
-      slidesToShow
+      slidesToShow,
+      numSlides: count
     });
 
     const renderSlides = (typeOfSlide?: 'prev-cloned' | 'next-cloned') => {
@@ -627,7 +628,7 @@ export const Carousel = React.forwardRef<CarouselRef, CarouselProps>(
             width: '100%',
             position: 'relative',
             outline: 'none',
-            height: areHeightsCalculated ? frameHeight : 'auto',
+            height: receivedInitialHeights ? frameHeight : 'auto',
             ...style
           }}
           aria-label={frameAriaLabel}

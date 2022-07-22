@@ -8,10 +8,12 @@ import { useStateWithRef } from './use-state-with-ref';
  */
 export const useFrameHeight = ({
   adaptiveHeight,
-  slidesToShow
+  slidesToShow,
+  numSlides
 }: {
   adaptiveHeight: boolean;
   slidesToShow: number;
+  numSlides: number;
 }): {
   /**
    * Callback that can be passed to Slides to allow them to update the
@@ -26,10 +28,10 @@ export const useFrameHeight = ({
   frameHeight: string;
 
   /**
-   * Whether heights for all slides have been calculated and we can manually
+   * Whether heights for all slides have been received and we can manually
    * set frame height.
    */
-  areHeightsCalculated: boolean;
+  receivedInitialHeights: boolean;
 } => {
   const [visibleHeights, setVisibleHeights, visibleHeightsRef] =
     useStateWithRef<SlideHeight[]>([]);
@@ -50,7 +52,9 @@ export const useFrameHeight = ({
       }
       setVisibleHeights(newVisibleHeights);
 
-      if (newVisibleHeights.length === Math.ceil(slidesToShow)) {
+      if (
+        newVisibleHeights.length >= Math.min(numSlides, Math.ceil(slidesToShow))
+      ) {
         setAreHeightsCalculated(true);
       }
     },
@@ -74,6 +78,6 @@ export const useFrameHeight = ({
   return {
     handleVisibleSlideHeightChange,
     frameHeight,
-    areHeightsCalculated
+    receivedInitialHeights: areHeightsCalculated
   };
 };

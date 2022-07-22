@@ -249,6 +249,13 @@ AdaptiveHeightThreeSlides.args = {
   slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
 };
 
+export const AdaptiveHeightFractionalSlides = Template.bind({});
+AdaptiveHeightFractionalSlides.args = {
+  adaptiveHeight: true,
+  slidesToShow: 1.5,
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
+};
+
 export const CurrentHeightMode = Template.bind({});
 CurrentHeightMode.args = {
   // Cast to any for v4-only prop
