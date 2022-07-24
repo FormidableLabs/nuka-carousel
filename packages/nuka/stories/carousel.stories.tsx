@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentMeta, Story } from '@storybook/react';
-import * as ReactDOMServer from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 
 import Carousel, {
   Alignment,
@@ -78,7 +78,7 @@ const StaticTemplate: Story<InternalCarouselProps & StoryProps> = (args) => {
   return (
     <div
       dangerouslySetInnerHTML={{
-        __html: ReactDOMServer.renderToString(<Template {...args} />)
+        __html: renderToString(<Template {...args} />)
       }}
     />
   );

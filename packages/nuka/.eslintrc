@@ -27,7 +27,7 @@
       "jsx": true
     }
   },
-  "plugins": ["react", "react-hooks", "prettier", "@typescript-eslint"],
+  "plugins": [ "react", "react-hooks", "prettier", "@typescript-eslint" ],
   "rules": {
     "max-params": 0,
     "max-statements": 0,

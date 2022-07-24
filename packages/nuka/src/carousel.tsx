@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Slide from './slide';
 import AnnounceSlide from './announce-slide';
 import { getSliderListStyles } from './slider-list';
@@ -6,11 +6,11 @@ import { CarouselProps, InternalCarouselProps, KeyCodeFunction } from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
 import {
-  addEvent,
   getIndexes,
+  addEvent,
+  removeEvent,
   getNextMoveIndex,
-  getPrevMoveIndex,
-  removeEvent
+  getPrevMoveIndex
 } from './utils';
 import { useFrameHeight } from './hooks/use-frame-height';
 
