@@ -521,8 +521,14 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     }
   }, [pauseOnHover]);
 
-  const { frameHeight, handleVisibleSlideHeightChange } = useFrameHeight({
-    adaptiveHeight
+  const {
+    frameHeight,
+    handleVisibleSlideHeightChange,
+    initializedAdaptiveHeight
+  } = useFrameHeight({
+    adaptiveHeight,
+    slidesToShow,
+    numSlides: count
   });
 
   const renderSlides = (typeOfSlide?: 'prev-cloned' | 'next-cloned') => {
@@ -550,6 +556,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           cellAlign={cellAlign}
           onVisibleSlideHeightChange={handleVisibleSlideHeightChange}
           adaptiveHeight={adaptiveHeight}
+          initializedAdaptiveHeight={initializedAdaptiveHeight}
         >
           {child}
         </Slide>

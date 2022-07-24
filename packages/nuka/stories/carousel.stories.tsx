@@ -1,5 +1,6 @@
 import React from 'react';
 import { ComponentMeta, Story } from '@storybook/react';
+import * as ReactDOMServer from 'react-dom/server';
 
 import Carousel, {
   Alignment,
@@ -69,6 +70,17 @@ const Template: Story<InternalCarouselProps & StoryProps> = ({
         <Carousel {...args}>{slides}</Carousel>
       </div>
     </div>
+  );
+};
+
+/** Template that replicates what's rendered with server-side rendering */
+const StaticTemplate: Story<InternalCarouselProps & StoryProps> = (args) => {
+  return (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: ReactDOMServer.renderToString(<Template {...args} />)
+      }}
+    />
   );
 };
 
@@ -214,6 +226,14 @@ AdaptiveHeightWrapAround.args = {
 
 export const AdaptiveHeightThreeSlides = Template.bind({});
 AdaptiveHeightThreeSlides.args = {
+  adaptiveHeight: true,
+  slidesToShow: 3,
+  slidesToScroll: 3,
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
+};
+
+export const AdaptiveHeightThreeSlidesStatic = StaticTemplate.bind({});
+AdaptiveHeightThreeSlidesStatic.args = {
   adaptiveHeight: true,
   slidesToShow: 3,
   slidesToScroll: 3,
