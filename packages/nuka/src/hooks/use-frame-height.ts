@@ -10,10 +10,12 @@ import { useStateWithRef } from './use-state-with-ref';
  * In adaptiveHeight mode, we also switch between two states to ensure that
  * slides don't render with zero height when server-side-rendering:
  *
- * - Uninitialized: the frame height is `auto` and we just use the height
- *   of the tallest visible item.
- * - Initialized: the frame height has the height of the tallest visible item
- *   and all visible items have height `100%`.
+ * - When initializedAdaptiveHeight is false: the frame has height auto; visible
+ *   slides have height auto; invisible slides have height 0
+ * - The client sets initializedAdaptiveHeight to true once we've measured all
+ *   the visible slides' heights
+ * - When initializedAdaptiveHeight is true: the frame has height set to the
+ *   tallest visible slide; all slides have height 100%
  */
 export const useFrameHeight = ({
   adaptiveHeight,
