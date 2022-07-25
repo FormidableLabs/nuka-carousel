@@ -32,6 +32,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
   const {
     adaptiveHeight,
+    adaptiveHeightAnimation,
     afterSlide,
     animation,
     autoplay,
@@ -601,6 +602,10 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           position: 'relative',
           outline: 'none',
           height: frameHeight,
+          transition: adaptiveHeightAnimation
+            ? 'height 300ms ease-in-out'
+            : undefined,
+          willChange: 'height',
           ...style
         }}
         aria-label={frameAriaLabel}
