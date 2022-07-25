@@ -6,6 +6,8 @@ name: 'Chromatic'
 # Event for the workflow
 on:
   push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
