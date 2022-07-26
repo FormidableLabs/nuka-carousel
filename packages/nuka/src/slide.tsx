@@ -46,7 +46,7 @@ const getSlideStyles = (
     transition: animation ? `${speed || animationSpeed}ms ease 0s` : undefined,
     transform:
       animation === 'zoom'
-        ? `scale(${isCurrentSlide ? 1 : zoomScale || 0.85})`
+        ? `scale(${isCurrentSlide && isVisibleSlide ? 1 : zoomScale || 0.85})`
         : undefined,
     opacity: animation === 'fade' ? visibleSlideOpacity : 1
   };
