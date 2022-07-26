@@ -2,12 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Slide from './slide';
 import AnnounceSlide from './announce-slide';
 import { getSliderListStyles } from './slider-list';
-import {
-  CarouselProps,
-  InternalCarouselProps,
-  KeyCodeFunction,
-  SlideHeight
-} from './types';
+import { CarouselProps, InternalCarouselProps, KeyCodeFunction } from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
 import {
@@ -17,6 +12,7 @@ import {
   getNextMoveIndex,
   getPrevMoveIndex
 } from './utils';
+import { useFrameHeight } from './hooks/use-frame-height';
 
 interface KeyboardEvent {
   keyCode: number;
@@ -36,6 +32,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
   const {
     adaptiveHeight,
+    adaptiveHeightAnimation,
     afterSlide,
     animation,
     autoplay,
@@ -79,8 +76,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const [pause, setPause] = useState<boolean>(false);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [move, setMove] = useState<number>(0);
-  const [frameHeight, setFrameHeight] = useState<number>(0);
-  const visibleHeights = useRef<SlideHeight[]>([]);
   const [keyboardMove, setKeyboardMove] = useState<KeyCodeFunction>(null);
   const carouselWidth = useRef<number | null>(null);
 
@@ -193,11 +188,13 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   }, [currentSlide, moveSlide, propsSlidesToScroll, scrollMode, wrapAround]);
 
   // When user changed the slideIndex property from outside.
+  const prevMovedToSlideIndex = useRef(slideIndex);
   useEffect(() => {
-    if (typeof slideIndex === 'number' && !autoplayReverse) {
+    if (slideIndex !== prevMovedToSlideIndex.current && !autoplayReverse) {
       moveSlide(slideIndex);
+      prevMovedToSlideIndex.current = slideIndex;
     }
-  }, [slideIndex, autoplayReverse]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [slideIndex, currentSlide, autoplayReverse, moveSlide]);
 
   // Makes the carousel infinity when autoplay and wrapAround are enabled
   useEffect(() => {
@@ -525,6 +522,16 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     }
   }, [pauseOnHover]);
 
+  const {
+    frameHeight,
+    handleVisibleSlideHeightChange,
+    initializedAdaptiveHeight
+  } = useFrameHeight({
+    adaptiveHeight,
+    slidesToShow,
+    numSlides: count
+  });
+
   const renderSlides = (typeOfSlide?: 'prev-cloned' | 'next-cloned') => {
     const slides = React.Children.map(children, (child, index) => {
       const isCurrentSlide = wrapAround
@@ -548,10 +555,9 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           speed={propsSpeed}
           zoomScale={zoomScale}
           cellAlign={cellAlign}
-          setFrameHeight={setFrameHeight}
-          frameHeight={frameHeight}
-          visibleHeights={visibleHeights}
+          onVisibleSlideHeightChange={handleVisibleSlideHeightChange}
           adaptiveHeight={adaptiveHeight}
+          initializedAdaptiveHeight={initializedAdaptiveHeight}
         >
           {child}
         </Slide>
@@ -595,7 +601,11 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           width: '100%',
           position: 'relative',
           outline: 'none',
-          height: adaptiveHeight ? `${frameHeight}px` : 'auto',
+          height: frameHeight,
+          transition: adaptiveHeightAnimation
+            ? 'height 300ms ease-in-out'
+            : undefined,
+          willChange: 'height',
           ...style
         }}
         aria-label={frameAriaLabel}

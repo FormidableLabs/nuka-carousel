@@ -1,5 +1,6 @@
 import React from 'react';
 import { ComponentMeta, Story } from '@storybook/react';
+import { renderToString } from 'react-dom/server';
 
 import Carousel, {
   Alignment,
@@ -19,6 +20,7 @@ export default {
 /* Set up story template */
 interface StoryProps {
   storySlideCount: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+  slideHeights?: number[];
 }
 
 const colors = [
@@ -35,6 +37,7 @@ const colors = [
 
 const Template: Story<InternalCarouselProps & StoryProps> = ({
   storySlideCount = 9,
+  slideHeights,
   ...args
 }) => {
   const slides = colors.slice(0, storySlideCount).map((color, index) => (
@@ -45,6 +48,7 @@ const Template: Story<InternalCarouselProps & StoryProps> = ({
       alt={`Slide ${index + 1}`}
       key={color}
       style={{
+        height: slideHeights?.[index] ?? undefined,
         width: '100%'
       }}
     />
@@ -66,6 +70,17 @@ const Template: Story<InternalCarouselProps & StoryProps> = ({
         <Carousel {...args}>{slides}</Carousel>
       </div>
     </div>
+  );
+};
+
+/** Template that replicates what's rendered with server-side rendering */
+const StaticTemplate: Story<InternalCarouselProps & StoryProps> = (args) => {
+  return (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: renderToString(<Template {...args} />)
+      }}
+    />
   );
 };
 
@@ -194,6 +209,42 @@ CellAlignRightWrapAround.args = {
   slidesToShow: 2.5,
   cellAlign: Alignment.Right,
   wrapAround: true
+};
+
+export const AdaptiveHeight = Template.bind({});
+AdaptiveHeight.args = {
+  adaptiveHeight: true,
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
+};
+
+export const AdaptiveHeightNoAnimation = Template.bind({});
+AdaptiveHeightNoAnimation.args = {
+  adaptiveHeight: true,
+  adaptiveHeightAnimation: false,
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
+};
+
+export const AdaptiveHeightWrapAround = Template.bind({});
+AdaptiveHeightWrapAround.args = {
+  adaptiveHeight: true,
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290],
+  wrapAround: true
+};
+
+export const AdaptiveHeightThreeSlides = Template.bind({});
+AdaptiveHeightThreeSlides.args = {
+  adaptiveHeight: true,
+  slidesToShow: 3,
+  slidesToScroll: 3,
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
+};
+
+export const AdaptiveHeightThreeSlidesStatic = StaticTemplate.bind({});
+AdaptiveHeightThreeSlidesStatic.args = {
+  adaptiveHeight: true,
+  slidesToShow: 3,
+  slidesToScroll: 3,
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
 };
 
 export const KeyboardControls = Template.bind({});

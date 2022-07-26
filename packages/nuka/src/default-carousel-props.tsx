@@ -11,6 +11,7 @@ import { defaultRenderAnnounceSlideMessage } from './announce-slide';
 
 const defaultProps: InternalCarouselProps = {
   adaptiveHeight: false,
+  adaptiveHeightAnimation: true,
   afterSlide: () => {
     // do nothing
   },
