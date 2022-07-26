@@ -1,11 +1,5 @@
-import React, {
-  CSSProperties,
-  ReactNode,
-  useRef,
-  useEffect,
-  MutableRefObject
-} from 'react';
-import { Alignment, SlideHeight } from './types';
+import React, { CSSProperties, ReactNode, useRef, useEffect } from 'react';
+import { Alignment } from './types';
 
 const getSlideWidth = (count: number, wrapAround?: boolean): string =>
   `${wrapAround ? 100 / (3 * count) : 100 / count}%`;
@@ -14,28 +8,46 @@ const getSlideStyles = (
   count: number,
   isCurrentSlide: boolean,
   isVisibleSlide: boolean,
-  wrapAround?: boolean,
-  cellSpacing?: number,
-  animation?: 'zoom' | 'fade',
-  speed?: number,
-  zoomScale?: number,
-  adaptiveHeight?: boolean
+  wrapAround: boolean,
+  cellSpacing: number,
+  animation: 'zoom' | 'fade' | undefined,
+  speed: number,
+  zoomScale: number | undefined,
+  adaptiveHeight: boolean,
+  initializedAdaptiveHeight: boolean
 ): CSSProperties => {
   const width = getSlideWidth(count, wrapAround);
   const visibleSlideOpacity = isVisibleSlide ? 1 : 0;
   const animationSpeed = animation === 'fade' ? 200 : 500;
 
+  let height = 'auto';
+  if (adaptiveHeight) {
+    if (initializedAdaptiveHeight) {
+      // Once adaptiveHeight is initialized, the frame will size to the height
+      // of all the visible slides
+      height = '100%';
+    } else if (isVisibleSlide) {
+      // If the slide is visible but we're still measuring heights, have
+      // visible slides just take up their natural height
+      height = 'auto';
+    } else {
+      // If the slide is not visible and we're still measuring heights, the
+      // slide should have height 0 so it doesn't contribute to the measured
+      // height of the frame
+      height = '0';
+    }
+  }
+
   return {
     width,
     flex: 1,
-    height: adaptiveHeight ? '100%' : 'auto',
+    height,
     padding: `0 ${cellSpacing ? cellSpacing / 2 : 0}px`,
-    transition: animation ? `${speed || animationSpeed}ms ease 0s` : 'none',
-    transform: `${
+    transition: animation ? `${speed || animationSpeed}ms ease 0s` : undefined,
+    transform:
       animation === 'zoom'
         ? `scale(${isCurrentSlide ? 1 : zoomScale || 0.85})`
-        : 'initial'
-    }`,
+        : undefined,
     opacity: animation === 'fade' ? visibleSlideOpacity : 1
   };
 };
@@ -98,28 +110,30 @@ const Slide = ({
   slidesToShow,
   zoomScale,
   cellAlign,
-  setFrameHeight,
-  frameHeight,
-  visibleHeights,
-  adaptiveHeight
+  onVisibleSlideHeightChange,
+  adaptiveHeight,
+  initializedAdaptiveHeight
 }: {
   count: number;
   children: ReactNode | ReactNode[];
   currentSlide: number;
   index: number;
   isCurrentSlide: boolean;
-  typeOfSlide?: 'prev-cloned' | 'next-cloned';
-  wrapAround?: boolean;
-  cellSpacing?: number;
-  animation?: 'zoom' | 'fade';
-  speed?: number;
+  typeOfSlide: 'prev-cloned' | 'next-cloned' | undefined;
+  wrapAround: boolean;
+  cellSpacing: number;
+  animation: 'zoom' | 'fade' | undefined;
+  speed: number;
   slidesToShow: number;
-  zoomScale?: number;
+  zoomScale: number | undefined;
   cellAlign: Alignment;
-  setFrameHeight: (h: number) => void;
-  frameHeight: number;
-  visibleHeights: MutableRefObject<SlideHeight[]>;
+  /**
+   * Called with `height` when slide becomes visible and `null` when it becomes
+   * hidden.
+   */
+  onVisibleSlideHeightChange: (index: number, height: number | null) => unknown;
   adaptiveHeight: boolean;
+  initializedAdaptiveHeight: boolean;
 }): JSX.Element => {
   const customIndex = wrapAround
     ? generateIndex(index, count, typeOfSlide)
@@ -133,7 +147,7 @@ const Slide = ({
 
   const slideRef = useRef<HTMLDivElement>(null);
 
-  // eslint-disable-next-line complexity
+  const prevIsVisibleRef = useRef(false);
   useEffect(() => {
     const node = slideRef.current;
     if (node) {
@@ -144,53 +158,22 @@ const Slide = ({
         node.setAttribute('inert', 'true');
       }
 
-      if (adaptiveHeight && isVisible && slidesToShow === 1) {
-        if (slideHeight !== frameHeight) {
-          setFrameHeight(slideHeight);
-        }
-      } else if (adaptiveHeight && isVisible && slidesToShow > 1) {
-        visibleHeights.current = [
-          ...visibleHeights.current,
-          {
-            height: slideHeight,
-            slideIndex: customIndex
-          }
-        ];
-      } else if (
-        adaptiveHeight &&
-        !isVisible &&
-        visibleHeights.current.findIndex((v) => v.slideIndex === customIndex) >
-          -1
-      ) {
-        visibleHeights.current = visibleHeights.current.filter(
-          (v) => v.slideIndex !== customIndex
-        );
+      const prevIsVisible = prevIsVisibleRef.current;
+      if (isVisible && !prevIsVisible) {
+        onVisibleSlideHeightChange(customIndex, slideHeight);
+      } else if (!isVisible && prevIsVisible) {
+        onVisibleSlideHeightChange(customIndex, null);
       }
+
+      prevIsVisibleRef.current = isVisible;
     }
   }, [
     adaptiveHeight,
     customIndex,
-    frameHeight,
     isVisible,
-    setFrameHeight,
-    slidesToShow,
-    visibleHeights
+    onVisibleSlideHeightChange,
+    slidesToShow
   ]);
-
-  useEffect(() => {
-    if (adaptiveHeight && slidesToShow > 1) {
-      const newFrameHeight = visibleHeights.current.reduce((acc, value) => {
-        if (acc >= value.height) {
-          return acc;
-        }
-        return value.height;
-      }, 0);
-
-      if (newFrameHeight !== frameHeight) {
-        setFrameHeight(newFrameHeight);
-      }
-    }
-  }, [adaptiveHeight, visibleHeights.current]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const currentSlideClass = isCurrentSlide && isVisible ? ' slide-current' : '';
 
@@ -209,7 +192,8 @@ const Slide = ({
         animation,
         speed,
         zoomScale,
-        adaptiveHeight
+        adaptiveHeight,
+        initializedAdaptiveHeight
       )}
     >
       {children}

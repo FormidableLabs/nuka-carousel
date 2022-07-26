@@ -231,6 +231,13 @@ export interface InternalCarouselProps {
   adaptiveHeight: boolean;
 
   /**
+   * Whether to smoothly transition the height of the frame when using
+   * `adaptiveHeight`.
+   * @default true
+   */
+  adaptiveHeightAnimation: boolean;
+
+  /**
    * Hook to be called after a slide is changed
    * @param index Index of the current slide
    */
