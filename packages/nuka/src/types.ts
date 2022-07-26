@@ -1,4 +1,4 @@
-import { ReactNode, CSSProperties } from 'react';
+import { ReactNode, CSSProperties, Ref } from 'react';
 
 export type CellAlign = 'center' | 'right' | 'left';
 
@@ -230,6 +230,9 @@ export interface InternalCarouselProps {
    */
   carouselId?: string;
 
+  /** Can be used to move to the next, previous, or a specific slide */
+  carouselRef?: Ref<CarouselRef>;
+
   /**
    * When displaying more than one slide,
    * sets which position to anchor the current slide to
@@ -309,6 +312,11 @@ export interface InternalCarouselProps {
    * Whether the carousel should be designated as a landmark region.
    */
   landmark: boolean;
+
+  /**
+   * Extra className to be added to the scrollable list that contains all slides
+   */
+  listClassName?: string;
 
   /**
    * optional callback function
@@ -402,6 +410,11 @@ export interface InternalCarouselProps {
   scrollMode: ScrollMode;
 
   /**
+   * Extra className to be added to the container for each slide
+   */
+  slideClassName?: string;
+
+  /**
    * Manually set the index of the initial slide to be shown
    */
   slideIndex?: number;
@@ -466,6 +479,26 @@ export interface InternalCarouselProps {
    * @default 0.85
    */
   zoomScale?: number;
+}
+
+export interface CarouselRef {
+  /**
+   * Moves to the specified slide index.
+   *
+   * @param targetSlideUnbounded can be negative or greater than the number of
+   *    slides or negative. The function will translate it to a bounded slide.
+   */
+  goToSlide: (targetSlideUnbounded: number) => void;
+
+  /**
+   * Go to the next slide
+   */
+  nextSlide: () => void;
+
+  /**
+   * Go to the previous slide
+   */
+  prevSlide: () => void;
 }
 
 /**

@@ -52,13 +52,29 @@ export const useFrameHeight = (
       // Use the ref's value since it's always the latest value
       const latestVisibleHeights = visibleHeightsRef.current;
       let newVisibleHeights: SlideHeight[];
+
       if (height === null) {
+        // Remove the entry
         newVisibleHeights = latestVisibleHeights.filter(
           (slideHeight) => slideHeight.slideIndex !== slideIndex
         );
       } else {
-        newVisibleHeights = [...latestVisibleHeights, { slideIndex, height }];
+        // Replace the entry if it exists
+        let foundSlide = false;
+        newVisibleHeights = latestVisibleHeights.map((heightInfo) => {
+          if (heightInfo.slideIndex === slideIndex) {
+            foundSlide = true;
+            return { slideIndex, height };
+          }
+          return heightInfo;
+        });
+
+        // Add the height if it wasn't found
+        if (!foundSlide) {
+          newVisibleHeights = [...latestVisibleHeights, { slideIndex, height }];
+        }
       }
+
       setVisibleHeights(newVisibleHeights);
 
       if (
