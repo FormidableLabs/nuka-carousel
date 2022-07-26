@@ -43,12 +43,11 @@ const getSlideStyles = (
     flex: 1,
     height,
     padding: `0 ${cellSpacing ? cellSpacing / 2 : 0}px`,
-    transition: animation ? `${speed || animationSpeed}ms ease 0s` : 'none',
-    transform: `${
+    transition: animation ? `${speed || animationSpeed}ms ease 0s` : undefined,
+    transform:
       animation === 'zoom'
         ? `scale(${isCurrentSlide ? 1 : zoomScale || 0.85})`
-        : 'initial'
-    }`,
+        : undefined,
     opacity: animation === 'fade' ? visibleSlideOpacity : 1
   };
 };
