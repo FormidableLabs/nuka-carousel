@@ -6,7 +6,7 @@ Small, fast and accessibility-first React carousel library with easily customiza
 
 ![Nuka Carousel Animated Example](https://i.imgur.com/UwP5gle.gif)
 
-> If you are looking for v4 documentation, you can find it [here](https://github.com/FormidableLabs/nuka-carousel/blob/main/V4-DOCUMENTATION.md)
+> If you are looking for v4 documentation, you can find it [here](https://www.npmjs.com/package/nuka-carousel/v/4.8.4)
 ### Install
 
 To add `nuka-carousel` to your project run the following command in your project folder.
