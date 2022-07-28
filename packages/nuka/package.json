@@ -16,7 +16,7 @@
     "build:lib": "builder run --env \"{\\\"BABEL_ENV\\\":\\\"cjs\\\"}\" build:babel -- -d lib",
     "build:ts": "tsc --project tsconfig.json",
     "build:watch": "builder concurrent build:lib build:es -- --watch",
-    "check": "pnpm run lint && pnpm run check-typescript",
+    "check": "pnpm run lint && pnpm run check:typescript",
     "check:typescript": "tsc --noEmit",
     "lint": "eslint --ext .js,.ts,.tsx .",
     "lint:fix": "eslint --ext .js,.ts,.tsx . --fix",
@@ -28,7 +28,6 @@
     "package": "pnpm pack",
     "prepublishOnly": "shx cp ../../README.md ./README.md && shx cp ../../LICENSE ./LICENSE && pnpm run build",
     "postpack": "shx rm ./README.md && shx rm ./LICENSE",
-    "version": "pnpm run build",
     "storybook": "start-storybook -p 6006",
     "storybook:build": "build-storybook",
     "chromatic": "chromatic --exit-zero-on-changes"
