@@ -1,6 +1,6 @@
 {
   "name": "nuka-carousel",
-  "version": "5.1.2",
+  "version": "5.2.0",
   "description": "Pure React Carousel",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -101,6 +101,5 @@
   },
   "homepage": "https://github.com/FormidableLabs/nuka-carousel",
   "sideEffects": false,
-  "dependencies": {
-  }
+  "dependencies": {}
 }
