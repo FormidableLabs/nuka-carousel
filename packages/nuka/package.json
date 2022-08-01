@@ -23,6 +23,8 @@
     "prettier": "prettier \"**/*.{js,json,ts,tsx,css,md}\"",
     "prettier:fix": "prettier \"**/*.{js,json,ts,tsx,css,md}\" --write",
     "preversion": "pnpm run check",
+    "test": "pnpm run test:e2e",
+    "test:ci": "pnpm run test:e2e:ci",
     "test:e2e": "cypress open",
     "test:e2e:ci": "cypress run",
     "package": "pnpm pack",
@@ -55,7 +57,6 @@
     "@typescript-eslint/eslint-plugin": "^5.5.0",
     "@typescript-eslint/parser": "^5.5.0",
     "babel-loader": "8.1.0",
-    "builder": "^5.0.0",
     "chromatic": "^6.2.0",
     "cypress": "^9.3.1",
     "enzyme": "^3.3.0",
@@ -100,6 +101,5 @@
     "url": "https://github.com/FormidableLabs/nuka-carousel/issues"
   },
   "homepage": "https://github.com/FormidableLabs/nuka-carousel",
-  "sideEffects": false,
-  "dependencies": {}
+  "sideEffects": false
 }

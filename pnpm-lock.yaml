@@ -10,6 +10,7 @@ importers:
       '@typescript-eslint/eslint-plugin': ^5.4.0
       '@typescript-eslint/parser': ^5.4.0
       babel-eslint: ^10.1.0
+      builder: ^5.0.0
       cypress: ^9.3.1
       eslint: ^8.14.0
       eslint-config-prettier: ^8.5.0
@@ -31,6 +32,7 @@ importers:
       '@typescript-eslint/eslint-plugin': 5.30.7_6wltbjakwuqm7awqswigmiuhd4
       '@typescript-eslint/parser': 5.30.7_he2ccbldppg44uulnyq4rwocfa
       babel-eslint: 10.1.0_eslint@8.20.0
+      builder: 5.0.0
       cypress: 9.7.0
       eslint: 8.20.0
       eslint-config-prettier: 8.5.0_eslint@8.20.0
@@ -91,7 +93,6 @@ importers:
       '@typescript-eslint/eslint-plugin': ^5.5.0
       '@typescript-eslint/parser': ^5.5.0
       babel-loader: 8.1.0
-      builder: ^5.0.0
       chromatic: ^6.2.0
       cypress: ^9.3.1
       enzyme: ^3.3.0
@@ -136,7 +137,6 @@ importers:
       '@typescript-eslint/eslint-plugin': 5.30.7_6wltbjakwuqm7awqswigmiuhd4
       '@typescript-eslint/parser': 5.30.7_he2ccbldppg44uulnyq4rwocfa
       babel-loader: 8.1.0_jfosicmxnsybihywoftrtwahny
-      builder: 5.0.0
       chromatic: 6.7.0
       cypress: 9.7.0
       enzyme: 3.11.0
