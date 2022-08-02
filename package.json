@@ -15,11 +15,12 @@
     "check:ci": "pnpm run check",
     "clean": "pnpm run -r clean",
     "changeset": "changeset",
-    "version": "pnpm changeset version && pnpm install --fix-lockfile"
+    "version": "pnpm changeset version && pnpm install --no-frozen-lockfile"
   },
   "devDependencies": {
     "@babel/core": "^7.17.2",
     "@changesets/cli": "^2.23.1",
+    "@svitejs/changesets-changelog-github-compact": "^0.1.1",
     "@types/jest": "^27.0.2",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
