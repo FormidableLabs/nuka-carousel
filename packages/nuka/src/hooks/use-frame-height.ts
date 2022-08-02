@@ -17,15 +17,11 @@ import { useStateWithRef } from './use-state-with-ref';
  * - When initializedAdaptiveHeight is true: the frame has height set to the
  *   tallest visible slide; all slides have height 100%
  */
-export const useFrameHeight = ({
-  adaptiveHeight,
-  slidesToShow,
-  numSlides
-}: {
-  adaptiveHeight: boolean;
-  slidesToShow: number;
-  numSlides: number;
-}): {
+export const useFrameHeight = (
+  adaptiveHeight: boolean,
+  slidesToShow: number,
+  slideCount: number
+): {
   /**
    * Callback that can be passed to Slides to allow them to update the
    * `visibleHeights` variable.
@@ -66,12 +62,13 @@ export const useFrameHeight = ({
       setVisibleHeights(newVisibleHeights);
 
       if (
-        newVisibleHeights.length >= Math.min(numSlides, Math.ceil(slidesToShow))
+        newVisibleHeights.length >=
+        Math.min(slideCount, Math.ceil(slidesToShow))
       ) {
         setInitializedAdaptiveHeight(true);
       }
     },
-    [numSlides, setVisibleHeights, slidesToShow, visibleHeightsRef]
+    [slideCount, setVisibleHeights, slidesToShow, visibleHeightsRef]
   );
 
   const frameHeight = useMemo(() => {

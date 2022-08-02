@@ -21,9 +21,9 @@ const controlsMap: ControlMap = [
 
 const renderControls = (
   props: InternalCarouselProps,
-  count: number,
+  slideCount: number,
   currentSlide: number,
-  moveSlide: (to: number) => void,
+  goToSlide: (targetSlideIndex: number) => void,
   nextSlide: () => void,
   prevSlide: () => void,
   slidesToScroll: number
@@ -62,11 +62,11 @@ const renderControls = (
             cellSpacing: props.cellSpacing,
             currentSlide,
             defaultControlsConfig: props.defaultControlsConfig || {},
-            goToSlide: (index) => moveSlide(index),
-            nextSlide: () => nextSlide(),
-            previousSlide: () => prevSlide(),
+            goToSlide,
+            nextSlide,
+            previousSlide: prevSlide,
             scrollMode: props.scrollMode,
-            slideCount: count,
+            slideCount,
             slidesToScroll,
             slidesToShow: props.slidesToShow || 1,
             vertical: props.vertical,
