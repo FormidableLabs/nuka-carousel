@@ -83,6 +83,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const prevMove = useRef<number>(0);
   const carouselEl = useRef<HTMLDivElement>(null);
   const autoplayTimeout = useRef<ReturnType<typeof setTimeout>>();
+  const animationEndTimeout = useRef<ReturnType<typeof setTimeout>>();
   const isMounted = useRef<boolean>(true);
 
   const slidesToScroll =
@@ -123,20 +124,27 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       const slideChanged = targetSlideIndex !== currentSlide;
       slideChanged && beforeSlide(slide, userFacingIndex);
 
-      !disableAnimation && setIsAnimating(true);
+      // if animation is disabled decrease the speed to 40
+      const msToEndOfAnimation = !disableAnimation ? propsSpeed || 500 : 40;
+
+      if (!disableAnimation) {
+        setIsAnimating(true);
+
+        clearTimeout(animationEndTimeout.current);
+        animationEndTimeout.current = setTimeout(() => {
+          if (!isMounted.current) return;
+          setIsAnimating(false);
+        }, msToEndOfAnimation);
+      }
 
       if (slideChanged) {
         setCurrentSlide(targetSlideIndex);
       }
 
-      setTimeout(
-        () => {
-          if (!isMounted.current) return;
-          slideChanged && afterSlide(userFacingIndex);
-          !disableAnimation && setIsAnimating(false);
-        },
-        !disableAnimation ? propsSpeed || 500 : 40
-      ); // if animation is disabled decrease the speed to 40
+      setTimeout(() => {
+        if (!isMounted.current) return;
+        slideChanged && afterSlide(userFacingIndex);
+      }, msToEndOfAnimation);
     },
     [
       slide,
