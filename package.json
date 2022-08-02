@@ -15,7 +15,7 @@
     "check:ci": "pnpm run check",
     "clean": "pnpm run -r clean",
     "changeset": "changeset",
-    "version": "pnpm changeset version && pnpm install --fix-lockfile"
+    "version": "pnpm changeset version && pnpm install --no-frozen-lockfile"
   },
   "devDependencies": {
     "@babel/core": "^7.17.2",
