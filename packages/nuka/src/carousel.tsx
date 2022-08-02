@@ -139,12 +139,12 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
       if (slideChanged) {
         setCurrentSlide(targetSlideIndex);
-      }
 
-      setTimeout(() => {
-        if (!isMounted.current) return;
-        slideChanged && afterSlide(userFacingIndex);
-      }, msToEndOfAnimation);
+        setTimeout(() => {
+          if (!isMounted.current) return;
+          afterSlide(userFacingIndex);
+        }, msToEndOfAnimation);
+      }
     },
     [
       slide,
