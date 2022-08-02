@@ -82,7 +82,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const focus = useRef<boolean>(false);
   const prevMove = useRef<number>(0);
   const carouselEl = useRef<HTMLDivElement>(null);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const autoplayTimeout = useRef<ReturnType<typeof setTimeout>>();
   const isMounted = useRef<boolean>(true);
 
   const slidesToScroll =
@@ -199,21 +199,17 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     if (autoplay && !isAnimating && wrapAround) {
       if (currentSlide > slideCount) {
         setCurrentSlide(currentSlide - slideCount);
-        if (timer?.current) {
-          clearTimeout(timer.current);
-        }
+        clearTimeout(autoplayTimeout.current);
       } else if (currentSlide < 0) {
         setCurrentSlide(slideCount - -currentSlide);
-        if (timer?.current) {
-          clearTimeout(timer.current);
-        }
+        clearTimeout(autoplayTimeout.current);
       }
     }
   }, [isAnimating, currentSlide, slideCount, wrapAround, autoplay]);
 
   useEffect(() => {
     if (autoplay && !pause) {
-      timer.current = setTimeout(() => {
+      autoplayTimeout.current = setTimeout(() => {
         if (autoplayReverse) {
           if (!wrapAround && currentSlide > 0) {
             prevSlide();
@@ -229,14 +225,12 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     }
 
     // Clear the timeout if user hover on carousel
-    if (autoplay && pause && timer?.current) {
-      clearTimeout(timer.current);
+    if (autoplay && pause) {
+      clearTimeout(autoplayTimeout.current);
     }
 
     return () => {
-      if (timer.current) {
-        clearTimeout(timer.current);
-      }
+      clearTimeout(autoplayTimeout.current);
     };
   }, [
     currentSlide,
