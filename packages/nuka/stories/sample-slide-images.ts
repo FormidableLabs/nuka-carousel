@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
+// TypeScript is disabled for this single-purpose file because we would
+// otherwise need to set a global type declaration for *.png files, which in a
+// worst-case scenario might screw up the environment of someone using our
+// library.
 
 import slide1Image from './images/1.png';
 import slide2Image from './images/2.png';
