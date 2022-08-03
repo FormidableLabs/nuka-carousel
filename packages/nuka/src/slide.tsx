@@ -1,5 +1,6 @@
 import React, { CSSProperties, ReactNode, useRef, useEffect } from 'react';
 import { Alignment } from './types';
+import { isSlideVisible } from './utils';
 
 const getSlideWidth = (count: number, wrapAround?: boolean): string =>
   `${wrapAround ? 100 / (3 * count) : 100 / count}%`;
@@ -50,34 +51,6 @@ const getSlideStyles = (
         : undefined,
     opacity: animation === 'fade' ? visibleSlideOpacity : 1
   };
-};
-
-const isVisibleSlide = (
-  currentSlide: number,
-  index: number,
-  slidesToShow: number,
-  cellAlign: Alignment
-) => {
-  if (slidesToShow === 1) {
-    return index === currentSlide;
-  }
-
-  if (cellAlign === Alignment.Left) {
-    return index < currentSlide + slidesToShow && index >= currentSlide;
-  }
-
-  if (cellAlign === Alignment.Center) {
-    return (
-      (index >= currentSlide - slidesToShow / 2 && index <= currentSlide) ||
-      (index > currentSlide && index <= currentSlide + slidesToShow / 2)
-    );
-  }
-
-  if (cellAlign === Alignment.Right) {
-    return index <= currentSlide && index > currentSlide - slidesToShow;
-  }
-
-  return false;
 };
 
 const generateIndex = (
@@ -138,7 +111,7 @@ const Slide = ({
   const customIndex = wrapAround
     ? generateIndex(index, count, typeOfSlide)
     : index;
-  const isVisible = isVisibleSlide(
+  const isVisible = isSlideVisible(
     currentSlide,
     customIndex,
     slidesToShow,
