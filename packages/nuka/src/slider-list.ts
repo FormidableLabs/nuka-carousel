@@ -106,7 +106,7 @@ const getPositioning = (
 export const getSliderListStyles = (
   children: ReactNode | ReactNode[],
   currentSlide: number,
-  animation: boolean,
+  isAnimating: boolean,
   slidesToShow?: number,
   cellAlign?: 'left' | 'right' | 'center',
   wrapAround?: boolean,
@@ -130,7 +130,7 @@ export const getSliderListStyles = (
     width,
     textAlign: 'left',
     transition:
-      animation && slideAnimation !== 'fade'
+      isAnimating && slideAnimation !== 'fade'
         ? `${speed || 500}ms ease 0s`
         : undefined,
     transform: positioning,
