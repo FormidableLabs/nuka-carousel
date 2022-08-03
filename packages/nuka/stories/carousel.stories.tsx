@@ -8,6 +8,8 @@ import Carousel, {
   InternalCarouselProps
 } from '../src/index';
 
+import { sampleSlideImageSources } from './sample-slide-images';
+
 export default {
   title: 'Nuka Carousel/Carousel',
   component: Carousel,
@@ -23,36 +25,25 @@ interface StoryProps {
   slideHeights?: number[];
 }
 
-const colors = [
-  '7732bb',
-  '047cc0',
-  '00884b',
-  'e3bc13',
-  'db7c00',
-  'aa231f',
-  'e3bc13',
-  'db7c00',
-  'aa231f'
-];
-
 const Template: Story<InternalCarouselProps & StoryProps> = ({
   storySlideCount = 9,
   slideHeights,
   ...args
 }) => {
-  const slides = colors.slice(0, storySlideCount).map((color, index) => (
-    <img
-      src={`https://via.placeholder.com/800/${color}/ffffff/&text=slide${
-        index + 1
-      }`}
-      alt={`Slide ${index + 1}`}
-      key={color}
-      style={{
-        height: slideHeights?.[index] ?? undefined,
-        width: '100%'
-      }}
-    />
-  ));
+  const slides = sampleSlideImageSources
+    .slice(0, storySlideCount)
+    .map((imageSrc, index) => (
+      <img
+        src={imageSrc}
+        alt={`Slide ${index + 1}`}
+        key={imageSrc}
+        style={{
+          height: slideHeights?.[index] ?? undefined,
+          width: '100%'
+        }}
+      />
+    ));
+
   return (
     <div
       style={{
