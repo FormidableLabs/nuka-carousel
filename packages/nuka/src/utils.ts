@@ -1,4 +1,4 @@
-import { ScrollMode } from './types';
+import { Alignment, ScrollMode } from './types';
 
 export const getIndexes = (
   slide: number,
@@ -47,6 +47,40 @@ export const removeEvent = (
   if (elem.removeEventListener) {
     elem.removeEventListener(type, eventHandler, false);
   }
+};
+
+export const isSlideVisible = (
+  currentSlide: number,
+  indexToCheck: number,
+  slidesToShow: number,
+  cellAlign: Alignment
+) => {
+  if (slidesToShow === 1) {
+    return indexToCheck === currentSlide;
+  }
+
+  if (cellAlign === Alignment.Left) {
+    return (
+      indexToCheck < currentSlide + slidesToShow && indexToCheck >= currentSlide
+    );
+  }
+
+  if (cellAlign === Alignment.Center) {
+    return (
+      (indexToCheck >= currentSlide - slidesToShow / 2 &&
+        indexToCheck <= currentSlide) ||
+      (indexToCheck > currentSlide &&
+        indexToCheck <= currentSlide + slidesToShow / 2)
+    );
+  }
+
+  if (cellAlign === Alignment.Right) {
+    return (
+      indexToCheck <= currentSlide && indexToCheck > currentSlide - slidesToShow
+    );
+  }
+
+  return false;
 };
 
 export const getNextMoveIndex = (
