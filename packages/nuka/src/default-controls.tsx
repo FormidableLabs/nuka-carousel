@@ -1,5 +1,5 @@
 /* eslint-disable complexity */
-import React, { CSSProperties, useCallback, useMemo } from 'react';
+import React, { CSSProperties, useCallback } from 'react';
 import { ControlProps, ScrollMode } from './types';
 
 const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
@@ -134,6 +134,9 @@ export const NextButton = (props: ControlProps) => {
   );
 };
 
+/**
+ * Calculate the indices that each dot will jump to when clicked
+ */
 export const getDotIndexes = (
   slideCount: number,
   slidesToScroll: number,
@@ -142,29 +145,21 @@ export const getDotIndexes = (
   wrapAround: boolean
 ) => {
   const dotIndexes = [];
-  const scrollSlides = slidesToScroll === 0 ? 1 : slidesToScroll;
+  const scrollSlides = slidesToScroll <= 0 ? 1 : slidesToScroll;
 
-  for (let i = 0; i < slideCount; i += scrollSlides) {
-    if (
-      !(
-        !wrapAround &&
-        scrollMode === ScrollMode.remainder &&
-        i > slideCount - slidesToShow
-      )
-    ) {
+  if (wrapAround || scrollMode === ScrollMode.page) {
+    for (let i = 0; i < slideCount; i += scrollSlides) {
       dotIndexes.push(i);
     }
+
+    return dotIndexes;
   }
 
-  // check if the slidesToShow is float value, if true add the last dot (remainder scroll mode)
-  if (
-    !wrapAround &&
-    scrollMode === ScrollMode.remainder &&
-    slidesToShow % 1 !== 0
-  ) {
-    const lastIndex = dotIndexes[dotIndexes.length - 1];
-    dotIndexes.push(lastIndex + (slidesToShow % 1));
+  const lastPossibleIndexWithoutWhitespace = slideCount - slidesToShow;
+  for (let i = 0; i < lastPossibleIndexWithoutWhitespace; i += scrollSlides) {
+    dotIndexes.push(i);
   }
+  dotIndexes.push(lastPossibleIndexWithoutWhitespace);
 
   return dotIndexes;
 };
@@ -190,22 +185,12 @@ export const PagingDots = (props: ControlProps) => {
     []
   );
 
-  const indexes = useMemo(
-    () =>
-      getDotIndexes(
-        props.slideCount,
-        props.slidesToScroll,
-        props.scrollMode,
-        props.slidesToShow,
-        props.wrapAround
-      ),
-    [
-      props.slideCount,
-      props.slidesToScroll,
-      props.scrollMode,
-      props.slidesToShow,
-      props.wrapAround
-    ]
+  const indexes = getDotIndexes(
+    props.slideCount,
+    props.slidesToScroll,
+    props.scrollMode,
+    props.slidesToShow,
+    props.wrapAround
   );
 
   const {

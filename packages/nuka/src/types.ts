@@ -119,27 +119,15 @@ export interface KeyCodeMap {
   [key: number]: keyof KeyCodeConfig;
 }
 
-export interface CarouselState {
-  cellAlign: Alignment;
-  currentSlide: number;
-  dragging: boolean;
-  easing: (normalizedTime: number) => number;
-  hasFocus: boolean;
-  hasInteraction: boolean;
-  isWrappingAround: boolean;
-  left: number;
-  pauseOnHover?: boolean;
-  resetWrapAroundPosition: boolean;
-  count: number;
-  slidesToScroll: number;
-  slidesToShow: number;
-  top: number;
-  wrapToIndex: number | null;
-}
+/* eslint-disable @typescript-eslint/no-empty-interface */
+/** @deprecated This is not actually used for anything */
+export interface CarouselState {}
+/* eslint-enable @typescript-eslint/no-empty-interface */
 
-type RenderAnnounceSlideMessage = (
-  props: Pick<CarouselState, 'currentSlide' | 'count'>
-) => string;
+type RenderAnnounceSlideMessage = (props: {
+  currentSlide: number;
+  count: number;
+}) => string;
 
 export interface ControlProps {
   /**
