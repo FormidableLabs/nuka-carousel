@@ -125,3 +125,35 @@ export const getPrevMoveIndex = (
 
   return currentSlide - slidesToScroll;
 };
+
+export const getDefaultSlideIndex = (
+  slideIndex: number | undefined,
+  slideCount: number,
+  slidesToShow: number,
+  cellAlign: Alignment,
+  autoplayReverse: boolean
+) => {
+  if (slideIndex !== undefined) {
+    return slideIndex;
+  }
+
+  if (!autoplayReverse) {
+    // When slides are right-aligned, default to an index that will
+    // display the first cells with no whitespace on the left.
+    if (cellAlign === Alignment.Right) {
+      return slidesToShow - 1;
+    }
+
+    return 0;
+  }
+
+  // When the slideshow is set to start from the end (i.e.,
+  // autoplayReverse=true), and slides are left-aligned, default to an index
+  // that will display the last few cells with no whitespace on the right.
+  if (cellAlign === Alignment.Left) {
+    return slideCount - slidesToShow;
+  }
+
+  // When center-aligned or right-aligned, use the last slide's index
+  return slideCount - 1;
+};

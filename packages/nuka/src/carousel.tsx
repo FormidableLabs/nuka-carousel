@@ -10,7 +10,8 @@ import {
   addEvent,
   removeEvent,
   getNextMoveIndex,
-  getPrevMoveIndex
+  getPrevMoveIndex,
+  getDefaultSlideIndex
 } from './utils';
 import { useFrameHeight } from './hooks/use-frame-height';
 
@@ -69,8 +70,14 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
   const slideCount = React.Children.count(children);
 
-  const [currentSlide, setCurrentSlide] = useState<number>(
-    autoplayReverse ? slideCount - slidesToShow : slideIndex ?? 0
+  const [currentSlide, setCurrentSlide] = useState<number>(() =>
+    getDefaultSlideIndex(
+      slideIndex,
+      slideCount,
+      slidesToShow,
+      cellAlign,
+      autoplayReverse
+    )
   );
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
