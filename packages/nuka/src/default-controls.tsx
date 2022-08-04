@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import React, { CSSProperties, useCallback } from 'react';
-import { ControlProps, ScrollMode } from './types';
+import { Alignment, ControlProps, ScrollMode } from './types';
 
 const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
   border: 0,
@@ -130,7 +130,8 @@ export const getDotIndexes = (
   slidesToScroll: number,
   scrollMode: ScrollMode,
   slidesToShow: number,
-  wrapAround: boolean
+  wrapAround: boolean,
+  cellAlign: Alignment
 ) => {
   const dotIndexes = [];
   const scrollSlides = slidesToScroll <= 0 ? 1 : slidesToScroll;
@@ -178,7 +179,8 @@ export const PagingDots = (props: ControlProps) => {
     props.slidesToScroll,
     props.scrollMode,
     props.slidesToShow,
-    props.wrapAround
+    props.wrapAround,
+    props.cellAlign
   );
 
   const {
