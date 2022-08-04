@@ -32,7 +32,7 @@ $ pnpm run build:watch
 Run Storybook on `localhost:6006`
 
 ```sh
-$ pnpm run start:nextjs
+$ pnpm run start:storybook
 ```
 
 ## Tests
