@@ -219,14 +219,10 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     if (autoplay && !pause) {
       autoplayTimeout.current = setTimeout(() => {
         if (autoplayReverse) {
-          if (!wrapAround && currentSlide > 0) {
-            prevSlide();
-          } else if (wrapAround) {
+          if (wrapAround || currentSlide > 0) {
             prevSlide();
           }
-        } else if (!wrapAround && currentSlide < slideCount - slidesToShow) {
-          nextSlide();
-        } else if (wrapAround) {
+        } else if (wrapAround || currentSlide < slideCount - slidesToShow) {
           nextSlide();
         }
       }, autoplayInterval);

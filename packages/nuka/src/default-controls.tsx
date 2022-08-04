@@ -14,16 +14,9 @@ const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
 
 export const prevButtonDisabled = ({
   currentSlide,
-  slideCount,
-  slidesToShow,
   wrapAround
 }: ControlProps) => {
-  // inifite carousel with visible slides that are less than all slides
-  if (wrapAround && slidesToShow < slideCount) {
-    return false;
-  }
-
-  // inifite carousel with visible slide equal or less than all slides
+  // inifite carousel
   if (wrapAround) {
     return false;
   }
@@ -75,22 +68,17 @@ export const nextButtonDisabled = ({
   wrapAround,
   scrollMode
 }: ControlProps) => {
+  // inifite carousel
+  if (wrapAround) {
+    return false;
+  }
+
   // remainder scroll mode
   if (
-    !wrapAround &&
     scrollMode === ScrollMode.remainder &&
     currentSlide >= slideCount - slidesToShow
   ) {
     return true;
-  }
-  // inifite carousel with visible slides that are less than all slides
-  if (wrapAround && slidesToShow < slideCount) {
-    return false;
-  }
-
-  // inifite carousel with visible slide equal or less than all slides
-  if (wrapAround) {
-    return false;
   }
 
   // if the last slide is not visible return false (button is not disabled)
