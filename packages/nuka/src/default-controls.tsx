@@ -133,10 +133,14 @@ export const getDotIndexes = (
   wrapAround: boolean,
   cellAlign: Alignment
 ) => {
-  const dotIndexes = [];
+  const dotIndexes: number[] = [];
   const scrollSlides = slidesToScroll <= 0 ? 1 : slidesToScroll;
 
-  if (wrapAround || scrollMode === ScrollMode.page) {
+  if (
+    wrapAround ||
+    scrollMode === ScrollMode.page ||
+    cellAlign === Alignment.Center
+  ) {
     for (let i = 0; i < slideCount; i += scrollSlides) {
       dotIndexes.push(i);
     }
@@ -144,12 +148,36 @@ export const getDotIndexes = (
     return dotIndexes;
   }
 
-  const lastPossibleIndexWithoutWhitespace = slideCount - slidesToShow;
-  for (let i = 0; i < lastPossibleIndexWithoutWhitespace; i += scrollSlides) {
-    dotIndexes.push(i);
-  }
-  dotIndexes.push(lastPossibleIndexWithoutWhitespace);
+  if (cellAlign === Alignment.Left) {
+    const lastPossibleIndexWithoutWhitespace = slideCount - slidesToShow;
+    for (let i = 0; i < lastPossibleIndexWithoutWhitespace; i += scrollSlides) {
+      dotIndexes.push(i);
+    }
+    dotIndexes.push(lastPossibleIndexWithoutWhitespace);
 
+    return dotIndexes;
+  }
+
+  if (cellAlign === Alignment.Right) {
+    const firstPossibleIndexWithoutWhitespace = Math.min(
+      slidesToShow - 1,
+      slideCount - 1
+    );
+
+    for (
+      let i = firstPossibleIndexWithoutWhitespace;
+      i < slideCount - 1;
+      i += scrollSlides
+    ) {
+      dotIndexes.push(i);
+    }
+    dotIndexes.push(slideCount - 1);
+
+    return dotIndexes;
+  }
+
+  // We should never reach this, because the if statements above cover all
+  // possible values of cellAlign
   return dotIndexes;
 };
 
