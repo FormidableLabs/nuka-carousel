@@ -70,7 +70,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const slideCount = React.Children.count(children);
 
   const [currentSlide, setCurrentSlide] = useState<number>(
-    autoplayReverse ? slideCount - slidesToShow : slideIndex
+    autoplayReverse ? slideCount - slidesToShow : slideIndex ?? 0
   );
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
@@ -196,7 +196,11 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   // When user changed the slideIndex property from outside.
   const prevMovedToSlideIndex = useRef(slideIndex);
   useEffect(() => {
-    if (slideIndex !== prevMovedToSlideIndex.current && !autoplayReverse) {
+    if (
+      slideIndex !== undefined &&
+      slideIndex !== prevMovedToSlideIndex.current &&
+      !autoplayReverse
+    ) {
       goToSlide(slideIndex);
       prevMovedToSlideIndex.current = slideIndex;
     }
