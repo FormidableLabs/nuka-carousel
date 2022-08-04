@@ -21,7 +21,7 @@
   Because of this, we ask that you choose one of the following methods to help us reproduce the bug:
 
   A. Create a public minimal repository that we can `git clone`, with install + error reproduction steps in the README.
-  B. Create a sandbox, reproduce your issue in the code, and paste the link here.
+  B. Create a sandbox (example: codesandbox.io/s/n39x25), reproduce your issue in the code, and paste the link here.
   C. Open up a PR, include "WIP" and the Issue # in the title, and point us to the failing regression tests.
 -->
 
