@@ -4,28 +4,30 @@ import styles from '../styles/Home.module.css';
 import Carousel from 'nuka-carousel';
 import Image from 'next/image';
 import { GetServerSideProps } from 'next';
-import { slideImages } from '../src/slideImages';
+
+const SAMPLE_SLIDE_IMAGE_COUNT = 14;
 
 type HomeProps = {
   urlParams: Record<string, string>;
 };
-
 const Home = ({ urlParams }: HomeProps) => {
-  const slides = slideImages
-    .slice(0, Number(urlParams.slides || 9))
-    .map((slideImage, index) => (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={slideImage}
-        key={index}
-        alt={`Slide ${index + 1}`}
-        data-slide={`Slide ${index + 1}`}
-        style={{
-          width: '100%',
-          height: 400
-        }}
-      />
-    ));
+  const slides = [
+    ...new Array(
+      Math.min(SAMPLE_SLIDE_IMAGE_COUNT, Number(urlParams.slides || 9))
+    )
+  ].map((_, index) => (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={`/images/${index + 1}.png`}
+      key={index}
+      alt={`Slide ${index + 1}`}
+      data-slide={`Slide ${index + 1}`}
+      style={{
+        width: '100%',
+        height: 400
+      }}
+    />
+  ));
 
   const carouselParams = urlParams.params ? JSON.parse(urlParams.params) : {};
 
