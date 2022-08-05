@@ -3,21 +3,21 @@ import { Alignment, ScrollMode } from './types';
 export const getIndexes = (
   slide: number,
   endSlide: number,
-  count: number
+  slideCount: number
 ): [number, number] => {
   let slideIndex = slide;
   let endSlideIndex = endSlide;
 
   if (slideIndex < 0) {
-    slideIndex += count;
-  } else if (slideIndex > count - 1) {
-    slideIndex -= count;
+    slideIndex += slideCount;
+  } else if (slideIndex > slideCount - 1) {
+    slideIndex -= slideCount;
   }
 
   if (endSlideIndex < 0) {
-    endSlideIndex += count;
-  } else if (endSlideIndex > count - 1) {
-    endSlideIndex -= count;
+    endSlideIndex += slideCount;
+  } else if (endSlideIndex > slideCount - 1) {
+    endSlideIndex -= slideCount;
   }
 
   return [slideIndex, endSlideIndex];
@@ -93,17 +93,19 @@ export const getNextMoveIndex = (
   scrollMode: ScrollMode,
   wrapAround: boolean,
   currentSlide: number,
-  count: number,
+  slideCount: number,
   slidesToScroll: number,
   slidesToShow: number
 ) => {
   if (
     !wrapAround &&
     scrollMode === ScrollMode.remainder &&
-    count < currentSlide + (slidesToScroll + slidesToShow)
+    slideCount < currentSlide + (slidesToScroll + slidesToShow)
   ) {
     const remindedSlides =
-      count - (currentSlide + slidesToScroll) - (slidesToShow - slidesToScroll);
+      slideCount -
+      (currentSlide + slidesToScroll) -
+      (slidesToShow - slidesToScroll);
     return currentSlide + remindedSlides;
   }
   return currentSlide + slidesToScroll;
