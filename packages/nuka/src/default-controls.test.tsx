@@ -1,5 +1,9 @@
-import { Alignment, ScrollMode } from './types';
-import { getDotIndexes } from './default-controls';
+import { Alignment, ControlProps, ScrollMode } from './types';
+import {
+  getDotIndexes,
+  nextButtonDisabled,
+  prevButtonDisabled
+} from './default-controls';
 
 describe('getDotIndexes', () => {
   it.each`
@@ -94,6 +98,166 @@ describe('getDotIndexes', () => {
           Alignment.Left
         )
       ).toEqual(expected);
+    }
+  );
+});
+
+describe('nextButtonDisabled', () => {
+  it.each`
+    currentSlide | slidesToShow | expected
+    ${1}         | ${1}         | ${false}
+    ${1}         | ${2}         | ${false}
+    ${2}         | ${1}         | ${true}
+    ${2}         | ${2}         | ${true}
+    ${1}         | ${2.5}       | ${false}
+    ${1.5}       | ${2}         | ${false}
+  `(
+    'disables properly when allowing whitespace ' +
+      '(slideIndex $currentSlide, $slidesToShow slidesToShow)',
+    ({ currentSlide, slidesToShow, expected }) => {
+      const args: Partial<ControlProps> = {
+        currentSlide,
+        slidesToShow,
+        slideCount: 3,
+        wrapAround: false,
+        scrollMode: ScrollMode.page
+      };
+      expect(
+        nextButtonDisabled({
+          ...args,
+          cellAlign: Alignment.Left
+        } as ControlProps)
+      ).toEqual(expected);
+      expect(
+        nextButtonDisabled({
+          ...args,
+          cellAlign: Alignment.Center
+        } as ControlProps)
+      ).toEqual(expected);
+      expect(
+        nextButtonDisabled({
+          ...args,
+          cellAlign: Alignment.Right
+        } as ControlProps)
+      ).toEqual(expected);
+    }
+  );
+
+  it.each`
+    currentSlide | slidesToShow | cellAlign   | expected
+    ${1}         | ${1}         | ${'left'}   | ${false}
+    ${1}         | ${2}         | ${'left'}   | ${true}
+    ${2}         | ${1}         | ${'left'}   | ${true}
+    ${2}         | ${2}         | ${'left'}   | ${true}
+    ${1}         | ${2.5}       | ${'left'}   | ${true}
+    ${1.5}       | ${2}         | ${'left'}   | ${true}
+    ${0.5}       | ${2}         | ${'left'}   | ${false}
+    ${1}         | ${1}         | ${'right'}  | ${false}
+    ${1}         | ${2}         | ${'right'}  | ${false}
+    ${2}         | ${1}         | ${'right'}  | ${true}
+    ${2}         | ${2}         | ${'right'}  | ${true}
+    ${1}         | ${2.5}       | ${'right'}  | ${false}
+    ${1.5}       | ${2}         | ${'right'}  | ${false}
+    ${0.5}       | ${2}         | ${'right'}  | ${false}
+    ${1}         | ${1}         | ${'center'} | ${false}
+    ${1}         | ${2}         | ${'center'} | ${false}
+    ${2}         | ${1}         | ${'center'} | ${true}
+    ${2}         | ${2}         | ${'center'} | ${true}
+    ${1}         | ${2.5}       | ${'center'} | ${false}
+    ${1.5}       | ${2}         | ${'center'} | ${false}
+    ${0.5}       | ${2}         | ${'center'} | ${false}
+  `(
+    'disables properly when avoiding whitespace ' +
+      '(slideIndex $currentSlide, $slidesToShow slidesToShow, $cellAlign align)',
+    ({ currentSlide, slidesToShow, cellAlign, expected }) => {
+      const args: Partial<ControlProps> = {
+        currentSlide,
+        slidesToShow,
+        slideCount: 3,
+        wrapAround: false,
+        scrollMode: ScrollMode.remainder,
+        cellAlign
+      };
+      expect(nextButtonDisabled(args as ControlProps)).toEqual(expected);
+    }
+  );
+});
+
+describe('prevButtonDisabled', () => {
+  it.each`
+    currentSlide | slidesToShow | expected
+    ${1}         | ${1}         | ${false}
+    ${1}         | ${2}         | ${false}
+    ${0}         | ${1}         | ${true}
+    ${0}         | ${2}         | ${true}
+    ${1}         | ${2.5}       | ${false}
+    ${1.5}       | ${2}         | ${false}
+  `(
+    'disables properly when allowing whitespace ' +
+      '(slideIndex $currentSlide, $slidesToShow slidesToShow)',
+    ({ currentSlide, slidesToShow, expected }) => {
+      const args: Partial<ControlProps> = {
+        currentSlide,
+        slidesToShow,
+        wrapAround: false,
+        scrollMode: ScrollMode.page
+      };
+      expect(
+        prevButtonDisabled({
+          ...args,
+          cellAlign: Alignment.Left
+        } as ControlProps)
+      ).toEqual(expected);
+      expect(
+        prevButtonDisabled({
+          ...args,
+          cellAlign: Alignment.Center
+        } as ControlProps)
+      ).toEqual(expected);
+      expect(
+        prevButtonDisabled({
+          ...args,
+          cellAlign: Alignment.Right
+        } as ControlProps)
+      ).toEqual(expected);
+    }
+  );
+
+  it.each`
+    currentSlide | slidesToShow | cellAlign   | expected
+    ${1}         | ${1}         | ${'left'}   | ${false}
+    ${1}         | ${2}         | ${'left'}   | ${false}
+    ${0}         | ${1}         | ${'left'}   | ${true}
+    ${0}         | ${2}         | ${'left'}   | ${true}
+    ${1}         | ${2.5}       | ${'left'}   | ${false}
+    ${1.5}       | ${2}         | ${'left'}   | ${false}
+    ${0.5}       | ${2}         | ${'left'}   | ${false}
+    ${1}         | ${1}         | ${'right'}  | ${false}
+    ${1}         | ${2}         | ${'right'}  | ${true}
+    ${0}         | ${1}         | ${'right'}  | ${true}
+    ${0}         | ${2}         | ${'right'}  | ${true}
+    ${1}         | ${2.5}       | ${'right'}  | ${true}
+    ${0.5}       | ${2}         | ${'right'}  | ${true}
+    ${1.5}       | ${2}         | ${'right'}  | ${false}
+    ${1}         | ${1}         | ${'center'} | ${false}
+    ${1}         | ${2}         | ${'center'} | ${false}
+    ${0}         | ${1}         | ${'center'} | ${true}
+    ${0}         | ${2}         | ${'center'} | ${true}
+    ${1}         | ${2.5}       | ${'center'} | ${false}
+    ${1.5}       | ${2}         | ${'center'} | ${false}
+    ${0.5}       | ${2}         | ${'center'} | ${false}
+  `(
+    'disables properly when avoiding whitespace ' +
+      '(slideIndex $currentSlide, $slidesToShow slidesToShow, $cellAlign align)',
+    ({ currentSlide, slidesToShow, cellAlign, expected }) => {
+      const args: Partial<ControlProps> = {
+        currentSlide,
+        slidesToShow,
+        wrapAround: false,
+        scrollMode: ScrollMode.remainder,
+        cellAlign
+      };
+      expect(prevButtonDisabled(args as ControlProps)).toEqual(expected);
     }
   );
 });
