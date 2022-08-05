@@ -131,26 +131,26 @@ export const getDefaultSlideIndex = (
   slideCount: number,
   slidesToShow: number,
   cellAlign: Alignment,
-  autoplayReverse: boolean
+  autoplayReverse: boolean,
+  scrollMode: ScrollMode
 ) => {
   if (slideIndex !== undefined) {
     return slideIndex;
   }
 
   if (!autoplayReverse) {
-    // When slides are right-aligned, default to an index that will
-    // display the first cells with no whitespace on the left.
-    if (cellAlign === Alignment.Right) {
+    // Default to an index that will display the first cells with no whitespace
+    // on the left.
+    if (scrollMode === ScrollMode.remainder && cellAlign === Alignment.Right) {
       return slidesToShow - 1;
     }
 
     return 0;
   }
 
-  // When the slideshow is set to start from the end (i.e.,
-  // autoplayReverse=true), and slides are left-aligned, default to an index
-  // that will display the last few cells with no whitespace on the right.
-  if (cellAlign === Alignment.Left) {
+  // Default to an index that will display the last few cells with no whitespace
+  // on the right.
+  if (scrollMode === ScrollMode.remainder && cellAlign === Alignment.Left) {
     return slideCount - slidesToShow;
   }
 

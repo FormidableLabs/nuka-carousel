@@ -81,7 +81,8 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       slideCount,
       slidesToShow,
       cellAlign,
-      autoplayReverse
+      autoplayReverse,
+      scrollMode
     )
   );
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
