@@ -95,37 +95,37 @@ export const getNextMoveIndex = (
   currentSlide: number,
   slideCount: number,
   slidesToScroll: number,
-  slidesToShow: number
+  slidesToShow: number,
+  cellAlign: Alignment
 ) => {
-  if (
-    !wrapAround &&
-    scrollMode === ScrollMode.remainder &&
-    slideCount < currentSlide + (slidesToScroll + slidesToShow)
-  ) {
-    const remindedSlides =
-      slideCount -
-      (currentSlide + slidesToScroll) -
-      (slidesToShow - slidesToScroll);
-    return currentSlide + remindedSlides;
+  if (wrapAround) {
+    return currentSlide + slidesToScroll;
   }
-  return currentSlide + slidesToScroll;
+
+  if (scrollMode === ScrollMode.remainder && cellAlign === Alignment.Left) {
+    return Math.min(currentSlide + slidesToScroll, slideCount - slidesToShow);
+  }
+
+  return Math.min(currentSlide + slidesToScroll, slideCount - 1);
 };
 
 export const getPrevMoveIndex = (
   scrollMode: ScrollMode,
   wrapAround: boolean,
   currentSlide: number,
-  slidesToScroll: number
+  slidesToScroll: number,
+  slidesToShow: number,
+  cellAlign: Alignment
 ) => {
-  if (
-    !wrapAround &&
-    scrollMode === ScrollMode.remainder &&
-    currentSlide - slidesToScroll < 0
-  ) {
-    return 0;
+  if (wrapAround) {
+    return currentSlide - slidesToScroll;
   }
 
-  return currentSlide - slidesToScroll;
+  if (scrollMode === ScrollMode.remainder && cellAlign === Alignment.Right) {
+    return Math.max(currentSlide - slidesToScroll, slidesToShow - 1);
+  }
+
+  return Math.max(currentSlide - slidesToScroll, 0);
 };
 
 export const getDefaultSlideIndex = (

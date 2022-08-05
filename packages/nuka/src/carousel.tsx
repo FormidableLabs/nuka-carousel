@@ -171,40 +171,52 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   );
 
   const nextSlide = useCallback(() => {
-    if (wrapAround || currentSlide < slideCount - propsSlidesToScroll) {
-      const nextSlideIndex = getNextMoveIndex(
-        scrollMode,
-        wrapAround,
-        currentSlide,
-        slideCount,
-        propsSlidesToScroll,
-        slidesToShow
-      );
+    const nextSlideIndex = getNextMoveIndex(
+      scrollMode,
+      wrapAround,
+      currentSlide,
+      slideCount,
+      propsSlidesToScroll,
+      slidesToShow,
+      cellAlign
+    );
 
+    if (currentSlide !== nextSlideIndex) {
       goToSlide(nextSlideIndex);
     }
   }, [
-    slideCount,
+    cellAlign,
     currentSlide,
     goToSlide,
     propsSlidesToScroll,
     scrollMode,
-    wrapAround,
-    slidesToShow
+    slideCount,
+    slidesToShow,
+    wrapAround
   ]);
 
   const prevSlide = useCallback(() => {
-    if (wrapAround || currentSlide > 0) {
-      const prevSlideIndex = getPrevMoveIndex(
-        scrollMode,
-        wrapAround,
-        currentSlide,
-        propsSlidesToScroll
-      );
+    const prevSlideIndex = getPrevMoveIndex(
+      scrollMode,
+      wrapAround,
+      currentSlide,
+      propsSlidesToScroll,
+      slidesToShow,
+      cellAlign
+    );
 
+    if (currentSlide !== prevSlideIndex) {
       goToSlide(prevSlideIndex);
     }
-  }, [currentSlide, goToSlide, propsSlidesToScroll, scrollMode, wrapAround]);
+  }, [
+    cellAlign,
+    currentSlide,
+    goToSlide,
+    propsSlidesToScroll,
+    scrollMode,
+    slidesToShow,
+    wrapAround
+  ]);
 
   // When user changed the slideIndex property from outside.
   const prevMovedToSlideIndex = useRef(slideIndex);
