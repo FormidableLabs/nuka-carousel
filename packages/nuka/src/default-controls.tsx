@@ -158,17 +158,11 @@ export const getDotIndexes = (
   }
 
   if (scrollMode === ScrollMode.page || cellAlign === Alignment.Center) {
-    for (let i = 0; i < slideCount; i += scrollSlides) {
+    for (let i = 0; i < slideCount - 1; i += scrollSlides) {
       dotIndexes.push(i);
     }
 
-    // Make sure the final slides are given dots when center- or right-aligned,
-    // or they may not be able to be brought into view
-    if (
-      (cellAlign === Alignment.Center || cellAlign === Alignment.Right) &&
-      dotIndexes.length > 0 &&
-      dotIndexes[dotIndexes.length - 1] !== slideCount - 1
-    ) {
+    if (slideCount > 0) {
       dotIndexes.push(slideCount - 1);
     }
 
