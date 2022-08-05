@@ -2,12 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Slide from './slide';
 import AnnounceSlide from './announce-slide';
 import { getSliderListStyles } from './slider-list';
-import {
-  Alignment,
-  CarouselProps,
-  InternalCarouselProps,
-  KeyCodeFunction
-} from './types';
+import { CarouselProps, InternalCarouselProps, KeyCodeFunction } from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
 import {
@@ -248,21 +243,8 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     if (autoplay && !pause) {
       autoplayTimeout.current = setTimeout(() => {
         if (autoplayReverse) {
-          if (
-            wrapAround ||
-            (cellAlign !== Alignment.Right && currentSlide > 0) ||
-            // Stop when there is only whitespace remaining to be shown
-            (cellAlign === Alignment.Right && currentSlide > slidesToShow - 1)
-          ) {
-            prevSlide();
-          }
-        } else if (
-          wrapAround ||
-          (cellAlign !== Alignment.Left && currentSlide < slideCount - 1) ||
-          // Stop when there is only whitespace remaining to be shown
-          (cellAlign === Alignment.Left &&
-            currentSlide < slideCount - slidesToShow)
-        ) {
+          prevSlide();
+        } else {
           nextSlide();
         }
       }, autoplayInterval);
