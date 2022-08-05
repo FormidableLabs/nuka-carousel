@@ -44,18 +44,20 @@ describe('getDotIndexes', () => {
   );
 
   it.each`
-    slideCount | slidesToScroll | slidesToShow | expected
-    ${4}       | ${1}           | ${2}         | ${[0, 1, 2, 3]}
-    ${4}       | ${2}           | ${2}         | ${[0, 2]}
-    ${3}       | ${2}           | ${2}         | ${[0, 2]}
-    ${4}       | ${3}           | ${3}         | ${[0, 3]}
-    ${4}       | ${1}           | ${3}         | ${[0, 1, 2, 3]}
-    ${4}       | ${2}           | ${2.5}       | ${[0, 2]}
-    ${4}       | ${1.5}         | ${2}         | ${[0, 1.5, 3]}
+    slideCount | slidesToScroll | slidesToShow | cellAlign   | expected
+    ${4}       | ${1}           | ${2}         | ${'left'}   | ${[0, 1, 2, 3]}
+    ${4}       | ${2}           | ${2}         | ${'left'}   | ${[0, 2]}
+    ${3}       | ${2}           | ${2}         | ${'left'}   | ${[0, 2]}
+    ${4}       | ${3}           | ${3}         | ${'left'}   | ${[0, 3]}
+    ${4}       | ${1}           | ${3}         | ${'left'}   | ${[0, 1, 2, 3]}
+    ${4}       | ${2}           | ${2.5}       | ${'left'}   | ${[0, 2]}
+    ${4}       | ${1.5}         | ${2}         | ${'left'}   | ${[0, 1.5, 3]}
+    ${4}       | ${2}           | ${2}         | ${'right'}  | ${[0, 2, 3]}
+    ${4}       | ${2}           | ${2}         | ${'center'} | ${[0, 2, 3]}
   `(
     'gets proper indices when allowing whitespace ' +
-      '($slideCount slides, $slidesToScroll slidesToScroll, $slidesToShow slidesToShow)',
-    ({ slideCount, slidesToScroll, slidesToShow, expected }) => {
+      '($slideCount slides, $slidesToScroll slidesToScroll, $slidesToShow slidesToShow, $cellAlign align)',
+    ({ slideCount, slidesToScroll, slidesToShow, cellAlign, expected }) => {
       expect(
         getDotIndexes(
           slideCount,
@@ -63,17 +65,7 @@ describe('getDotIndexes', () => {
           ScrollMode.page,
           slidesToShow,
           false,
-          Alignment.Left
-        )
-      ).toEqual(expected);
-      expect(
-        getDotIndexes(
-          slideCount,
-          slidesToScroll,
-          ScrollMode.page,
-          slidesToShow,
-          false,
-          Alignment.Center
+          cellAlign
         )
       ).toEqual(expected);
     }
