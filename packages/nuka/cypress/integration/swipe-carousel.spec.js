@@ -5,9 +5,13 @@
 // Swipe before and after threshold
 
 context('Swipe Carousel', () => {
+  // Speed up transition animation time
+  const sharedParams = { speed: 50 };
+
   describe('Swipe Carousel variations', () => {
     it('should render a carousel with 6 slides and 3 visible slides and go through all of the slides by swiping forwards and then backwards', () => {
       const params = {
+        ...sharedParams,
         slidesToShow: 3
       };
 
@@ -29,8 +33,6 @@ context('Swipe Carousel', () => {
 
       swipeSlider();
 
-      cy.wait(1020);
-
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
         .find('img')
@@ -39,8 +41,6 @@ context('Swipe Carousel', () => {
 
       swipeSlider();
 
-      cy.wait(1020);
-
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
         .find('img')
@@ -48,8 +48,6 @@ context('Swipe Carousel', () => {
         .should('have.attr', 'data-slide', 'Slide 3');
 
       swipeSlider();
-
-      cy.wait(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -59,8 +57,6 @@ context('Swipe Carousel', () => {
 
       swipeSlider(true);
 
-      cy.wait(1020);
-
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
         .find('img')
@@ -69,8 +65,6 @@ context('Swipe Carousel', () => {
 
       swipeSlider(true);
 
-      cy.wait(1020);
-
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
         .find('img')
@@ -78,8 +72,6 @@ context('Swipe Carousel', () => {
         .should('have.attr', 'data-slide', 'Slide 2');
 
       swipeSlider(true);
-
-      cy.wait(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -90,6 +82,7 @@ context('Swipe Carousel', () => {
 
     it('should render a carousel with 6 slides and 3 visible slides and not advance with a small swipe', () => {
       const params = {
+        ...sharedParams,
         slidesToShow: 3
       };
 
@@ -111,8 +104,6 @@ context('Swipe Carousel', () => {
 
       swipeSlider();
 
-      cy.wait(1020);
-
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
         .find('img')
@@ -120,8 +111,6 @@ context('Swipe Carousel', () => {
         .should('have.attr', 'data-slide', 'Slide 1');
 
       swipeSlider(true);
-
-      cy.wait(1020);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)

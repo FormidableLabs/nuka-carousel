@@ -2,9 +2,15 @@
 /* eslint-disable cypress/no-unnecessary-waiting */
 
 context('Carousel', () => {
+  // Speed up transition animation time
+  const sharedParams = { speed: 50 };
+
   describe('Carousel variations', () => {
     it('should render carousel with 4 slides and only 1 visible slide and go through all of the slides', () => {
-      cy.visit('http://localhost:3000/?slides=4');
+      const params = { ...sharedParams };
+      cy.visit(
+        `http://localhost:3000/?slides=4&params=${JSON.stringify(params)}`
+      );
 
       cy.get('.slider-frame').should(
         'have.attr',
@@ -57,6 +63,7 @@ context('Carousel', () => {
 
     it('should render carousel with 6 slides and 2 visible slides and slides to scroll equal to 2', () => {
       const params = {
+        ...sharedParams,
         slidesToShow: 2,
         slidesToScroll: 2
       };
@@ -103,6 +110,7 @@ context('Carousel', () => {
 
     it('should render carousel with 5 slides and 2 visible slides without controls', () => {
       const params = {
+        ...sharedParams,
         slidesToShow: 2,
         withoutControls: true
       };
