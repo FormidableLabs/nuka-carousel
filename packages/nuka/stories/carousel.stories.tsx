@@ -1,5 +1,6 @@
 import React from 'react';
 import { ComponentMeta, Story } from '@storybook/react';
+import isChromatic from 'chromatic/isChromatic';
 import { renderToString } from 'react-dom/server';
 
 import Carousel, {
@@ -105,28 +106,35 @@ WrapAround.args = {
   wrapAround: true
 };
 
+// adjust the autoplay interval so it does not interfere with our visual
+// snapshot tests in the CI (run by Chromatic)
+const autoplayInterval = isChromatic() ? 10000 : undefined;
+
 export const Autoplay = Template.bind({});
 Autoplay.args = {
-  autoplay: true
+  autoplay: true,
+  autoplayInterval
 };
 
 export const AutoplayReverse = Template.bind({});
 AutoplayReverse.args = {
   autoplay: true,
   autoplayReverse: true,
+  autoplayInterval,
   slideIndex: 8
 };
 
 export const AutoplayWithCustomInterval = Template.bind({});
 AutoplayWithCustomInterval.args = {
   autoplay: true,
-  autoplayInterval: 500
+  autoplayInterval: autoplayInterval ?? 500
 };
 
 export const AutoplayWithoutPauseOnHover = Template.bind({});
 AutoplayWithoutPauseOnHover.args = {
   autoplay: true,
-  pauseOnHover: false
+  pauseOnHover: false,
+  autoplayInterval
 };
 
 export const WithoutControls = Template.bind({});
