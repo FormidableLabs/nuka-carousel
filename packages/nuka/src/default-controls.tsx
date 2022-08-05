@@ -14,19 +14,31 @@ const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
 
 export const prevButtonDisabled = ({
   currentSlide,
-  wrapAround
+  wrapAround,
+  scrollMode,
+  cellAlign,
+  slidesToShow
 }: ControlProps) => {
   // inifite carousel
   if (wrapAround) {
     return false;
   }
 
-  // if the first slide is not visible return false (button is not disabled)
-  if (currentSlide !== 0) {
-    return false;
+  // disable if displaying the leftmost slide
+  if (currentSlide === 0) {
+    return true;
   }
 
-  return true;
+  // remainder scroll mode
+  if (
+    scrollMode === ScrollMode.remainder &&
+    cellAlign === Alignment.Right &&
+    currentSlide <= slidesToShow - 1
+  ) {
+    return true;
+  }
+
+  return false;
 };
 
 export const PreviousButton = (props: ControlProps) => {
@@ -64,29 +76,30 @@ export const nextButtonDisabled = ({
   currentSlide,
   slideCount,
   slidesToShow,
-  slidesToScroll,
   wrapAround,
-  scrollMode
+  scrollMode,
+  cellAlign
 }: ControlProps) => {
   // inifite carousel
   if (wrapAround) {
     return false;
   }
 
+  // If we are at the last possible slide without wrap, disable
+  if (currentSlide >= slideCount - 1) {
+    return true;
+  }
+
   // remainder scroll mode
   if (
     scrollMode === ScrollMode.remainder &&
+    cellAlign === Alignment.Left &&
     currentSlide >= slideCount - slidesToShow
   ) {
     return true;
   }
 
-  // if the last slide is not visible return false (button is not disabled)
-  if (currentSlide < slideCount - slidesToScroll) {
-    return false;
-  }
-
-  return true;
+  return false;
 };
 
 export const NextButton = (props: ControlProps) => {
