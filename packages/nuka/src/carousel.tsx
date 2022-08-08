@@ -69,12 +69,15 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   } = props;
 
   const slideCount = React.Children.count(children);
+  const slidesToScroll =
+    animation === 'fade' ? slidesToShow : propsSlidesToScroll;
 
   const [currentSlide, setCurrentSlide] = useState<number>(() =>
     getDefaultSlideIndex(
       slideIndex,
       slideCount,
       slidesToShow,
+      slidesToScroll,
       cellAlign,
       autoplayReverse,
       scrollMode
@@ -93,9 +96,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const autoplayTimeout = useRef<ReturnType<typeof setTimeout>>();
   const animationEndTimeout = useRef<ReturnType<typeof setTimeout>>();
   const isMounted = useRef<boolean>(true);
-
-  const slidesToScroll =
-    animation === 'fade' ? slidesToShow : propsSlidesToScroll;
 
   const dragThreshold =
     ((carouselWidth.current || 0) / slidesToShow) * propsDragThreshold;

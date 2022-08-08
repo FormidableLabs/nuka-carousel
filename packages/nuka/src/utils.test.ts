@@ -133,49 +133,75 @@ describe('getNextMoveIndex', () => {
     'does basic calculation with wrapAround=true ' +
       '(currentSlide $currentSlide, slideCount $slideCount, slidesToScroll $slidesToScroll)',
     ({ currentSlide, slideCount, slidesToScroll, expected }) => {
-      expect(
-        getNextMoveIndex(
-          ScrollMode.page,
-          true,
-          currentSlide,
-          slideCount,
-          slidesToScroll,
-          1,
-          Alignment.Left
-        )
-      ).toEqual(expected);
+      const args = [
+        ScrollMode.page,
+        true,
+        currentSlide,
+        slideCount,
+        slidesToScroll,
+        1
+      ] as const;
+      expect(getNextMoveIndex(...args, Alignment.Left)).toEqual(expected);
+      expect(getNextMoveIndex(...args, Alignment.Right)).toEqual(expected);
+      expect(getNextMoveIndex(...args, Alignment.Center)).toEqual(expected);
     }
   );
 
   it.each`
-    currentSlide | slideCount | slidesToShow | slidesToScroll | expected
-    ${2}         | ${3}       | ${1}         | ${1}           | ${2}
-    ${1}         | ${3}       | ${1}         | ${1}           | ${2}
-    ${1.5}       | ${3}       | ${1}         | ${1}           | ${2}
-    ${1}         | ${3}       | ${2}         | ${1}           | ${2}
-    ${1}         | ${3}       | ${2}         | ${2}           | ${2}
-    ${1}         | ${3}       | ${2}         | ${1.5}         | ${2}
-    ${0}         | ${3}       | ${1}         | ${1}           | ${1}
-    ${0.5}       | ${3}       | ${1}         | ${1}           | ${1.5}
-    ${0}         | ${3}       | ${2}         | ${1}           | ${1}
-    ${0}         | ${3}       | ${2}         | ${2}           | ${2}
-    ${0}         | ${3}       | ${2}         | ${1.5}         | ${1.5}
-    ${0}         | ${3}       | ${1.5}       | ${2}           | ${2}
+    currentSlide | slidesToShow | slidesToScroll | cellAlign   | expected
+    ${2}         | ${1}         | ${1}           | ${'left'}   | ${2}
+    ${1}         | ${1}         | ${1}           | ${'left'}   | ${2}
+    ${1.5}       | ${1}         | ${1}           | ${'left'}   | ${2}
+    ${1.5}       | ${2}         | ${1}           | ${'left'}   | ${1.5}
+    ${2}         | ${2}         | ${1}           | ${'left'}   | ${2}
+    ${1}         | ${2}         | ${1}           | ${'left'}   | ${1}
+    ${1}         | ${2}         | ${2}           | ${'left'}   | ${1}
+    ${1}         | ${2}         | ${1.5}         | ${'left'}   | ${1}
+    ${0}         | ${1}         | ${1}           | ${'left'}   | ${1}
+    ${0.5}       | ${1}         | ${1}           | ${'left'}   | ${1.5}
+    ${0}         | ${2}         | ${1}           | ${'left'}   | ${1}
+    ${0}         | ${2}         | ${2}           | ${'left'}   | ${2}
+    ${0}         | ${2}         | ${1.5}         | ${'left'}   | ${1.5}
+    ${0}         | ${1.5}       | ${2}           | ${'left'}   | ${2}
+    ${2}         | ${1}         | ${1}           | ${'right'}  | ${2}
+    ${1}         | ${1}         | ${1}           | ${'right'}  | ${2}
+    ${1.5}       | ${1}         | ${1}           | ${'right'}  | ${2}
+    ${1}         | ${2}         | ${1}           | ${'right'}  | ${2}
+    ${1}         | ${2}         | ${2}           | ${'right'}  | ${2}
+    ${1}         | ${2}         | ${1.5}         | ${'right'}  | ${2}
+    ${0}         | ${1}         | ${1}           | ${'right'}  | ${1}
+    ${0.5}       | ${1}         | ${1}           | ${'right'}  | ${1.5}
+    ${0}         | ${2}         | ${1}           | ${'right'}  | ${1}
+    ${0}         | ${2}         | ${2}           | ${'right'}  | ${2}
+    ${0}         | ${2}         | ${1.5}         | ${'right'}  | ${1.5}
+    ${0}         | ${1.5}       | ${2}           | ${'right'}  | ${2}
+    ${2}         | ${1}         | ${1}           | ${'center'} | ${2}
+    ${1}         | ${1}         | ${1}           | ${'center'} | ${2}
+    ${1.5}       | ${1}         | ${1}           | ${'center'} | ${2}
+    ${1}         | ${2}         | ${1}           | ${'center'} | ${2}
+    ${1}         | ${2}         | ${2}           | ${'center'} | ${2}
+    ${1}         | ${2}         | ${1.5}         | ${'center'} | ${2}
+    ${0}         | ${1}         | ${1}           | ${'center'} | ${1}
+    ${0.5}       | ${1}         | ${1}           | ${'center'} | ${1.5}
+    ${0}         | ${2}         | ${1}           | ${'center'} | ${1}
+    ${0}         | ${2}         | ${2}           | ${'center'} | ${2}
+    ${0}         | ${2}         | ${1.5}         | ${'center'} | ${1.5}
+    ${0}         | ${1.5}       | ${2}           | ${'center'} | ${2}
   `(
     'gets correct index when allowing whitespace ' +
-      '(slideIndex $currentSlide, $slideCount slides, $slidesToShow slidesToShow, $slidesToScroll slidesToScroll)',
-    ({ currentSlide, slideCount, slidesToShow, slidesToScroll, expected }) => {
-      const args = [
-        ScrollMode.page,
-        false,
-        currentSlide,
-        slideCount,
-        slidesToScroll,
-        slidesToShow
-      ] as const;
-      expect(getNextMoveIndex(...args, Alignment.Left)).toEqual(expected);
-      expect(getNextMoveIndex(...args, Alignment.Center)).toEqual(expected);
-      expect(getNextMoveIndex(...args, Alignment.Right)).toEqual(expected);
+      '(slideIndex $currentSlide, $slidesToShow slidesToShow, $slidesToScroll slidesToScroll, $cellAlign align)',
+    ({ currentSlide, slidesToShow, slidesToScroll, cellAlign, expected }) => {
+      expect(
+        getNextMoveIndex(
+          ScrollMode.page,
+          false,
+          currentSlide,
+          3,
+          slidesToScroll,
+          slidesToShow,
+          cellAlign
+        )
+      ).toEqual(expected);
     }
   );
 
@@ -192,7 +218,7 @@ describe('getNextMoveIndex', () => {
     ${0}         | ${2}         | ${1}           | ${'left'}   | ${1}
     ${0}         | ${2}         | ${2}           | ${'left'}   | ${1}
     ${0}         | ${2}         | ${1.5}         | ${'left'}   | ${1}
-    ${3}         | ${1}         | ${11}          | ${'left'}   | ${2}
+    ${3}         | ${1}         | ${11}          | ${'left'}   | ${3}
     ${0}         | ${1.5}       | ${2}           | ${'left'}   | ${1.5}
     ${1}         | ${2}         | ${1}           | ${'center'} | ${2}
     ${1}         | ${2}         | ${1}           | ${'right'}  | ${2}
@@ -239,31 +265,51 @@ describe('getPrevMoveIndex', () => {
   );
 
   it.each`
-    currentSlide | slidesToShow | slidesToScroll | expected
-    ${0}         | ${1}         | ${1}           | ${0}
-    ${1}         | ${1}         | ${1}           | ${0}
-    ${1.5}       | ${1}         | ${1}           | ${0.5}
-    ${1.5}       | ${2}         | ${1}           | ${0.5}
-    ${1}         | ${2}         | ${1}           | ${0}
-    ${1}         | ${2}         | ${2}           | ${0}
-    ${1}         | ${2}         | ${1.5}         | ${0}
-    ${2}         | ${2}         | ${1.5}         | ${0.5}
-    ${2}         | ${2}         | ${2}           | ${0}
-    ${2}         | ${1.5}       | ${2}           | ${0}
+    currentSlide | slidesToShow | slidesToScroll | cellAlign   | expected
+    ${0}         | ${1}         | ${1}           | ${'left'}   | ${0}
+    ${1}         | ${1}         | ${1}           | ${'left'}   | ${0}
+    ${1.5}       | ${1}         | ${1}           | ${'left'}   | ${0.5}
+    ${1.5}       | ${2}         | ${1}           | ${'left'}   | ${0.5}
+    ${1}         | ${2}         | ${1}           | ${'left'}   | ${0}
+    ${1}         | ${2}         | ${2}           | ${'left'}   | ${0}
+    ${1}         | ${2}         | ${1.5}         | ${'left'}   | ${0}
+    ${2}         | ${2}         | ${1.5}         | ${'left'}   | ${0.5}
+    ${2}         | ${2}         | ${2}           | ${'left'}   | ${0}
+    ${2}         | ${1.5}       | ${2}           | ${'left'}   | ${0}
+    ${0}         | ${1}         | ${1}           | ${'right'}  | ${0}
+    ${1}         | ${1}         | ${1}           | ${'right'}  | ${0}
+    ${1.5}       | ${1}         | ${1}           | ${'right'}  | ${0.5}
+    ${1.5}       | ${2}         | ${1}           | ${'right'}  | ${0.5}
+    ${1}         | ${2}         | ${1}           | ${'right'}  | ${1}
+    ${1}         | ${2}         | ${2}           | ${'right'}  | ${1}
+    ${1}         | ${2}         | ${1.5}         | ${'right'}  | ${1}
+    ${2}         | ${2}         | ${1.5}         | ${'right'}  | ${0.5}
+    ${2}         | ${2}         | ${2}           | ${'right'}  | ${0}
+    ${2}         | ${1.5}       | ${2}           | ${'right'}  | ${0}
+    ${0}         | ${1}         | ${1}           | ${'center'} | ${0}
+    ${1}         | ${1}         | ${1}           | ${'center'} | ${0}
+    ${1.5}       | ${1}         | ${1}           | ${'center'} | ${0.5}
+    ${1.5}       | ${2}         | ${1}           | ${'center'} | ${0.5}
+    ${1}         | ${2}         | ${1}           | ${'center'} | ${0}
+    ${1}         | ${2}         | ${2}           | ${'center'} | ${0}
+    ${1}         | ${2}         | ${1.5}         | ${'center'} | ${0}
+    ${2}         | ${2}         | ${1.5}         | ${'center'} | ${0.5}
+    ${2}         | ${2}         | ${2}           | ${'center'} | ${0}
+    ${2}         | ${1.5}       | ${2}           | ${'center'} | ${0}
   `(
     'gets correct index when allowing whitespace ' +
-      '(slideIndex $currentSlide, $slidesToShow slidesToShow, $slidesToScroll slidesToScroll)',
-    ({ currentSlide, slidesToShow, slidesToScroll, expected }) => {
-      const args = [
-        ScrollMode.page,
-        false,
-        currentSlide,
-        slidesToScroll,
-        slidesToShow
-      ] as const;
-      expect(getPrevMoveIndex(...args, Alignment.Left)).toEqual(expected);
-      expect(getPrevMoveIndex(...args, Alignment.Center)).toEqual(expected);
-      expect(getPrevMoveIndex(...args, Alignment.Right)).toEqual(expected);
+      '(slideIndex $currentSlide, $slidesToShow slidesToShow, $slidesToScroll slidesToScroll, $cellAlign align)',
+    ({ currentSlide, slidesToShow, slidesToScroll, cellAlign, expected }) => {
+      expect(
+        getPrevMoveIndex(
+          ScrollMode.page,
+          false,
+          currentSlide,
+          slidesToScroll,
+          slidesToShow,
+          cellAlign
+        )
+      ).toEqual(expected);
     }
   );
 

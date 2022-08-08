@@ -15,7 +15,6 @@ const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
 export const prevButtonDisabled = ({
   currentSlide,
   wrapAround,
-  scrollMode,
   cellAlign,
   slidesToShow
 }: ControlProps) => {
@@ -30,11 +29,7 @@ export const prevButtonDisabled = ({
   }
 
   // remainder scroll mode
-  if (
-    scrollMode === ScrollMode.remainder &&
-    cellAlign === Alignment.Right &&
-    currentSlide <= slidesToShow - 1
-  ) {
+  if (cellAlign === Alignment.Right && currentSlide <= slidesToShow - 1) {
     return true;
   }
 
@@ -77,7 +72,6 @@ export const nextButtonDisabled = ({
   slideCount,
   slidesToShow,
   wrapAround,
-  scrollMode,
   cellAlign
 }: ControlProps) => {
   // inifite carousel
@@ -92,7 +86,6 @@ export const nextButtonDisabled = ({
 
   // remainder scroll mode
   if (
-    scrollMode === ScrollMode.remainder &&
     cellAlign === Alignment.Left &&
     currentSlide >= slideCount - slidesToShow
   ) {
@@ -157,7 +150,7 @@ export const getDotIndexes = (
     return dotIndexes;
   }
 
-  if (scrollMode === ScrollMode.page || cellAlign === Alignment.Center) {
+  if (cellAlign === Alignment.Center) {
     for (let i = 0; i < slideCount - 1; i += scrollSlides) {
       dotIndexes.push(i);
     }
@@ -174,7 +167,12 @@ export const getDotIndexes = (
     for (let i = 0; i < lastPossibleIndexWithoutWhitespace; i += scrollSlides) {
       dotIndexes.push(i);
     }
-    dotIndexes.push(lastPossibleIndexWithoutWhitespace);
+
+    if (scrollMode === ScrollMode.remainder) {
+      dotIndexes.push(lastPossibleIndexWithoutWhitespace);
+    } else {
+      dotIndexes.push(dotIndexes[dotIndexes.length - 1] + scrollSlides);
+    }
 
     return dotIndexes;
   }
@@ -185,14 +183,27 @@ export const getDotIndexes = (
       slideCount - 1
     );
 
-    for (
-      let i = firstPossibleIndexWithoutWhitespace;
-      i < slideCount - 1;
-      i += scrollSlides
-    ) {
-      dotIndexes.push(i);
+    if (scrollMode === ScrollMode.remainder) {
+      for (
+        let i = firstPossibleIndexWithoutWhitespace;
+        i < slideCount - 1;
+        i += scrollSlides
+      ) {
+        dotIndexes.push(i);
+      }
+      dotIndexes.push(slideCount - 1);
+    } else {
+      for (
+        let i = slideCount - 1;
+        i > firstPossibleIndexWithoutWhitespace;
+        i -= scrollSlides
+      ) {
+        dotIndexes.push(i);
+      }
+      dotIndexes.push(dotIndexes[dotIndexes.length - 1] - scrollSlides);
+
+      dotIndexes.reverse();
     }
-    dotIndexes.push(slideCount - 1);
 
     return dotIndexes;
   }

@@ -1,3 +1,4 @@
+import { getDotIndexes } from './default-controls';
 import { Alignment, ScrollMode } from './types';
 
 export const getIndexes = (
@@ -101,6 +102,13 @@ export const getNextMoveIndex = (
   if (wrapAround) {
     return currentSlide + slidesToScroll;
   }
+  // Quit early if we're already as far right as we can go
+  if (
+    currentSlide >= slideCount - 1 ||
+    (cellAlign === Alignment.Left && currentSlide >= slideCount - slidesToShow)
+  ) {
+    return currentSlide;
+  }
 
   if (scrollMode === ScrollMode.remainder && cellAlign === Alignment.Left) {
     return Math.min(currentSlide + slidesToScroll, slideCount - slidesToShow);
@@ -121,6 +129,14 @@ export const getPrevMoveIndex = (
     return currentSlide - slidesToScroll;
   }
 
+  // Quit early if we're already as far left as we can go
+  if (
+    currentSlide <= 0 ||
+    (cellAlign === Alignment.Right && currentSlide <= slidesToShow - 1)
+  ) {
+    return currentSlide;
+  }
+
   if (scrollMode === ScrollMode.remainder && cellAlign === Alignment.Right) {
     return Math.max(currentSlide - slidesToScroll, slidesToShow - 1);
   }
@@ -132,6 +148,7 @@ export const getDefaultSlideIndex = (
   slideIndex: number | undefined,
   slideCount: number,
   slidesToShow: number,
+  slidesToScroll: number,
   cellAlign: Alignment,
   autoplayReverse: boolean,
   scrollMode: ScrollMode
@@ -140,22 +157,14 @@ export const getDefaultSlideIndex = (
     return slideIndex;
   }
 
-  if (!autoplayReverse) {
-    // Default to an index that will display the first cells with no whitespace
-    // on the left.
-    if (scrollMode === ScrollMode.remainder && cellAlign === Alignment.Right) {
-      return slidesToShow - 1;
-    }
+  const dotIndexes = getDotIndexes(
+    slideCount,
+    slidesToScroll,
+    scrollMode,
+    slidesToShow,
+    false,
+    cellAlign
+  );
 
-    return 0;
-  }
-
-  // Default to an index that will display the last few cells with no whitespace
-  // on the right.
-  if (scrollMode === ScrollMode.remainder && cellAlign === Alignment.Left) {
-    return slideCount - slidesToShow;
-  }
-
-  // When center-aligned or right-aligned, use the last slide's index
-  return slideCount - 1;
+  return autoplayReverse ? dotIndexes[dotIndexes.length - 1] : dotIndexes[0];
 };

@@ -97,14 +97,6 @@ context('Carousel', () => {
         .should('have.attr', 'data-slide', 'Slide 5');
 
       cy.get('button').contains('Prev').should('not.be.disabled');
-      cy.get('button').contains('Next').should('not.be.disabled').click();
-
-      cy.get('.slide.slide-visible')
-        .should('have.length', 1)
-        .find('img')
-        .should('have.attr', 'data-slide', 'Slide 6');
-
-      cy.get('button').contains('Prev').should('not.be.disabled');
       cy.get('button').contains('Next').should('be.disabled');
     });
 
