@@ -31,6 +31,7 @@ describe('getDotIndexes', () => {
     ${4}       | ${1.5}         | ${2}         | ${'right'} | ${[1, 2.5, 3]}
     ${1}       | ${1}           | ${3}         | ${'right'} | ${[0]}
     ${2}       | ${1}           | ${3}         | ${'right'} | ${[1]}
+    ${4}       | ${2}           | ${4}         | ${'right'} | ${[3]}
   `(
     'gets proper indices when avoiding whitespace ' +
       '($slideCount slides, $slidesToScroll slidesToScroll, $slidesToShow slidesToShow, $cellAlign align)',
@@ -65,6 +66,7 @@ describe('getDotIndexes', () => {
     ${4}       | ${2}           | ${2.5}       | ${'right'}  | ${[1, 3]}
     ${5}       | ${2}           | ${2.5}       | ${'right'}  | ${[0, 2, 4]}
     ${4}       | ${1.5}         | ${2}         | ${'right'}  | ${[0, 1.5, 3]}
+    ${4}       | ${2}           | ${4}         | ${'right'}  | ${[3]}
     ${4}       | ${2}           | ${2}         | ${'center'} | ${[0, 2, 3]}
   `(
     'gets proper indices when allowing whitespace ' +

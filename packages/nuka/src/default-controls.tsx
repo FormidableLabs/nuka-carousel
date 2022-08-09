@@ -163,11 +163,11 @@ export const getDotIndexes = (
   }
 
   if (cellAlign === Alignment.Left) {
-    const lastPossibleIndexWithoutWhitespace = slideCount - slidesToShow;
-
-    if (lastPossibleIndexWithoutWhitespace <= 0) {
+    if (slidesToShow >= slideCount) {
       return [0];
     }
+
+    const lastPossibleIndexWithoutWhitespace = slideCount - slidesToShow;
 
     for (let i = 0; i < lastPossibleIndexWithoutWhitespace; i += scrollSlides) {
       dotIndexes.push(i);
@@ -183,10 +183,11 @@ export const getDotIndexes = (
   }
 
   if (cellAlign === Alignment.Right) {
-    const firstPossibleIndexWithoutWhitespace = Math.min(
-      slidesToShow - 1,
-      slideCount - 1
-    );
+    if (slidesToShow >= slideCount) {
+      return [slideCount - 1];
+    }
+
+    const firstPossibleIndexWithoutWhitespace = slidesToShow - 1;
 
     if (scrollMode === ScrollMode.remainder) {
       for (
