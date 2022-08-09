@@ -164,6 +164,11 @@ export const getDotIndexes = (
 
   if (cellAlign === Alignment.Left) {
     const lastPossibleIndexWithoutWhitespace = slideCount - slidesToShow;
+
+    if (lastPossibleIndexWithoutWhitespace <= 0) {
+      return [0];
+    }
+
     for (let i = 0; i < lastPossibleIndexWithoutWhitespace; i += scrollSlides) {
       dotIndexes.push(i);
     }
