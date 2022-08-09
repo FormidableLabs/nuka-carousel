@@ -1,11 +1,11 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "./jest-setup.ts"],
   "compilerOptions": {
     "baseUrl": ".",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "outDir": "./lib",
+    "outDir": "./lib"
   }
 }
