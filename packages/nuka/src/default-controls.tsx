@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import React, { CSSProperties, useCallback } from 'react';
-import { ControlProps, ScrollMode } from './types';
+import { Alignment, ControlProps, ScrollMode } from './types';
 
 const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
   border: 0,
@@ -14,26 +14,26 @@ const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
 
 export const prevButtonDisabled = ({
   currentSlide,
-  slideCount,
-  slidesToShow,
-  wrapAround
+  wrapAround,
+  cellAlign,
+  slidesToShow
 }: ControlProps) => {
-  // inifite carousel with visible slides that are less than all slides
-  if (wrapAround && slidesToShow < slideCount) {
-    return false;
-  }
-
-  // inifite carousel with visible slide equal or less than all slides
+  // inifite carousel
   if (wrapAround) {
     return false;
   }
 
-  // if the first slide is not visible return false (button is not disabled)
-  if (currentSlide !== 0) {
-    return false;
+  // disable if displaying the leftmost slide
+  if (currentSlide === 0) {
+    return true;
   }
 
-  return true;
+  // remainder scroll mode
+  if (cellAlign === Alignment.Right && currentSlide <= slidesToShow - 1) {
+    return true;
+  }
+
+  return false;
 };
 
 export const PreviousButton = (props: ControlProps) => {
@@ -71,34 +71,28 @@ export const nextButtonDisabled = ({
   currentSlide,
   slideCount,
   slidesToShow,
-  slidesToScroll,
   wrapAround,
-  scrollMode
+  cellAlign
 }: ControlProps) => {
-  // remainder scroll mode
-  if (
-    !wrapAround &&
-    scrollMode === ScrollMode.remainder &&
-    currentSlide >= slideCount - slidesToShow
-  ) {
-    return true;
-  }
-  // inifite carousel with visible slides that are less than all slides
-  if (wrapAround && slidesToShow < slideCount) {
-    return false;
-  }
-
-  // inifite carousel with visible slide equal or less than all slides
+  // inifite carousel
   if (wrapAround) {
     return false;
   }
 
-  // if the last slide is not visible return false (button is not disabled)
-  if (currentSlide < slideCount - slidesToScroll) {
-    return false;
+  // If we are at the last possible slide without wrap, disable
+  if (currentSlide >= slideCount - 1) {
+    return true;
   }
 
-  return true;
+  // remainder scroll mode
+  if (
+    cellAlign === Alignment.Left &&
+    currentSlide >= slideCount - slidesToShow
+  ) {
+    return true;
+  }
+
+  return false;
 };
 
 export const NextButton = (props: ControlProps) => {
@@ -142,12 +136,13 @@ export const getDotIndexes = (
   slidesToScroll: number,
   scrollMode: ScrollMode,
   slidesToShow: number,
-  wrapAround: boolean
+  wrapAround: boolean,
+  cellAlign: Alignment
 ) => {
-  const dotIndexes = [];
+  const dotIndexes: number[] = [];
   const scrollSlides = slidesToScroll <= 0 ? 1 : slidesToScroll;
 
-  if (wrapAround || scrollMode === ScrollMode.page) {
+  if (wrapAround) {
     for (let i = 0; i < slideCount; i += scrollSlides) {
       dotIndexes.push(i);
     }
@@ -155,12 +150,72 @@ export const getDotIndexes = (
     return dotIndexes;
   }
 
-  const lastPossibleIndexWithoutWhitespace = slideCount - slidesToShow;
-  for (let i = 0; i < lastPossibleIndexWithoutWhitespace; i += scrollSlides) {
-    dotIndexes.push(i);
-  }
-  dotIndexes.push(lastPossibleIndexWithoutWhitespace);
+  if (cellAlign === Alignment.Center) {
+    for (let i = 0; i < slideCount - 1; i += scrollSlides) {
+      dotIndexes.push(i);
+    }
 
+    if (slideCount > 0) {
+      dotIndexes.push(slideCount - 1);
+    }
+
+    return dotIndexes;
+  }
+
+  if (cellAlign === Alignment.Left) {
+    if (slidesToShow >= slideCount) {
+      return [0];
+    }
+
+    const lastPossibleIndexWithoutWhitespace = slideCount - slidesToShow;
+
+    for (let i = 0; i < lastPossibleIndexWithoutWhitespace; i += scrollSlides) {
+      dotIndexes.push(i);
+    }
+
+    if (scrollMode === ScrollMode.remainder) {
+      dotIndexes.push(lastPossibleIndexWithoutWhitespace);
+    } else {
+      dotIndexes.push(dotIndexes[dotIndexes.length - 1] + scrollSlides);
+    }
+
+    return dotIndexes;
+  }
+
+  if (cellAlign === Alignment.Right) {
+    if (slidesToShow >= slideCount) {
+      return [slideCount - 1];
+    }
+
+    const firstPossibleIndexWithoutWhitespace = slidesToShow - 1;
+
+    if (scrollMode === ScrollMode.remainder) {
+      for (
+        let i = firstPossibleIndexWithoutWhitespace;
+        i < slideCount - 1;
+        i += scrollSlides
+      ) {
+        dotIndexes.push(i);
+      }
+      dotIndexes.push(slideCount - 1);
+    } else {
+      for (
+        let i = slideCount - 1;
+        i > firstPossibleIndexWithoutWhitespace;
+        i -= scrollSlides
+      ) {
+        dotIndexes.push(i);
+      }
+      dotIndexes.push(dotIndexes[dotIndexes.length - 1] - scrollSlides);
+
+      dotIndexes.reverse();
+    }
+
+    return dotIndexes;
+  }
+
+  // We should never reach this, because the if statements above cover all
+  // possible values of cellAlign
   return dotIndexes;
 };
 
@@ -190,7 +245,8 @@ export const PagingDots = (props: ControlProps) => {
     props.slidesToScroll,
     props.scrollMode,
     props.slidesToShow,
-    props.wrapAround
+    props.wrapAround,
+    props.cellAlign
   );
 
   const {

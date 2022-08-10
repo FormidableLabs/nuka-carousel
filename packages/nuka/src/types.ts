@@ -433,7 +433,7 @@ export interface InternalCarouselProps {
   /**
    * Manually set the index of the initial slide to be shown
    */
-  slideIndex: number;
+  slideIndex?: number;
 
   /**
    * Slides to scroll at once.

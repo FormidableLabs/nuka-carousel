@@ -1,23 +1,24 @@
+import { getDotIndexes } from './default-controls';
 import { Alignment, ScrollMode } from './types';
 
 export const getIndexes = (
   slide: number,
   endSlide: number,
-  count: number
+  slideCount: number
 ): [number, number] => {
   let slideIndex = slide;
   let endSlideIndex = endSlide;
 
   if (slideIndex < 0) {
-    slideIndex += count;
-  } else if (slideIndex > count - 1) {
-    slideIndex -= count;
+    slideIndex += slideCount;
+  } else if (slideIndex > slideCount - 1) {
+    slideIndex -= slideCount;
   }
 
   if (endSlideIndex < 0) {
-    endSlideIndex += count;
-  } else if (endSlideIndex > count - 1) {
-    endSlideIndex -= count;
+    endSlideIndex += slideCount;
+  } else if (endSlideIndex > slideCount - 1) {
+    endSlideIndex -= slideCount;
   }
 
   return [slideIndex, endSlideIndex];
@@ -93,35 +94,77 @@ export const getNextMoveIndex = (
   scrollMode: ScrollMode,
   wrapAround: boolean,
   currentSlide: number,
-  count: number,
+  slideCount: number,
   slidesToScroll: number,
-  slidesToShow: number
+  slidesToShow: number,
+  cellAlign: Alignment
 ) => {
-  if (
-    !wrapAround &&
-    scrollMode === ScrollMode.remainder &&
-    count < currentSlide + (slidesToScroll + slidesToShow)
-  ) {
-    const remindedSlides =
-      count - (currentSlide + slidesToScroll) - (slidesToShow - slidesToScroll);
-    return currentSlide + remindedSlides;
+  if (wrapAround) {
+    return currentSlide + slidesToScroll;
   }
-  return currentSlide + slidesToScroll;
+  // Quit early if we're already as far right as we can go
+  if (
+    currentSlide >= slideCount - 1 ||
+    (cellAlign === Alignment.Left && currentSlide >= slideCount - slidesToShow)
+  ) {
+    return currentSlide;
+  }
+
+  if (scrollMode === ScrollMode.remainder && cellAlign === Alignment.Left) {
+    return Math.min(currentSlide + slidesToScroll, slideCount - slidesToShow);
+  }
+
+  return Math.min(currentSlide + slidesToScroll, slideCount - 1);
 };
 
 export const getPrevMoveIndex = (
   scrollMode: ScrollMode,
   wrapAround: boolean,
   currentSlide: number,
-  slidesToScroll: number
+  slidesToScroll: number,
+  slidesToShow: number,
+  cellAlign: Alignment
 ) => {
-  if (
-    !wrapAround &&
-    scrollMode === ScrollMode.remainder &&
-    currentSlide - slidesToScroll < 0
-  ) {
-    return 0;
+  if (wrapAround) {
+    return currentSlide - slidesToScroll;
   }
 
-  return currentSlide - slidesToScroll;
+  // Quit early if we're already as far left as we can go
+  if (
+    currentSlide <= 0 ||
+    (cellAlign === Alignment.Right && currentSlide <= slidesToShow - 1)
+  ) {
+    return currentSlide;
+  }
+
+  if (scrollMode === ScrollMode.remainder && cellAlign === Alignment.Right) {
+    return Math.max(currentSlide - slidesToScroll, slidesToShow - 1);
+  }
+
+  return Math.max(currentSlide - slidesToScroll, 0);
+};
+
+export const getDefaultSlideIndex = (
+  slideIndex: number | undefined,
+  slideCount: number,
+  slidesToShow: number,
+  slidesToScroll: number,
+  cellAlign: Alignment,
+  autoplayReverse: boolean,
+  scrollMode: ScrollMode
+) => {
+  if (slideIndex !== undefined) {
+    return slideIndex;
+  }
+
+  const dotIndexes = getDotIndexes(
+    slideCount,
+    slidesToScroll,
+    scrollMode,
+    slidesToShow,
+    false,
+    cellAlign
+  );
+
+  return autoplayReverse ? dotIndexes[dotIndexes.length - 1] : dotIndexes[0];
 };

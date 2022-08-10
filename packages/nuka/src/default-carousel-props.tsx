@@ -58,7 +58,6 @@ const defaultProps: InternalCarouselProps = {
   ),
   renderCenterRightControls: (props: ControlProps) => <NextButton {...props} />,
   scrollMode: ScrollMode.page,
-  slideIndex: 0,
   slidesToScroll: 1,
   slidesToShow: 1,
   speed: 500,
