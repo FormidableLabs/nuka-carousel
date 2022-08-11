@@ -510,7 +510,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
       onDragStart(e);
 
-      const moveValue = (carouselWidth?.current || 0) - e.touches[0].pageX;
+      const moveValue = (carouselWidth.current || 0) - e.touches[0].pageX;
 
       handlePointerMove(moveValue);
     },
@@ -521,7 +521,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (!dragging) return;
 
-      carouselRef?.current?.focus();
+      carouselRef.current?.focus();
 
       setIsDragging(true);
       onDragStart(e);
@@ -537,7 +537,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
       const offsetX =
         e.clientX - (carouselRef.current?.getBoundingClientRect().left || 0);
-      const moveValue = (carouselWidth?.current || 0) - offsetX;
+      const moveValue = (carouselWidth.current || 0) - offsetX;
 
       handlePointerMove(moveValue);
     },
