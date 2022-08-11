@@ -94,6 +94,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const prevMove = useRef<number>(0);
   const carouselEl = useRef<HTMLDivElement>(null);
   const autoplayTimeout = useRef<ReturnType<typeof setTimeout>>();
+  const autoplayLastTriggeredRef = useRef<number | null>(null);
   const animationEndTimeout = useRef<ReturnType<typeof setTimeout>>();
   const isMounted = useRef<boolean>(true);
 
@@ -224,7 +225,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       goToSlide(slideIndex);
       prevMovedToSlideIndex.current = slideIndex;
     }
-  }, [slideIndex, currentSlide, autoplayReverse, goToSlide]);
+  }, [slideIndex, autoplayReverse, goToSlide]);
 
   // Makes the carousel infinity when autoplay and wrapAround are enabled
   useEffect(() => {
@@ -240,14 +241,40 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   }, [isAnimating, currentSlide, slideCount, wrapAround, autoplay]);
 
   useEffect(() => {
+    let pauseStarted: number | null = null;
+
+    // Keep track of when autoplay was paused so we can resume it with the same
+    // remaining time to the next slide transition
+    if (pause) {
+      pauseStarted = Date.now();
+    }
+
+    return () => {
+      if (pauseStarted !== null && autoplayLastTriggeredRef.current !== null) {
+        autoplayLastTriggeredRef.current += Date.now() - pauseStarted;
+      }
+    };
+  }, [pause]);
+
+  useEffect(() => {
     if (autoplay && !pause) {
+      // Adjust the timeout duration to account for changes that triggered the
+      // re-creation of this timeout, such as the currentSlide being changed
+      // periodically to make wrapAround loop forever
+      const adjustedTimeoutMs =
+        autoplayLastTriggeredRef.current !== null
+          ? autoplayInterval - (Date.now() - autoplayLastTriggeredRef.current)
+          : autoplayInterval;
+
       autoplayTimeout.current = setTimeout(() => {
+        autoplayLastTriggeredRef.current = Date.now();
+
         if (autoplayReverse) {
           prevSlide();
         } else {
           nextSlide();
         }
-      }, autoplayInterval);
+      }, adjustedTimeoutMs);
     }
 
     // Clear the timeout if user hover on carousel
@@ -259,15 +286,10 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       clearTimeout(autoplayTimeout.current);
     };
   }, [
-    cellAlign,
-    currentSlide,
-    slidesToShow,
-    slideCount,
     pause,
     autoplay,
     autoplayInterval,
     autoplayReverse,
-    wrapAround,
     prevSlide,
     nextSlide
   ]);
