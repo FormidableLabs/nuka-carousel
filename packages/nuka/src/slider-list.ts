@@ -114,7 +114,7 @@ export const getSliderListStyles = (
   move?: number,
   slideAnimation?: 'fade' | 'zoom'
 ): CSSProperties => {
-  const count = React.Children.count(children);
+  const count = React.Children.toArray(children).filter(Boolean).length;
 
   const width = getSliderListWidth(count, slidesToShow, wrapAround);
   const positioning = getPositioning(

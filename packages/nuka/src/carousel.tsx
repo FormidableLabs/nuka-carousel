@@ -68,7 +68,8 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     zoomScale
   } = props;
 
-  const slideCount = React.Children.count(children);
+  const slideCount = React.Children.toArray(children).filter(Boolean).length;
+
   const slidesToScroll =
     animation === 'fade' ? slidesToShow : propsSlidesToScroll;
 
@@ -549,7 +550,8 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   } = useFrameHeight(adaptiveHeight, slidesToShow, slideCount);
 
   const renderSlides = (typeOfSlide?: 'prev-cloned' | 'next-cloned') => {
-    const slides = React.Children.map(children, (child, index) => {
+    const filteredSlides = React.Children.toArray(children).filter(Boolean);
+    const slides = filteredSlides.map((child, index) => {
       const isCurrentSlide = wrapAround
         ? currentSlide === index ||
           currentSlide === index + slideCount ||
