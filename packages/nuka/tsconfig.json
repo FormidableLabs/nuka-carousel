@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src/**/*", "./jest-setup.ts"],
+  "include": ["src/**/*"],
   "compilerOptions": {
     "baseUrl": ".",
     "declaration": true,
