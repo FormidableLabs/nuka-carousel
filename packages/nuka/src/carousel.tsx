@@ -88,18 +88,14 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [move, setMove] = useState<number>(0);
   const [keyboardMove, setKeyboardMove] = useState<KeyCodeFunction>(null);
-  const carouselWidth = useRef<number | null>(null);
 
   const focus = useRef<boolean>(false);
-  const prevMove = useRef<number>(0);
-  const carouselEl = useRef<HTMLDivElement>(null);
+  const prevMove = useRef<number | null>(null);
+  const defaultCarouselRef = useRef<HTMLDivElement>(null);
   const autoplayTimeout = useRef<ReturnType<typeof setTimeout>>();
   const autoplayLastTriggeredRef = useRef<number | null>(null);
   const animationEndTimeout = useRef<ReturnType<typeof setTimeout>>();
   const isMounted = useRef<boolean>(true);
-
-  const dragThreshold =
-    ((carouselWidth.current || 0) / slidesToShow) * propsDragThreshold;
 
   const [slide] = getIndexes(
     currentSlide,
@@ -121,7 +117,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       .forEach((el) => el.setAttribute('draggable', 'false'));
   }, []);
 
-  const carouselRef = innerRef || carouselEl;
+  const carouselRef = innerRef || defaultCarouselRef;
 
   const goToSlide = useCallback(
     (targetSlideIndex: number) => {
@@ -396,13 +392,9 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     [enableKeyboardControls, keyCodeConfig]
   );
 
-  useEffect(() => {
-    if (carouselEl && carouselEl.current) {
-      carouselWidth.current = carouselEl.current.offsetWidth;
-    } else if (innerRef) {
-      carouselWidth.current = innerRef.current.offsetWidth;
-    }
+  const dragPositions = useRef<{ pos: number; time: number }[]>([]);
 
+  useEffect(() => {
     if (enableKeyboardControls) {
       addEvent(document, 'keydown', onKeyPress);
     }
@@ -410,45 +402,86 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     return () => {
       removeEvent(document, 'keydown', onKeyPress);
     };
-  }, [enableKeyboardControls, innerRef, onKeyPress]);
+  }, [enableKeyboardControls, carouselRef, onKeyPress]);
 
-  const handleDragEnd = useCallback(
-    (
-      e?: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
-    ) => {
-      if (!dragging || !isDragging) return;
+  const handleDragEnd = (
+    e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+  ) => {
+    if (!dragging || !isDragging) return;
 
-      setIsDragging(false);
-      onDragEnd(e);
+    setIsDragging(false);
 
-      if (Math.abs(move) <= dragThreshold) {
-        goToSlide(currentSlide);
-        setMove(0);
-        prevMove.current = 0;
-        return;
+    let distanceFromInertia = 0;
+    if (dragPositions.current.length > 0) {
+      const startMove = dragPositions.current[0];
+      const endMove = dragPositions.current[dragPositions.current.length - 1];
+      const timeOffset = endMove.time - startMove.time;
+      const initialVelocity =
+        15 * Math.abs((endMove.pos - startMove.pos) / timeOffset);
+      const friction = 0.92;
+      let velocity = initialVelocity;
+
+      while (Math.abs(velocity) > 1) {
+        distanceFromInertia += velocity;
+        velocity *= friction;
       }
 
+      dragPositions.current = [];
+    }
+
+    const adjustedMove =
+      move > 0 ? move + distanceFromInertia : move - distanceFromInertia;
+
+    onDragEnd(e);
+
+    prevMove.current = null;
+    setMove(0);
+
+    const slideUnit =
+      (carouselRef.current?.offsetWidth || 0) *
+      Math.min(1, slidesToScroll / slidesToShow);
+    const dragThreshold = slideUnit * propsDragThreshold;
+
+    if (Math.abs(adjustedMove) <= dragThreshold) {
+      goToSlide(currentSlide);
+      return;
+    }
+
+    const timesToMove =
+      1 +
+      Math.min(
+        Math.max(1, Math.floor(slidesToShow / slidesToScroll)) - 1,
+        Math.floor((Math.abs(adjustedMove) - dragThreshold) / slideUnit)
+      );
+
+    let nextSlideIndex = currentSlide;
+    for (let index = 0; index < timesToMove; index += 1) {
       if (move > 0) {
-        nextSlide();
+        nextSlideIndex = getNextMoveIndex(
+          scrollMode,
+          wrapAround,
+          nextSlideIndex,
+          slideCount,
+          propsSlidesToScroll,
+          slidesToShow,
+          cellAlign
+        );
       } else {
-        prevSlide();
+        nextSlideIndex = getPrevMoveIndex(
+          scrollMode,
+          wrapAround,
+          nextSlideIndex,
+          propsSlidesToScroll,
+          slidesToShow,
+          cellAlign
+        );
       }
+    }
 
-      setMove(0);
-      prevMove.current = 0;
-    },
-    [
-      currentSlide,
-      dragging,
-      dragThreshold,
-      isDragging,
-      move,
-      goToSlide,
-      nextSlide,
-      onDragEnd,
-      prevSlide
-    ]
-  );
+    if (currentSlide !== nextSlideIndex) {
+      goToSlide(nextSlideIndex);
+    }
+  };
 
   const onTouchStart = useCallback(
     (e?: React.TouchEvent<HTMLDivElement>) => {
@@ -462,16 +495,22 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   );
 
   const handlePointerMove = useCallback(
-    (m: number) => {
+    (moveValue: number) => {
       if (!dragging || !isDragging) return;
 
-      const moveValue = m * 0.75; // Friction
-      const moveState = move + (moveValue - prevMove.current);
+      const delta =
+        prevMove.current !== null ? moveValue - prevMove.current : 0;
+      const moveState = move + delta;
 
-      // Exit drag early if passed threshold
-      if (Math.abs(move) > dragThreshold) {
-        handleDragEnd();
-        return;
+      const now = Date.now();
+      while (dragPositions.current.length > 0) {
+        if (now - dragPositions.current[0].time <= 100) {
+          break;
+        }
+        dragPositions.current.shift();
+      }
+      if (prevMove.current !== null) {
+        dragPositions.current.push({ pos: moveState, time: now });
       }
 
       if (
@@ -484,7 +523,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         return;
       }
 
-      if (prevMove.current !== 0) {
+      if (prevMove.current !== null) {
         setMove(moveState);
       }
 
@@ -494,9 +533,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       slideCount,
       currentSlide,
       disableEdgeSwiping,
-      dragThreshold,
       isDragging,
-      handleDragEnd,
       move,
       dragging,
       slidesToShow,
@@ -510,11 +547,12 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
       onDragStart(e);
 
-      const moveValue = (carouselWidth.current || 0) - e.touches[0].pageX;
+      const moveValue =
+        (carouselRef.current?.offsetWidth || 0) - e.touches[0].pageX;
 
       handlePointerMove(moveValue);
     },
-    [dragging, isDragging, handlePointerMove, onDragStart]
+    [dragging, isDragging, carouselRef, handlePointerMove, onDragStart]
   );
 
   const onMouseDown = useCallback(
@@ -537,20 +575,17 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
       const offsetX =
         e.clientX - (carouselRef.current?.getBoundingClientRect().left || 0);
-      const moveValue = (carouselWidth.current || 0) - offsetX;
+      const moveValue = (carouselRef.current?.offsetWidth || 0) - offsetX;
 
       handlePointerMove(moveValue);
     },
     [carouselRef, isDragging, handlePointerMove, onDrag, dragging]
   );
 
-  const onMouseUp = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      e?.preventDefault();
-      handleDragEnd(e);
-    },
-    [handleDragEnd]
-  );
+  const onMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    handleDragEnd(e);
+  };
 
   const onMouseEnter = useCallback(() => {
     if (pauseOnHover) {
@@ -651,7 +686,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         tabIndex={0}
         onFocus={() => (focus.current = true)}
         onBlur={() => (focus.current = false)}
-        ref={innerRef || carouselEl}
+        ref={carouselRef}
         onMouseUp={onMouseUp}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
