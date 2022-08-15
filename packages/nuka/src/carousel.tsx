@@ -86,11 +86,13 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
   const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [move, setMove] = useState<number>(0);
+  const [dragDistance, setDragDistance] = useState<number>(0);
   const [keyboardMove, setKeyboardMove] = useState<KeyCodeFunction>(null);
 
   const focus = useRef<boolean>(false);
-  const prevMove = useRef<number | null>(null);
+  const prevXPosition = useRef<number | null>(null);
+  const preDragOffset = useRef<number>(0);
+  const sliderListRef = useRef<HTMLDivElement>(null);
   const defaultCarouselRef = useRef<HTMLDivElement>(null);
   const autoplayTimeout = useRef<ReturnType<typeof setTimeout>>();
   const autoplayLastTriggeredRef = useRef<number | null>(null);
@@ -223,17 +225,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     }
   }, [slideIndex, autoplayReverse, goToSlide]);
 
-  // Makes the carousel infinity when autoplay and wrapAround are enabled
-  useEffect(() => {
-    if (autoplay && !isAnimating && wrapAround) {
-      if (currentSlide > slideCount) {
-        setCurrentSlide(currentSlide - slideCount);
-      } else if (currentSlide < 0) {
-        setCurrentSlide(slideCount - -currentSlide);
-      }
-    }
-  }, [isAnimating, currentSlide, slideCount, wrapAround, autoplay]);
-
   useEffect(() => {
     let pauseStarted: number | null = null;
 
@@ -288,46 +279,22 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     nextSlide
   ]);
 
-  // Makes the carousel infinity when wrapAround is enabled, but autoplay is disabled
+  // Makes the carousel infinity when wrapAround is enabled
   useEffect(() => {
-    let prevTimeout: ReturnType<typeof setTimeout> | null = null;
-    let nextTimeout: ReturnType<typeof setTimeout> | null = null;
-
-    if (wrapAround && !autoplay) {
-      // if animation is disabled decrease the speed to 0
-      const speed = !disableAnimation ? propsSpeed || 500 : 0;
-
+    if (wrapAround && !isAnimating && !isDragging) {
       if (currentSlide <= -slidesToShow) {
-        // prev
-        prevTimeout = setTimeout(() => {
-          if (!isMounted.current) return;
-          setCurrentSlide(slideCount - -currentSlide);
-        }, speed + 10);
+        setCurrentSlide(slideCount - -currentSlide);
       } else if (currentSlide >= slideCount) {
-        // next
-        nextTimeout = setTimeout(() => {
-          if (!isMounted.current) return;
-          setCurrentSlide(currentSlide - slideCount);
-        }, speed + 10);
+        setCurrentSlide(currentSlide - slideCount);
       }
     }
-
-    return function cleanup() {
-      if (prevTimeout) {
-        clearTimeout(prevTimeout);
-      }
-      if (nextTimeout) {
-        clearTimeout(nextTimeout);
-      }
-    };
   }, [
     currentSlide,
-    autoplay,
-    wrapAround,
-    disableAnimation,
-    propsSpeed,
+    isAnimating,
+    isDragging,
+    slideCount,
     slidesToShow,
-    slideCount
+    wrapAround
   ]);
 
   useEffect(() => {
@@ -405,7 +372,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const handleDragEnd = (
     e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
   ) => {
-    if (!dragging || !isDragging) return;
+    if (!dragging || !isDragging || !carouselRef.current) return;
 
     setIsDragging(false);
 
@@ -415,7 +382,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       const endMove = dragPositions.current[dragPositions.current.length - 1];
       const timeOffset = endMove.time - startMove.time;
       const initialVelocity =
-        15 * Math.abs((endMove.pos - startMove.pos) / timeOffset);
+        10 * Math.abs((endMove.pos - startMove.pos) / timeOffset);
       const friction = 0.92;
       let velocity = initialVelocity;
 
@@ -427,20 +394,20 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       dragPositions.current = [];
     }
 
-    const adjustedMove =
-      move > 0 ? move + distanceFromInertia : move - distanceFromInertia;
+    const adjustedDragDistance =
+      Math.abs(dragDistance) + Math.abs(distanceFromInertia);
 
     onDragEnd(e);
 
-    prevMove.current = null;
-    setMove(0);
+    prevXPosition.current = null;
+    setDragDistance(0);
 
     const slideUnit =
-      (carouselRef.current?.offsetWidth || 0) *
+      (carouselRef.current.offsetWidth || 0) *
       Math.min(1, slidesToScroll / slidesToShow);
     const dragThreshold = slideUnit * propsDragThreshold;
 
-    if (Math.abs(adjustedMove) <= dragThreshold) {
+    if (adjustedDragDistance <= dragThreshold) {
       goToSlide(currentSlide);
       return;
     }
@@ -448,13 +415,17 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     const timesToMove =
       1 +
       Math.min(
+        // The maximum number of slides we could cross with one swipe; basically
+        // no more than one page's worth of slides.
         Math.max(1, Math.floor(slidesToShow / slidesToScroll)) - 1,
-        Math.floor((Math.abs(adjustedMove) - dragThreshold) / slideUnit)
+
+        // The additional slides to move, based on the excess move distance
+        Math.floor((adjustedDragDistance - dragThreshold) / slideUnit)
       );
 
     let nextSlideIndex = currentSlide;
     for (let index = 0; index < timesToMove; index += 1) {
-      if (move > 0) {
+      if (dragDistance > 0) {
         nextSlideIndex = getNextMoveIndex(
           scrollMode,
           wrapAround,
@@ -476,38 +447,42 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       }
     }
 
-    if (currentSlide !== nextSlideIndex) {
-      goToSlide(nextSlideIndex);
-    }
+    goToSlide(nextSlideIndex);
   };
 
   const onTouchStart = useCallback(
     (e?: React.TouchEvent<HTMLDivElement>) => {
-      if (!swiping) {
+      if (!swiping || !sliderListRef.current || !carouselRef.current) {
         return;
       }
       setIsDragging(true);
+      preDragOffset.current =
+        sliderListRef.current.getBoundingClientRect().left -
+        carouselRef.current.getBoundingClientRect().left;
+
       onDragStart(e);
     },
-    [onDragStart, swiping]
+    [carouselRef, onDragStart, swiping]
   );
 
   const handlePointerMove = useCallback(
-    (moveValue: number) => {
+    (xPosition: number) => {
       if (!dragging || !isDragging) return;
 
+      const isFirstMove = prevXPosition.current === null;
       const delta =
-        prevMove.current !== null ? moveValue - prevMove.current : 0;
-      const moveState = move + delta;
+        prevXPosition.current !== null ? xPosition - prevXPosition.current : 0;
+      const moveState = dragDistance + delta;
 
       const now = Date.now();
+      // Maintain a buffer of drag positions from the last 100ms
       while (dragPositions.current.length > 0) {
         if (now - dragPositions.current[0].time <= 100) {
           break;
         }
         dragPositions.current.shift();
       }
-      if (prevMove.current !== null) {
+      if (!isFirstMove) {
         dragPositions.current.push({ pos: moveState, time: now });
       }
 
@@ -517,22 +492,22 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         ((currentSlide <= 0 && moveState <= 0) ||
           (moveState > 0 && currentSlide >= slideCount - slidesToShow))
       ) {
-        prevMove.current = moveValue;
+        prevXPosition.current = xPosition;
         return;
       }
 
-      if (prevMove.current !== null) {
-        setMove(moveState);
+      if (!isFirstMove) {
+        setDragDistance(moveState);
       }
 
-      prevMove.current = moveValue;
+      prevXPosition.current = xPosition;
     },
     [
       slideCount,
       currentSlide,
       disableEdgeSwiping,
       isDragging,
-      move,
+      dragDistance,
       dragging,
       slidesToShow,
       wrapAround
@@ -541,12 +516,11 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
   const onTouchMove = useCallback(
     (e: React.TouchEvent<HTMLDivElement>) => {
-      if (!dragging || !isDragging) return;
+      if (!dragging || !isDragging || !carouselRef.current) return;
 
       onDragStart(e);
 
-      const moveValue =
-        (carouselRef.current?.offsetWidth || 0) - e.touches[0].pageX;
+      const moveValue = carouselRef.current.offsetWidth - e.touches[0].pageX;
 
       handlePointerMove(moveValue);
     },
@@ -555,11 +529,16 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
   const onMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!dragging) return;
+      if (!dragging || !sliderListRef.current || !carouselRef.current) return;
 
-      carouselRef.current?.focus();
+      carouselRef.current.focus();
 
       setIsDragging(true);
+
+      preDragOffset.current =
+        sliderListRef.current.getBoundingClientRect().left -
+        carouselRef.current.getBoundingClientRect().left;
+
       onDragStart(e);
     },
     [carouselRef, dragging, onDragStart]
@@ -567,13 +546,13 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
   const onMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!dragging || !isDragging) return;
+      if (!dragging || !isDragging || !carouselRef.current) return;
 
       onDrag(e);
 
       const offsetX =
-        e.clientX - (carouselRef.current?.getBoundingClientRect().left || 0);
-      const moveValue = (carouselRef.current?.offsetWidth || 0) - offsetX;
+        e.clientX - carouselRef.current.getBoundingClientRect().left;
+      const moveValue = carouselRef.current.offsetWidth - offsetX;
 
       handlePointerMove(moveValue);
     },
@@ -703,9 +682,10 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
             cellAlign,
             wrapAround,
             propsSpeed,
-            move,
+            isDragging ? preDragOffset.current - dragDistance : 0,
             animation
           )}
+          ref={sliderListRef}
         >
           {wrapAround ? renderSlides('prev-cloned') : null}
           {renderSlides()}

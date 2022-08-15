@@ -20,7 +20,7 @@ const getTransition = (
   count: number,
   initialValue: number,
   currentSlide: number,
-  cellAlign: 'left' | 'right' | 'center',
+  cellAlign: Alignment,
   wrapAround?: boolean
 ): number => {
   if (cellAlign === Alignment.Left) {
@@ -59,17 +59,17 @@ const getTransition = (
 };
 
 const getPositioning = (
-  cellAlign: 'left' | 'right' | 'center',
+  cellAlign: Alignment,
   slidesToShow: number,
-  count: number,
+  slideCount: number,
   currentSlide: number,
-  wrapAround?: boolean,
-  move?: number
+  wrapAround: boolean,
+  draggedOffset: number
 ): string | undefined => {
   // When wrapAround is enabled, we show the slides 3 times
-  const totalCount = wrapAround ? 3 * count : count;
+  const totalCount = wrapAround ? 3 * slideCount : slideCount;
   const slideSize = 100 / totalCount;
-  let initialValue = wrapAround ? -count * slideSize : 0;
+  let initialValue = wrapAround ? -slideCount * slideSize : 0;
 
   if (cellAlign === Alignment.Right && slidesToShow > 1) {
     const excessSlides = slidesToShow - 1;
@@ -83,8 +83,8 @@ const getPositioning = (
     initialValue += slideSize * excessLeftSlides;
   }
 
-  const horizontalMove = getTransition(
-    count,
+  const slideBasedOffset = getTransition(
+    slideCount,
     initialValue,
     currentSlide,
     cellAlign,
@@ -93,45 +93,44 @@ const getPositioning = (
 
   // Special-case this. It's better to return undefined rather than a
   // transform of 0 pixels since transforms can cause flickering in chrome.
-  if (move === 0 && horizontalMove === 0) {
+  if (draggedOffset === 0 && slideBasedOffset === 0) {
     return undefined;
   }
 
-  const draggableMove = move
-    ? `calc(${horizontalMove}% - ${move}px)`
-    : `${horizontalMove}%`;
-  return `translate3d(${draggableMove}, 0, 0)`;
+  return `translate3d(${
+    draggedOffset ? `${draggedOffset}px` : `${slideBasedOffset}%`
+  }, 0, 0)`;
 };
 
 export const getSliderListStyles = (
   children: ReactNode | ReactNode[],
   currentSlide: number,
   isAnimating: boolean,
-  slidesToShow?: number,
-  cellAlign?: 'left' | 'right' | 'center',
-  wrapAround?: boolean,
-  speed?: number,
-  move?: number,
+  slidesToShow: number,
+  cellAlign: Alignment,
+  wrapAround: boolean,
+  speed: number,
+  draggedOffset: number,
   slideAnimation?: 'fade' | 'zoom'
 ): CSSProperties => {
   const count = React.Children.count(children);
 
   const width = getSliderListWidth(count, slidesToShow, wrapAround);
   const positioning = getPositioning(
-    cellAlign || Alignment.Left,
-    slidesToShow || 1,
+    cellAlign,
+    slidesToShow,
     count,
     currentSlide,
     wrapAround,
-    move
+    draggedOffset
   );
 
   return {
     width,
     textAlign: 'left',
     transition:
-      isAnimating && slideAnimation !== 'fade'
-        ? `${speed || 500}ms ease 0s`
+      draggedOffset === 0 && isAnimating && slideAnimation !== 'fade'
+        ? `${speed}ms ease 0s`
         : undefined,
     transform: positioning,
     display: 'flex'
