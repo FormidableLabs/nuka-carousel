@@ -46,7 +46,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     className,
     disableAnimation,
     disableEdgeSwiping,
-    dragging,
+    dragging: desktopDraggingEnabled,
     dragThreshold: propsDragThreshold,
     enableKeyboardControls,
     frameAriaLabel,
@@ -63,7 +63,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     slidesToShow,
     speed: propsSpeed,
     style,
-    swiping,
+    swiping: mobileDraggingEnabled,
     wrapAround,
     zoomScale
   } = props;
@@ -372,7 +372,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const handleDragEnd = (
     e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
   ) => {
-    if (!dragging || !isDragging || !carouselRef.current) return;
+    if (!isDragging || !carouselRef.current) return;
 
     setIsDragging(false);
 
@@ -452,7 +452,11 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
   const onTouchStart = useCallback(
     (e?: React.TouchEvent<HTMLDivElement>) => {
-      if (!swiping || !sliderListRef.current || !carouselRef.current) {
+      if (
+        !mobileDraggingEnabled ||
+        !sliderListRef.current ||
+        !carouselRef.current
+      ) {
         return;
       }
       setIsDragging(true);
@@ -462,12 +466,12 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
       onDragStart(e);
     },
-    [carouselRef, onDragStart, swiping]
+    [carouselRef, onDragStart, mobileDraggingEnabled]
   );
 
   const handlePointerMove = useCallback(
     (xPosition: number) => {
-      if (!dragging || !isDragging) return;
+      if (!isDragging) return;
 
       const isFirstMove = prevXPosition.current === null;
       const delta =
@@ -516,7 +520,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
   const onTouchMove = useCallback(
     (e: React.TouchEvent<HTMLDivElement>) => {
-      if (!dragging || !isDragging || !carouselRef.current) return;
+      if (!isDragging || !carouselRef.current) return;
 
       onDragStart(e);
 
@@ -524,12 +528,17 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
       handlePointerMove(moveValue);
     },
-    [dragging, isDragging, carouselRef, handlePointerMove, onDragStart]
+    [isDragging, carouselRef, handlePointerMove, onDragStart]
   );
 
   const onMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!dragging || !sliderListRef.current || !carouselRef.current) return;
+      if (
+        !desktopDraggingEnabled ||
+        !sliderListRef.current ||
+        !carouselRef.current
+      )
+        return;
 
       carouselRef.current.focus();
 
@@ -541,12 +550,12 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
       onDragStart(e);
     },
-    [carouselRef, dragging, onDragStart]
+    [carouselRef, desktopDraggingEnabled, onDragStart]
   );
 
   const onMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!dragging || !isDragging || !carouselRef.current) return;
+      if (!isDragging || !carouselRef.current) return;
 
       onDrag(e);
 
@@ -556,7 +565,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
       handlePointerMove(moveValue);
     },
-    [carouselRef, isDragging, handlePointerMove, onDrag, dragging]
+    [carouselRef, isDragging, handlePointerMove, onDrag]
   );
 
   const onMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
