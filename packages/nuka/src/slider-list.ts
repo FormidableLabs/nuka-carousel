@@ -1,57 +1,58 @@
 import React, { CSSProperties, ReactNode } from 'react';
-import { Alignment } from './types';
+import { getDotIndexes } from './default-controls';
+import { Alignment, ScrollMode } from './types';
 
 const getSliderListWidth = (
-  count: number,
-  slidesToShow?: number,
-  wrapAround?: boolean
+  slideCount: number,
+  slidesToShow: number,
+  wrapAround: boolean
 ): string => {
-  const visibleSlides = slidesToShow || 1;
+  const visibleSlides = slidesToShow;
 
   if (wrapAround) {
-    const percentage = (count * 100) / visibleSlides;
+    const percentage = (slideCount * 100) / visibleSlides;
     return `${3 * percentage}%`;
   }
-  const percentage = (count * 100) / visibleSlides;
+  const percentage = (slideCount * 100) / visibleSlides;
   return `${percentage}%`;
 };
 
-const getTransition = (
-  count: number,
+const getPercentOffsetForSlide = (
+  slideCount: number,
   initialValue: number,
   currentSlide: number,
   cellAlign: Alignment,
-  wrapAround?: boolean
+  wrapAround: boolean
 ): number => {
   if (cellAlign === Alignment.Left) {
     if (wrapAround) {
-      const slideTransition = 100 / (3 * count);
+      const slideTransition = 100 / (3 * slideCount);
       const currentTransition =
         initialValue - slideTransition * (currentSlide - 1);
 
       return currentTransition - slideTransition;
     }
-    const slideTransition = (100 / count) * currentSlide;
+    const slideTransition = (100 / slideCount) * currentSlide;
     return -(slideTransition + initialValue);
   } else if (cellAlign === Alignment.Center) {
     if (wrapAround) {
-      const slideTransition = 100 / (3 * count);
+      const slideTransition = 100 / (3 * slideCount);
       const currentTransition =
         initialValue - slideTransition * (currentSlide - 1);
 
       return currentTransition - slideTransition;
     }
-    const slideTransition = (100 / count) * currentSlide;
+    const slideTransition = (100 / slideCount) * currentSlide;
     return initialValue - slideTransition;
   } else if (cellAlign === Alignment.Right) {
     if (wrapAround) {
-      const slideTransition = 100 / (3 * count);
+      const slideTransition = 100 / (3 * slideCount);
       const currentTransition =
         initialValue - slideTransition * (currentSlide - 1);
 
       return currentTransition - slideTransition;
     }
-    const slideTransition = (100 / count) * currentSlide;
+    const slideTransition = (100 / slideCount) * currentSlide;
     return initialValue - slideTransition;
   }
 
@@ -64,7 +65,8 @@ const getPositioning = (
   slideCount: number,
   currentSlide: number,
   wrapAround: boolean,
-  draggedOffset: number
+  draggedOffset: number,
+  clampIndices: number[] | null
 ): string | undefined => {
   // When wrapAround is enabled, we show the slides 3 times
   const totalCount = wrapAround ? 3 * slideCount : slideCount;
@@ -83,7 +85,7 @@ const getPositioning = (
     initialValue += slideSize * excessLeftSlides;
   }
 
-  const slideBasedOffset = getTransition(
+  const slideBasedOffset = getPercentOffsetForSlide(
     slideCount,
     initialValue,
     currentSlide,
@@ -97,8 +99,27 @@ const getPositioning = (
     return undefined;
   }
 
+  let clampOffsets: number[] | null = null;
+  if (clampIndices) {
+    clampOffsets = clampIndices.map((index) =>
+      getPercentOffsetForSlide(
+        slideCount,
+        initialValue,
+        index,
+        cellAlign,
+        wrapAround
+      )
+    );
+  }
+
+  const clampedDraggedOffset = clampOffsets
+    ? // Offsets are seemingly backwards because the rightmost slide creates
+      // the most negative translate value
+      `clamp(${clampOffsets[1]}%, ${draggedOffset}px, ${clampOffsets[0]}%)`
+    : `${draggedOffset}px`;
+
   return `translate3d(${
-    draggedOffset ? `${draggedOffset}px` : `${slideBasedOffset}%`
+    draggedOffset ? clampedDraggedOffset : `${slideBasedOffset}%`
   }, 0, 0)`;
 };
 
@@ -111,18 +132,39 @@ export const getSliderListStyles = (
   wrapAround: boolean,
   speed: number,
   draggedOffset: number,
+  slidesToScroll: number,
+  scrollMode: ScrollMode,
+  disableEdgeSwiping: boolean,
   slideAnimation?: 'fade' | 'zoom'
 ): CSSProperties => {
-  const count = React.Children.count(children);
+  const slideCount = React.Children.count(children);
 
-  const width = getSliderListWidth(count, slidesToShow, wrapAround);
+  const width = getSliderListWidth(slideCount, slidesToShow, wrapAround);
+
+  // When disableEdgeSwiping=true, we recycle dot index generation to determine
+  // the leftmost and rightmost indices used, to be used in calculating the
+  // x-translation values we need to limit to.
+  let clampIndices: number[] | null = null;
+  if (disableEdgeSwiping && !wrapAround) {
+    const dotIndexes = getDotIndexes(
+      slideCount,
+      slidesToScroll,
+      scrollMode,
+      slidesToShow,
+      wrapAround,
+      cellAlign
+    );
+    clampIndices = [dotIndexes[0], dotIndexes[dotIndexes.length - 1]];
+  }
+
   const positioning = getPositioning(
     cellAlign,
     slidesToShow,
-    count,
+    slideCount,
     currentSlide,
     wrapAround,
-    draggedOffset
+    draggedOffset,
+    clampIndices
   );
 
   return {

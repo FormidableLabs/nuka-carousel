@@ -490,32 +490,13 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         dragPositions.current.push({ pos: moveState, time: now });
       }
 
-      if (
-        !wrapAround &&
-        disableEdgeSwiping &&
-        ((currentSlide <= 0 && moveState <= 0) ||
-          (moveState > 0 && currentSlide >= slideCount - slidesToShow))
-      ) {
-        prevXPosition.current = xPosition;
-        return;
-      }
-
       if (!isFirstMove) {
         setDragDistance(moveState);
       }
 
       prevXPosition.current = xPosition;
     },
-    [
-      slideCount,
-      currentSlide,
-      disableEdgeSwiping,
-      isDragging,
-      dragDistance,
-      dragging,
-      slidesToShow,
-      wrapAround
-    ]
+    [isDragging, dragDistance]
   );
 
   const onTouchMove = useCallback(
@@ -692,6 +673,9 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
             wrapAround,
             propsSpeed,
             isDragging ? preDragOffset.current - dragDistance : 0,
+            slidesToScroll,
+            scrollMode,
+            disableEdgeSwiping,
             animation
           )}
           ref={sliderListRef}
