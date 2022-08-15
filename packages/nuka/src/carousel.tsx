@@ -228,10 +228,8 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     if (autoplay && !isAnimating && wrapAround) {
       if (currentSlide > slideCount) {
         setCurrentSlide(currentSlide - slideCount);
-        clearTimeout(autoplayTimeout.current);
       } else if (currentSlide < 0) {
         setCurrentSlide(slideCount - -currentSlide);
-        clearTimeout(autoplayTimeout.current);
       }
     }
   }, [isAnimating, currentSlide, slideCount, wrapAround, autoplay]);
