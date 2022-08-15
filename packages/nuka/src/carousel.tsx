@@ -646,6 +646,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
             ? 'height 300ms ease-in-out'
             : undefined,
           willChange: 'height',
+          userSelect: 'none',
           ...style
         }}
         aria-label={frameAriaLabel}

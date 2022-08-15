@@ -170,6 +170,7 @@ export const getSliderListStyles = (
   return {
     width,
     textAlign: 'left',
+    userSelect: 'auto',
     transition:
       draggedOffset === 0 && isAnimating && slideAnimation !== 'fade'
         ? `${speed}ms ease 0s`
