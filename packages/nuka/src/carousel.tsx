@@ -413,7 +413,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       Math.min(1, slidesToScroll / slidesToShow);
     const dragThreshold = oneScrollWidth * propsDragThreshold;
 
-    if (adjustedDragDistance <= dragThreshold) {
+    if (adjustedDragDistance < dragThreshold) {
       goToSlide(currentSlide);
       return;
     }
