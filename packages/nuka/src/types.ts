@@ -426,7 +426,6 @@ export interface InternalCarouselProps {
 
   /**
    * Supports 'page' and 'remainder' scroll modes.
-   * Defaults to 'remainder'.
    */
   scrollMode: ScrollMode;
 

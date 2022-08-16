@@ -1,4 +1,3 @@
-// / <reference types="cypress" />
 /* eslint-disable cypress/no-unnecessary-waiting */
 
 context('Carousel', () => {
@@ -7,10 +6,10 @@ context('Carousel', () => {
 
   describe('Carousel variations', () => {
     it('should render carousel with 4 slides and only 1 visible slide and go through all of the slides', () => {
-      const params = { ...sharedParams };
-      cy.visit(
-        `http://localhost:3000/?slides=4&params=${JSON.stringify(params)}`
-      );
+      cy.visitWithCarouselProps({
+        ...sharedParams,
+        slideCount: 4
+      });
 
       cy.get('.slider-frame').should(
         'have.attr',
@@ -62,15 +61,12 @@ context('Carousel', () => {
     });
 
     it('should render carousel with 6 slides and 2 visible slides and slides to scroll equal to 2', () => {
-      const params = {
+      cy.visitWithCarouselProps({
         ...sharedParams,
+        slideCount: 6,
         slidesToShow: 2,
         slidesToScroll: 2
-      };
-
-      cy.visit(
-        `http://localhost:3000/?slides=6&params=${JSON.stringify(params)}`
-      );
+      });
 
       cy.get('.slide.slide-visible')
         .should('have.length', 2)
@@ -101,15 +97,12 @@ context('Carousel', () => {
     });
 
     it('should render carousel with 5 slides and 2 visible slides without controls', () => {
-      const params = {
+      cy.visitWithCarouselProps({
         ...sharedParams,
+        slideCount: 5,
         slidesToShow: 2,
         withoutControls: true
-      };
-
-      cy.visit(
-        `http://localhost:3000/?slides=5&params=${JSON.stringify(params)}`
-      );
+      });
 
       cy.get('.slide.slide-visible')
         .should('have.length', 2)
