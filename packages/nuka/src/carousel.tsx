@@ -493,8 +493,11 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         }
         dragPositions.current.shift();
       }
+      dragPositions.current.push({ pos: nextDragDistance, time: now });
+
       if (!isFirstMove) {
-        dragPositions.current.push({ pos: nextDragDistance, time: now });
+        // nextDragDistance will always be `0` on the first move event, so we
+        // skip it because the value is already set to 0 at this point
         setDragDistance(nextDragDistance);
       }
 
