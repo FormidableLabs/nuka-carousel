@@ -3,46 +3,13 @@
 
 context('Swipe Carousel', () => {
   const carouselWidth = 600;
-  // Speed up transition animation time and set fixed width for easier drag
-  // distance calculations
-  const sharedParams = { speed: 50, style: { width: carouselWidth } };
-
-  const swipeSlider = (
-    distance: number,
-    { waitMs = 1000 }: { waitMs?: number } = {}
-  ) => {
-    const [start, end] =
-      distance >= 0 ? [distance, 0] : [0, Math.abs(distance)];
-
-    // Mock out the Date object so we can precisely simulate gesture event
-    // timing. Cypress' timing is too flaky due to its UI checks to be reliable
-    // on the millisecond level.
-    cy.clock(Date.UTC(2018, 10, 30), ['Date']);
-
-    cy.get('.slider-container')
-      .trigger('mousedown', { which: 1 })
-      .trigger('mousemove', { clientX: start })
-      .then(function () {
-        this.clock.tick(waitMs - 1);
-      })
-      .trigger('mousemove', {
-        // Add in one extra move event prior to the final one to fill the
-        // position buffer used to calculate inertia, so that calls with waitMs
-        // longer than 100ms (the maximum the position buffer keeps) will get
-        // proper velocity calculations. We use linear interpolation to
-        // determine a point that is consistent with a swipe of constant speed
-        // from start to end.
-        clientX: start + ((waitMs - 1) / waitMs) * (end - start)
-      })
-      .then(function () {
-        this.clock.tick(1);
-      })
-      .trigger('mousemove', { clientX: end })
-      .trigger('mouseup')
-      .then(function () {
-        this.clock.restore();
-      });
+  const sharedParams = {
+    // Speed up transition animation time
+    speed: 50,
+    // set fixed width for easier drag distance calculations
+    style: { width: carouselWidth }
   };
+
   const assertFirstSlideIs = (slideNumber: number) => {
     cy.get('.slide.slide-visible img').should(
       'have.attr',
@@ -73,19 +40,19 @@ context('Swipe Carousel', () => {
 
       assertFirstSlideIs(1);
 
-      swipeSlider(distance);
+      cy.swipeSlider(distance);
 
       assertFirstSlideIs(2);
 
-      swipeSlider(distance);
+      cy.swipeSlider(distance);
 
       assertFirstSlideIs(3);
 
-      swipeSlider(-distance);
+      cy.swipeSlider(-distance);
 
       assertFirstSlideIs(2);
 
-      swipeSlider(-distance);
+      cy.swipeSlider(-distance);
 
       assertFirstSlideIs(1);
     });
@@ -104,15 +71,15 @@ context('Swipe Carousel', () => {
 
       assertFirstSlideIs(1);
 
-      swipeSlider(distance);
+      cy.swipeSlider(distance);
 
       assertFirstSlideIs(1);
 
-      swipeSlider(distance + 1);
+      cy.swipeSlider(distance + 1);
 
       assertFirstSlideIs(2);
 
-      swipeSlider(-distance);
+      cy.swipeSlider(-distance);
 
       assertFirstSlideIs(2);
     });
@@ -140,7 +107,7 @@ context('Swipe Carousel', () => {
       cy.get('.slider-container').trigger('mouseup');
 
       // Move forward to the next (and final) slide
-      swipeSlider(carouselWidth);
+      cy.swipeSlider(carouselWidth);
 
       cy.get('.slider-list').should(($sliderList) => {
         expect(getSliderXOffset($sliderList)).to.equal(-carouselWidth);
@@ -184,7 +151,7 @@ context('Swipe Carousel', () => {
       cy.get('.slider-container').trigger('mouseup');
 
       // Move forward to the next (and final) slide
-      swipeSlider(carouselWidth);
+      cy.swipeSlider(carouselWidth);
 
       cy.get('.slider-list').should(($sliderList) => {
         expect(getSliderXOffset($sliderList)).to.equal(-carouselWidth);
@@ -213,22 +180,22 @@ context('Swipe Carousel', () => {
       assertFirstSlideIs(1);
 
       // Short, slow swipe is not enough to trigger scroll
-      swipeSlider(carouselWidth / 4, { waitMs: 1000 });
+      cy.swipeSlider(carouselWidth / 4, { waitMs: 1000 });
 
       assertFirstSlideIs(1);
 
       // Short, fast swipe _is_ enough to trigger scroll
-      swipeSlider(carouselWidth / 4, { waitMs: 90 });
+      cy.swipeSlider(carouselWidth / 4, { waitMs: 90 });
 
       assertFirstSlideIs(2);
 
       // Do the same steps, backwards towards the start of the carousel
 
-      swipeSlider(-carouselWidth / 4, { waitMs: 1000 });
+      cy.swipeSlider(-carouselWidth / 4, { waitMs: 1000 });
 
       assertFirstSlideIs(2);
 
-      swipeSlider(-carouselWidth / 4, { waitMs: 90 });
+      cy.swipeSlider(-carouselWidth / 4, { waitMs: 90 });
 
       assertFirstSlideIs(1);
     });
@@ -245,31 +212,31 @@ context('Swipe Carousel', () => {
       const slideWidth = carouselWidth / slidesToShow;
 
       // Slow, single-slide, threshold-exceeding scroll
-      swipeSlider(slideWidth / 2, { waitMs: 1000 });
+      cy.swipeSlider(slideWidth / 2, { waitMs: 1000 });
 
       assertFirstSlideIs(2);
 
       // Slow, double-slide-width scroll
-      swipeSlider(2 * slideWidth, { waitMs: 1000 });
+      cy.swipeSlider(2 * slideWidth, { waitMs: 1000 });
 
       assertFirstSlideIs(4);
 
       // Do the same steps, backwards towards the start of the carousel
 
-      swipeSlider(-2 * slideWidth, { waitMs: 1000 });
+      cy.swipeSlider(-2 * slideWidth, { waitMs: 1000 });
 
       assertFirstSlideIs(2);
 
-      swipeSlider(-slideWidth / 2, { waitMs: 1000 });
+      cy.swipeSlider(-slideWidth / 2, { waitMs: 1000 });
 
       assertFirstSlideIs(1);
 
       // Fast, multiple-slide-width scroll
-      swipeSlider(2 * slideWidth, { waitMs: 100 });
+      cy.swipeSlider(2 * slideWidth, { waitMs: 100 });
 
       assertFirstSlideIs(5);
 
-      swipeSlider(-2 * slideWidth, { waitMs: 100 });
+      cy.swipeSlider(-2 * slideWidth, { waitMs: 100 });
 
       assertFirstSlideIs(1);
     });
