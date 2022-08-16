@@ -381,7 +381,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     // alone. In certain conditions, the inertia may also scroll the carousel
     // several times.
     let distanceFromInertia = 0;
-    if (dragPositions.current.length > 0) {
+    if (dragPositions.current.length > 1) {
       const startMove = dragPositions.current[0];
       const endMove = dragPositions.current[dragPositions.current.length - 1];
       const timeOffset = endMove.time - startMove.time;
@@ -396,9 +396,8 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         distanceFromInertia += velocity;
         velocity *= goodFrictionFeelConstant;
       }
-
-      dragPositions.current = [];
     }
+    dragPositions.current = [];
 
     const adjustedDragDistance =
       Math.abs(dragDistance) + Math.abs(distanceFromInertia);
