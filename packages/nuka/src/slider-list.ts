@@ -173,7 +173,7 @@ export const getSliderListStyles = (
     userSelect: 'auto',
     transition:
       draggedOffset === 0 && isAnimating && slideAnimation !== 'fade'
-        ? `${speed}ms ease 0s`
+        ? `${speed}ms cubic-bezier(0.16, 1, 0.3, 1) 0s`
         : undefined,
     transform: positioning,
     display: 'flex'

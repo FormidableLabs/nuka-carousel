@@ -376,19 +376,25 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
     setIsDragging(false);
 
+    // Inertia calculation is used to allow quick flicks to scroll the carousel
+    // where they might not based on the start and end points of the gesture
+    // alone. In certain conditions, the inertia may also scroll the carousel
+    // several times.
     let distanceFromInertia = 0;
     if (dragPositions.current.length > 0) {
       const startMove = dragPositions.current[0];
       const endMove = dragPositions.current[dragPositions.current.length - 1];
       const timeOffset = endMove.time - startMove.time;
+      const goodInertiaFeelConstant = 9;
+      const goodFrictionFeelConstant = 0.92;
       const initialVelocity =
-        10 * Math.abs((endMove.pos - startMove.pos) / timeOffset);
-      const friction = 0.92;
+        goodInertiaFeelConstant *
+        Math.abs((endMove.pos - startMove.pos) / timeOffset);
       let velocity = initialVelocity;
 
       while (Math.abs(velocity) > 1) {
         distanceFromInertia += velocity;
-        velocity *= friction;
+        velocity *= goodFrictionFeelConstant;
       }
 
       dragPositions.current = [];
@@ -402,26 +408,27 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     prevXPosition.current = null;
     setDragDistance(0);
 
-    const slideUnit =
+    const oneScrollWidth =
       (carouselRef.current.offsetWidth || 0) *
       Math.min(1, slidesToScroll / slidesToShow);
-    const dragThreshold = slideUnit * propsDragThreshold;
+    const dragThreshold = oneScrollWidth * propsDragThreshold;
 
     if (adjustedDragDistance <= dragThreshold) {
       goToSlide(currentSlide);
       return;
     }
 
-    const timesToMove =
-      1 +
-      Math.min(
-        // The maximum number of slides we could cross with one swipe; basically
-        // no more than one page's worth of slides.
-        Math.max(1, Math.floor(slidesToShow / slidesToScroll)) - 1,
-
-        // The additional slides to move, based on the excess move distance
-        Math.floor((adjustedDragDistance - dragThreshold) / slideUnit)
-      );
+    // If skipping over multiple slides at a time is still roughly trackable by
+    // your eyes, we allow for skipping multiple slides with a single gesture.
+    // This formula is just based off an observation that it is confusing to
+    // skip from slides 1 to 3 when only one slide is shown at a time, but
+    // skipping from 1 to 4 or so with two slides shown at a time is pulled-back
+    // enough that you can still roughly keep track of your place in the
+    // carousel.
+    const canMaintainVisualContinuity = slidesToShow >= 2 * slidesToScroll;
+    const timesToMove = canMaintainVisualContinuity
+      ? 1 + Math.floor((adjustedDragDistance - dragThreshold) / oneScrollWidth)
+      : 1;
 
     let nextSlideIndex = currentSlide;
     for (let index = 0; index < timesToMove; index += 1) {
