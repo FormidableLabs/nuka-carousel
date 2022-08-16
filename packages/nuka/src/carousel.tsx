@@ -357,8 +357,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     [enableKeyboardControls, keyCodeConfig]
   );
 
-  const dragPositions = useRef<{ pos: number; time: number }[]>([]);
-
   useEffect(() => {
     if (enableKeyboardControls) {
       addEvent(document, 'keydown', onKeyPress);
@@ -368,6 +366,8 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       removeEvent(document, 'keydown', onKeyPress);
     };
   }, [enableKeyboardControls, carouselRef, onKeyPress]);
+
+  const dragPositions = useRef<{ pos: number; time: number }[]>([]);
 
   const handleDragEnd = (
     e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
@@ -409,7 +409,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     setDragDistance(0);
 
     const oneScrollWidth =
-      (carouselRef.current.offsetWidth || 0) *
+      carouselRef.current.offsetWidth *
       Math.min(1, slidesToScroll / slidesToShow);
     const dragThreshold = oneScrollWidth * propsDragThreshold;
 
@@ -483,7 +483,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       const isFirstMove = prevXPosition.current === null;
       const delta =
         prevXPosition.current !== null ? xPosition - prevXPosition.current : 0;
-      const moveState = dragDistance + delta;
+      const nextDragDistance = dragDistance + delta;
 
       const now = Date.now();
       // Maintain a buffer of drag positions from the last 100ms
@@ -494,11 +494,8 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         dragPositions.current.shift();
       }
       if (!isFirstMove) {
-        dragPositions.current.push({ pos: moveState, time: now });
-      }
-
-      if (!isFirstMove) {
-        setDragDistance(moveState);
+        dragPositions.current.push({ pos: nextDragDistance, time: now });
+        setDragDistance(nextDragDistance);
       }
 
       prevXPosition.current = xPosition;
