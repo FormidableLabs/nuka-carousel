@@ -1,6 +1,3 @@
-// / <reference types="cypress" />
-/* eslint-disable cypress/no-unnecessary-waiting */
-
 // Test cases
 // Swipe before and after threshold
 
@@ -38,14 +35,11 @@ context('Swipe Carousel', () => {
   describe('Swipe Carousel variations', () => {
     it('should render a carousel with 6 slides and 3 visible slides and go through all of the slides by swiping forwards and then reverses', () => {
       const slidesToShow = 3;
-      const params = {
+
+      cy.visitWithCarouselProps({
         ...sharedParams,
         slidesToShow
-      };
-
-      cy.visit(
-        `http://localhost:3000/?slides=6&params=${JSON.stringify(params)}`
-      );
+      });
 
       // Half of one slide should be barely enough to scroll once with the
       // default threshold
@@ -72,18 +66,15 @@ context('Swipe Carousel', () => {
 
     it('should render a carousel with 6 slides and 3 visible slides and not advance with a small swipe', () => {
       const slidesToShow = 3;
-      const params = {
+
+      cy.visitWithCarouselProps({
         ...sharedParams,
         slidesToShow
-      };
+      });
 
       // Half of one slide should be barely enough to scroll once with the
       // default threshold
       const distance = carouselWidth / slidesToShow / 2 - 1;
-
-      cy.visit(
-        `http://localhost:3000/?slides=6&params=${JSON.stringify(params)}`
-      );
 
       assertFirstSlideIs(1);
 
