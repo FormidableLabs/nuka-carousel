@@ -2,7 +2,7 @@ import { Alignment, ControlProps, ScrollMode } from './types';
 import {
   getDotIndexes,
   nextButtonDisabled,
-  prevButtonDisabled
+  prevButtonDisabled,
 } from './default-controls';
 
 describe('getDotIndexes', () => {
@@ -146,7 +146,7 @@ describe('nextButtonDisabled', () => {
         slideCount: 3,
         wrapAround: false,
         scrollMode: ScrollMode.page,
-        cellAlign
+        cellAlign,
       };
       expect(nextButtonDisabled(args as ControlProps)).toEqual(expected);
     }
@@ -185,7 +185,7 @@ describe('nextButtonDisabled', () => {
         slideCount: 3,
         wrapAround: false,
         scrollMode: ScrollMode.remainder,
-        cellAlign
+        cellAlign,
       };
       expect(nextButtonDisabled(args as ControlProps)).toEqual(expected);
     }
@@ -222,7 +222,7 @@ describe('prevButtonDisabled', () => {
         currentSlide,
         slidesToShow,
         wrapAround: false,
-        cellAlign
+        cellAlign,
       };
       expect(prevButtonDisabled(args as ControlProps)).toEqual(expected);
     }
@@ -259,7 +259,7 @@ describe('prevButtonDisabled', () => {
         currentSlide,
         slidesToShow,
         wrapAround: false,
-        cellAlign
+        cellAlign,
       };
       expect(prevButtonDisabled(args as ControlProps)).toEqual(expected);
     }

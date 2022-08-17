@@ -9,7 +9,7 @@ context('Infinity Carousel', () => {
       cy.visitWithCarouselProps({
         ...sharedParams,
         slideCount: 4,
-        wrapAround: true
+        wrapAround: true,
       });
 
       cy.get('.slide.slide-visible')
@@ -121,7 +121,7 @@ context('Infinity Carousel', () => {
         ...sharedParams,
         slideCount: 4,
         slidesToShow: 3,
-        wrapAround: true
+        wrapAround: true,
       });
 
       cy.get('.slide.slide-visible')
@@ -184,7 +184,7 @@ context('Infinity Carousel', () => {
         slideCount: 6,
         slidesToShow: 2,
         slidesToScroll: 2,
-        wrapAround: true
+        wrapAround: true,
       });
 
       cy.get('.slide.slide-visible')
@@ -235,7 +235,7 @@ context('Infinity Carousel', () => {
         ...sharedParams,
         slideCount: 4,
         slidesToShow: 4,
-        wrapAround: true
+        wrapAround: true,
       });
 
       cy.get('.slide.slide-visible')
@@ -325,7 +325,7 @@ context('Infinity Carousel', () => {
         slideCount: 5,
         slidesToShow: 2,
         withoutControls: true,
-        wrapAround: true
+        wrapAround: true,
       });
 
       cy.get('.slide.slide-visible')

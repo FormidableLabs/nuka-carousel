@@ -14,7 +14,7 @@ const Home = ({ urlParams }: HomeProps) => {
   const slides = [
     ...new Array(
       Math.min(SAMPLE_SLIDE_IMAGE_COUNT, Number(urlParams.slides || 9))
-    )
+    ),
   ].map((_, index) => (
     // eslint-disable-next-line @next/next/no-img-element
     <img
@@ -24,7 +24,7 @@ const Home = ({ urlParams }: HomeProps) => {
       data-slide={`Slide ${index + 1}`}
       style={{
         width: '100%',
-        height: 400
+        height: 400,
       }}
     />
   ));
@@ -66,8 +66,8 @@ const Home = ({ urlParams }: HomeProps) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => ({
   props: {
-    urlParams: context.query
-  }
+    urlParams: context.query,
+  },
 });
 
 export default Home;

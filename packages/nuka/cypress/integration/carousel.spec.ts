@@ -8,7 +8,7 @@ context('Carousel', () => {
     it('should render carousel with 4 slides and only 1 visible slide and go through all of the slides', () => {
       cy.visitWithCarouselProps({
         ...sharedParams,
-        slideCount: 4
+        slideCount: 4,
       });
 
       cy.get('.slider-frame').should(
@@ -65,7 +65,7 @@ context('Carousel', () => {
         ...sharedParams,
         slideCount: 6,
         slidesToShow: 2,
-        slidesToScroll: 2
+        slidesToScroll: 2,
       });
 
       cy.get('.slide.slide-visible')
@@ -101,7 +101,7 @@ context('Carousel', () => {
         ...sharedParams,
         slideCount: 5,
         slidesToShow: 2,
-        withoutControls: true
+        withoutControls: true,
       });
 
       cy.get('.slide.slide-visible')

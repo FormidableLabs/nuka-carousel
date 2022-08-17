@@ -45,7 +45,7 @@ describe('Carousel', () => {
       speed,
       wrapAround: true,
       beforeSlide,
-      afterSlide
+      afterSlide,
     });
 
     expect(beforeSlide).toHaveBeenCalledTimes(0);

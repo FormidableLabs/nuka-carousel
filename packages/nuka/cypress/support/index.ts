@@ -77,7 +77,7 @@ Cypress.Commands.add('swipeSlider', (distance, { waitMs = 1000 } = {}) => {
       // proper velocity calculations. We use linear interpolation to
       // determine a point that is consistent with a swipe of constant speed
       // from start to end.
-      clientX: start + ((waitMs - 1) / waitMs) * (end - start)
+      clientX: start + ((waitMs - 1) / waitMs) * (end - start),
     })
     .then(function () {
       this.clock.tick(1);
