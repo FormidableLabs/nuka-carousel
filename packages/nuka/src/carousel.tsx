@@ -11,7 +11,7 @@ import {
   removeEvent,
   getNextMoveIndex,
   getPrevMoveIndex,
-  getDefaultSlideIndex
+  getDefaultSlideIndex,
 } from './utils';
 import { useFrameHeight } from './hooks/use-frame-height';
 
@@ -65,7 +65,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     style,
     swiping: mobileDraggingEnabled,
     wrapAround,
-    zoomScale
+    zoomScale,
   } = props;
 
   const slideCount = React.Children.count(children);
@@ -160,7 +160,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       slideCount,
       currentSlide,
       disableAnimation,
-      propsSpeed
+      propsSpeed,
     ]
   );
 
@@ -186,7 +186,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     scrollMode,
     slideCount,
     slidesToShow,
-    wrapAround
+    wrapAround,
   ]);
 
   const prevSlide = useCallback(() => {
@@ -209,7 +209,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     propsSlidesToScroll,
     scrollMode,
     slidesToShow,
-    wrapAround
+    wrapAround,
   ]);
 
   // When user changed the slideIndex property from outside.
@@ -276,7 +276,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     autoplayInterval,
     autoplayReverse,
     prevSlide,
-    nextSlide
+    nextSlide,
   ]);
 
   // Makes the carousel infinity when wrapAround is enabled
@@ -294,7 +294,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     isDragging,
     slideCount,
     slidesToShow,
-    wrapAround
+    wrapAround,
   ]);
 
   useEffect(() => {
@@ -332,7 +332,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     pause,
     autoplay,
     nextSlide,
-    prevSlide
+    prevSlide,
   ]);
 
   const onKeyPress = useCallback(
@@ -575,7 +575,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const {
     frameHeight,
     handleVisibleSlideHeightChange,
-    initializedAdaptiveHeight
+    initializedAdaptiveHeight,
   } = useFrameHeight(adaptiveHeight, slidesToShow, slideCount);
 
   const renderSlides = (typeOfSlide?: 'prev-cloned' | 'next-cloned') => {
@@ -617,7 +617,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     <div
       className={'slider-container'}
       style={{
-        position: 'relative'
+        position: 'relative',
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
@@ -626,7 +626,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         ariaLive={autoplay && !pause ? 'off' : 'polite'}
         message={renderAnnounceSlideMessage({
           currentSlide: slide,
-          count: slideCount
+          count: slideCount,
         })}
       />
 
@@ -653,7 +653,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
             : undefined,
           willChange: 'height',
           userSelect: 'none',
-          ...style
+          ...style,
         }}
         aria-label={frameAriaLabel}
         role="region"

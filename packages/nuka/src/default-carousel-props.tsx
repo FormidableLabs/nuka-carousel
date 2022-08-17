@@ -4,7 +4,7 @@ import {
   InternalCarouselProps,
   ControlProps,
   D3EasingFunctions,
-  ScrollMode
+  ScrollMode,
 } from './types';
 import { NextButton, PagingDots, PreviousButton } from './default-controls';
 import { defaultRenderAnnounceSlideMessage } from './announce-slide';
@@ -37,7 +37,7 @@ const defaultProps: InternalCarouselProps = {
     previousSlide: [37, 65, 40, 83],
     firstSlide: [81],
     lastSlide: [69],
-    pause: [32]
+    pause: [32],
   },
   onDragStart: () => {
     // do nothing
@@ -66,7 +66,7 @@ const defaultProps: InternalCarouselProps = {
   vertical: false,
   withoutControls: false,
   wrapAround: false,
-  children: <></>
+  children: <></>,
 };
 
 export default defaultProps;

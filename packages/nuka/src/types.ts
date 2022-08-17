@@ -5,14 +5,14 @@ import { ReactNode, CSSProperties, MutableRefObject } from 'react';
 export enum Alignment {
   Center = 'center',
   Right = 'right',
-  Left = 'left'
+  Left = 'left',
 }
 
 export enum Directions {
   Next = 'next',
   Prev = 'prev',
   Up = 'up',
-  Down = 'down'
+  Down = 'down',
 }
 
 export enum Positions {
@@ -24,7 +24,7 @@ export enum Positions {
   CenterRight = 'CenterRight',
   BottomLeft = 'BottomLeft',
   BottomCenter = 'BottomCenter',
-  BottomRight = 'BottomRight'
+  BottomRight = 'BottomRight',
 }
 
 type SlideChildren = {
@@ -43,7 +43,7 @@ export interface Slide {
 
 export enum ScrollMode {
   page = 'page',
-  remainder = 'remainder'
+  remainder = 'remainder',
 }
 
 export enum D3EasingFunctions {
@@ -83,7 +83,7 @@ export enum D3EasingFunctions {
   EaseElastic = 'easeElastic',
   EaseElasticIn = 'easeElasticIn',
   EaseElasticOut = 'easeElasticOut',
-  EaseElasticInOut = 'easeElasticInOut'
+  EaseElasticInOut = 'easeElasticInOut',
 }
 
 interface DefaultControlsConfig {

@@ -176,6 +176,6 @@ export const getSliderListStyles = (
         ? `${speed}ms cubic-bezier(0.16, 1, 0.3, 1) 0s`
         : undefined,
     transform: positioning,
-    display: 'flex'
+    display: 'flex',
   };
 };

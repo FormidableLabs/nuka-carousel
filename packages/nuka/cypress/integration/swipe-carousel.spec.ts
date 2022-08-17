@@ -7,7 +7,7 @@ context('Swipe Carousel', () => {
     // Speed up transition animation time
     speed: 50,
     // set fixed width for easier drag distance calculations
-    style: { width: carouselWidth }
+    style: { width: carouselWidth },
   };
 
   const assertFirstSlideIs = (slideNumber: number) => {
@@ -31,7 +31,7 @@ context('Swipe Carousel', () => {
 
       cy.visitWithCarouselProps({
         ...sharedParams,
-        slidesToShow
+        slidesToShow,
       });
 
       // Half of one slide should be barely enough to scroll once with the
@@ -62,7 +62,7 @@ context('Swipe Carousel', () => {
 
       cy.visitWithCarouselProps({
         ...sharedParams,
-        slidesToShow
+        slidesToShow,
       });
 
       // Half of one slide should be barely enough to scroll once with the
@@ -88,7 +88,7 @@ context('Swipe Carousel', () => {
       cy.visitWithCarouselProps({
         ...sharedParams,
         slideCount: 2,
-        disableEdgeSwiping: false
+        disableEdgeSwiping: false,
       });
 
       // Initiating a drag from the left to the right
@@ -133,7 +133,7 @@ context('Swipe Carousel', () => {
       cy.visitWithCarouselProps({
         ...sharedParams,
         slideCount: 2,
-        disableEdgeSwiping: true
+        disableEdgeSwiping: true,
       });
 
       // Initiating a drag from the left to the right
@@ -174,7 +174,7 @@ context('Swipe Carousel', () => {
 
     it('should allow quick, short gestures to scroll based on inertia', () => {
       cy.visitWithCarouselProps({
-        ...sharedParams
+        ...sharedParams,
       });
 
       assertFirstSlideIs(1);
@@ -204,7 +204,7 @@ context('Swipe Carousel', () => {
       const slidesToShow = 3;
       cy.visitWithCarouselProps({
         ...sharedParams,
-        slidesToShow
+        slidesToShow,
       });
 
       assertFirstSlideIs(1);

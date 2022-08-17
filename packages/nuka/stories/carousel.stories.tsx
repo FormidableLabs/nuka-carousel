@@ -6,7 +6,7 @@ import { renderToString } from 'react-dom/server';
 import Carousel, {
   Alignment,
   ControlProps,
-  InternalCarouselProps
+  InternalCarouselProps,
 } from '../src/index';
 
 import { sampleSlideImageSources } from './sample-slide-images';
@@ -16,8 +16,8 @@ export default {
   component: Carousel,
   args: {
     storySlideCount: 9,
-    ...Carousel.defaultProps
-  }
+    ...Carousel.defaultProps,
+  },
 } as ComponentMeta<typeof Carousel>;
 
 /* Set up story template */
@@ -40,7 +40,7 @@ const Template: Story<InternalCarouselProps & StoryProps> = ({
         key={imageSrc}
         style={{
           height: slideHeights?.[index] ?? undefined,
-          width: '100%'
+          width: '100%',
         }}
       />
     ));
@@ -50,13 +50,13 @@ const Template: Story<InternalCarouselProps & StoryProps> = ({
       style={{
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
       }}
     >
       <div
         style={{
           maxWidth: 600,
-          margin: '0px auto'
+          margin: '0px auto',
         }}
       >
         <Carousel {...args}>{slides}</Carousel>
@@ -70,7 +70,7 @@ const StaticTemplate: Story<InternalCarouselProps & StoryProps> = (args) => {
   return (
     <div
       dangerouslySetInnerHTML={{
-        __html: renderToString(<Template {...args} />)
+        __html: renderToString(<Template {...args} />),
       }}
     />
   );
@@ -82,7 +82,7 @@ Default.args = {};
 
 export const Vertical = Template.bind({});
 Vertical.args = {
-  vertical: true
+  vertical: true,
 };
 
 // export const FadeTransition = Template.bind({});
@@ -98,12 +98,12 @@ Vertical.args = {
 export const ZoomAnimation = Template.bind({});
 ZoomAnimation.args = {
   animation: 'zoom',
-  cellAlign: Alignment.Center
+  cellAlign: Alignment.Center,
 };
 
 export const WrapAround = Template.bind({});
 WrapAround.args = {
-  wrapAround: true
+  wrapAround: true,
 };
 
 // adjust the autoplay interval so it does not interfere with our visual
@@ -113,7 +113,7 @@ const autoplayInterval = isChromatic() ? 10000 : undefined;
 export const Autoplay = Template.bind({});
 Autoplay.args = {
   autoplay: true,
-  autoplayInterval
+  autoplayInterval,
 };
 
 export const AutoplayReverse = Template.bind({});
@@ -121,113 +121,113 @@ AutoplayReverse.args = {
   autoplay: true,
   autoplayReverse: true,
   autoplayInterval,
-  slideIndex: 8
+  slideIndex: 8,
 };
 
 export const AutoplayWithCustomInterval = Template.bind({});
 AutoplayWithCustomInterval.args = {
   autoplay: true,
-  autoplayInterval: autoplayInterval ?? 500
+  autoplayInterval: autoplayInterval ?? 500,
 };
 
 export const AutoplayWithoutPauseOnHover = Template.bind({});
 AutoplayWithoutPauseOnHover.args = {
   autoplay: true,
   pauseOnHover: false,
-  autoplayInterval
+  autoplayInterval,
 };
 
 export const WithoutControls = Template.bind({});
 WithoutControls.args = {
-  withoutControls: true
+  withoutControls: true,
 };
 
 export const WithoutDragging = Template.bind({});
 WithoutDragging.args = {
-  dragging: false
+  dragging: false,
 };
 
 export const WithoutAnimation = Template.bind({});
 WithoutAnimation.args = {
-  disableAnimation: true
+  disableAnimation: true,
 };
 
 export const WithoutEdgeSwiping = Template.bind({});
 WithoutEdgeSwiping.args = {
-  disableEdgeSwiping: true
+  disableEdgeSwiping: true,
 };
 
 export const InitialIndex = Template.bind({});
 InitialIndex.args = {
-  slideIndex: 4
+  slideIndex: 4,
 };
 
 export const MultipleSlides = Template.bind({});
 MultipleSlides.args = {
-  slidesToShow: 3
+  slidesToShow: 3,
 };
 
 export const MultipleSlidesWithSpacing = Template.bind({});
 MultipleSlidesWithSpacing.args = {
   slidesToShow: 3,
-  cellSpacing: 10
+  cellSpacing: 10,
 };
 
 export const ScrollMultipleSlides = Template.bind({});
 ScrollMultipleSlides.args = {
   slidesToShow: 3,
-  slidesToScroll: 3
+  slidesToScroll: 3,
 };
 
 export const DragMultipleSlides = Template.bind({});
 DragMultipleSlides.args = {
-  slidesToShow: 3
+  slidesToShow: 3,
 };
 
 export const CellAlignCenter = Template.bind({});
 CellAlignCenter.args = {
   slidesToShow: 2.5,
-  cellAlign: Alignment.Center
+  cellAlign: Alignment.Center,
 };
 
 export const CellAlignCenterWrapAround = Template.bind({});
 CellAlignCenterWrapAround.args = {
   slidesToShow: 2.5,
   cellAlign: Alignment.Center,
-  wrapAround: true
+  wrapAround: true,
 };
 
 export const CellAlignRight = Template.bind({});
 CellAlignRight.args = {
   slidesToShow: 2.5,
-  cellAlign: Alignment.Right
+  cellAlign: Alignment.Right,
 };
 
 export const CellAlignRightWrapAround = Template.bind({});
 CellAlignRightWrapAround.args = {
   slidesToShow: 2.5,
   cellAlign: Alignment.Right,
-  wrapAround: true
+  wrapAround: true,
 };
 
 export const AdaptiveHeight = Template.bind({});
 AdaptiveHeight.args = {
   adaptiveHeight: true,
-  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290],
 };
 
 export const AdaptiveHeightNoAnimation = Template.bind({});
 AdaptiveHeightNoAnimation.args = {
   adaptiveHeight: true,
   adaptiveHeightAnimation: false,
-  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290],
 };
 
 export const AdaptiveHeightWrapAround = Template.bind({});
 AdaptiveHeightWrapAround.args = {
   adaptiveHeight: true,
   slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290],
-  wrapAround: true
+  wrapAround: true,
 };
 
 export const AdaptiveHeightThreeSlides = Template.bind({});
@@ -235,7 +235,7 @@ AdaptiveHeightThreeSlides.args = {
   adaptiveHeight: true,
   slidesToShow: 3,
   slidesToScroll: 3,
-  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290],
 };
 
 export const AdaptiveHeightThreeSlidesStatic = StaticTemplate.bind({});
@@ -243,12 +243,12 @@ AdaptiveHeightThreeSlidesStatic.args = {
   adaptiveHeight: true,
   slidesToShow: 3,
   slidesToScroll: 3,
-  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290]
+  slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290],
 };
 
 export const KeyboardControls = Template.bind({});
 KeyboardControls.args = {
-  enableKeyboardControls: true
+  enableKeyboardControls: true,
 };
 
 export const CustomControls = Template.bind({});
@@ -292,7 +292,7 @@ CustomControls.args = {
               color: props.currentSlide === i ? 'white' : 'black',
               background: props.currentSlide === i ? 'black' : 'white',
               borderRadius: '50%',
-              border: 0
+              border: 0,
             }}
             aria-label={`Go to slide ${i + 1}`}
             aria-selected={props.currentSlide === i}
@@ -302,5 +302,5 @@ CustomControls.args = {
         </li>
       ))}
     </ul>
-  )
+  ),
 };
