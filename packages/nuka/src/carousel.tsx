@@ -18,6 +18,7 @@ import { useFrameHeight } from './hooks/use-frame-height';
 interface KeyboardEvent {
   keyCode: number;
 }
+import { getDotIndexes } from './default-controls';
 
 export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   /**
@@ -307,11 +308,22 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           prevSlide();
           break;
         case 'firstSlide':
-          setCurrentSlide(0);
+        case 'lastSlide': {
+          const dotIndices = getDotIndexes(
+            slideCount,
+            slidesToScroll,
+            scrollMode,
+            slidesToShow,
+            wrapAround,
+            cellAlign
+          );
+          if (keyboardMove === 'firstSlide') {
+            goToSlide(dotIndices[0]);
+          } else {
+            goToSlide(dotIndices[dotIndices.length - 1]);
+          }
           break;
-        case 'lastSlide':
-          setCurrentSlide(slideCount - slidesToShow);
-          break;
+        }
         case 'pause':
           if (pause && autoplay) {
             setPause(false);
