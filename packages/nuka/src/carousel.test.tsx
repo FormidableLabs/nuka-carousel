@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { act, render } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import Carousel from './carousel';
 import { CarouselProps } from './types';
 
@@ -86,5 +86,46 @@ describe('Carousel', () => {
     checkTimingCycle(1);
     checkTimingCycle(2);
     checkTimingCycle(3);
+  });
+
+  it('can be controlled with the keyboard', () => {
+    const beforeSlide = jest.fn();
+    const keyCodeConfig = {
+      nextSlide: [39],
+      previousSlide: [37],
+      firstSlide: [81],
+      lastSlide: [69],
+      pause: [32],
+    };
+    renderCarousel({
+      enableKeyboardControls: true,
+      keyCodeConfig,
+      slideCount: 8,
+      beforeSlide,
+    });
+
+    const carouselFrame = screen.getByRole('region');
+
+    fireEvent.keyDown(carouselFrame, { keyCode: keyCodeConfig.nextSlide[0] });
+    expect(beforeSlide).toHaveBeenLastCalledWith(0, 1);
+
+    fireEvent.keyDown(carouselFrame, { keyCode: keyCodeConfig.nextSlide[0] });
+    expect(beforeSlide).toHaveBeenLastCalledWith(1, 2);
+
+    fireEvent.keyDown(carouselFrame, {
+      keyCode: keyCodeConfig.previousSlide[0],
+    });
+    expect(beforeSlide).toHaveBeenLastCalledWith(2, 1);
+
+    fireEvent.keyDown(carouselFrame, {
+      keyCode: keyCodeConfig.previousSlide[0],
+    });
+    expect(beforeSlide).toHaveBeenLastCalledWith(1, 0);
+
+    fireEvent.keyDown(carouselFrame, { keyCode: keyCodeConfig.lastSlide[0] });
+    expect(beforeSlide).toHaveBeenLastCalledWith(0, 7);
+
+    fireEvent.keyDown(carouselFrame, { keyCode: keyCodeConfig.firstSlide[0] });
+    expect(beforeSlide).toHaveBeenLastCalledWith(7, 0);
   });
 });
