@@ -11,10 +11,10 @@ import {
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
 import {
-  getIndexes,
   getNextMoveIndex,
   getPrevMoveIndex,
   getDefaultSlideIndex,
+  getBoundedIndex,
 } from './utils';
 import { useFrameHeight } from './hooks/use-frame-height';
 import { getDotIndexes } from './default-controls';
@@ -99,11 +99,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const animationEndTimeout = useRef<ReturnType<typeof setTimeout>>();
   const isMounted = useRef<boolean>(true);
 
-  const [slide] = getIndexes(
-    currentSlide,
-    currentSlide - slidesToScroll,
-    slideCount
-  );
+  const currentSlideBounded = getBoundedIndex(currentSlide, slideCount);
 
   useEffect(() => {
     isMounted.current = true;
@@ -123,13 +119,10 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
   const goToSlide = useCallback(
     (targetSlideIndex: number) => {
-      // Boil down the target index (-Infinity < targetSlideIndex < Infinity) to
-      // a user-friendly index (0 ≤ targetSlideIndex < slideCount)
-      const userFacingIndex =
-        ((targetSlideIndex % slideCount) + slideCount) % slideCount;
+      const nextSlideBounded = getBoundedIndex(targetSlideIndex, slideCount);
 
       const slideChanged = targetSlideIndex !== currentSlide;
-      slideChanged && beforeSlide(slide, userFacingIndex);
+      slideChanged && beforeSlide(currentSlideBounded, nextSlideBounded);
 
       // if animation is disabled decrease the speed to 40
       const msToEndOfAnimation = !disableAnimation ? propsSpeed || 500 : 40;
@@ -149,12 +142,12 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
         setTimeout(() => {
           if (!isMounted.current) return;
-          afterSlide(userFacingIndex);
+          afterSlide(nextSlideBounded);
         }, msToEndOfAnimation);
       }
     },
     [
-      slide,
+      currentSlideBounded,
       afterSlide,
       beforeSlide,
       slideCount,
@@ -601,7 +594,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       <AnnounceSlide
         ariaLive={autoplay && !pause ? 'off' : 'polite'}
         message={renderAnnounceSlideMessage({
-          currentSlide: slide,
+          currentSlide: currentSlideBounded,
           count: slideCount,
         })}
       />
