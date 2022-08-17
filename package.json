@@ -18,7 +18,14 @@
     "version": "pnpm changeset version && pnpm install --no-frozen-lockfile"
   },
   "devDependencies": {
+    "@babel/cli": "^7.10.4",
     "@babel/core": "^7.17.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.10.4",
+    "@babel/plugin-transform-object-assign": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "@babel/preset-typescript": "^7.16.0",
     "@changesets/cli": "^2.23.1",
     "@svitejs/changesets-changelog-github-compact": "^0.1.1",
     "@types/jest": "^27.0.2",
