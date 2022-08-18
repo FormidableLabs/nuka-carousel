@@ -2,22 +2,22 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Slide from './slide';
 import AnnounceSlide from './announce-slide';
 import { SliderList } from './slider-list';
-import { CarouselProps, InternalCarouselProps, KeyCodeFunction } from './types';
+import {
+  CarouselProps,
+  InternalCarouselProps,
+  KeyCodeConfig,
+  KeyCodeFunction,
+} from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
 import {
   getIndexes,
-  addEvent,
-  removeEvent,
   getNextMoveIndex,
   getPrevMoveIndex,
-  getDefaultSlideIndex
+  getDefaultSlideIndex,
 } from './utils';
 import { useFrameHeight } from './hooks/use-frame-height';
-
-interface KeyboardEvent {
-  keyCode: number;
-}
+import { getDotIndexes } from './default-controls';
 
 export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   /**
@@ -66,7 +66,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     style,
     swiping: mobileDraggingEnabled,
     wrapAround,
-    zoomScale
+    zoomScale,
   } = props;
 
   const slideCount = React.Children.count(children);
@@ -88,9 +88,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const [pause, setPause] = useState<boolean>(false);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [dragDistance, setDragDistance] = useState<number>(0);
-  const [keyboardMove, setKeyboardMove] = useState<KeyCodeFunction>(null);
 
-  const focus = useRef<boolean>(false);
   const prevXPosition = useRef<number | null>(null);
   const preDragOffset = useRef<number>(0);
   const sliderListRef = useRef<HTMLDivElement>(null);
@@ -161,7 +159,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       slideCount,
       currentSlide,
       disableAnimation,
-      propsSpeed
+      propsSpeed,
     ]
   );
 
@@ -187,7 +185,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     scrollMode,
     slideCount,
     slidesToShow,
-    wrapAround
+    wrapAround,
   ]);
 
   const prevSlide = useCallback(() => {
@@ -210,7 +208,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     propsSlidesToScroll,
     scrollMode,
     slidesToShow,
-    wrapAround
+    wrapAround,
   ]);
 
   // When user changed the slideIndex property from outside.
@@ -277,7 +275,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     autoplayInterval,
     autoplayReverse,
     prevSlide,
-    nextSlide
+    nextSlide,
   ]);
 
   // Makes the carousel infinity when wrapAround is enabled
@@ -295,78 +293,56 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     isDragging,
     slideCount,
     slidesToShow,
-    wrapAround
+    wrapAround,
   ]);
 
-  useEffect(() => {
-    if (enableKeyboardControls && keyboardMove && focus.current) {
-      switch (keyboardMove) {
-        case 'nextSlide':
-          nextSlide();
-          break;
-        case 'previousSlide':
-          prevSlide();
-          break;
-        case 'firstSlide':
-          setCurrentSlide(0);
-          break;
-        case 'lastSlide':
-          setCurrentSlide(slideCount - slidesToShow);
-          break;
-        case 'pause':
-          if (pause && autoplay) {
-            setPause(false);
-            break;
-          } else if (autoplay) {
-            setPause(true);
-            break;
-          }
-          break;
-      }
-      setKeyboardMove(null);
-    }
-  }, [
-    keyboardMove,
-    enableKeyboardControls,
-    slideCount,
-    slidesToShow,
-    pause,
-    autoplay,
-    nextSlide,
-    prevSlide
-  ]);
-
-  const onKeyPress = useCallback(
-    (e: Event) => {
-      if (
-        enableKeyboardControls &&
-        focus.current &&
-        (e as unknown as KeyboardEvent).keyCode
-      ) {
-        const keyConfig = keyCodeConfig;
-        for (const func in keyConfig) {
-          if (
-            keyConfig[func as keyof typeof keyConfig]?.includes(
-              (e as unknown as KeyboardEvent).keyCode
-            )
-          ) {
-            setKeyboardMove(func as KeyCodeFunction);
-          }
+  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    let keyCommand: KeyCodeFunction = null;
+    (Object.keys(keyCodeConfig) as (keyof KeyCodeConfig)[]).forEach(
+      (command) => {
+        if (keyCodeConfig[command]?.includes(event.keyCode)) {
+          keyCommand = command;
         }
       }
-    },
-    [enableKeyboardControls, keyCodeConfig]
-  );
+    );
 
-  useEffect(() => {
-    if (enableKeyboardControls) {
-      addEvent(document, 'keydown', onKeyPress);
+    if (keyCommand === null) return;
+
+    // At this point we know some action is going to be triggered, so we
+    // preventDefault to avoid the browser interpreting the key event and
+    // stopPropagation to avoid any higher-up handlers from interpreting it.
+    event.preventDefault();
+    event.stopPropagation();
+
+    switch (keyCommand) {
+      case 'nextSlide':
+        nextSlide();
+        break;
+      case 'previousSlide':
+        prevSlide();
+        break;
+      case 'firstSlide':
+      case 'lastSlide': {
+        const dotIndices = getDotIndexes(
+          slideCount,
+          slidesToScroll,
+          scrollMode,
+          slidesToShow,
+          wrapAround,
+          cellAlign
+        );
+        if (keyCommand === 'firstSlide') {
+          goToSlide(dotIndices[0]);
+        } else {
+          goToSlide(dotIndices[dotIndices.length - 1]);
+        }
+        break;
+      }
+      case 'pause':
+        setPause((p) => !p);
+        break;
     }
-
-    return () => {
-      removeEvent(document, 'keydown', onKeyPress);
-    };
-  }, [enableKeyboardControls, carouselRef, onKeyPress]);
+  };
 
   const dragPositions = useRef<{ pos: number; time: number }[]>([]);
 
@@ -528,8 +504,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       )
         return;
 
-      carouselRef.current.focus();
-
       setIsDragging(true);
 
       preDragOffset.current =
@@ -576,7 +550,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const {
     frameHeight,
     handleVisibleSlideHeightChange,
-    initializedAdaptiveHeight
+    initializedAdaptiveHeight,
   } = useFrameHeight(adaptiveHeight, slidesToShow, slideCount);
 
   const renderSlides = (typeOfSlide?: 'prev-cloned' | 'next-cloned') => {
@@ -618,7 +592,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     <div
       className={'slider-container'}
       style={{
-        position: 'relative'
+        position: 'relative',
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
@@ -627,7 +601,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         ariaLive={autoplay && !pause ? 'off' : 'polite'}
         message={renderAnnounceSlideMessage({
           currentSlide: slide,
-          count: slideCount
+          count: slideCount,
         })}
       />
 
@@ -654,13 +628,12 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
             : undefined,
           willChange: 'height',
           userSelect: 'none',
-          ...style
+          ...style,
         }}
         aria-label={frameAriaLabel}
         role="region"
         tabIndex={0}
-        onFocus={() => (focus.current = true)}
-        onBlur={() => (focus.current = false)}
+        onKeyDown={enableKeyboardControls ? onKeyDown : undefined}
         ref={carouselRef}
         onMouseUp={onMouseUp}
         onMouseDown={onMouseDown}

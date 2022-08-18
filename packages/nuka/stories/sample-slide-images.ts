@@ -34,5 +34,5 @@ export const sampleSlideImageSources = [
   slide11Image,
   slide12Image,
   slide13Image,
-  slide14Image
+  slide14Image,
 ];

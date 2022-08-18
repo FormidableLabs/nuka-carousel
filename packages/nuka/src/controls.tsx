@@ -3,7 +3,7 @@ import { getControlContainerStyles } from './control-styles';
 import {
   InternalCarouselProps,
   Positions,
-  RenderControlFunctionNames
+  RenderControlFunctionNames,
 } from './types';
 
 type ControlMap = { funcName: RenderControlFunctionNames; key: Positions }[];
@@ -16,7 +16,7 @@ const controlsMap: ControlMap = [
   { funcName: 'renderCenterRightControls', key: Positions.CenterRight },
   { funcName: 'renderBottomLeftControls', key: Positions.BottomLeft },
   { funcName: 'renderBottomCenterControls', key: Positions.BottomCenter },
-  { funcName: 'renderBottomRightControls', key: Positions.BottomRight }
+  { funcName: 'renderBottomRightControls', key: Positions.BottomRight },
 ];
 
 const renderControls = (
@@ -43,13 +43,13 @@ const renderControls = (
         key={control.funcName}
         style={{
           ...getControlContainerStyles(control.key),
-          pointerEvents: 'none'
+          pointerEvents: 'none',
         }}
       >
         <div
           className={[
             `slider-control-${control.key.toLowerCase()}`,
-            props.defaultControlsConfig.containerClassName || ''
+            props.defaultControlsConfig.containerClassName || '',
           ]
             .join(' ')
             .trim()}
@@ -70,7 +70,7 @@ const renderControls = (
             slidesToScroll,
             slidesToShow: props.slidesToShow || 1,
             vertical: props.vertical,
-            wrapAround: props.wrapAround
+            wrapAround: props.wrapAround,
           })}
         </div>
       </div>

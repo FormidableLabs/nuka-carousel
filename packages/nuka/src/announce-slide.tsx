@@ -9,12 +9,12 @@ const styles: CSSProperties = {
   margin: '-1px',
   clip: 'rect(0, 0, 0, 0)',
   whiteSpace: 'nowrap',
-  border: 0
+  border: 0,
 };
 
 const AnnounceSlide = ({
   message,
-  ariaLive = 'polite'
+  ariaLive = 'polite',
 }: {
   message: string;
   ariaLive: AriaAttributes['aria-live'];
@@ -26,7 +26,7 @@ const AnnounceSlide = ({
 
 export const defaultRenderAnnounceSlideMessage = ({
   currentSlide,
-  count
+  count,
 }: {
   currentSlide: number;
   count: number;

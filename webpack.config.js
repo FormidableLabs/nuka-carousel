@@ -5,20 +5,20 @@ module.exports = {
     path: __dirname,
     sourceMapFilename: '[name].map',
     filename: 'main.js',
-    publicPath: '/assets/'
+    publicPath: '/assets/',
   },
 
   entry: ['./demo/app.js'],
 
   resolve: {
     extensions: ['.js'],
-    modules: [path.join(__dirname, 'node_modules')]
+    modules: [path.join(__dirname, 'node_modules')],
   },
 
   devServer: {
     static: './demo',
     historyApiFallback: true,
-    hot: false
+    hot: false,
   },
 
   module: {
@@ -26,16 +26,16 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: [/node_modules/, /examples/],
-        use: 'babel-loader'
+        use: 'babel-loader',
       },
       {
         test: /\.css$/,
-        use: 'style-loader!css-loader'
+        use: 'style-loader!css-loader',
       },
       {
         test: /\.(png|jpg)$/,
-        use: 'url-loader?limit=8192'
-      }
-    ]
-  }
+        use: 'url-loader?limit=8192',
+      },
+    ],
+  },
 };
