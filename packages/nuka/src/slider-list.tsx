@@ -21,13 +21,18 @@ const getPercentOffsetForSlide = ({
   cellAlign,
   currentPosition,
   transition,
-  wrapAround
+  wrapAround,
 }: PercentOffsetForSlideProps): number => {
   if (wrapAround) {
-    const slideTransition = 100 / (3 * slideCount);
-    const currentTransition =
-      initialValue - slideTransition * (currentSlide - 1);
-    return currentTransition - slideTransition * transition;
+    const targetPosition = (100 / (3 * slideCount)) * currentSlide;
+    const isWrappingAround =
+      Math.abs(targetPosition + currentPosition).toFixed(2) ===
+      (100 / 3).toFixed(2);
+    const slideTransition =
+      -currentPosition +
+      (targetPosition + currentPosition) * (isWrappingAround ? 1 : transition);
+
+    return initialValue - slideTransition;
   } else {
     const targetPosition = (100 / slideCount) * currentSlide;
     const slideTransition =
@@ -75,7 +80,7 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
       slidesToScroll,
       scrollMode,
       disableEdgeSwiping,
-      slideAnimation
+      slideAnimation,
     },
     forwardRef
   ) => {
@@ -93,7 +98,7 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
 
     const transition = useTransition(speed, easing, [
       currentPosition,
-      currentSlide
+      currentSlide,
     ]);
 
     const width = useMemo(() => {
@@ -126,7 +131,7 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
       scrollMode,
       slidesToShow,
       wrapAround,
-      cellAlign
+      cellAlign,
     ]);
 
     const initialValue = useMemo(() => {
@@ -157,12 +162,12 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
         cellAlign,
         currentPosition,
         transition: slideAnimation === 'fade' ? 1 : transition,
-        wrapAround
+        wrapAround,
       };
 
       const slideBasedOffset = getPercentOffsetForSlide({
         ...percentOffsetForSlideProps,
-        currentSlide
+        currentSlide,
       });
 
       // Special-case this. It's better to return undefined rather than a
@@ -176,7 +181,7 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
         clampOffsets = clampIndices.map((index) =>
           getPercentOffsetForSlide({
             ...percentOffsetForSlideProps,
-            currentSlide: index
+            currentSlide: index,
           })
         );
       }
@@ -210,7 +215,7 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
           textAlign: 'left',
           userSelect: 'auto',
           transform: positioning,
-          display: 'flex'
+          display: 'flex',
         }}
       >
         {children}
