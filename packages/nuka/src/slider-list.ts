@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React from 'react';
 import { getDotIndexes } from './default-controls';
 import { Alignment, ScrollMode } from './types';
 
@@ -124,7 +124,7 @@ const getPositioning = (
 };
 
 export const getSliderListStyles = (
-  children: ReactNode | ReactNode[],
+  slideCount: number,
   currentSlide: number,
   isAnimating: boolean,
   slidesToShow: number,
@@ -136,9 +136,7 @@ export const getSliderListStyles = (
   scrollMode: ScrollMode,
   disableEdgeSwiping: boolean,
   slideAnimation?: 'fade' | 'zoom'
-): CSSProperties => {
-  const slideCount = React.Children.toArray(children).filter(Boolean).length;
-
+): React.CSSProperties => {
   const width = getSliderListWidth(slideCount, slidesToShow, wrapAround);
 
   // When disableEdgeSwiping=true, we recycle dot index generation to determine
