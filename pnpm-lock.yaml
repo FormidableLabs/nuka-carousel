@@ -7,12 +7,14 @@ importers:
       '@babel/core': ^7.17.2
       '@changesets/cli': ^2.23.1
       '@svitejs/changesets-changelog-github-compact': ^0.1.1
+      '@types/d3-ease': ^3.0.0
       '@types/jest': ^27.0.2
       '@typescript-eslint/eslint-plugin': ^5.4.0
       '@typescript-eslint/parser': ^5.4.0
       babel-eslint: ^10.1.0
       builder: ^5.0.0
       cypress: ^9.3.1
+      d3-ease: ^3.0.1
       eslint: ^8.14.0
       eslint-config-prettier: ^8.5.0
       eslint-plugin-cypress: ^2.12.1
@@ -31,12 +33,14 @@ importers:
       '@babel/core': 7.18.9
       '@changesets/cli': 2.23.2
       '@svitejs/changesets-changelog-github-compact': 0.1.1
+      '@types/d3-ease': 3.0.0
       '@types/jest': 27.5.2
       '@typescript-eslint/eslint-plugin': 5.30.7_6wltbjakwuqm7awqswigmiuhd4
       '@typescript-eslint/parser': 5.30.7_he2ccbldppg44uulnyq4rwocfa
       babel-eslint: 10.1.0_eslint@8.20.0
       builder: 5.0.0
       cypress: 9.7.0
+      d3-ease: 3.0.1
       eslint: 8.20.0
       eslint-config-prettier: 8.5.0_eslint@8.20.0
       eslint-plugin-cypress: 2.12.1_eslint@8.20.0
@@ -93,6 +97,7 @@ importers:
       '@storybook/react': ^6.5.9
       '@testing-library/jest-dom': ^5.16.5
       '@testing-library/react': ^13.3.0
+      '@types/d3-ease': ^3.0.0
       '@types/exenv': ^1.2.0
       '@types/node': ^18.7.5
       '@types/react': ^18.0.0
@@ -103,6 +108,7 @@ importers:
       babel-loader: 8.1.0
       chromatic: ^6.2.0
       cypress: ^9.3.1
+      d3-ease: ^3.0.1
       eslint: ^8.14.0
       eslint-config-prettier: ^8.5.0
       eslint-plugin-cypress: ^2.12.1
@@ -140,6 +146,7 @@ importers:
       '@storybook/react': 6.5.9_d32qnkz2aixfumkiisyqazpr3m
       '@testing-library/jest-dom': 5.16.5
       '@testing-library/react': 13.3.0_biqbaboplfbrettd7655fr4n2y
+      '@types/d3-ease': 3.0.0
       '@types/exenv': 1.2.0
       '@types/node': 18.7.5
       '@types/react': 18.0.15
@@ -150,6 +157,7 @@ importers:
       babel-loader: 8.1.0_jfosicmxnsybihywoftrtwahny
       chromatic: 6.7.0
       cypress: 9.7.0
+      d3-ease: 3.0.1
       eslint: 8.20.0
       eslint-config-prettier: 8.5.0_eslint@8.20.0
       eslint-plugin-cypress: 2.12.1_eslint@8.20.0
@@ -4100,6 +4108,10 @@ packages:
       '@types/node': 18.7.5
     dev: true
 
+  /@types/d3-ease/3.0.0:
+    resolution: {integrity: sha512-aMo4eaAOijJjA6uU+GIeW018dvy9+oH5Y2VPPzjjfxevvGQ/oRDs+tfYC9b50Q4BygRR8yE2QCLsrT0WtAVseA==}
+    dev: true
+
   /@types/eslint-scope/3.7.4:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
@@ -6853,6 +6865,11 @@ packages:
       tmp: 0.2.1
       untildify: 4.0.0
       yauzl: 2.10.0
+    dev: true
+
+  /d3-ease/3.0.1:
+    resolution: {integrity: sha512-wR/XK3D3XcLIZwpbvQwQ5fK+8Ykds1ip7A2Txe0yxncXSdq1L9skcG7blcedkOX+ZcgxGAmLX1FrRGbADwzi0w==}
+    engines: {node: '>=12'}
     dev: true
 
   /d3-timer/1.0.10:
