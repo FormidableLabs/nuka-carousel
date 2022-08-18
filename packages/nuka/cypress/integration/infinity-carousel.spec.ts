@@ -1,4 +1,3 @@
-// / <reference types="cypress" />
 /* eslint-disable cypress/no-unnecessary-waiting */
 
 context('Infinity Carousel', () => {
@@ -7,14 +6,11 @@ context('Infinity Carousel', () => {
 
   describe('Infinity Carousel variations', () => {
     it('should render infinity carousel with 4 slides and only 1 visible slide and go through all of the slides', () => {
-      const params = {
+      cy.visitWithCarouselProps({
         ...sharedParams,
-        wrapAround: true
-      };
-
-      cy.visit(
-        `http://localhost:3000/?slides=4&params=${JSON.stringify(params)}`
-      );
+        slideCount: 4,
+        wrapAround: true,
+      });
 
       cy.get('.slide.slide-visible')
         .should('have.length', 1)
@@ -121,15 +117,12 @@ context('Infinity Carousel', () => {
     });
 
     it('should render infinity carousel with 4 slides and 3 visible slides and go through all of the slides', () => {
-      const params = {
+      cy.visitWithCarouselProps({
         ...sharedParams,
+        slideCount: 4,
         slidesToShow: 3,
-        wrapAround: true
-      };
-
-      cy.visit(
-        `http://localhost:3000/?slides=4&params=${JSON.stringify(params)}`
-      );
+        wrapAround: true,
+      });
 
       cy.get('.slide.slide-visible')
         .should('have.length', 3)
@@ -186,16 +179,13 @@ context('Infinity Carousel', () => {
     });
 
     it('should render infinity carousel with 6 slides and 2 visible slides and slides to scroll equal to 2', () => {
-      const params = {
+      cy.visitWithCarouselProps({
         ...sharedParams,
+        slideCount: 6,
         slidesToShow: 2,
         slidesToScroll: 2,
-        wrapAround: true
-      };
-
-      cy.visit(
-        `http://localhost:3000/?slides=6&params=${JSON.stringify(params)}`
-      );
+        wrapAround: true,
+      });
 
       cy.get('.slide.slide-visible')
         .should('have.length', 2)
@@ -241,15 +231,12 @@ context('Infinity Carousel', () => {
     });
 
     it('should render infinity carousel with 4 slides and all of them should be visible and go through all of the slides', () => {
-      const params = {
+      cy.visitWithCarouselProps({
         ...sharedParams,
+        slideCount: 4,
         slidesToShow: 4,
-        wrapAround: true
-      };
-
-      cy.visit(
-        `http://localhost:3000/?slides=4&params=${JSON.stringify(params)}`
-      );
+        wrapAround: true,
+      });
 
       cy.get('.slide.slide-visible')
         .should('have.length', 4)
@@ -333,16 +320,13 @@ context('Infinity Carousel', () => {
     });
 
     it('should render infinity carousel with 5 slides and 2 visible slides without controls', () => {
-      const params = {
+      cy.visitWithCarouselProps({
         ...sharedParams,
+        slideCount: 5,
         slidesToShow: 2,
         withoutControls: true,
-        wrapAround: true
-      };
-
-      cy.visit(
-        `http://localhost:3000/?slides=5&params=${JSON.stringify(params)}`
-      );
+        wrapAround: true,
+      });
 
       cy.get('.slide.slide-visible')
         .should('have.length', 2)

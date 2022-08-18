@@ -94,6 +94,6 @@ export const useFrameHeight = (
   return {
     handleVisibleSlideHeightChange,
     frameHeight,
-    initializedAdaptiveHeight
+    initializedAdaptiveHeight,
   };
 };

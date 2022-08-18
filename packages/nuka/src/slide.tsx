@@ -49,7 +49,7 @@ const getSlideStyles = (
       animation === 'zoom'
         ? `scale(${isCurrentSlide && isVisibleSlide ? 1 : zoomScale || 0.85})`
         : undefined,
-    opacity: animation === 'fade' ? visibleSlideOpacity : 1
+    opacity: animation === 'fade' ? visibleSlideOpacity : 1,
   };
 };
 
@@ -85,7 +85,7 @@ const Slide = ({
   cellAlign,
   onVisibleSlideHeightChange,
   adaptiveHeight,
-  initializedAdaptiveHeight
+  initializedAdaptiveHeight,
 }: {
   count: number;
   children: ReactNode | ReactNode[];
@@ -145,7 +145,7 @@ const Slide = ({
     customIndex,
     isVisible,
     onVisibleSlideHeightChange,
-    slidesToShow
+    slidesToShow,
   ]);
 
   const currentSlideClass = isCurrentSlide && isVisible ? ' slide-current' : '';

@@ -139,7 +139,7 @@ describe('getNextMoveIndex', () => {
         currentSlide,
         slideCount,
         slidesToScroll,
-        1
+        1,
       ] as const;
       expect(getNextMoveIndex(...args, Alignment.Left)).toEqual(expected);
       expect(getNextMoveIndex(...args, Alignment.Right)).toEqual(expected);

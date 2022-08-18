@@ -9,14 +9,14 @@ const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
   padding: 10,
   textTransform: 'uppercase',
   opacity: disabled ? 0.3 : 1,
-  cursor: disabled ? 'not-allowed' : 'pointer'
+  cursor: disabled ? 'not-allowed' : 'pointer',
 });
 
 export const prevButtonDisabled = ({
   currentSlide,
   wrapAround,
   cellAlign,
-  slidesToShow
+  slidesToShow,
 }: ControlProps) => {
   // inifite carousel
   if (wrapAround) {
@@ -45,7 +45,7 @@ export const PreviousButton = (props: ControlProps) => {
   const {
     prevButtonClassName,
     prevButtonStyle = {},
-    prevButtonText
+    prevButtonText,
   } = props.defaultControlsConfig || {};
 
   const disabled = prevButtonDisabled(props);
@@ -55,7 +55,7 @@ export const PreviousButton = (props: ControlProps) => {
       className={prevButtonClassName}
       style={{
         ...defaultButtonStyles(disabled),
-        ...prevButtonStyle
+        ...prevButtonStyle,
       }}
       disabled={disabled}
       onClick={handleClick}
@@ -72,7 +72,7 @@ export const nextButtonDisabled = ({
   slideCount,
   slidesToShow,
   wrapAround,
-  cellAlign
+  cellAlign,
 }: ControlProps) => {
   // inifite carousel
   if (wrapAround) {
@@ -106,7 +106,7 @@ export const NextButton = (props: ControlProps) => {
   const {
     nextButtonClassName,
     nextButtonStyle = {},
-    nextButtonText
+    nextButtonText,
   } = defaultControlsConfig;
 
   const disabled = nextButtonDisabled(props);
@@ -116,7 +116,7 @@ export const NextButton = (props: ControlProps) => {
       className={nextButtonClassName}
       style={{
         ...defaultButtonStyles(disabled),
-        ...nextButtonStyle
+        ...nextButtonStyle,
       }}
       disabled={disabled}
       onClick={handleClick}
@@ -226,7 +226,7 @@ export const PagingDots = (props: ControlProps) => {
     display: 'flex',
     margin: 0,
     padding: 0,
-    listStyleType: 'none'
+    listStyleType: 'none',
   };
 
   const getButtonStyles = useCallback(
@@ -235,7 +235,7 @@ export const PagingDots = (props: ControlProps) => {
       opacity: active ? 1 : 0.5,
       background: 'transparent',
       border: 'none',
-      fill: 'black'
+      fill: 'black',
     }),
     []
   );
@@ -252,7 +252,7 @@ export const PagingDots = (props: ControlProps) => {
   const {
     pagingDotsContainerClassName,
     pagingDotsClassName,
-    pagingDotsStyle = {}
+    pagingDotsStyle = {},
   } = props.defaultControlsConfig;
 
   return (
@@ -277,7 +277,7 @@ export const PagingDots = (props: ControlProps) => {
               type="button"
               style={{
                 ...getButtonStyles(isActive),
-                ...pagingDotsStyle
+                ...pagingDotsStyle,
               }}
               onClick={props.goToSlide.bind(null, index)}
               aria-label={`slide ${index + 1} bullet`}

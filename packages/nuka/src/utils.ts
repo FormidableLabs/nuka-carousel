@@ -24,32 +24,6 @@ export const getIndexes = (
   return [slideIndex, endSlideIndex];
 };
 
-export const addEvent = (
-  elem: Window | Document,
-  type: string,
-  eventHandler: EventListener
-): void => {
-  if (elem === null || typeof elem === 'undefined') {
-    return;
-  }
-  if (elem.addEventListener) {
-    elem.addEventListener(type, eventHandler, false);
-  }
-};
-
-export const removeEvent = (
-  elem: Window | Document,
-  type: string,
-  eventHandler: EventListener
-): void => {
-  if (elem === null || typeof elem === 'undefined') {
-    return;
-  }
-  if (elem.removeEventListener) {
-    elem.removeEventListener(type, eventHandler, false);
-  }
-};
-
 export const isSlideVisible = (
   currentSlide: number,
   indexToCheck: number,

@@ -7,6 +7,7 @@ Small, fast and accessibility-first React carousel library with easily customiza
 ![Nuka Carousel Animated Example](https://i.imgur.com/UwP5gle.gif)
 
 > If you are looking for v4 documentation, you can find it [here](https://www.npmjs.com/package/nuka-carousel/v/4.8.4)
+
 ### Install
 
 To add `nuka-carousel` to your project run the following command in your project folder.
@@ -26,28 +27,27 @@ $ npm install nuka-carousel
 ### Example
 
 You can test nuka-carousel default behaviour. [Link](https://nuka-carousel-next.vercel.app/)
+
 ```jsx
-  <Carousel>
-    <img src="/image1.png" />
-    <img src="/image2.png" />
-    <img src="/image3.png" />
-    <img src="/image4.png" />
-    <img src="/image5.png" />
-  </Carousel>
+<Carousel>
+  <img src="/image1.png" />
+  <img src="/image2.png" />
+  <img src="/image3.png" />
+  <img src="/image4.png" />
+  <img src="/image5.png" />
+</Carousel>
 ```
 
 Infinity nuka-carousel@5 with 3 slides to show. [Link](https://nuka-carousel-next.vercel.app/?slides=6&params=%7B%22wrapAround%22:true,%22slidesToShow%22:3%7D)
+
 ```jsx
-  <Carousel
-    wrapAround={true}
-    slidesToShow={3}
-  >
-    <img src="/image1.png" />
-    <img src="/image2.png" />
-    <img src="/image3.png" />
-    <img src="/image4.png" />
-    <img src="/image5.png" />
-  </Carousel> 
+<Carousel wrapAround={true} slidesToShow={3}>
+  <img src="/image1.png" />
+  <img src="/image2.png" />
+  <img src="/image3.png" />
+  <img src="/image4.png" />
+  <img src="/image5.png" />
+</Carousel>
 ```
 
 You can play with `&params` url parameter to add or remove any carousel parameters and see how the carousel behaves. We are looking to build a proper documentation page with many examples and code snippets.
@@ -56,13 +56,12 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 
 - **Support server-side rendering**. Currently in v4 all of the slides are positioned with `position: absolute`, which doesn't render the slides appropriately when javascript is disabled and there are flickering when the front-end is hydrated. This forced users to hardcode properties for the carousel like `initialSlideHeight` and `initialSlideWidth`. In v5 all slides are positioned with dynamic width, so the slides and carousel can be fully responsive and rendered correctly on server as well.
 - Rewritten the library with **TypeScript** and **React Hooks** for obvious reasons.
-- **Reduce the size of the library and its dependencies**. Currently v4 has 5 dependencies - `prop-types`, `d3-ease`, `wicg-inert`, `exenv` and `react-move`. We are looking to use only `d3-ease` in v5.1, but definitely after bumping the version of it to the latest. 
+- **Reduce the size of the library and its dependencies**. Currently v4 has 5 dependencies - `prop-types`, `d3-ease`, `wicg-inert`, `exenv` and `react-move`. We are looking to use only `d3-ease` in v5.1, but definitely after bumping the version of it to the latest.
   - `prop-types` is replaced with usage of TypeScript.
   - `exenv` is not maintained anymore and is removed with v5 as a dependency of nuka-carousel.
   - `wicg-inert` doesn't have specified license, so we are going to remove it from our dependencies. [More info here](https://github.com/WICG/inert/issues/168). We are still supporting `inert` and we will have an example and more detailed documentation how you can use it with nuka-carousel v5.
   - `react-move` nothing personal, we just decided to go for our custom approach of animations in order to reduce the size of the library.
 - **Fixed issues**. We fixed a lot of the issues that we currently have in v4. You can see the full list with fixed issues in our v5 project. [Link](https://github.com/FormidableLabs/nuka-carousel/projects/1)
-
 
 ### Props
 
@@ -226,5 +225,3 @@ See the [Contribution Docs](CONTRIBUTING.md).
 **Active:** Formidable is actively working on this project, and we expect to continue for work for the foreseeable future. Bug reports, feature requests and pull requests are welcome.
 
 [maintenance-image]: https://img.shields.io/badge/maintenance-active-green.svg?color=brightgreen&style=flat
-
-
