@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Slide from './slide';
 import AnnounceSlide from './announce-slide';
-import { getSliderListStyles } from './slider-list';
+import { SliderList } from './slider-list';
 import { CarouselProps, InternalCarouselProps, KeyCodeFunction } from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
@@ -48,6 +48,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     disableEdgeSwiping,
     dragging: desktopDraggingEnabled,
     dragThreshold: propsDragThreshold,
+    easing,
     enableKeyboardControls,
     frameAriaLabel,
     innerRef,
@@ -669,28 +670,25 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         onTouchEnd={handleDragEnd}
         onTouchMove={onTouchMove}
       >
-        <div
-          className="slider-list"
-          style={getSliderListStyles(
-            children,
-            currentSlide,
-            isAnimating,
-            slidesToShow,
-            cellAlign,
-            wrapAround,
-            propsSpeed,
-            isDragging ? preDragOffset.current - dragDistance : 0,
-            slidesToScroll,
-            scrollMode,
-            disableEdgeSwiping,
-            animation
-          )}
+        <SliderList
           ref={sliderListRef}
+          slideCount={slideCount}
+          currentSlide={currentSlide}
+          slidesToShow={slidesToShow}
+          cellAlign={cellAlign}
+          wrapAround={wrapAround}
+          speed={propsSpeed}
+          easing={easing}
+          draggedOffset={isDragging ? preDragOffset.current - dragDistance : 0}
+          slidesToScroll={slidesToScroll}
+          scrollMode={scrollMode}
+          disableEdgeSwiping={disableEdgeSwiping}
+          slideAnimation={animation}
         >
           {wrapAround ? renderSlides('prev-cloned') : null}
           {renderSlides()}
           {wrapAround ? renderSlides('next-cloned') : null}
-        </div>
+        </SliderList>
       </div>
     </div>
   );
