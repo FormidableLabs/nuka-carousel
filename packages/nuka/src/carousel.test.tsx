@@ -88,6 +88,20 @@ describe('Carousel', () => {
     checkTimingCycle(3);
   });
 
+  it('omits slides whose children are falsy', () => {
+    const { container } = render(
+      <Carousel>
+        <img src="#" alt={`slide 1`} />
+        <img src="#" alt={`slide 2`} />
+        {false && <img src="#" alt={`slide 3`} />}
+        {null}
+        <img src="#" alt={`slide 5`} />
+      </Carousel>
+    );
+
+    expect(container.getElementsByClassName('slide').length).toBe(3);
+  });
+
   it('can be controlled with the keyboard', () => {
     const beforeSlide = jest.fn();
     const keyCodeConfig = {
