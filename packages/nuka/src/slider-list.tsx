@@ -7,19 +7,19 @@ import { Alignment, D3EasingFunctions, ScrollMode } from './types';
 interface PercentOffsetForSlideProps
   extends Pick<
     SliderListProps,
-    'slideCount' | 'currentSlide' | 'cellAlign' | 'wrapAround'
+    'cellAlign' | 'currentSlide' | 'slideCount' | 'wrapAround'
   > {
+  currentPosition: number; // percent
   initialValue: number;
   transition: number;
-  currentPosition: number; // percent
 }
 
 const getPercentOffsetForSlide = ({
-  slideCount,
-  initialValue,
-  currentSlide,
   cellAlign,
   currentPosition,
+  currentSlide,
+  initialValue,
+  slideCount,
   transition,
   wrapAround,
 }: PercentOffsetForSlideProps): number => {
@@ -29,14 +29,15 @@ const getPercentOffsetForSlide = ({
       Math.abs(targetPosition + currentPosition).toFixed(2) ===
       (100 / 3).toFixed(2);
     const slideTransition =
-      -currentPosition +
-      (targetPosition + currentPosition) * (isWrappingAround ? 1 : transition);
+      (targetPosition + currentPosition) * (isWrappingAround ? 1 : transition) -
+      currentPosition;
 
     return initialValue - slideTransition;
   } else {
     const targetPosition = (100 / slideCount) * currentSlide;
     const slideTransition =
-      -currentPosition + (targetPosition + currentPosition) * transition;
+      (targetPosition + currentPosition) * transition - currentPosition;
+
     switch (cellAlign) {
       case Alignment.Left:
         return -(slideTransition + initialValue);
@@ -45,42 +46,45 @@ const getPercentOffsetForSlide = ({
         return initialValue - slideTransition;
       default:
     }
+
     return initialValue;
   }
 };
 
 interface SliderListProps {
-  children: ReactNode | ReactNode[];
-  slideCount: number;
-  currentSlide: number;
-  slidesToShow: number;
   cellAlign: Alignment;
-  wrapAround: boolean;
-  speed: number;
-  easing: D3EasingFunctions;
-  draggedOffset: number;
-  slidesToScroll: number;
-  scrollMode: ScrollMode;
+  children: ReactNode | ReactNode[];
+  currentSlide: number;
   disableEdgeSwiping: boolean;
+  draggedOffset: number;
+  easing: D3EasingFunctions;
+  isAnimating: boolean;
+  scrollMode: ScrollMode;
   slideAnimation?: 'fade' | 'zoom';
+  slideCount: number;
+  slidesToScroll: number;
+  slidesToShow: number;
+  speed: number;
+  wrapAround: boolean;
 }
 
 export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
   (
     {
-      children,
-      slideCount,
-      currentSlide,
-      slidesToShow,
-      easing,
       cellAlign,
-      wrapAround,
-      speed,
-      draggedOffset,
-      slidesToScroll,
-      scrollMode,
+      children,
+      currentSlide,
       disableEdgeSwiping,
+      draggedOffset,
+      easing,
+      isAnimating,
+      scrollMode,
       slideAnimation,
+      slideCount,
+      slidesToScroll,
+      slidesToShow,
+      speed,
+      wrapAround,
     },
     forwardRef
   ) => {
@@ -94,7 +98,7 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
       }
       return 0;
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [initialRect, currentSlide, draggedOffset]);
+    }, [currentSlide, draggedOffset, initialRect]);
 
     const transition = useTransition(speed, easing, [
       currentPosition,
@@ -125,13 +129,13 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
       }
       return null;
     }, [
+      cellAlign,
       disableEdgeSwiping,
+      scrollMode,
       slideCount,
       slidesToScroll,
-      scrollMode,
       slidesToShow,
       wrapAround,
-      cellAlign,
     ]);
 
     const initialValue = useMemo(() => {
@@ -153,15 +157,15 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
       }
 
       return initialValue;
-    }, [wrapAround, slideCount, cellAlign, slidesToShow]);
+    }, [cellAlign, slideCount, slidesToShow, wrapAround]);
 
     const positioning = useMemo(() => {
       const percentOffsetForSlideProps = {
-        slideCount,
-        initialValue,
         cellAlign,
         currentPosition,
-        transition: slideAnimation === 'fade' ? 1 : transition,
+        initialValue,
+        slideCount,
+        transition: !isAnimating || slideAnimation === 'fade' ? 1 : transition,
         wrapAround,
       };
 

@@ -644,19 +644,20 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         onTouchMove={onTouchMove}
       >
         <SliderList
-          ref={sliderListRef}
-          slideCount={slideCount}
-          currentSlide={currentSlide}
-          slidesToShow={slidesToShow}
           cellAlign={cellAlign}
-          wrapAround={wrapAround}
-          speed={propsSpeed}
-          easing={easing}
-          draggedOffset={isDragging ? preDragOffset.current - dragDistance : 0}
-          slidesToScroll={slidesToScroll}
-          scrollMode={scrollMode}
+          currentSlide={currentSlide}
           disableEdgeSwiping={disableEdgeSwiping}
+          draggedOffset={isDragging ? preDragOffset.current - dragDistance : 0}
+          easing={easing}
+          isAnimating={isAnimating}
+          ref={sliderListRef}
+          scrollMode={scrollMode}
           slideAnimation={animation}
+          slideCount={slideCount}
+          slidesToScroll={slidesToScroll}
+          slidesToShow={slidesToShow}
+          speed={propsSpeed}
+          wrapAround={wrapAround}
         >
           {wrapAround ? renderSlides('prev-cloned') : null}
           {renderSlides()}
