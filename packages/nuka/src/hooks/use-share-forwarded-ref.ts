@@ -1,5 +1,8 @@
 import { useEffect, useRef } from 'react';
 
+/**
+ * Allows a React.ForwardRefExoticComponent to reference the forwarded ref
+ */
 export const useShareForwardedRef = <T>(
   forwardedRef: React.ForwardedRef<T>
 ) => {

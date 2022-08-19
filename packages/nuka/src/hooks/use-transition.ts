@@ -2,6 +2,10 @@ import { useEffect, useState, useRef } from 'react';
 import { D3EasingFunctions } from 'src/types';
 import * as d3Ease from 'victory-vendor/d3-ease';
 
+/**
+ * Provides an interpolated value from [0, 1] based on a provided duration
+ * and d3-ease animation timing function name.
+ */
 export const useTransition = (
   duration: number, // in milliseconds
   animationTimingFunction: D3EasingFunctions,
