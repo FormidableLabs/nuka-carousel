@@ -110,7 +110,8 @@ context('Swipe Carousel', () => {
       cy.swipeSlider(carouselWidth);
 
       cy.get('.slider-list').should(($sliderList) => {
-        expect(getSliderXOffset($sliderList)).to.equal(-carouselWidth);
+        expect(getSliderXOffset($sliderList)).to.be.greaterThan(-(carouselWidth + 1));
+        expect(getSliderXOffset($sliderList)).to.be.lessThan(-(carouselWidth - 1));
       });
 
       // Initiating a drag from the right to the left
