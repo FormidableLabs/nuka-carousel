@@ -29,7 +29,7 @@ const defaultProps: InternalCarouselProps = {
   dragging: true,
   dragThreshold: 0.5,
   easing: D3EasingFunctions.EaseCircleOut,
-  edgeEasing: D3EasingFunctions.EaseCircleOut,
+  edgeEasing: D3EasingFunctions.EaseElasticOut,
   enableKeyboardControls: false,
   frameAriaLabel: 'carousel-slider',
   keyCodeConfig: {
