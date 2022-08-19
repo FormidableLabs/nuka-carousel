@@ -311,12 +311,18 @@ export interface InternalCarouselProps {
   dragThreshold: number;
 
   /**
-   * Not migrated yet
-   *
    * Animation easing function
    * @see https://github.com/d3/d3-ease
    */
   easing: D3EasingFunctions;
+
+  /**
+   * Not migrated yet
+   *
+   * Animation easing function when swipe exceeds edge
+   * @see https://github.com/d3/d3-ease
+   */
+  edgeEasing: D3EasingFunctions;
 
   /**
    * When set to true, disable keyboard controls
