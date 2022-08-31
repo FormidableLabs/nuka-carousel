@@ -1,5 +1,37 @@
 # Nuka Changelog
 
+## 5.3.0
+
+### Minor Changes
+
+- makes it possible to swipe over multiple slides at once rather than being limited to one ([#956](https://github.com/FormidableLabs/nuka-carousel/pull/956))
+
+### Patch Changes
+
+- Fix autoplay timing so the interval is not extended occasionally when wrapAround=true ([#954](https://github.com/FormidableLabs/nuka-carousel/pull/954))
+
+* make the prev/next buttons jump to appropriate indices with cellAlign=center|right ([#952](https://github.com/FormidableLabs/nuka-carousel/pull/952))
+
+- keyboard-triggered "firstSlide" or "lastSlide" actions are now animated, and now take cellAlign into account ([#958](https://github.com/FormidableLabs/nuka-carousel/pull/958))
+
+* make autoplay continue to the last slide when cellAlign != left and slidesToShow > 1 ([#952](https://github.com/FormidableLabs/nuka-carousel/pull/952))
+
+- children of Carousel that are falsy will not be rendered as slides ([#953](https://github.com/FormidableLabs/nuka-carousel/pull/953))
+
+* fix missing slide-visible classes when slideIndex has fractional digits ([#947](https://github.com/FormidableLabs/nuka-carousel/pull/947))
+
+- correct button disabling when cellAlign=center|right ([#952](https://github.com/FormidableLabs/nuka-carousel/pull/952))
+
+* show a dot corresponding to the last slide when cellAlign=center|right ([#952](https://github.com/FormidableLabs/nuka-carousel/pull/952))
+
+- fixes number of dots in default controls and eliminates janky animation when changing slides rapidly ([#945](https://github.com/FormidableLabs/nuka-carousel/pull/945))
+
+* setting "dragging" to false will no longer disable carousel swiping on mobile ("swiping" does that) ([#956](https://github.com/FormidableLabs/nuka-carousel/pull/956))
+
+- keyboard interactions when focused on the carousel are now kept from bubbling up and triggering other listeners ([#958](https://github.com/FormidableLabs/nuka-carousel/pull/958))
+
+* fix initial index when autoplayReverse=true and cellAlign is not left ([#952](https://github.com/FormidableLabs/nuka-carousel/pull/952))
+
 ## 4.8.3 (2021-11-19)
 
 - [#810](https://github.com/FormidableLabs/nuka-carousel/pull/810) fix: Last image is not rendered with 3 slides
