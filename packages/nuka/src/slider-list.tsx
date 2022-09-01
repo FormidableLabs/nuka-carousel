@@ -172,8 +172,6 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
         currentSlide,
       });
 
-      console.log(slideBasedOffset);
-
       // Special-case this. It's better to return undefined rather than a
       // transform of 0 pixels since transforms can cause flickering in chrome.
       if (draggedOffset === 0 && slideBasedOffset === 0) {
