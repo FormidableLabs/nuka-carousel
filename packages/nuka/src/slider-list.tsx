@@ -1,7 +1,7 @@
-import React, { useMemo, ReactNode, useLayoutEffect, useState } from 'react';
+import React, { useMemo, ReactNode } from 'react';
 import { getDotIndexes } from './default-controls';
 import { useShareForwardedRef } from './hooks/use-share-forwarded-ref';
-import { useTransition } from './hooks/use-transition';
+import { useTween } from './hooks/use-tween';
 import { Alignment, D3EasingFunctions, ScrollMode } from './types';
 
 interface PercentOffsetForSlideProps
@@ -89,8 +89,9 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
     forwardRef
   ) => {
     const ref = useShareForwardedRef(forwardRef);
-    const [initialRect, setInitialRect] = useState<DOMRect>();
     const rect = ref.current?.getBoundingClientRect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const initialRect = useMemo(() => rect, [!!rect]);
 
     const currentPosition = useMemo(() => {
       if (rect && initialRect) {
@@ -100,10 +101,7 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentSlide, draggedOffset, initialRect]);
 
-    const transition = useTransition(speed, easing, [
-      currentPosition,
-      currentSlide,
-    ]);
+    const transition = useTween(speed, easing, [currentPosition, currentSlide]);
 
     const width = useMemo(() => {
       const visibleSlides = slidesToShow;
@@ -174,6 +172,8 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
         currentSlide,
       });
 
+      console.log(slideBasedOffset);
+
       // Special-case this. It's better to return undefined rather than a
       // transform of 0 pixels since transforms can cause flickering in chrome.
       if (draggedOffset === 0 && slideBasedOffset === 0) {
@@ -202,13 +202,6 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [transition === 1 ? draggedOffset : transition]);
-
-    useLayoutEffect(() => {
-      setTimeout(
-        () => setInitialRect(ref.current?.getBoundingClientRect()),
-        100
-      );
-    }, [ref]);
 
     return (
       <div

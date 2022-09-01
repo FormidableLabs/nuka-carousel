@@ -6,7 +6,7 @@ import * as d3Ease from 'victory-vendor/d3-ease';
  * Provides an interpolated value from [0, 1] based on a provided duration
  * and d3-ease animation timing function name.
  */
-export const useTransition = (
+export const useTween = (
   duration: number, // in milliseconds
   animationTimingFunction: D3EasingFunctions,
   deps?: React.DependencyList
@@ -14,11 +14,9 @@ export const useTransition = (
   const fps = 1000 / 60;
   const [normalizedTime, setNormalizedTime] = useState(0);
   const startTime = useRef(Date.now());
-  const frameLoop = useRef<NodeJS.Timer | null>(null);
+  const frameLoop = useRef<ReturnType<typeof setInterval>>();
 
-  const clearFrameLoop = () => {
-    if (frameLoop.current) clearInterval(frameLoop.current);
-  };
+  const clearFrameLoop = () => clearInterval(frameLoop?.current);
 
   const resetFrameLoop = () => {
     startTime.current = Date.now();
