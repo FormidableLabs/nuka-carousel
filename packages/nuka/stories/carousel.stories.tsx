@@ -85,6 +85,14 @@ Vertical.args = {
   vertical: true,
 };
 
+export const CustomEasing = Template.bind({});
+CustomEasing.args = {
+  easing: 'easeLinear',
+  speed: 1000,
+  wrapAround: true,
+  slidesToShow: 3,
+};
+
 // export const FadeTransition = Template.bind({});
 // FadeTransition.args = {
 //   transitionMode: 'fade'
