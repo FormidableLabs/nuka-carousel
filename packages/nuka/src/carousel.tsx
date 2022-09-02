@@ -84,7 +84,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       scrollMode
     )
   );
-  const [isAnimating, setIsAnimating] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [dragDistance, setDragDistance] = useState<number>(0);
@@ -95,7 +94,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const defaultCarouselRef = useRef<HTMLDivElement>(null);
   const autoplayTimeout = useRef<ReturnType<typeof setTimeout>>();
   const autoplayLastTriggeredRef = useRef<number | null>(null);
-  const animationEndTimeout = useRef<ReturnType<typeof setTimeout>>();
   const isMounted = useRef<boolean>(true);
 
   const currentSlideBounded = getBoundedIndex(currentSlide, slideCount);
@@ -125,16 +123,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
       // if animation is disabled decrease the speed to 40
       const msToEndOfAnimation = !disableAnimation ? propsSpeed || 500 : 40;
-
-      if (!disableAnimation) {
-        setIsAnimating(true);
-
-        clearTimeout(animationEndTimeout.current);
-        animationEndTimeout.current = setTimeout(() => {
-          if (!isMounted.current) return;
-          setIsAnimating(false);
-        }, msToEndOfAnimation);
-      }
 
       if (slideChanged) {
         setCurrentSlide(targetSlideIndex);
@@ -269,24 +257,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     autoplayReverse,
     prevSlide,
     nextSlide,
-  ]);
-
-  // Makes the carousel infinity when wrapAround is enabled
-  useEffect(() => {
-    if (wrapAround && !isAnimating && !isDragging) {
-      if (currentSlide <= -slidesToShow) {
-        setCurrentSlide(slideCount - -currentSlide);
-      } else if (currentSlide >= slideCount) {
-        setCurrentSlide(currentSlide - slideCount);
-      }
-    }
-  }, [
-    currentSlide,
-    isAnimating,
-    isDragging,
-    slideCount,
-    slidesToShow,
-    wrapAround,
   ]);
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -638,11 +608,10 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       >
         <SliderList
           cellAlign={cellAlign}
-          currentSlide={currentSlide}
+          currentSlideUnbounded={currentSlide}
           disableEdgeSwiping={disableEdgeSwiping}
           draggedOffset={isDragging ? preDragOffset.current - dragDistance : 0}
           easing={easing}
-          isAnimating={isAnimating}
           ref={sliderListRef}
           scrollMode={scrollMode}
           slideAnimation={animation}
