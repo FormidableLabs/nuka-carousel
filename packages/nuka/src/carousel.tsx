@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Slide from './slide';
 import AnnounceSlide from './announce-slide';
-import { SliderList } from './slider-list';
+import { getPercentOffsetForSlide, SliderList } from './slider-list';
 import {
   CarouselProps,
   InternalCarouselProps,
@@ -87,6 +87,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const [pause, setPause] = useState<boolean>(false);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [dragDistance, setDragDistance] = useState<number>(0);
+  const [animationDistance, setAnimationDistance] = useState<number>(0);
 
   const prevXPosition = useRef<number | null>(null);
   const preDragOffset = useRef<number>(0);
@@ -115,32 +116,84 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const carouselRef = innerRef || defaultCarouselRef;
 
   const goToSlide = useCallback(
-    (targetSlideIndex: number) => {
-      const nextSlideBounded = getBoundedIndex(targetSlideIndex, slideCount);
+    (targetSlideUnbounded: number) => {
+      if (!sliderListRef.current || !carouselRef.current) return;
 
-      const slideChanged = targetSlideIndex !== currentSlide;
-      slideChanged && beforeSlide(currentSlideBounded, nextSlideBounded);
+      const targetSlideBounded = getBoundedIndex(
+        targetSlideUnbounded,
+        slideCount
+      );
 
-      // if animation is disabled decrease the speed to 40
-      const msToEndOfAnimation = !disableAnimation ? propsSpeed || 500 : 40;
+      const slideChanged = targetSlideUnbounded !== currentSlide;
+      slideChanged && beforeSlide(currentSlideBounded, targetSlideBounded);
+
+      // Calculate the distance the slide transition animation needs to cover.
+      // (The Math.round() calls in the following are to avoid floating point
+      // precision issues from swaying the upcoming comparison operations.)
+      const currentOffset = Math.round(
+        sliderListRef.current.getBoundingClientRect().left -
+          carouselRef.current.getBoundingClientRect().left
+      );
+      const sliderWidth = sliderListRef.current.offsetWidth;
+      let targetOffset = Math.round(
+        (getPercentOffsetForSlide(
+          targetSlideBounded,
+          slideCount,
+          slidesToShow,
+          cellAlign,
+          wrapAround
+        ) /
+          100) *
+          sliderWidth
+      );
+      if (wrapAround) {
+        // We have to do a bit of a recovery effort to figure out the closest
+        // offset based on the direction we're going in the slides. The reason
+        // it's complicated is because, when wrapped, both the current offset
+        // and the calculated target offset are based on bounded slide indices -
+        // that is, when wrapping, we often skip back to the first or last slide
+        // seamlessly to make the carousel appear to infinitely repeat
+
+        // The DOM width of `slideCount` slides
+        const slideSetWidth = Math.round(sliderWidth / 3);
+        if (targetSlideUnbounded > currentSlide) {
+          // We include the equals case so there is still animation in the case of
+          // slidesToScroll === slideCount
+          while (targetOffset >= currentOffset) {
+            targetOffset -= slideSetWidth;
+          }
+        } else {
+          while (targetOffset <= currentOffset) {
+            targetOffset += slideSetWidth;
+          }
+        }
+      }
+
+      setAnimationDistance(targetOffset - currentOffset);
 
       if (slideChanged) {
-        setCurrentSlide(targetSlideIndex);
+        setCurrentSlide(targetSlideUnbounded);
 
+        // if animation is disabled decrease the speed to 40
+        const msToEndOfAnimation = !disableAnimation ? propsSpeed || 500 : 40;
         setTimeout(() => {
           if (!isMounted.current) return;
-          afterSlide(nextSlideBounded);
+          afterSlide(targetSlideBounded);
         }, msToEndOfAnimation);
       }
     },
     [
-      currentSlideBounded,
       afterSlide,
       beforeSlide,
-      slideCount,
+      carouselRef,
+      cellAlign,
+      currentSlideBounded,
       currentSlide,
       disableAnimation,
       propsSpeed,
+      slideCount,
+      slidesToShow,
+      wrapAround,
     ]
   );
 
@@ -518,19 +571,13 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
   const renderSlides = (typeOfSlide?: 'prev-cloned' | 'next-cloned') => {
     const slides = React.Children.map(children, (child, index) => {
-      const isCurrentSlide = wrapAround
-        ? currentSlide === index ||
-          currentSlide === index + slideCount ||
-          currentSlide === index - slideCount
-        : currentSlide === index;
-
       return (
         <Slide
           key={`${typeOfSlide}-${index}`}
           count={slideCount}
           currentSlide={currentSlide}
           index={index}
-          isCurrentSlide={isCurrentSlide}
+          isCurrentSlide={currentSlideBounded === index}
           typeOfSlide={typeOfSlide}
           wrapAround={wrapAround}
           cellSpacing={cellSpacing}
@@ -607,11 +654,14 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         onTouchMove={onTouchMove}
       >
         <SliderList
+          animationDistance={animationDistance}
           cellAlign={cellAlign}
           currentSlideUnbounded={currentSlide}
           disableEdgeSwiping={disableEdgeSwiping}
-          draggedOffset={isDragging ? preDragOffset.current - dragDistance : 0}
+          draggedOffset={preDragOffset.current - dragDistance}
+          disableAnimation={disableAnimation}
           easing={easing}
+          isDragging={isDragging}
           ref={sliderListRef}
           scrollMode={scrollMode}
           slideAnimation={animation}

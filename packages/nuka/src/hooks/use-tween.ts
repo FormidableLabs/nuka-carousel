@@ -9,7 +9,8 @@ import * as d3Ease from 'victory-vendor/d3-ease';
 export const useTween = (
   duration: number, // in milliseconds
   animationTimingFunction: D3EasingFunctions,
-  currentSlideUnbounded: number
+  currentSlideUnbounded: number,
+  shouldInterrupt: boolean
 ) => {
   const [normalizedTime, setNormalizedTime] = useState(0);
   const startTime = useRef(Date.now());
@@ -19,6 +20,9 @@ export const useTween = (
   useLayoutEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
+      return;
+    }
+    if (shouldInterrupt) {
       return;
     }
 
@@ -46,7 +50,7 @@ export const useTween = (
         cancelAnimationFrame(rAF.current);
       }
     };
-  }, [currentSlideUnbounded, duration]);
+  }, [currentSlideUnbounded, duration, shouldInterrupt]);
 
   return {
     isAnimating: normalizedTime !== 0 && normalizedTime !== 1,

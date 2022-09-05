@@ -1,10 +1,10 @@
-import React, { ReactNode, useEffect, useRef } from 'react';
+import React, { ReactNode } from 'react';
 import { getDotIndexes } from './default-controls';
 import { useTween } from './hooks/use-tween';
 import { Alignment, D3EasingFunctions, ScrollMode } from './types';
 import { getBoundedIndex } from './utils';
 
-const getPercentOffsetForSlide = (
+export const getPercentOffsetForSlide = (
   currentSlide: number,
   slideCount: number,
   slidesToShow: number,
@@ -38,12 +38,15 @@ const getPercentOffsetForSlide = (
 };
 
 interface SliderListProps {
+  animationDistance: number;
   cellAlign: Alignment;
   children: ReactNode;
   currentSlideUnbounded: number;
+  disableAnimation: boolean;
   disableEdgeSwiping: boolean;
   draggedOffset: number;
   easing: D3EasingFunctions;
+  isDragging: boolean;
   scrollMode: ScrollMode;
   slideAnimation?: 'fade' | 'zoom';
   slideCount: number;
@@ -56,12 +59,15 @@ interface SliderListProps {
 export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
   (
     {
+      animationDistance,
       cellAlign,
       children,
       currentSlideUnbounded,
+      disableAnimation,
       disableEdgeSwiping,
       draggedOffset,
       easing,
+      isDragging,
       scrollMode,
       slideAnimation,
       slideCount,
@@ -79,29 +85,12 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
     const { value: transition, isAnimating } = useTween(
       speed,
       easing,
-      currentSlideUnbounded
+      currentSlideUnbounded,
+      isDragging || disableAnimation
     );
-    const myTween = useRef(0);
-    const unfinishedBusiness = useRef(0);
-    myTween.current = transition;
-    const prevCurrentSlideUnbounded = useRef(currentSlideUnbounded);
-
-    useEffect(() => {
-      const delta = currentSlideUnbounded - prevCurrentSlideUnbounded.current;
-      unfinishedBusiness.current =
-        unfinishedBusiness.current * (1 - myTween.current) - delta;
-
-      return () => {
-        prevCurrentSlideUnbounded.current = currentSlideUnbounded;
-      };
-    }, [currentSlideUnbounded]);
 
     // When wrapAround is enabled, we show the slides 3 times
     const renderedSlideCount = wrapAround ? 3 * slideCount : slideCount;
-    const singleSlidePercentOfWhole = 100 / renderedSlideCount;
-
-    const transitionMultiplier =
-      singleSlidePercentOfWhole * unfinishedBusiness.current;
 
     const listVisibleWidth = `${(renderedSlideCount * 100) / slidesToShow}%`;
 
@@ -116,7 +105,7 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
     // the leftmost and rightmost indices used, to be used in calculating the
     // x-translation values we need to limit to.
     let clampedDraggedOffset = `${draggedOffset}px`;
-    if (disableEdgeSwiping && !wrapAround) {
+    if (isDragging && disableEdgeSwiping && !wrapAround) {
       const dotIndexes = getDotIndexes(
         slideCount,
         slidesToScroll,
@@ -144,14 +133,14 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
     // Return undefined if the transform would be 0 pixels since transforms can
     // cause flickering in chrome.
     let positioning: string | undefined;
-    if (draggedOffset !== 0 || slideBasedOffset !== 0 || isAnimating) {
-      if (draggedOffset) {
+    if (isDragging || slideBasedOffset !== 0 || isAnimating) {
+      if (isDragging) {
         positioning = `translateX(${clampedDraggedOffset})`;
       } else {
         const transitionOffset =
           (1 - (!isAnimating || slideAnimation === 'fade' ? 1 : transition)) *
-          transitionMultiplier;
-        positioning = `translateX(${slideBasedOffset - transitionOffset}%)`;
+          animationDistance;
+        positioning = `translateX(calc(${slideBasedOffset}% - ${transitionOffset}px))`;
       }
     }
 
