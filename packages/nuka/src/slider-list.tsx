@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 import { getDotIndexes } from './default-controls';
 import { useTween } from './hooks/use-tween';
 import { Alignment, D3EasingFunctions, ScrollMode } from './types';
-import { getBoundedIndex } from './utils';
 
 export const getPercentOffsetForSlide = (
   currentSlide: number,
@@ -41,7 +40,7 @@ interface SliderListProps {
   animationDistance: number;
   cellAlign: Alignment;
   children: ReactNode;
-  currentSlideUnbounded: number;
+  currentSlide: number;
   disableAnimation: boolean;
   disableEdgeSwiping: boolean;
   draggedOffset: number;
@@ -62,7 +61,7 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
       animationDistance,
       cellAlign,
       children,
-      currentSlideUnbounded,
+      currentSlide,
       disableAnimation,
       disableEdgeSwiping,
       draggedOffset,
@@ -78,14 +77,10 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
     },
     forwardedRef
   ) => {
-    const currentSlideBounded = getBoundedIndex(
-      currentSlideUnbounded,
-      slideCount
-    );
     const { value: transition, isAnimating } = useTween(
       speed,
       easing,
-      currentSlideUnbounded,
+      currentSlide,
       isDragging || disableAnimation
     );
 
@@ -126,7 +121,7 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
     }
 
     const slideBasedOffset = getPercentOffsetForSlide(
-      currentSlideBounded,
+      currentSlide,
       ...percentOffsetForSlideProps
     );
 

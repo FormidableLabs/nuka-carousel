@@ -97,8 +97,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const autoplayLastTriggeredRef = useRef<number | null>(null);
   const isMounted = useRef<boolean>(true);
 
-  const currentSlideBounded = getBoundedIndex(currentSlide, slideCount);
-
   useEffect(() => {
     isMounted.current = true;
     return () => {
@@ -125,7 +123,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       );
 
       const slideChanged = targetSlideUnbounded !== currentSlide;
-      slideChanged && beforeSlide(currentSlideBounded, targetSlideBounded);
+      slideChanged && beforeSlide(currentSlide, targetSlideBounded);
 
       // Calculate the distance the slide transition animation needs to cover.
       // (The Math.round() calls in the following are to avoid floating point
@@ -172,7 +170,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       setAnimationDistance(targetOffset - currentOffset);
 
       if (slideChanged) {
-        setCurrentSlide(targetSlideUnbounded);
+        setCurrentSlide(targetSlideBounded);
 
         // if animation is disabled decrease the speed to 40
         const msToEndOfAnimation = !disableAnimation ? propsSpeed || 500 : 40;
@@ -187,7 +185,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       beforeSlide,
       carouselRef,
       cellAlign,
-      currentSlideBounded,
       currentSlide,
       disableAnimation,
       propsSpeed,
@@ -577,7 +574,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           count={slideCount}
           currentSlide={currentSlide}
           index={index}
-          isCurrentSlide={currentSlideBounded === index}
+          isCurrentSlide={currentSlide === index}
           typeOfSlide={typeOfSlide}
           wrapAround={wrapAround}
           cellSpacing={cellSpacing}
@@ -610,7 +607,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       <AnnounceSlide
         ariaLive={autoplay && !pause ? 'off' : 'polite'}
         message={renderAnnounceSlideMessage({
-          currentSlide: currentSlideBounded,
+          currentSlide,
           count: slideCount,
         })}
       />
@@ -656,7 +653,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         <SliderList
           animationDistance={animationDistance}
           cellAlign={cellAlign}
-          currentSlideUnbounded={currentSlide}
+          currentSlide={currentSlide}
           disableEdgeSwiping={disableEdgeSwiping}
           draggedOffset={preDragOffset.current - dragDistance}
           disableAnimation={disableAnimation}
