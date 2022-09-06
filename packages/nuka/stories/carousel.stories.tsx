@@ -87,7 +87,7 @@ Vertical.args = {
 
 export const CustomEasing = Template.bind({});
 CustomEasing.args = {
-  easing: 'easeLinear',
+  easing: 'easeElasticOut',
   speed: 1000,
   wrapAround: true,
   slidesToShow: 3,

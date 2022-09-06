@@ -9,7 +9,7 @@ import * as d3Ease from 'victory-vendor/d3-ease';
 export const useTween = (
   duration: number, // in milliseconds
   animationTimingFunction: D3EasingFunctions,
-  currentSlideUnbounded: number,
+  currentSlide: number,
   shouldInterrupt: boolean
 ) => {
   const [normalizedTime, setNormalizedTime] = useState(0);
@@ -29,7 +29,7 @@ export const useTween = (
     startTime.current = Date.now();
     setNormalizedTime(0.0000001);
 
-    const trigger = () => {
+    const tick = () => {
       rAF.current = requestAnimationFrame(() => {
         const currentTime = Date.now();
         const normalizedTime = Math.min(
@@ -39,18 +39,18 @@ export const useTween = (
         setNormalizedTime(normalizedTime);
 
         if (normalizedTime < 1) {
-          trigger();
+          tick();
         }
       });
     };
-    trigger();
+    tick();
 
     return () => {
       if (rAF.current !== undefined) {
         cancelAnimationFrame(rAF.current);
       }
     };
-  }, [currentSlideUnbounded, duration, shouldInterrupt]);
+  }, [currentSlide, duration, shouldInterrupt]);
 
   return {
     isAnimating: normalizedTime !== 0 && normalizedTime !== 1,
