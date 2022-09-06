@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { getControlContainerStyles } from './control-styles';
+import { nextButtonDisabled, prevButtonDisabled } from './default-controls';
 import {
   InternalCarouselProps,
   Positions,
@@ -31,6 +32,15 @@ const renderControls = (
   if (props.withoutControls) {
     return null;
   }
+
+  const disableCheckProps = {
+    ...props,
+    currentSlide,
+    slideCount,
+  };
+  const nextDisabled = nextButtonDisabled(disableCheckProps);
+  const previousDisabled = prevButtonDisabled(disableCheckProps);
+
   return controlsMap.map((control) => {
     if (
       !props[control.funcName] ||
@@ -63,7 +73,9 @@ const renderControls = (
             currentSlide,
             defaultControlsConfig: props.defaultControlsConfig || {},
             goToSlide,
+            nextDisabled,
             nextSlide,
+            previousDisabled,
             previousSlide: prevSlide,
             scrollMode: props.scrollMode,
             slideCount,

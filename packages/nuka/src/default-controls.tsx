@@ -13,11 +13,14 @@ const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
 });
 
 export const prevButtonDisabled = ({
-  currentSlide,
-  wrapAround,
   cellAlign,
+  currentSlide,
   slidesToShow,
-}: ControlProps) => {
+  wrapAround,
+}: Pick<
+  ControlProps,
+  'cellAlign' | 'currentSlide' | 'slidesToShow' | 'wrapAround'
+>) => {
   // inifite carousel
   if (wrapAround) {
     return false;
@@ -36,19 +39,19 @@ export const prevButtonDisabled = ({
   return false;
 };
 
-export const PreviousButton = (props: ControlProps) => {
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-    props?.previousSlide();
-  };
-
-  const {
+export const PreviousButton = ({
+  previousSlide,
+  defaultControlsConfig: {
     prevButtonClassName,
     prevButtonStyle = {},
     prevButtonText,
-  } = props.defaultControlsConfig || {};
-
-  const disabled = prevButtonDisabled(props);
+  },
+  previousDisabled: disabled,
+}: ControlProps) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    previousSlide();
+  };
 
   return (
     <button
@@ -68,12 +71,15 @@ export const PreviousButton = (props: ControlProps) => {
 };
 
 export const nextButtonDisabled = ({
+  cellAlign,
   currentSlide,
   slideCount,
   slidesToShow,
   wrapAround,
-  cellAlign,
-}: ControlProps) => {
+}: Pick<
+  ControlProps,
+  'cellAlign' | 'currentSlide' | 'slideCount' | 'slidesToShow' | 'wrapAround'
+>) => {
   // inifite carousel
   if (wrapAround) {
     return false;
@@ -95,21 +101,19 @@ export const nextButtonDisabled = ({
   return false;
 };
 
-export const NextButton = (props: ControlProps) => {
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-    props.nextSlide();
-  };
-
-  const { defaultControlsConfig } = props;
-
-  const {
+export const NextButton = ({
+  nextSlide,
+  defaultControlsConfig: {
     nextButtonClassName,
     nextButtonStyle = {},
     nextButtonText,
-  } = defaultControlsConfig;
-
-  const disabled = nextButtonDisabled(props);
+  },
+  nextDisabled: disabled,
+}: ControlProps) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    nextSlide();
+  };
 
   return (
     <button
