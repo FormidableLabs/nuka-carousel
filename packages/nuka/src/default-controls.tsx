@@ -289,6 +289,7 @@ export const PagingDots = (props: ControlProps) => {
                 height="6"
                 aria-hidden="true"
                 focusable="false"
+                viewBox="0 0 6 6"
               >
                 <circle cx="3" cy="3" r="3" />
               </svg>
