@@ -200,7 +200,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       wrapAround,
       currentSlide,
       slideCount,
-      propsSlidesToScroll,
+      slidesToScroll,
       slidesToShow,
       cellAlign
     );
@@ -212,7 +212,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     cellAlign,
     currentSlide,
     goToSlide,
-    propsSlidesToScroll,
+    slidesToScroll,
     scrollMode,
     slideCount,
     slidesToShow,
@@ -224,7 +224,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       scrollMode,
       wrapAround,
       currentSlide,
-      propsSlidesToScroll,
+      slidesToScroll,
       slidesToShow,
       cellAlign
     );
@@ -236,7 +236,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     cellAlign,
     currentSlide,
     goToSlide,
-    propsSlidesToScroll,
+    slidesToScroll,
     scrollMode,
     slidesToShow,
     wrapAround,
@@ -427,7 +427,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           wrapAround,
           nextSlideIndex,
           slideCount,
-          propsSlidesToScroll,
+          slidesToScroll,
           slidesToShow,
           cellAlign
         );
@@ -436,7 +436,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           scrollMode,
           wrapAround,
           nextSlideIndex,
-          propsSlidesToScroll,
+          slidesToScroll,
           slidesToShow,
           cellAlign
         );

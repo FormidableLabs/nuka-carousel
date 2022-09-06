@@ -81,7 +81,7 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
       speed,
       easing,
       currentSlide,
-      isDragging || disableAnimation
+      isDragging || disableAnimation || slideAnimation === 'fade'
     );
 
     // When wrapAround is enabled, we show the slides 3 times
@@ -132,9 +132,9 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
       if (isDragging) {
         positioning = `translateX(${clampedDraggedOffset})`;
       } else {
-        const transitionOffset =
-          (1 - (!isAnimating || slideAnimation === 'fade' ? 1 : transition)) *
-          animationDistance;
+        const transitionOffset = isAnimating
+          ? (1 - transition) * animationDistance
+          : 0;
         positioning = `translateX(calc(${slideBasedOffset}% - ${transitionOffset}px))`;
       }
     }
