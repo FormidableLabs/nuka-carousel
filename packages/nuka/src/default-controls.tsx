@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import React, { CSSProperties, useCallback } from 'react';
 import { Alignment, ControlProps, ScrollMode } from './types';
 import { getBoundedIndex } from './utils';
