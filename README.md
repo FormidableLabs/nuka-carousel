@@ -130,15 +130,16 @@ A set of eight render props for rendering controls in different positions around
 
   Additionally, the following data and callbacks are provided to make creating controls easier:
 
-  | Name             | Type                            | Description                                             |
-  | :--------------- | ------------------------------- | :------------------------------------------------------ |
-  | currentSlide     | `number`                        | Current slide index                                     |
-  | goToSlide        | `(targetIndex: number) => void` | Go to a specific slide                                  |
-  | nextDisabled     | `boolean`                       | Whether the "next" button should be disabled or not     |
-  | nextSlide        | `() => void`                    | Go to the next slide                                    |
-  | previousDisabled | `boolean`                       | Whether the "previous" button should be disabled or not |
-  | previousSlide    | `() => void`                    | Go to the previous slide                                |
-  | slideCount       | `number`                        | Total number of slides                                  |
+  | Name                 | Type                            | Description                                             |
+  | :------------------- | ------------------------------- | :------------------------------------------------------ |
+  | currentSlide         | `number`                        | Current slide index                                     |
+  | dotNavigationIndices | `number[]`                      | The indices for the navigation dots                     |
+  | goToSlide            | `(targetIndex: number) => void` | Go to a specific slide                                  |
+  | nextDisabled         | `boolean`                       | Whether the "next" button should be disabled or not     |
+  | nextSlide            | `() => void`                    | Go to the next slide                                    |
+  | previousDisabled     | `boolean`                       | Whether the "previous" button should be disabled or not |
+  | previousSlide        | `() => void`                    | Go to the previous slide                                |
+  | slideCount           | `number`                        | Total number of slides                                  |
 
 Example:
 

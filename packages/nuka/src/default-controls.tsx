@@ -1,6 +1,7 @@
 /* eslint-disable complexity */
 import React, { CSSProperties, useCallback } from 'react';
 import { Alignment, ControlProps, ScrollMode } from './types';
+import { getBoundedIndex } from './utils';
 
 const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
   border: 0,
@@ -223,7 +224,17 @@ export const getDotIndexes = (
   return dotIndexes;
 };
 
-export const PagingDots = (props: ControlProps) => {
+export const PagingDots = ({
+  dotNavigationIndices,
+  defaultControlsConfig: {
+    pagingDotsContainerClassName,
+    pagingDotsClassName,
+    pagingDotsStyle = {},
+  },
+  currentSlide,
+  slideCount,
+  goToSlide,
+}: ControlProps) => {
   const listStyles: CSSProperties = {
     position: 'relative',
     top: -10,
@@ -243,37 +254,20 @@ export const PagingDots = (props: ControlProps) => {
     }),
     []
   );
-
-  const indexes = getDotIndexes(
-    props.slideCount,
-    props.slidesToScroll,
-    props.scrollMode,
-    props.slidesToShow,
-    props.wrapAround,
-    props.cellAlign
-  );
-
-  const {
-    pagingDotsContainerClassName,
-    pagingDotsClassName,
-    pagingDotsStyle = {},
-  } = props.defaultControlsConfig;
+  const currentSlideBounded = getBoundedIndex(currentSlide, slideCount);
 
   return (
     <ul className={pagingDotsContainerClassName} style={listStyles}>
-      {indexes.map((index, i) => {
-        let isActive =
-          props.currentSlide === index ||
-          props.currentSlide - props.slideCount === index ||
-          props.currentSlide + props.slideCount === index;
+      {dotNavigationIndices.map((slideIndex, i) => {
+        const isActive =
+          currentSlideBounded === slideIndex ||
+          // sets navigation dots active if the current slide falls in the current index range
+          (currentSlideBounded < slideIndex &&
+            (i === 0 || currentSlideBounded > dotNavigationIndices[i - 1]));
 
-        // the below condition checks and sets navigation dots active if the current slide falls in the current index range
-        if (props.currentSlide < index && props.currentSlide > indexes[i - 1]) {
-          isActive = true;
-        }
         return (
           <li
-            key={index}
+            key={slideIndex}
             className={isActive ? 'paging-item active' : 'paging-item'}
           >
             <button
@@ -283,8 +277,8 @@ export const PagingDots = (props: ControlProps) => {
                 ...getButtonStyles(isActive),
                 ...pagingDotsStyle,
               }}
-              onClick={props.goToSlide.bind(null, index)}
-              aria-label={`slide ${index + 1} bullet`}
+              onClick={() => goToSlide(slideIndex)}
+              aria-label={`slide ${slideIndex + 1} bullet`}
               aria-selected={isActive}
             >
               <svg

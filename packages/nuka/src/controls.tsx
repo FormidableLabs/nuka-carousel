@@ -1,6 +1,10 @@
 import React, { Fragment } from 'react';
 import { getControlContainerStyles } from './control-styles';
-import { nextButtonDisabled, prevButtonDisabled } from './default-controls';
+import {
+  getDotIndexes,
+  nextButtonDisabled,
+  prevButtonDisabled,
+} from './default-controls';
 import {
   InternalCarouselProps,
   Positions,
@@ -40,6 +44,14 @@ const renderControls = (
   };
   const nextDisabled = nextButtonDisabled(disableCheckProps);
   const previousDisabled = prevButtonDisabled(disableCheckProps);
+  const dotNavigationIndices = getDotIndexes(
+    slideCount,
+    slidesToScroll,
+    props.scrollMode,
+    props.slidesToShow,
+    props.wrapAround,
+    props.cellAlign
+  );
 
   return controlsMap.map((control) => {
     if (
@@ -72,6 +84,7 @@ const renderControls = (
             cellSpacing: props.cellSpacing,
             currentSlide,
             defaultControlsConfig: props.defaultControlsConfig || {},
+            dotNavigationIndices,
             goToSlide,
             nextDisabled,
             nextSlide,
