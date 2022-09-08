@@ -126,14 +126,11 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       slideChanged && beforeSlide(currentSlide, targetSlideBounded);
 
       // Calculate the distance the slide transition animation needs to cover.
-      // (The Math.round() calls in the following are to avoid floating point
-      // precision issues from swaying the upcoming comparison operations.)
-      const currentOffset = Math.round(
+      const currentOffset =
         sliderListRef.current.getBoundingClientRect().left -
-          carouselRef.current.getBoundingClientRect().left
-      );
+        carouselRef.current.getBoundingClientRect().left;
       const sliderWidth = sliderListRef.current.offsetWidth;
-      let targetOffset = Math.round(
+      let targetOffset =
         (getPercentOffsetForSlide(
           targetSlideBounded,
           slideCount,
@@ -142,8 +139,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           wrapAround
         ) /
           100) *
-          sliderWidth
-      );
+        sliderWidth;
       if (wrapAround) {
         // We have to do a bit of a recovery effort to figure out the closest
         // offset based on the direction we're going in the slides. The reason
@@ -153,17 +149,13 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         // seamlessly to make the carousel appear to infinitely repeat
 
         // The DOM width of `slideCount` slides
-        const slideSetWidth = Math.round(sliderWidth / 3);
-        if (targetSlideUnbounded > currentSlide) {
-          // We include the equals case so there is still animation in the case of
-          // slidesToScroll === slideCount
-          while (targetOffset >= currentOffset) {
-            targetOffset -= slideSetWidth;
-          }
-        } else {
-          while (targetOffset <= currentOffset) {
-            targetOffset += slideSetWidth;
-          }
+        const slideSetWidth = sliderWidth / 3;
+
+        if (targetSlideUnbounded < 0) {
+          targetOffset += slideSetWidth;
+        }
+        if (targetSlideUnbounded >= slideCount) {
+          targetOffset -= slideSetWidth;
         }
       }
 
