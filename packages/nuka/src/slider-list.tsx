@@ -1,64 +1,51 @@
-import React, { useMemo, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { getDotIndexes } from './default-controls';
-import { useShareForwardedRef } from './hooks/use-share-forwarded-ref';
 import { useTween } from './hooks/use-tween';
 import { Alignment, D3EasingFunctions, ScrollMode } from './types';
 
-interface PercentOffsetForSlideProps
-  extends Pick<
-    SliderListProps,
-    'cellAlign' | 'currentSlide' | 'slideCount' | 'wrapAround'
-  > {
-  currentPosition: number; // percent
-  initialValue: number;
-  transition: number;
-}
+export const getPercentOffsetForSlide = (
+  currentSlide: number,
+  slideCount: number,
+  slidesToShow: number,
+  cellAlign: Alignment,
+  wrapAround: boolean
+): number => {
+  // When wrapAround is enabled, we show the slides 3 times
+  const renderedSlideCount = wrapAround ? 3 * slideCount : slideCount;
 
-const getPercentOffsetForSlide = ({
-  cellAlign,
-  currentPosition,
-  currentSlide,
-  initialValue,
-  slideCount,
-  transition,
-  wrapAround,
-}: PercentOffsetForSlideProps): number => {
-  if (wrapAround) {
-    const targetPosition = (100 / (3 * slideCount)) * currentSlide;
-    const isWrappingAround =
-      Math.abs(targetPosition + currentPosition).toFixed(2) ===
-      (100 / 3).toFixed(2);
-    const slideTransition =
-      (targetPosition + currentPosition) * (isWrappingAround ? 1 : transition) -
-      currentPosition;
+  const singleSlidePercentOfWhole = 100 / renderedSlideCount;
 
-    return initialValue - slideTransition;
-  } else {
-    const targetPosition = (100 / slideCount) * currentSlide;
-    const slideTransition =
-      (targetPosition + currentPosition) * transition - currentPosition;
+  // When wrap is on, -33.33% puts us right on the center, true set of slides
+  // (the left and right sets are clones meant to avoid visual gaps)
+  let slide0Offset = wrapAround ? -100 / 3 : 0;
 
-    switch (cellAlign) {
-      case Alignment.Left:
-        return -(slideTransition + initialValue);
-      case Alignment.Center:
-      case Alignment.Right:
-        return initialValue - slideTransition;
-      default:
-    }
-
-    return initialValue;
+  if (cellAlign === Alignment.Right && slidesToShow > 1) {
+    const excessSlides = slidesToShow - 1;
+    slide0Offset += singleSlidePercentOfWhole * excessSlides;
   }
+
+  if (cellAlign === Alignment.Center && slidesToShow > 1) {
+    const excessSlides = slidesToShow - 1;
+    // Half of excess is on left and half is on right when centered
+    const excessLeftSlides = excessSlides / 2;
+    slide0Offset += singleSlidePercentOfWhole * excessLeftSlides;
+  }
+
+  const currentSlideOffsetFrom0 = (100 / renderedSlideCount) * currentSlide;
+
+  return slide0Offset - currentSlideOffsetFrom0;
 };
 
 interface SliderListProps {
+  animationDistance: number;
   cellAlign: Alignment;
-  children: ReactNode | ReactNode[];
+  children: ReactNode;
   currentSlide: number;
+  disableAnimation: boolean;
   disableEdgeSwiping: boolean;
   draggedOffset: number;
   easing: D3EasingFunctions;
-  isAnimating: boolean;
+  isDragging: boolean;
   scrollMode: ScrollMode;
   slideAnimation?: 'fade' | 'zoom';
   slideCount: number;
@@ -71,13 +58,15 @@ interface SliderListProps {
 export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
   (
     {
+      animationDistance,
       cellAlign,
       children,
       currentSlide,
+      disableAnimation,
       disableEdgeSwiping,
       draggedOffset,
       easing,
-      isAnimating,
+      isDragging,
       scrollMode,
       slideAnimation,
       slideCount,
@@ -86,127 +75,76 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
       speed,
       wrapAround,
     },
-    forwardRef
+    forwardedRef
   ) => {
-    const ref = useShareForwardedRef(forwardRef);
-    const rect = ref.current?.getBoundingClientRect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const initialRect = useMemo(() => rect, [!!rect]);
+    const { value: transition, isAnimating } = useTween(
+      speed,
+      easing,
+      currentSlide,
+      isDragging || disableAnimation || slideAnimation === 'fade'
+    );
 
-    const currentPosition = useMemo(() => {
-      if (rect && initialRect) {
-        return ((rect.x - initialRect.x) / rect.width) * 100;
-      }
-      return 0;
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentSlide, draggedOffset, initialRect]);
+    // When wrapAround is enabled, we show the slides 3 times
+    const renderedSlideCount = wrapAround ? 3 * slideCount : slideCount;
 
-    const transition = useTween(speed, easing, [currentPosition, currentSlide]);
+    const listVisibleWidth = `${(renderedSlideCount * 100) / slidesToShow}%`;
 
-    const width = useMemo(() => {
-      const visibleSlides = slidesToShow;
-      const percentage = (slideCount * 100) / visibleSlides;
-      if (wrapAround) return `${3 * percentage}%`;
-      return `${percentage}%`;
-    }, [slideCount, slidesToShow, wrapAround]);
+    const percentOffsetForSlideProps = [
+      slideCount,
+      slidesToShow,
+      cellAlign,
+      wrapAround,
+    ] as const;
 
     // When disableEdgeSwiping=true, we recycle dot index generation to determine
     // the leftmost and rightmost indices used, to be used in calculating the
     // x-translation values we need to limit to.
-    const clampIndices: number[] | null = useMemo(() => {
-      if (disableEdgeSwiping && !wrapAround) {
-        const dotIndexes = getDotIndexes(
-          slideCount,
-          slidesToScroll,
-          scrollMode,
-          slidesToShow,
-          wrapAround,
-          cellAlign
-        );
-        return [dotIndexes[0], dotIndexes[dotIndexes.length - 1]];
-      }
-      return null;
-    }, [
-      cellAlign,
-      disableEdgeSwiping,
-      scrollMode,
-      slideCount,
-      slidesToScroll,
-      slidesToShow,
-      wrapAround,
-    ]);
-
-    const initialValue = useMemo(() => {
-      // When wrapAround is enabled, we show the slides 3 times
-      const totalCount = wrapAround ? 3 * slideCount : slideCount;
-      const slideSize = 100 / totalCount;
-      let initialValue = wrapAround ? -slideCount * slideSize : 0;
-
-      if (cellAlign === Alignment.Right && slidesToShow > 1) {
-        const excessSlides = slidesToShow - 1;
-        initialValue += slideSize * excessSlides;
-      }
-
-      if (cellAlign === Alignment.Center && slidesToShow > 1) {
-        const excessSlides = slidesToShow - 1;
-        // Half of excess is on left and half is on right when centered
-        const excessLeftSlides = excessSlides / 2;
-        initialValue += slideSize * excessLeftSlides;
-      }
-
-      return initialValue;
-    }, [cellAlign, slideCount, slidesToShow, wrapAround]);
-
-    const positioning = useMemo(() => {
-      const percentOffsetForSlideProps = {
-        cellAlign,
-        currentPosition,
-        initialValue,
+    let clampedDraggedOffset = `${draggedOffset}px`;
+    if (isDragging && disableEdgeSwiping && !wrapAround) {
+      const dotIndexes = getDotIndexes(
         slideCount,
-        transition: !isAnimating || slideAnimation === 'fade' ? 1 : transition,
+        slidesToScroll,
+        scrollMode,
+        slidesToShow,
         wrapAround,
-      };
+        cellAlign
+      );
+      const clampOffsets = [
+        dotIndexes[0],
+        dotIndexes[dotIndexes.length - 1],
+      ].map((index) =>
+        getPercentOffsetForSlide(index, ...percentOffsetForSlideProps)
+      );
+      // Offsets are seemingly backwards because the rightmost slide creates
+      // the most negative translate value
+      clampedDraggedOffset = `clamp(${clampOffsets[1]}%, ${draggedOffset}px, ${clampOffsets[0]}%)`;
+    }
 
-      const slideBasedOffset = getPercentOffsetForSlide({
-        ...percentOffsetForSlideProps,
-        currentSlide,
-      });
+    const slideBasedOffset = getPercentOffsetForSlide(
+      currentSlide,
+      ...percentOffsetForSlideProps
+    );
 
-      // Special-case this. It's better to return undefined rather than a
-      // transform of 0 pixels since transforms can cause flickering in chrome.
-      if (draggedOffset === 0 && slideBasedOffset === 0) {
-        return undefined;
+    // Return undefined if the transform would be 0 pixels since transforms can
+    // cause flickering in chrome.
+    let positioning: string | undefined;
+    if (isDragging || slideBasedOffset !== 0 || isAnimating) {
+      if (isDragging) {
+        positioning = `translateX(${clampedDraggedOffset})`;
+      } else {
+        const transitionOffset = isAnimating
+          ? (1 - transition) * animationDistance
+          : 0;
+        positioning = `translateX(calc(${slideBasedOffset}% - ${transitionOffset}px))`;
       }
-
-      let clampOffsets: number[] | null = null;
-      if (clampIndices) {
-        clampOffsets = clampIndices.map((index) =>
-          getPercentOffsetForSlide({
-            ...percentOffsetForSlideProps,
-            currentSlide: index,
-          })
-        );
-      }
-
-      const clampedDraggedOffset = clampOffsets
-        ? // Offsets are seemingly backwards because the rightmost slide creates
-          // the most negative translate value
-          `clamp(${clampOffsets[1]}%, ${draggedOffset}px, ${clampOffsets[0]}%)`
-        : `${draggedOffset}px`;
-
-      return `translate3d(${
-        draggedOffset ? clampedDraggedOffset : `${slideBasedOffset}%`
-      }, 0, 0)`;
-
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [transition === 1 ? draggedOffset : transition]);
+    }
 
     return (
       <div
-        ref={ref}
+        ref={forwardedRef}
         className="slider-list"
         style={{
-          width,
+          width: listVisibleWidth,
           textAlign: 'left',
           userSelect: 'auto',
           transform: positioning,
