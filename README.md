@@ -114,23 +114,54 @@ A set of eight render props for rendering controls in different positions around
 
 - The default props are set as `renderCenterLeftControls` for `Previous` button, `renderCenterRightControls` for the `Next` button and `renderBottomCenterControls` for the "Paging dots". To change the position or remove "Paging dots", the default positions need to be disabled by setting them to null.
 
+- You can remove all render controls using the `withoutControls` prop on `Carousel`.
+
+- The render functions receive a `ControlProps` argument containing the following props from the Carousel props, using default values if not originally defined: 
+
+  ```
+  cellAlign
+  cellSpacing
+  defaultControlsConfig
+  scrollMode
+  slidesToScroll
+  slidesToShow
+  wrapAround
+  ```
+
+  Additionally, the following data and callbacks are provided to make creating controls easier:
+
+  | Name                 | Type                            | Description                                             |
+  | :------------------- | ------------------------------- | :------------------------------------------------------ |
+  | currentSlide         | `number`                        | Current slide index                                     |
+  | dotNavigationIndices | `number[]`                      | The indices for the navigation dots                     |
+  | goToSlide            | `(targetIndex: number) => void` | Go to a specific slide                                  |
+  | nextDisabled         | `boolean`                       | Whether the "next" button should be disabled or not     |
+  | nextSlide            | `() => void`                    | Go to the next slide                                    |
+  | previousDisabled     | `boolean`                       | Whether the "previous" button should be disabled or not |
+  | previousSlide        | `() => void`                    | Go to the previous slide                                |
+  | slideCount           | `number`                        | Total number of slides                                  |
+
+Example:
+
 ```jsx
 <Carousel
   renderTopCenterControls={({ currentSlide }) => (
     <div>Slide: {currentSlide}</div>
   )}
-  renderCenterLeftControls={({ previousSlide }) => (
-    <button onClick={previousSlide}>Previous</button>
+  renderCenterLeftControls={({ previousDisabled, previousSlide }) => (
+    <button onClick={previousSlide} disabled={previousDisabled}>
+      Previous
+    </button>
   )}
-  renderCenterRightControls={({ nextSlide }) => (
-    <button onClick={nextSlide}>Next</button>
+  renderCenterRightControls={({ nextDisabled, nextSlide }) => (
+    <button onClick={nextSlide} disabled={nextDisabled}>
+      Next
+    </button>
   )}
 >
   {/* Carousel Content */}
 </Carousel>
 ```
-
-- The function returns the props for `goToSlide`, `nextSlide` and `previousSlide` functions, in addition to `slideCount` and `currentSlide` values. You can also remove all render controls using `withoutControls`.
 
 - NOTE: The className `slide-visible` is added to the currently visible slide or slides (when `slidesToShow` > 1). The className `slide-current` is added to the currently "active" slide.
 

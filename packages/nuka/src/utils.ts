@@ -1,29 +1,6 @@
 import { getDotIndexes } from './default-controls';
 import { Alignment, ScrollMode } from './types';
 
-export const getIndexes = (
-  slide: number,
-  endSlide: number,
-  slideCount: number
-): [number, number] => {
-  let slideIndex = slide;
-  let endSlideIndex = endSlide;
-
-  if (slideIndex < 0) {
-    slideIndex += slideCount;
-  } else if (slideIndex > slideCount - 1) {
-    slideIndex -= slideCount;
-  }
-
-  if (endSlideIndex < 0) {
-    endSlideIndex += slideCount;
-  } else if (endSlideIndex > slideCount - 1) {
-    endSlideIndex -= slideCount;
-  }
-
-  return [slideIndex, endSlideIndex];
-};
-
 export const isSlideVisible = (
   currentSlide: number,
   indexToCheck: number,
@@ -141,4 +118,12 @@ export const getDefaultSlideIndex = (
   );
 
   return autoplayReverse ? dotIndexes[dotIndexes.length - 1] : dotIndexes[0];
+};
+
+/**
+ * Boils down an unbounded index (-Infinity < index < Infinity) to a bounded one
+ * (0 ≤ index < slideCount)
+ */
+export const getBoundedIndex = (rawIndex: number, slideCount: number) => {
+  return ((rawIndex % slideCount) + slideCount) % slideCount;
 };

@@ -1,5 +1,10 @@
 import { Alignment, ScrollMode } from './types';
-import { getNextMoveIndex, getPrevMoveIndex, isSlideVisible } from './utils';
+import {
+  getBoundedIndex,
+  getNextMoveIndex,
+  getPrevMoveIndex,
+  isSlideVisible,
+} from './utils';
 
 describe('isSlideVisible', () => {
   it.each`
@@ -341,6 +346,30 @@ describe('getPrevMoveIndex', () => {
           cellAlign
         )
       ).toEqual(expected);
+    }
+  );
+});
+
+describe('getBoundedIndex', () => {
+  it.each`
+    rawIndex | slideCount | expected
+    ${0}     | ${1}       | ${0}
+    ${1}     | ${2}       | ${1}
+    ${2}     | ${2}       | ${0}
+    ${3}     | ${2}       | ${1}
+    ${4}     | ${2}       | ${0}
+    ${-1}    | ${2}       | ${1}
+    ${-2}    | ${2}       | ${0}
+    ${-2}    | ${3}       | ${1}
+    ${-3}    | ${3}       | ${0}
+    ${-6}    | ${3}       | ${0}
+    ${-7}    | ${3}       | ${2}
+    ${-7.5}  | ${3}       | ${1.5}
+  `(
+    'gets the right index when bounds applied ' +
+      '(rawIndex $rawIndex, slideCount $slideCount)',
+    ({ rawIndex, slideCount, expected }) => {
+      expect(getBoundedIndex(rawIndex, slideCount)).toEqual(expected);
     }
   );
 });
