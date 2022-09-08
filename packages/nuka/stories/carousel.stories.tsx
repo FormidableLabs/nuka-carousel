@@ -22,7 +22,7 @@ export default {
 
 /* Set up story template */
 interface StoryProps {
-  storySlideCount: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+  storySlideCount: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14;
   slideHeights?: number[];
 }
 
@@ -261,12 +261,12 @@ KeyboardControls.args = {
 
 export const CustomControls = Template.bind({});
 CustomControls.args = {
-  wrapAround: true,
+  slidesToShow: 3,
   renderCenterLeftControls: (props: ControlProps) => (
     <button
       type="button"
-      // eslint-disable-next-line react/jsx-handler-names
       onClick={props.previousSlide}
+      disabled={props.previousDisabled}
       aria-label="Previous slide"
       style={{ background: 'none', border: 0, fontSize: '32px' }}
     >
@@ -276,8 +276,8 @@ CustomControls.args = {
   renderCenterRightControls: (props: ControlProps) => (
     <button
       type="button"
-      // eslint-disable-next-line react/jsx-handler-names
       onClick={props.nextSlide}
+      disabled={props.nextDisabled}
       aria-label="Next slide"
       style={{ background: 'none', border: 0, fontSize: '32px' }}
     >
@@ -286,7 +286,7 @@ CustomControls.args = {
   ),
   renderBottomCenterControls: (props: ControlProps) => (
     <ul style={{ display: 'flex', gap: 10, listStyle: 'none', padding: 0 }}>
-      {[...new Array(props.slideCount)].map((_, i) => (
+      {props.dotNavigationIndices.map((i) => (
         <li key={i}>
           <button
             type="button"

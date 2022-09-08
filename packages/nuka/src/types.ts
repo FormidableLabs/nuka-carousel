@@ -129,69 +129,58 @@ type RenderAnnounceSlideMessage = (props: {
   count: number;
 }) => string;
 
-export interface ControlProps {
-  /**
-   * When displaying more than one slide, sets which position to anchor the current slide to.
-   */
-  cellAlign: Alignment;
-
-  /**
-   * Space between slides, as an integer, but reflected as px
-   */
-  cellSpacing: number;
-
+export interface ControlProps
+  extends Pick<
+    InternalCarouselProps,
+    | 'cellAlign'
+    | 'cellSpacing'
+    | 'defaultControlsConfig'
+    | 'scrollMode'
+    | 'slidesToScroll'
+    | 'slidesToShow'
+    | 'vertical'
+    | 'wrapAround'
+  > {
   /**
    * Current slide index
    */
   currentSlide: number;
 
   /**
-   * This prop lets you apply custom classes and styles to the default Next, Previous, and Paging Dots controls
+   * The indices for the navigation dots
    */
-  defaultControlsConfig: DefaultControlsConfig;
+  dotNavigationIndices: number[];
 
   /**
-   * Go to X slide method
-   * @param index Slide's index to go
+   * Go to a specific slide
+   * @param targetIndex Index to go to
    */
-  goToSlide: (index: number) => void;
+  goToSlide: (targetIndex: number) => void;
 
   /**
-   * Go to the next slide method
+   * Whether the "next" button should be disabled or not
+   */
+  nextDisabled: boolean;
+
+  /**
+   * Go to the next slide
    */
   nextSlide: () => void;
 
   /**
-   * Go to the previous slide method
+   * Whether the "previous" button should be disabled or not
+   */
+  previousDisabled: boolean;
+
+  /**
+   * Go to the previous slide
    */
   previousSlide: () => void;
-  scrollMode: ScrollMode;
 
   /**
-   * Total amount of slides
+   * Total number of slides
    */
   slideCount: number;
-
-  /**
-   * Slides to scroll at once
-   */
-  slidesToScroll: number;
-
-  /**
-   * Slides to show at once
-   */
-  slidesToShow: number;
-
-  /**
-   * Enable the slides to transition vertically
-   */
-  vertical: boolean;
-
-  /**
-   * Sets infinite wrapAround mode
-   * @default false
-   */
-  wrapAround: boolean;
 }
 
 export type RenderControlFunctionNames =
