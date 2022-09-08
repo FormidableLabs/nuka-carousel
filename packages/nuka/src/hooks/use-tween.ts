@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState, useRef } from 'react';
 import { D3EasingFunctions } from 'src/types';
-import * as d3Ease from 'd3-ease';
+import * as d3Ease from 'victory-vendor/d3-ease';
 
 /**
  * Provides an interpolated value from [0, 1] based on a provided duration
