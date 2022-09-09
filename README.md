@@ -78,7 +78,7 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 | cellAlign | `'left' \| 'center' \| 'right'` | When displaying more than one slide, sets which position to anchor the current slide to. | `left` |
 | cellSpacing | `number` | Space between slides, as an integer, but reflected as `px` | `0` |
 | className | `string` | Slider frame class name | `''` |
-| defaultControlsConfig | <pre>interface DefaultControlsConfig  { &#13; containerClassName?: string; &#13; nextButtonClassName?: string; &#13; nextButtonStyle?: CSSProperties; &#13; nextButtonText?: React.ReactNode; &#13; pagingDotsClassName?: string; &#13; pagingDotsContainerClassName?: string; &#13; pagingDotsStyle?: CSSProperties; &#13; prevButtonClassName?: string; &#13; prevButtonStyle?: CSSProperties; &#13; prevButtonText?: React.ReactNode; &#13;}</pre> | This prop lets you apply custom classes and styles to the default `Container`. `Next`, `Previous`, and `Paging Dots` controls. More information on how to customize these controls can be found below.| `{}` |
+| defaultControlsConfig | <pre>interface DefaultControlsConfig  { &#13; containerClassName?: string; &#13; nextButtonClassName?: string; &#13; nextButtonOnClick?: (event: React.MouseEvent) => void; &#13; nextButtonStyle?: CSSProperties; &#13; nextButtonText?: React.ReactNode; &#13; pagingDotsClassName?: string; &#13; pagingDotsContainerClassName?: string; &#13; pagingDotsOnClick?: (event: React.MouseEvent) => void; &#13; pagingDotsStyle?: CSSProperties; &#13; prevButtonClassName?: string; &#13; prevButtonOnClick?: (event: React.MouseEvent) => void; &#13; prevButtonStyle?: CSSProperties; &#13; prevButtonText?: React.ReactNode; &#13;}</pre> | This prop lets you apply custom classes and styles to the default `Container`. `Next`, `Previous`, and `Paging Dots` controls. More information on how to customize these controls can be found below.| `{}` |
 | disableAnimation | `boolean` | When set to `true`, will disable animation. | `false` |
 | disableEdgeSwiping | `boolean` | When set to `true`, will disable swiping before first slide and after last slide. | `false` |
 | dragging | `boolean` | Enable mouse swipe/dragging. | `true` |
@@ -187,12 +187,15 @@ Example:
 interface DefaultControlsConfig {
   containerClassName?: string;
   nextButtonClassName?: string;
+  nextButtonOnClick?: (event: React.MouseEvent) => void;
   nextButtonStyle?: CSSProperties;
   nextButtonText?: React.ReactNode;
   pagingDotsClassName?: string;
   pagingDotsContainerClassName?: string;
+  pagingDotsOnClick?: (event: React.MouseEvent) => void;
   pagingDotsStyle?: CSSProperties;
   prevButtonClassName?: string;
+  prevButtonOnClick?: (event: React.MouseEvent) => void;
   prevButtonStyle?: CSSProperties;
   prevButtonText?: React.ReactNode;
 }
@@ -202,6 +205,7 @@ The default controls used by Nuka are the `Previous` button, `Next` button, and 
 
 - The props ending with `ClassName` let you apply a custom css class to its respective control.
 - The props ending with `Style` let you apply inline styles to its respective control.
+- The props ending with `OnClick` let you listen for user interaction with the controls.
 - The text label for the `Previous` button and `Next` button can be customized using `prevButtonText` and `nextButtonText`, respectively.
 
 For example, you can change the text of the `Previous` and `Next` buttons, and change the paging dots to red by passing in the following configuration:

@@ -89,12 +89,15 @@ export enum D3EasingFunctions {
 interface DefaultControlsConfig {
   containerClassName?: string;
   nextButtonClassName?: string;
+  nextButtonOnClick?: React.MouseEventHandler;
   nextButtonStyle?: CSSProperties;
   nextButtonText?: ReactNode;
   pagingDotsClassName?: string;
   pagingDotsContainerClassName?: string;
+  pagingDotsOnClick?: React.MouseEventHandler;
   pagingDotsStyle?: CSSProperties;
   prevButtonClassName?: string;
+  prevButtonOnClick?: React.MouseEventHandler;
   prevButtonStyle?: CSSProperties;
   prevButtonText?: ReactNode;
 }
