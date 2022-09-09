@@ -88,6 +88,7 @@ const renderControls = (
             goToSlide,
             nextDisabled,
             nextSlide,
+            onUserNavigation: props.onUserNavigation,
             previousDisabled,
             previousSlide: prevSlide,
             scrollMode: props.scrollMode,

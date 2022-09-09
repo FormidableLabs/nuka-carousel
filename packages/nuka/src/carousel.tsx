@@ -56,6 +56,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     onDrag,
     onDragEnd,
     onDragStart,
+    onUserNavigation,
     pauseOnHover,
     renderAnnounceSlideMessage,
     scrollMode,
@@ -323,13 +324,17 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
     switch (keyCommand) {
       case 'nextSlide':
+        onUserNavigation(event);
         nextSlide();
         break;
       case 'previousSlide':
+        onUserNavigation(event);
         prevSlide();
         break;
       case 'firstSlide':
       case 'lastSlide': {
+        onUserNavigation(event);
+
         const dotIndices = getDotIndexes(
           slideCount,
           slidesToScroll,
@@ -338,6 +343,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           wrapAround,
           cellAlign
         );
+
         if (keyCommand === 'firstSlide') {
           goToSlide(dotIndices[0]);
         } else {
@@ -387,6 +393,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       Math.abs(dragDistance) + Math.abs(distanceFromInertia);
 
     onDragEnd(e);
+    onUserNavigation(e);
 
     prevXPosition.current = null;
     setDragDistance(0);
@@ -441,7 +448,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   };
 
   const onTouchStart = useCallback(
-    (e?: React.TouchEvent<HTMLDivElement>) => {
+    (e: React.TouchEvent<HTMLDivElement>) => {
       if (
         !mobileDraggingEnabled ||
         !sliderListRef.current ||

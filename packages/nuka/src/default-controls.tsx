@@ -47,11 +47,14 @@ export const PreviousButton = ({
     prevButtonText,
     prevButtonOnClick,
   },
+  onUserNavigation,
   previousDisabled: disabled,
 }: ControlProps) => {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     prevButtonOnClick?.(event);
     if (event.defaultPrevented) return;
+
+    onUserNavigation(event);
 
     event.preventDefault();
     previousSlide();
@@ -114,10 +117,13 @@ export const NextButton = ({
     nextButtonOnClick,
   },
   nextDisabled: disabled,
+  onUserNavigation,
 }: ControlProps) => {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     nextButtonOnClick?.(event);
     if (event.defaultPrevented) return;
+
+    onUserNavigation(event);
 
     event.preventDefault();
     nextSlide();
@@ -240,6 +246,7 @@ export const PagingDots = ({
     pagingDotsOnClick,
   },
   currentSlide,
+  onUserNavigation,
   slideCount,
   goToSlide,
 }: ControlProps) => {
@@ -288,6 +295,8 @@ export const PagingDots = ({
               onClick={(event) => {
                 pagingDotsOnClick?.(event);
                 if (event.defaultPrevented) return;
+
+                onUserNavigation(event);
 
                 goToSlide(slideIndex);
               }}

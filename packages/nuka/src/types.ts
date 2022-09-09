@@ -138,6 +138,7 @@ export interface ControlProps
     | 'cellAlign'
     | 'cellSpacing'
     | 'defaultControlsConfig'
+    | 'onUserNavigation'
     | 'scrollMode'
     | 'slidesToScroll'
     | 'slidesToShow'
@@ -341,21 +342,30 @@ export interface InternalCarouselProps {
    * optional callback function
    */
   onDragStart: (
-    e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+    e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => void;
 
   /**
    * optional callback function
    */
   onDrag: (
-    e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+    e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => void;
 
   /**
    * optional callback function
    */
   onDragEnd: (
-    e?: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+    e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+  ) => void;
+
+  /**
+   * Callback called when user-triggered navigation occurs: dragging/swiping,
+   * clicking one of the controls (custom controls not included), or using a
+   * keyboard shortcut
+   */
+  onUserNavigation: (
+    e: React.TouchEvent | React.MouseEvent | React.KeyboardEvent
   ) => void;
 
   /**
