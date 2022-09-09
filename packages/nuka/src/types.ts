@@ -90,13 +90,13 @@ interface DefaultControlsConfig {
   containerClassName?: string;
   nextButtonClassName?: string;
   nextButtonStyle?: CSSProperties;
-  nextButtonText?: string;
+  nextButtonText?: ReactNode;
   pagingDotsClassName?: string;
   pagingDotsContainerClassName?: string;
   pagingDotsStyle?: CSSProperties;
   prevButtonClassName?: string;
   prevButtonStyle?: CSSProperties;
-  prevButtonText?: string;
+  prevButtonText?: ReactNode;
 }
 
 export interface KeyCodeConfig {

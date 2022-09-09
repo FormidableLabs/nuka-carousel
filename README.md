@@ -78,7 +78,7 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 | cellAlign | `'left' \| 'center' \| 'right'` | When displaying more than one slide, sets which position to anchor the current slide to. | `left` |
 | cellSpacing | `number` | Space between slides, as an integer, but reflected as `px` | `0` |
 | className | `string` | Slider frame class name | `''` |
-| defaultControlsConfig | <pre>interface DefaultControlsConfig  { &#13; containerClassName?: string; &#13; nextButtonClassName?: string; &#13; nextButtonStyle?: CSSProperties; &#13; nextButtonText?: string; &#13; pagingDotsClassName?: string; &#13; pagingDotsContainerClassName?: string; &#13; pagingDotsStyle?: CSSProperties; &#13; prevButtonClassName?: string; &#13; prevButtonStyle?: CSSProperties; &#13; prevButtonText?: string; &#13;}</pre> | This prop lets you apply custom classes and styles to the default `Container`. `Next`, `Previous`, and `Paging Dots` controls. More information on how to customize these controls can be found below.| `{}` |
+| defaultControlsConfig | <pre>interface DefaultControlsConfig  { &#13; containerClassName?: string; &#13; nextButtonClassName?: string; &#13; nextButtonStyle?: CSSProperties; &#13; nextButtonText?: React.ReactNode; &#13; pagingDotsClassName?: string; &#13; pagingDotsContainerClassName?: string; &#13; pagingDotsStyle?: CSSProperties; &#13; prevButtonClassName?: string; &#13; prevButtonStyle?: CSSProperties; &#13; prevButtonText?: React.ReactNode; &#13;}</pre> | This prop lets you apply custom classes and styles to the default `Container`. `Next`, `Previous`, and `Paging Dots` controls. More information on how to customize these controls can be found below.| `{}` |
 | disableAnimation | `boolean` | When set to `true`, will disable animation. | `false` |
 | disableEdgeSwiping | `boolean` | When set to `true`, will disable swiping before first slide and after last slide. | `false` |
 | dragging | `boolean` | Enable mouse swipe/dragging. | `true` |
@@ -89,7 +89,7 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 | keyCodeConfig | <pre>interface KeyCodeConfig { &#13;  firstSlide?: number[]; &#13;  lastSlide?: number[];&#13;  nextSlide?: number[]; &#13;  pause?: number[]; &#13;  previousSlide?: number[]; &#13;}</pre> | If `enableKeyboardControls` prop is true, you can pass configuration for the keyCode so you can override the default keyboard keys configured. | `{ nextSlide: [39, 68, 38, 87], previousSlide: [37, 65, 40, 83], firstSlide: [81], lastSlide: [69], pause: [32] }` |
 | onDragStart | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture event at the start of swiping/dragging slides | |
 | onDrag | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture swiping/dragging event on slides | |
-| onDragEnd | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture event at the ent of swiping/dragging slides | |
+| onDragEnd | `(e?: React.TouchEvent<HTMLDivElement> \| React.MouseEvent<HTMLDivElement>) => void;` | Adds a callback to capture event at the end of swiping/dragging slides | |
 | pauseOnHover | `boolean` | Pause autoPlay when mouse is over carousel. | `true` |
 | renderAnnounceSlideMessage | `(props: Pick<CarouselState, 'currentSlide' \| 'count'>) => string` | Renders message in the ARIA live region that is announcing the current slide on slide change | Render function that returns `"Slide {currentSlide + 1} of {slideCount}"` |
 | scrollMode | `'page' \| 'remainder'` | Set `scrollMode="remainder"` if you don't want to see the white space when you scroll to the end of a non-infinite carousel. scrollMode property is ignored when wrapAround is enabled | `'page'` |
@@ -188,13 +188,13 @@ interface DefaultControlsConfig {
   containerClassName?: string;
   nextButtonClassName?: string;
   nextButtonStyle?: CSSProperties;
-  nextButtonText?: string;
+  nextButtonText?: React.ReactNode;
   pagingDotsClassName?: string;
   pagingDotsContainerClassName?: string;
   pagingDotsStyle?: CSSProperties;
   prevButtonClassName?: string;
   prevButtonStyle?: CSSProperties;
-  prevButtonText?: string;
+  prevButtonText?: React.ReactNode;
 }
 ```
 
