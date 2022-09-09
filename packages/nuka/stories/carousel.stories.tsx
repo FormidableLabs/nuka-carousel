@@ -278,7 +278,7 @@ CustomControls.args = {
   ),
   renderBottomCenterControls: (props: ControlProps) => (
     <ul style={{ display: 'flex', gap: 10, listStyle: 'none', padding: 0 }}>
-      {props.dotNavigationIndices.map((i) => (
+      {props.pagingDotsIndices.map((i) => (
         <li key={i}>
           <button
             type="button"
