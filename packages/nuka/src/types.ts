@@ -147,9 +147,9 @@ export interface ControlProps
   currentSlide: number;
 
   /**
-   * The indices for the navigation dots
+   * The indices for the paging dots
    */
-  dotNavigationIndices: number[];
+  pagingDotsIndices: number[];
 
   /**
    * Go to a specific slide

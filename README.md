@@ -133,7 +133,7 @@ A set of eight render props for rendering controls in different positions around
   | Name                 | Type                            | Description                                             |
   | :------------------- | ------------------------------- | :------------------------------------------------------ |
   | currentSlide         | `number`                        | Current slide index                                     |
-  | dotNavigationIndices | `number[]`                      | The indices for the navigation dots                     |
+  | pagingDotsIndices    | `number[]`                      | The indices for the paging dots                         |
   | goToSlide            | `(targetIndex: number) => void` | Go to a specific slide                                  |
   | nextDisabled         | `boolean`                       | Whether the "next" button should be disabled or not     |
   | nextSlide            | `() => void`                    | Go to the next slide                                    |

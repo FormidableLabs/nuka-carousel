@@ -44,7 +44,7 @@ const renderControls = (
   };
   const nextDisabled = nextButtonDisabled(disableCheckProps);
   const previousDisabled = prevButtonDisabled(disableCheckProps);
-  const dotNavigationIndices = getDotIndexes(
+  const pagingDotsIndices = getDotIndexes(
     slideCount,
     slidesToScroll,
     props.scrollMode,
@@ -84,7 +84,7 @@ const renderControls = (
             cellSpacing: props.cellSpacing,
             currentSlide,
             defaultControlsConfig: props.defaultControlsConfig || {},
-            dotNavigationIndices,
+            pagingDotsIndices,
             goToSlide,
             nextDisabled,
             nextSlide,

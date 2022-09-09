@@ -224,7 +224,7 @@ export const getDotIndexes = (
 };
 
 export const PagingDots = ({
-  dotNavigationIndices,
+  pagingDotsIndices,
   defaultControlsConfig: {
     pagingDotsContainerClassName,
     pagingDotsClassName,
@@ -257,12 +257,12 @@ export const PagingDots = ({
 
   return (
     <ul className={pagingDotsContainerClassName} style={listStyles}>
-      {dotNavigationIndices.map((slideIndex, i) => {
+      {pagingDotsIndices.map((slideIndex, i) => {
         const isActive =
           currentSlideBounded === slideIndex ||
           // sets navigation dots active if the current slide falls in the current index range
           (currentSlideBounded < slideIndex &&
-            (i === 0 || currentSlideBounded > dotNavigationIndices[i - 1]));
+            (i === 0 || currentSlideBounded > pagingDotsIndices[i - 1]));
 
         return (
           <li
