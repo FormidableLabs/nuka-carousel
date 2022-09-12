@@ -255,8 +255,8 @@ describe('Carousel', () => {
     fireEvent.mouseDown(carouselFrame, { clientX: 100 });
     fireEvent.mouseMove(carouselFrame, { clientX: 100 });
     jest.advanceTimersByTime(10);
-    fireEvent.mouseMove(carouselFrame, { clientX: 100 });
-    fireEvent.mouseUp(carouselFrame, { clientX: 100 });
+    fireEvent.mouseMove(carouselFrame, { clientX: 105 });
+    fireEvent.mouseUp(carouselFrame, { clientX: 105 });
     expect(onUserNavigation).toHaveBeenCalledTimes(9);
   });
 
