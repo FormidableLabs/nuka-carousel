@@ -331,7 +331,7 @@ export interface InternalCarouselProps {
   /**
    * Ref to pass to carousel element
    */
-  innerRef?: MutableRefObject<HTMLDivElement | null>;
+  innerRef?: MutableRefObject<HTMLDivElement>;
 
   /**
    * When enableKeyboardControls is enabled, Configure keyCodes for corresponding slide actions as array of keyCodes
