@@ -26,23 +26,22 @@ const createCarouselRefWithMockedDimensions = ({ defaultWidth = 600 } = {}) => {
   let refValue: HTMLDivElement | null = null;
   const widthGetterMock = jest.fn(() => defaultWidth);
 
-  const carouselRef: React.MutableRefObject<HTMLDivElement | null> =
-    Object.create(
-      {},
-      {
-        current: {
-          get: () => refValue,
-          set(newValue) {
-            refValue = newValue;
-            if (refValue) {
-              Object.defineProperty(refValue, 'offsetWidth', {
-                get: widthGetterMock,
-              });
-            }
-          },
+  const carouselRef: React.MutableRefObject<HTMLDivElement> = Object.create(
+    {},
+    {
+      current: {
+        get: () => refValue,
+        set(newValue) {
+          refValue = newValue;
+          if (refValue) {
+            Object.defineProperty(refValue, 'offsetWidth', {
+              get: widthGetterMock,
+            });
+          }
         },
-      }
-    );
+      },
+    }
+  );
 
   return { ref: carouselRef, widthGetterMock };
 };
