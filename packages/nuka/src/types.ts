@@ -300,8 +300,6 @@ export interface InternalCarouselProps {
   dragThreshold: number;
 
   /**
-   * Not migrated yet
-   *
    * Animation easing function
    * @see https://github.com/d3/d3-ease
    */
