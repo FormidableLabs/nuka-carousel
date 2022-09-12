@@ -18,6 +18,35 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
+/**
+ * Mock dimensions for the carousel for calculations where carousel dimensions
+ * are used, such as with dragging thresholds
+ */
+const createCarouselRefWithMockedDimensions = ({ defaultWidth = 600 } = {}) => {
+  let refValue: HTMLDivElement | null = null;
+  const widthGetterMock = jest.fn(() => defaultWidth);
+
+  const carouselRef: React.MutableRefObject<HTMLDivElement | null> =
+    Object.create(
+      {},
+      {
+        current: {
+          get: () => refValue,
+          set(newValue) {
+            refValue = newValue;
+            if (refValue) {
+              Object.defineProperty(refValue, 'offsetWidth', {
+                get: widthGetterMock,
+              });
+            }
+          },
+        },
+      }
+    );
+
+  return { ref: carouselRef, widthGetterMock };
+};
+
 describe('Carousel', () => {
   const renderCarousel = ({
     slideCount = 5,
@@ -161,6 +190,7 @@ describe('Carousel', () => {
       autoplay: true,
       autoplayInterval,
       keyCodeConfig,
+      innerRef: createCarouselRefWithMockedDimensions().ref,
       slideCount,
       beforeSlide,
       onUserNavigation,
@@ -210,6 +240,7 @@ describe('Carousel', () => {
     fireEvent.mouseDown(carouselFrame, { clientX: 100 });
     fireEvent.mouseMove(carouselFrame, { clientX: 100 });
     jest.advanceTimersByTime(100);
+    fireEvent.mouseMove(carouselFrame, { clientX: 700 });
     fireEvent.mouseUp(carouselFrame, { clientX: 700 });
     expect(onUserNavigation).toHaveBeenCalledTimes(8);
 
@@ -217,7 +248,16 @@ describe('Carousel', () => {
     fireEvent.touchStart(carouselFrame, { touches: [{ pageX: 700 }] });
     fireEvent.touchMove(carouselFrame, { touches: [{ pageX: 700 }] });
     jest.advanceTimersByTime(100);
+    fireEvent.touchMove(carouselFrame, { touches: [{ pageX: 100 }] });
     fireEvent.touchEnd(carouselFrame, { touches: [{ pageX: 100 }] });
+    expect(onUserNavigation).toHaveBeenCalledTimes(9);
+
+    // Should not be triggering navigation callback when dragging didn't trigger navigation
+    fireEvent.mouseDown(carouselFrame, { clientX: 100 });
+    fireEvent.mouseMove(carouselFrame, { clientX: 100 });
+    jest.advanceTimersByTime(10);
+    fireEvent.mouseMove(carouselFrame, { clientX: 100 });
+    fireEvent.mouseUp(carouselFrame, { clientX: 100 });
     expect(onUserNavigation).toHaveBeenCalledTimes(9);
   });
 

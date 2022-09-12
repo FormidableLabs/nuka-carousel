@@ -393,7 +393,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       Math.abs(dragDistance) + Math.abs(distanceFromInertia);
 
     onDragEnd(e);
-    onUserNavigation(e);
 
     prevXPosition.current = null;
     setDragDistance(0);
@@ -442,6 +441,10 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           cellAlign
         );
       }
+    }
+
+    if (nextSlideIndex !== currentSlide) {
+      onUserNavigation(e);
     }
 
     goToSlide(nextSlideIndex);
