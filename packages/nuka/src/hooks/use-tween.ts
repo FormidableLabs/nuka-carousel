@@ -1,37 +1,40 @@
 import { useEffect, useState, useRef } from 'react';
-import { D3EasingFunctions } from 'src/types';
-import * as d3Ease from 'victory-vendor/d3-ease';
+import { EasingFunction } from 'src/types';
 
 /**
  * Provides an interpolated value, beginning at 0 and ending at 1, based on a
- * provided duration and d3-ease animation timing function name.
+ * provided duration and animation timing function.
  */
 export const useTween = (
-  duration: number, // in milliseconds
-  animationTimingFunction: D3EasingFunctions,
-  currentSlide: number,
+  durationMs: number,
+  easingFunction: EasingFunction,
+  // navigationNum is an combination of numbers that are stable when the
+  // animation should not be running or should continue running, but change when
+  // the animation should start running. In practice, this is a combination of
+  // the animation distance and slide index.
+  navigationNum: number,
   shouldInterrupt: boolean
 ) => {
   const [normalizedTimeRaw, setNormalizedTime] = useState(1);
   const startTime = useRef(Date.now());
   const rAF = useRef<number | undefined>();
   const isFirstRender = useRef(true);
-  const lastSlide = useRef<number | null>(null);
+  const lastNavigationNum = useRef<number | null>(null);
 
-  // Detect on the first render following a slide change if the animation should
+  // Detect on the first render following navigation if the animation should
   // be running. If we wait for the useEffect, the first render will flash with
   // the slide in its destination position, before the animation triggers,
   // sending it back to the position of the first frame of the animation. This
   // approach is done in place of a useLayoutEffect, which has issues with SSR.
   const normalizedTime =
-    lastSlide.current === null ||
-    lastSlide.current === currentSlide ||
+    lastNavigationNum.current === null ||
+    lastNavigationNum.current === navigationNum ||
     shouldInterrupt
       ? normalizedTimeRaw
       : 0; // 0 here indicates the animation has begun
 
   useEffect(() => {
-    lastSlide.current = currentSlide;
+    lastNavigationNum.current = navigationNum;
 
     // Skip the first render as we don't want to trigger the animation right off
     // the bat
@@ -52,7 +55,7 @@ export const useTween = (
         const currentTime = Date.now();
         const normalizedTime = Math.min(
           1,
-          (currentTime - startTime.current) / duration
+          (currentTime - startTime.current) / durationMs
         );
         setNormalizedTime(normalizedTime);
 
@@ -75,10 +78,10 @@ export const useTween = (
         setNormalizedTime(1);
       }
     };
-  }, [currentSlide, duration, shouldInterrupt]);
+  }, [navigationNum, durationMs, shouldInterrupt]);
 
   return {
     isAnimating: normalizedTime !== 1,
-    value: d3Ease[animationTimingFunction](normalizedTime),
+    value: easingFunction(normalizedTime),
   };
 };

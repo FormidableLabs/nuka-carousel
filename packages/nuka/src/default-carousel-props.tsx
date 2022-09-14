@@ -3,11 +3,12 @@ import {
   Alignment,
   InternalCarouselProps,
   ControlProps,
-  D3EasingFunctions,
   ScrollMode,
 } from './types';
 import { NextButton, PagingDots, PreviousButton } from './default-controls';
 import { defaultRenderAnnounceSlideMessage } from './announce-slide';
+
+const easeOut = (t: number) => (t - 1) ** 3 + 1;
 
 const defaultProps: InternalCarouselProps = {
   adaptiveHeight: false,
@@ -28,8 +29,8 @@ const defaultProps: InternalCarouselProps = {
   disableEdgeSwiping: false,
   dragging: true,
   dragThreshold: 0.5,
-  easing: D3EasingFunctions.EaseCircleOut,
-  edgeEasing: D3EasingFunctions.EaseElasticOut,
+  easing: easeOut,
+  edgeEasing: easeOut,
   enableKeyboardControls: false,
   frameAriaLabel: 'carousel-slider',
   keyCodeConfig: {

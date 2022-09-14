@@ -78,11 +78,13 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 | cellAlign | `'left' \| 'center' \| 'right'` | When displaying more than one slide, sets which position to anchor the current slide to. | `left` |
 | cellSpacing | `number` | Space between slides, as an integer, but reflected as `px` | `0` |
 | className | `string` | Slider frame class name | `''` |
-| defaultControlsConfig | <pre>interface DefaultControlsConfig  { &#13; containerClassName?: string; &#13; nextButtonClassName?: string; &#13; nextButtonOnClick?: (event: React.MouseEvent) => void; &#13; nextButtonStyle?: CSSProperties; &#13; nextButtonText?: React.ReactNode; &#13; pagingDotsClassName?: string; &#13; pagingDotsContainerClassName?: string; &#13; pagingDotsOnClick?: (event: React.MouseEvent) => void; &#13; pagingDotsStyle?: CSSProperties; &#13; prevButtonClassName?: string; &#13; prevButtonOnClick?: (event: React.MouseEvent) => void; &#13; prevButtonStyle?: CSSProperties; &#13; prevButtonText?: React.ReactNode; &#13;}</pre> | This prop lets you apply custom classes and styles to the default `Container`. `Next`, `Previous`, and `Paging Dots` controls. More information on how to customize these controls can be found below.| `{}` |
+| defaultControlsConfig | <pre>interface DefaultControlsConfig  { &#13; containerClassName?: string; &#13; nextButtonClassName?: string; &#13; nextButtonOnClick?: (event: React.MouseEvent) => void; &#13; nextButtonStyle?: CSSProperties; &#13; nextButtonText?: React.ReactNode; &#13; pagingDotsClassName?: string; &#13; pagingDotsContainerClassName?: string; &#13; pagingDotsOnClick?: (event: React.MouseEvent) => void; &#13; pagingDotsStyle?: CSSProperties; &#13; prevButtonClassName?: string; &#13; prevButtonOnClick?: (event: React.MouseEvent) => void; &#13; prevButtonStyle?: CSSProperties; &#13; prevButtonText?: React.ReactNode; &#13;}</pre> | This prop lets you apply custom classes and styles to the default `Container`. `Next`, `Previous`, and `Paging Dots` controls. More information on how to customize these controls can be found in the [defaultControlsConfig section](#defaultcontrolsconfig).| `{}` |
 | disableAnimation | `boolean` | When set to `true`, will disable animation. | `false` |
 | disableEdgeSwiping | `boolean` | When set to `true`, will disable swiping before first slide and after last slide. | `false` |
 | dragging | `boolean` | Enable mouse swipe/dragging. | `true` |
 | dragThreshold | `number` | The percentage (from 0 to 1) of a slide that the user needs to drag before a slide change is triggered. | `0.5` |
+| easing | `(normalizedTime: number) => number` | Animation easing function. See the [Easing section](#easing-and-edgeeasing) for more details | A cubic easeOut function |
+| edgeEasing | `(normalizedTime: number) => number` | Animation easing function when swipe exceeds edge. See the [Easing section](#easing-and-edgeeasing) for more details | A cubic easeOut function |
 | enableKeyboardControls | `boolean` | When set to `true` will enable keyboard controls when the carousel has focus. If the carousel does not have focus, keyboard controls will be ignored. | `false` |
 | frameAriaLabel | `string` | Customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page. | `''` |
 | innerRef | `MutableRefObject<HTMLDivElement>` | React `ref` that should be set on the carousel element | |
@@ -166,6 +168,23 @@ Example:
 ```
 
 - NOTE: The className `slide-visible` is added to the currently visible slide or slides (when `slidesToShow` > 1). The className `slide-current` is added to the currently "active" slide.
+
+#### easing and edgeEasing
+
+`(normalizedTime: number) => number`
+
+A function accepting a normalized time between 0 and 1, inclusive, and returning an eased time, which equals 0 at normalizedTime==0 and equals 1 at normalizedTime==1. You can plug in your own custom easing function (e.g., `(t) => t` for a linear transition), or import functions from a different library, like [`d3-ease`](https://github.com/d3/d3-ease).
+```jsx
+import { easeCircleOut, easeElasticOut } from 'd3-ease';
+
+// ...
+
+<Carousel easing={easeCircleOut} edgeEasing={easeElasticOut}>
+  {/* Carousel Content */}
+</Carousel>
+```
+
+Please note that using a function for `easing` with "In" in it (ease**In**Out, easeElastic**In**, etc.) will make swiping transitions feel a bit clunky, as the velocity at the end of the swipe will suddenly drop to follow the slow startup speed of the "In" easing function. In general, when using custom easing functions, try out both swiping and clicking on the navigation buttons to see how the transitions feel.
 
 #### renderAnnounceSlideMessage
 

@@ -46,46 +46,6 @@ export enum ScrollMode {
   remainder = 'remainder',
 }
 
-export enum D3EasingFunctions {
-  EaseLinear = 'easeLinear',
-  EaseQuad = 'easeQuad',
-  EaseQuadIn = 'easeQuadIn',
-  EaseQuadOut = 'easeQuadOut',
-  EaseQuadInOut = 'easeQuadInOut',
-  EaseCubic = 'easeCubic',
-  EaseCubicIn = 'easeCubicIn',
-  EaseCubicOut = 'easeCubicOut',
-  EaseCubicInOut = 'easeCubicInOut',
-  EasePoly = 'easePoly',
-  EasePolyIn = 'easePolyIn',
-  EasePolyOut = 'easePolyOut',
-  EasePolyInOut = 'easePolyInOut',
-  EaseSin = 'easeSin',
-  EaseSinIn = 'easeSinIn',
-  EaseSinOut = 'easeSinOut',
-  EaseSinInOut = 'easeSinInOut',
-  EaseExp = 'easeExp',
-  EaseExpIn = 'easeExpIn',
-  EaseExpOut = 'easeExpOut',
-  EaseExpInOut = 'easeExpInOut',
-  EaseCircle = 'easeCircle',
-  EaseCircleIn = 'easeCircleIn',
-  EaseCircleOut = 'easeCircleOut',
-  EaseCircleInOut = 'easeCircleInOut',
-  EaseBack = 'easeBack',
-  EaseBackIn = 'easeBackIn',
-  EaseBackOut = 'easeBackOut',
-  EaseBackInOut = 'easeBackInOut',
-  EaseBounce = 'easeBounce',
-  EaseBounceIn = 'easeBounceIn',
-  EaseBounceOut = 'easeBounceOut',
-  EaseBounceInOut = 'easeBounceInOut',
-  EaseElastic = 'easeElastic',
-  EaseElasticIn = 'easeElasticIn',
-  EaseElasticOut = 'easeElasticOut',
-  EaseElasticInOut = 'easeElasticInOut',
-}
-
 interface DefaultControlsConfig {
   containerClassName?: string;
   nextButtonClassName?: string;
@@ -205,6 +165,13 @@ export type RenderControlFunctionNames =
  */
 type RenderControls = ((props: ControlProps) => ReactNode) | null;
 
+/**
+ * Animation easing function accepting a normalized time between 0 and 1,
+ * inclusive, and returning an eased time, which equals 0 at normalizedTime==0
+ * and equals 1 at normalizedTime==1
+ */
+export type EasingFunction = (normalizedTime: number) => number;
+
 export interface InternalCarouselProps {
   /**
    * If it's set to true, the carousel will adapt its height to the visible slides.
@@ -305,17 +272,13 @@ export interface InternalCarouselProps {
 
   /**
    * Animation easing function
-   * @see https://github.com/d3/d3-ease
    */
-  easing: D3EasingFunctions;
+  easing: EasingFunction;
 
   /**
-   * Not migrated yet
-   *
    * Animation easing function when swipe exceeds edge
-   * @see https://github.com/d3/d3-ease
    */
-  edgeEasing: D3EasingFunctions;
+  edgeEasing: EasingFunction;
 
   /**
    * When set to true, disable keyboard controls

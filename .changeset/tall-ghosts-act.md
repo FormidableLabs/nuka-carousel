@@ -2,4 +2,4 @@
 'nuka-carousel': minor
 ---
 
-adds d3-ease transitions to carousel
+adds the ability to use custom easing functions for the animations via `easing` and `edgeEasing`

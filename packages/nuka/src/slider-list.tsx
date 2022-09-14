@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { getDotIndexes } from './default-controls';
 import { useTween } from './hooks/use-tween';
-import { Alignment, D3EasingFunctions, ScrollMode } from './types';
+import { Alignment, InternalCarouselProps } from './types';
 
 export const getPercentOffsetForSlide = (
   currentSlide: number,
@@ -36,28 +36,33 @@ export const getPercentOffsetForSlide = (
   return slide0Offset - currentSlideOffsetFrom0;
 };
 
-interface SliderListProps {
+interface SliderListProps
+  extends Pick<
+    InternalCarouselProps,
+    | 'cellAlign'
+    | 'disableAnimation'
+    | 'disableEdgeSwiping'
+    | 'easing'
+    | 'edgeEasing'
+    | 'scrollMode'
+    | 'animation'
+    | 'slidesToScroll'
+    | 'slidesToShow'
+    | 'speed'
+    | 'wrapAround'
+  > {
   animationDistance: number;
-  cellAlign: Alignment;
   children: ReactNode;
   currentSlide: number;
-  disableAnimation: boolean;
-  disableEdgeSwiping: boolean;
   draggedOffset: number;
-  easing: D3EasingFunctions;
   isDragging: boolean;
-  scrollMode: ScrollMode;
-  slideAnimation?: 'fade' | 'zoom';
   slideCount: number;
-  slidesToScroll: number;
-  slidesToShow: number;
-  speed: number;
-  wrapAround: boolean;
 }
 
 export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
   (
     {
+      animation,
       animationDistance,
       cellAlign,
       children,
@@ -66,9 +71,9 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
       disableEdgeSwiping,
       draggedOffset,
       easing,
+      edgeEasing,
       isDragging,
       scrollMode,
-      slideAnimation,
       slideCount,
       slidesToScroll,
       slidesToShow,
@@ -77,13 +82,6 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
     },
     forwardedRef
   ) => {
-    const { value: transition, isAnimating } = useTween(
-      speed,
-      easing,
-      currentSlide,
-      isDragging || disableAnimation || slideAnimation === 'fade'
-    );
-
     // When wrapAround is enabled, we show the slides 3 times
     const renderedSlideCount = wrapAround ? 3 * slideCount : slideCount;
 
@@ -96,19 +94,20 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
       wrapAround,
     ] as const;
 
-    // When disableEdgeSwiping=true, we recycle dot index generation to determine
-    // the leftmost and rightmost indices used, to be used in calculating the
-    // x-translation values we need to limit to.
+    // We recycle dot index generation to determine the leftmost and rightmost
+    // indices used, to be used in calculating the x-translation values we need
+    // to limit to or when edgeEasing should be used.
+    const dotIndexes = getDotIndexes(
+      slideCount,
+      slidesToScroll,
+      scrollMode,
+      slidesToShow,
+      wrapAround,
+      cellAlign
+    );
+
     let clampedDraggedOffset = `${draggedOffset}px`;
     if (isDragging && disableEdgeSwiping && !wrapAround) {
-      const dotIndexes = getDotIndexes(
-        slideCount,
-        slidesToScroll,
-        scrollMode,
-        slidesToShow,
-        wrapAround,
-        cellAlign
-      );
       const clampOffsets = [
         dotIndexes[0],
         dotIndexes[dotIndexes.length - 1],
@@ -123,6 +122,23 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
     const slideBasedOffset = getPercentOffsetForSlide(
       currentSlide,
       ...percentOffsetForSlideProps
+    );
+
+    const isEdgeEasing =
+      !disableEdgeSwiping &&
+      !wrapAround &&
+      ((currentSlide === dotIndexes[0] && animationDistance < 0) ||
+        (currentSlide === dotIndexes[dotIndexes.length - 1] &&
+          animationDistance > 0));
+    const { value: transition, isAnimating } = useTween(
+      speed,
+      !isEdgeEasing ? easing : edgeEasing,
+      // animationDistance is assumed to be unique enough that it can be used to
+      // detect when a new animation should start. This is used in addition to
+      // currentSlide because some animations, such as those with edgeEasing, do
+      // not occur due to a change in value of currentSlide
+      currentSlide + animationDistance,
+      isDragging || disableAnimation || animation === 'fade'
     );
 
     // Return undefined if the transform would be 0 pixels since transforms can
