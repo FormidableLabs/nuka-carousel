@@ -133,7 +133,11 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
     const { value: transition, isAnimating } = useTween(
       speed,
       !isEdgeEasing ? easing : edgeEasing,
-      currentSlide,
+      // animationDistance is assumed to be unique enough that it can be used to
+      // detect when a new animation should start. This is used in addition to
+      // currentSlide because some animations, such as those with edgeEasing, do
+      // not occur due to a change in value of currentSlide
+      currentSlide + animationDistance,
       isDragging || disableAnimation || animation === 'fade'
     );
 
