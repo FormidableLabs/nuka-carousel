@@ -45,10 +45,17 @@ export const PreviousButton = ({
     prevButtonClassName,
     prevButtonStyle = {},
     prevButtonText,
+    prevButtonOnClick,
   },
+  onUserNavigation,
   previousDisabled: disabled,
 }: ControlProps) => {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    prevButtonOnClick?.(event);
+    if (event.defaultPrevented) return;
+
+    onUserNavigation(event);
+
     event.preventDefault();
     previousSlide();
   };
@@ -107,10 +114,17 @@ export const NextButton = ({
     nextButtonClassName,
     nextButtonStyle = {},
     nextButtonText,
+    nextButtonOnClick,
   },
   nextDisabled: disabled,
+  onUserNavigation,
 }: ControlProps) => {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    nextButtonOnClick?.(event);
+    if (event.defaultPrevented) return;
+
+    onUserNavigation(event);
+
     event.preventDefault();
     nextSlide();
   };
@@ -229,8 +243,10 @@ export const PagingDots = ({
     pagingDotsContainerClassName,
     pagingDotsClassName,
     pagingDotsStyle = {},
+    pagingDotsOnClick,
   },
   currentSlide,
+  onUserNavigation,
   slideCount,
   goToSlide,
 }: ControlProps) => {
@@ -276,7 +292,14 @@ export const PagingDots = ({
                 ...getButtonStyles(isActive),
                 ...pagingDotsStyle,
               }}
-              onClick={() => goToSlide(slideIndex)}
+              onClick={(event) => {
+                pagingDotsOnClick?.(event);
+                if (event.defaultPrevented) return;
+
+                onUserNavigation(event);
+
+                goToSlide(slideIndex);
+              }}
               aria-label={`slide ${slideIndex + 1} bullet`}
               aria-selected={isActive}
             >

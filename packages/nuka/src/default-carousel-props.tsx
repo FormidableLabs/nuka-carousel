@@ -48,6 +48,9 @@ const defaultProps: InternalCarouselProps = {
   onDragEnd: () => {
     // do nothing
   },
+  onUserNavigation: () => {
+    // do nothing
+  },
   pauseOnHover: true,
   renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
   renderBottomCenterControls: (props: ControlProps) => (
