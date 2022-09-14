@@ -276,8 +276,6 @@ export interface InternalCarouselProps {
   easing: EasingFunction;
 
   /**
-   * Not migrated yet
-   *
    * Animation easing function when swipe exceeds edge
    */
   edgeEasing: EasingFunction;

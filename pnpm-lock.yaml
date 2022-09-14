@@ -98,6 +98,7 @@ importers:
       '@storybook/react': ^6.5.9
       '@testing-library/jest-dom': ^5.16.5
       '@testing-library/react': ^13.3.0
+      '@types/d3-ease': ^3.0.0
       '@types/exenv': ^1.2.0
       '@types/node': ^18.7.5
       '@types/react': ^18.0.0
@@ -128,6 +129,7 @@ importers:
       '@storybook/react': 6.5.9_vegu647ne3vytk4lqkmtxbp7hu
       '@testing-library/jest-dom': 5.16.5
       '@testing-library/react': 13.3.0_biqbaboplfbrettd7655fr4n2y
+      '@types/d3-ease': 3.0.0
       '@types/exenv': 1.2.0
       '@types/node': 18.7.5
       '@types/react': 18.0.15
@@ -4068,6 +4070,10 @@ packages:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
       '@types/node': 18.7.5
+    dev: true
+
+  /@types/d3-ease/3.0.0:
+    resolution: {integrity: sha512-aMo4eaAOijJjA6uU+GIeW018dvy9+oH5Y2VPPzjjfxevvGQ/oRDs+tfYC9b50Q4BygRR8yE2QCLsrT0WtAVseA==}
     dev: true
 
   /@types/eslint-scope/3.7.4:

@@ -83,7 +83,8 @@ You can play with `&params` url parameter to add or remove any carousel paramete
 | disableEdgeSwiping | `boolean` | When set to `true`, will disable swiping before first slide and after last slide. | `false` |
 | dragging | `boolean` | Enable mouse swipe/dragging. | `true` |
 | dragThreshold | `number` | The percentage (from 0 to 1) of a slide that the user needs to drag before a slide change is triggered. | `0.5` |
-| easing | `(normalizedTime: number) => number` | An easing function. See the [Easing section](#easing) for more details | A cubic easeInOut function |
+| easing | `(normalizedTime: number) => number` | Animation easing function. See the [Easing section](#easing-and-edgeeasing) for more details | A cubic easeOut function |
+| edgeEasing | `(normalizedTime: number) => number` | Animation easing function when swipe exceeds edge. See the [Easing section](#easing-and-edgeeasing) for more details | A cubic easeOut function |
 | enableKeyboardControls | `boolean` | When set to `true` will enable keyboard controls when the carousel has focus. If the carousel does not have focus, keyboard controls will be ignored. | `false` |
 | frameAriaLabel | `string` | Customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page. | `''` |
 | innerRef | `MutableRefObject<HTMLDivElement>` | React `ref` that should be set on the carousel element | |
@@ -168,20 +169,22 @@ Example:
 
 - NOTE: The className `slide-visible` is added to the currently visible slide or slides (when `slidesToShow` > 1). The className `slide-current` is added to the currently "active" slide.
 
-#### easing
+#### easing and edgeEasing
 
 `(normalizedTime: number) => number`
 
 A function accepting a normalized time between 0 and 1, inclusive, and returning an eased time, which equals 0 at normalizedTime==0 and equals 1 at normalizedTime==1. You can plug in your own custom easing function (e.g., `(t) => t` for a linear transition), or import functions from a different library, like [`d3-ease`](https://github.com/d3/d3-ease).
 ```jsx
-import { easeElasticOut } from 'd3-ease';
+import { easeCircleOut, easeElasticOut } from 'd3-ease';
 
 // ...
 
-<Carousel easing={easeElasticOut}>
+<Carousel easing={easeCircleOut} edgeEasing={easeElasticOut}>
   {/* Carousel Content */}
 </Carousel>
 ```
+
+Please note that using a function for `easing` with "In" in it (ease**In**Out, easeElastic**In**, etc.) will make swiping transitions feel a bit clunky, as the velocity at the end of the swipe will suddenly drop to follow the slow startup speed of the "In" easing function. In general, when using custom easing functions, try out both swiping and clicking on the navigation buttons to see how the transitions feel.
 
 #### renderAnnounceSlideMessage
 

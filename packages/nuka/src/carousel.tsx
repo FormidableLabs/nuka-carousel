@@ -45,10 +45,8 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     children,
     className,
     disableAnimation,
-    disableEdgeSwiping,
     dragging: desktopDraggingEnabled,
     dragThreshold: propsDragThreshold,
-    easing,
     enableKeyboardControls,
     frameAriaLabel,
     innerRef,
@@ -63,7 +61,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     slideIndex,
     slidesToScroll: propsSlidesToScroll,
     slidesToShow,
-    speed: propsSpeed,
+    speed,
     style,
     swiping: mobileDraggingEnabled,
     wrapAround,
@@ -168,7 +166,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         setCurrentSlide(targetSlideBounded);
 
         // if animation is disabled decrease the speed to 40
-        const msToEndOfAnimation = !disableAnimation ? propsSpeed || 500 : 40;
+        const msToEndOfAnimation = !disableAnimation ? speed || 500 : 40;
         setTimeout(() => {
           if (!isMounted.current) return;
           afterSlide(targetSlideBounded);
@@ -182,7 +180,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       cellAlign,
       currentSlide,
       disableAnimation,
-      propsSpeed,
+      speed,
       slideCount,
       slidesToShow,
       wrapAround,
@@ -584,7 +582,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           cellSpacing={cellSpacing}
           animation={animation}
           slidesToShow={slidesToShow}
-          speed={propsSpeed}
+          speed={speed}
           zoomScale={zoomScale}
           cellAlign={cellAlign}
           onVisibleSlideHeightChange={handleVisibleSlideHeightChange}
@@ -658,18 +656,19 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           animationDistance={animationDistance}
           cellAlign={cellAlign}
           currentSlide={currentSlide}
-          disableEdgeSwiping={disableEdgeSwiping}
+          disableEdgeSwiping={props.disableEdgeSwiping}
           draggedOffset={preDragOffset.current - dragDistance}
           disableAnimation={disableAnimation}
-          easing={easing}
+          easing={props.easing}
+          edgeEasing={props.edgeEasing}
           isDragging={isDragging}
           ref={sliderListRef}
           scrollMode={scrollMode}
-          slideAnimation={animation}
+          animation={animation}
           slideCount={slideCount}
           slidesToScroll={slidesToScroll}
           slidesToShow={slidesToShow}
-          speed={propsSpeed}
+          speed={speed}
           wrapAround={wrapAround}
         >
           {wrapAround ? renderSlides('prev-cloned') : null}
