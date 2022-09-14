@@ -2,6 +2,7 @@ import React from 'react';
 import { ComponentMeta, Story } from '@storybook/react';
 import isChromatic from 'chromatic/isChromatic';
 import { renderToString } from 'react-dom/server';
+import { easeElasticOut } from 'd3-ease';
 
 import Carousel, {
   Alignment,
@@ -87,7 +88,7 @@ Vertical.args = {
 
 export const CustomEasing = Template.bind({});
 CustomEasing.args = {
-  easing: 'easeElasticOut',
+  easing: easeElasticOut,
   speed: 1000,
   wrapAround: true,
   slidesToShow: 3,
