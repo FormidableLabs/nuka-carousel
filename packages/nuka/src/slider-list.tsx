@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { getDotIndexes } from './default-controls';
 import { useTween } from './hooks/use-tween';
-import { Alignment, D3EasingFunctions, ScrollMode } from './types';
+import { Alignment, EasingFunction, ScrollMode } from './types';
 
 export const getPercentOffsetForSlide = (
   currentSlide: number,
@@ -44,7 +44,7 @@ interface SliderListProps {
   disableAnimation: boolean;
   disableEdgeSwiping: boolean;
   draggedOffset: number;
-  easing: D3EasingFunctions;
+  easing: EasingFunction;
   isDragging: boolean;
   scrollMode: ScrollMode;
   slideAnimation?: 'fade' | 'zoom';

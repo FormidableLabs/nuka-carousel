@@ -1,14 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
-import { D3EasingFunctions } from 'src/types';
-import * as d3Ease from 'victory-vendor/d3-ease';
+import { EasingFunction } from 'src/types';
 
 /**
  * Provides an interpolated value, beginning at 0 and ending at 1, based on a
- * provided duration and d3-ease animation timing function name.
+ * provided duration and animation timing function.
  */
 export const useTween = (
-  duration: number, // in milliseconds
-  animationTimingFunction: D3EasingFunctions,
+  durationMs: number,
+  easingFunction: EasingFunction,
   currentSlide: number,
   shouldInterrupt: boolean
 ) => {
@@ -52,7 +51,7 @@ export const useTween = (
         const currentTime = Date.now();
         const normalizedTime = Math.min(
           1,
-          (currentTime - startTime.current) / duration
+          (currentTime - startTime.current) / durationMs
         );
         setNormalizedTime(normalizedTime);
 
@@ -75,10 +74,10 @@ export const useTween = (
         setNormalizedTime(1);
       }
     };
-  }, [currentSlide, duration, shouldInterrupt]);
+  }, [currentSlide, durationMs, shouldInterrupt]);
 
   return {
     isAnimating: normalizedTime !== 1,
-    value: d3Ease[animationTimingFunction](normalizedTime),
+    value: easingFunction(normalizedTime),
   };
 };
