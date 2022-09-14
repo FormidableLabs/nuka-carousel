@@ -8,7 +8,7 @@ import {
 import { NextButton, PagingDots, PreviousButton } from './default-controls';
 import { defaultRenderAnnounceSlideMessage } from './announce-slide';
 
-const easeOut = (t: number) => --t * t * t + 1;
+const easeOut = (t: number) => (t - 1) ** 3 + 1;
 
 const defaultProps: InternalCarouselProps = {
   adaptiveHeight: false,
