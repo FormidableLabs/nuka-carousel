@@ -100,6 +100,9 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
   const setSliderListRef = useCallback((node: HTMLDivElement) => {
     if (node) {
+      // disable img draggable attribute by default, this will improve the dragging
+      // applying the querySelectorAll on just the descendants of the sliderList prevents
+      // impacting DOM elements outside our scope
       node
         .querySelectorAll('.slider-list img')
         .forEach((el) => el.setAttribute('draggable', 'false'));
