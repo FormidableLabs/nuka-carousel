@@ -92,24 +92,26 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
   const prevXPosition = useRef<number | null>(null);
   const preDragOffset = useRef<number>(0);
-  const sliderListRef = useRef<HTMLDivElement>(null);
+  const sliderListRef = useRef<HTMLDivElement | null>(null);
   const defaultCarouselRef = useRef<HTMLDivElement>(null);
   const autoplayTimeout = useRef<ReturnType<typeof setTimeout>>();
   const autoplayLastTriggeredRef = useRef<number | null>(null);
   const isMounted = useRef<boolean>(true);
+
+  const setSliderListRef = useCallback((node: HTMLDivElement) => {
+    if (node) {
+      node
+        .querySelectorAll('.slider-list img')
+        .forEach((el) => el.setAttribute('draggable', 'false'));
+    }
+    sliderListRef.current = node;
+  }, []);
 
   useEffect(() => {
     isMounted.current = true;
     return () => {
       isMounted.current = false;
     };
-  }, []);
-
-  useEffect(() => {
-    // disable img draggable attribute by default, this will improve the dragging
-    document
-      .querySelectorAll('.slider-list img')
-      .forEach((el) => el.setAttribute('draggable', 'false'));
   }, []);
 
   const carouselRef = innerRef || defaultCarouselRef;
@@ -662,7 +664,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           easing={props.easing}
           edgeEasing={props.edgeEasing}
           isDragging={isDragging}
-          ref={sliderListRef}
+          ref={setSliderListRef}
           scrollMode={scrollMode}
           animation={animation}
           slideCount={slideCount}
