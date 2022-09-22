@@ -1,5 +1,27 @@
 # Nuka Changelog
 
+## 5.4.0
+
+### Minor Changes
+
+- add onUserNavigation prop to listen for user-triggered navigation ([#970](https://github.com/FormidableLabs/nuka-carousel/pull/970))
+
+* allow for any element or component in the nextButtonText and prevButtonText props, instead of just strings ([#970](https://github.com/FormidableLabs/nuka-carousel/pull/970))
+
+- pass nextDisabled, previousDisabled, and pagingDotsIndices to render\*Controls callbacks to aid in the creation of custom controls ([#966](https://github.com/FormidableLabs/nuka-carousel/pull/966))
+
+* adds the ability to use custom easing functions for the animations via `easing` and `edgeEasing` ([#959](https://github.com/FormidableLabs/nuka-carousel/pull/959))
+
+- add props to enable users to hook into interactions with the default carousel controls ([#970](https://github.com/FormidableLabs/nuka-carousel/pull/970))
+
+### Patch Changes
+
+- animation=fade now behaves as it did pre-5.3.0, scrolling all visible slides at once ([#959](https://github.com/FormidableLabs/nuka-carousel/pull/959))
+
+* make the control dots change in size when dimensions changed via CSS ([#964](https://github.com/FormidableLabs/nuka-carousel/pull/964))
+
+- Applies draggable=false only to children of sliderList, not entire document ([#972](https://github.com/FormidableLabs/nuka-carousel/pull/972))
+
 ## 5.3.0
 
 ### Minor Changes
