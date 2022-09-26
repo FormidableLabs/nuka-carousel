@@ -1,5 +1,5 @@
 import React, { CSSProperties, useCallback } from 'react';
-import { Alignment, ControlProps, ScrollMode } from './types';
+import { CellAlign, ControlProps, ScrollMode } from './types';
 import { getBoundedIndex } from './utils';
 
 const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
@@ -32,7 +32,7 @@ export const prevButtonDisabled = ({
   }
 
   // remainder scroll mode
-  if (cellAlign === Alignment.Right && currentSlide <= slidesToShow - 1) {
+  if (cellAlign === 'right' && currentSlide <= slidesToShow - 1) {
     return true;
   }
 
@@ -98,10 +98,7 @@ export const nextButtonDisabled = ({
   }
 
   // remainder scroll mode
-  if (
-    cellAlign === Alignment.Left &&
-    currentSlide >= slideCount - slidesToShow
-  ) {
+  if (cellAlign === 'left' && currentSlide >= slideCount - slidesToShow) {
     return true;
   }
 
@@ -155,7 +152,7 @@ export const getDotIndexes = (
   scrollMode: ScrollMode,
   slidesToShow: number,
   wrapAround: boolean,
-  cellAlign: Alignment
+  cellAlign: CellAlign
 ) => {
   const dotIndexes: number[] = [];
   const scrollSlides = slidesToScroll <= 0 ? 1 : slidesToScroll;
@@ -168,7 +165,7 @@ export const getDotIndexes = (
     return dotIndexes;
   }
 
-  if (cellAlign === Alignment.Center) {
+  if (cellAlign === 'center') {
     for (let i = 0; i < slideCount - 1; i += scrollSlides) {
       dotIndexes.push(i);
     }
@@ -180,7 +177,7 @@ export const getDotIndexes = (
     return dotIndexes;
   }
 
-  if (cellAlign === Alignment.Left) {
+  if (cellAlign === 'left') {
     if (slidesToShow >= slideCount) {
       return [0];
     }
@@ -200,7 +197,7 @@ export const getDotIndexes = (
     return dotIndexes;
   }
 
-  if (cellAlign === Alignment.Right) {
+  if (cellAlign === 'right') {
     if (slidesToShow >= slideCount) {
       return [slideCount - 1];
     }

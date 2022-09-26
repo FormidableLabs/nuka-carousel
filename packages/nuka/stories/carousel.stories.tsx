@@ -4,11 +4,7 @@ import isChromatic from 'chromatic/isChromatic';
 import { renderToString } from 'react-dom/server';
 import { easeLinear, easeElasticOut } from 'd3-ease';
 
-import Carousel, {
-  Alignment,
-  ControlProps,
-  InternalCarouselProps,
-} from '../src/index';
+import Carousel, { ControlProps, InternalCarouselProps } from '../src/index';
 
 import { sampleSlideImageSources } from './sample-slide-images';
 
@@ -107,7 +103,7 @@ CustomEasing.args = {
 export const ZoomAnimation = Template.bind({});
 ZoomAnimation.args = {
   animation: 'zoom',
-  cellAlign: Alignment.Center,
+  cellAlign: 'center',
 };
 
 export const WrapAround = Template.bind({});
@@ -196,26 +192,26 @@ DragMultipleSlides.args = {
 export const CellAlignCenter = Template.bind({});
 CellAlignCenter.args = {
   slidesToShow: 2.5,
-  cellAlign: Alignment.Center,
+  cellAlign: 'center',
 };
 
 export const CellAlignCenterWrapAround = Template.bind({});
 CellAlignCenterWrapAround.args = {
   slidesToShow: 2.5,
-  cellAlign: Alignment.Center,
+  cellAlign: 'center',
   wrapAround: true,
 };
 
 export const CellAlignRight = Template.bind({});
 CellAlignRight.args = {
   slidesToShow: 2.5,
-  cellAlign: Alignment.Right,
+  cellAlign: 'right',
 };
 
 export const CellAlignRightWrapAround = Template.bind({});
 CellAlignRightWrapAround.args = {
   slidesToShow: 2.5,
-  cellAlign: Alignment.Right,
+  cellAlign: 'right',
   wrapAround: true,
 };
 

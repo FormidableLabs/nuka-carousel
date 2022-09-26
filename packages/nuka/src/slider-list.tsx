@@ -1,13 +1,13 @@
 import React, { ReactNode } from 'react';
 import { getDotIndexes } from './default-controls';
 import { useTween } from './hooks/use-tween';
-import { Alignment, InternalCarouselProps } from './types';
+import { CellAlign, InternalCarouselProps } from './types';
 
 export const getPercentOffsetForSlide = (
   currentSlide: number,
   slideCount: number,
   slidesToShow: number,
-  cellAlign: Alignment,
+  cellAlign: CellAlign,
   wrapAround: boolean
 ): number => {
   // When wrapAround is enabled, we show the slides 3 times
@@ -19,12 +19,12 @@ export const getPercentOffsetForSlide = (
   // (the left and right sets are clones meant to avoid visual gaps)
   let slide0Offset = wrapAround ? -100 / 3 : 0;
 
-  if (cellAlign === Alignment.Right && slidesToShow > 1) {
+  if (cellAlign === 'right' && slidesToShow > 1) {
     const excessSlides = slidesToShow - 1;
     slide0Offset += singleSlidePercentOfWhole * excessSlides;
   }
 
-  if (cellAlign === Alignment.Center && slidesToShow > 1) {
+  if (cellAlign === 'center' && slidesToShow > 1) {
     const excessSlides = slidesToShow - 1;
     // Half of excess is on left and half is on right when centered
     const excessLeftSlides = excessSlides / 2;
