@@ -1,12 +1,6 @@
 import { ReactNode, CSSProperties, MutableRefObject } from 'react';
 
-/* eslint-disable no-shadow */
-
-export enum Alignment {
-  Center = 'center',
-  Right = 'right',
-  Left = 'left',
-}
+export type Alignment = 'center' | 'right' | 'left';
 
 export enum Directions {
   Next = 'next',

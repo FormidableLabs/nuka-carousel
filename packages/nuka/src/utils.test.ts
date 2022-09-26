@@ -1,4 +1,4 @@
-import { Alignment, ScrollMode } from './types';
+import { ScrollMode } from './types';
 import {
   getBoundedIndex,
   getNextMoveIndex,
@@ -34,7 +34,7 @@ describe('isSlideVisible', () => {
       '(showing index $currentSlide, check index $indexToCheck, $slidesToShow slidesToShow)',
     ({ currentSlide, indexToCheck, slidesToShow, expected }) => {
       expect(
-        isSlideVisible(currentSlide, indexToCheck, slidesToShow, Alignment.Left)
+        isSlideVisible(currentSlide, indexToCheck, slidesToShow, 'left')
       ).toEqual(expected);
     }
   );
@@ -66,12 +66,7 @@ describe('isSlideVisible', () => {
       '(showing index $currentSlide, check index $indexToCheck, $slidesToShow slidesToShow)',
     ({ currentSlide, indexToCheck, slidesToShow, expected }) => {
       expect(
-        isSlideVisible(
-          currentSlide,
-          indexToCheck,
-          slidesToShow,
-          Alignment.Right
-        )
+        isSlideVisible(currentSlide, indexToCheck, slidesToShow, 'right')
       ).toEqual(expected);
     }
   );
@@ -115,12 +110,7 @@ describe('isSlideVisible', () => {
       '(showing index $currentSlide, check index $indexToCheck, $slidesToShow slidesToShow)',
     ({ currentSlide, indexToCheck, slidesToShow, expected }) => {
       expect(
-        isSlideVisible(
-          currentSlide,
-          indexToCheck,
-          slidesToShow,
-          Alignment.Center
-        )
+        isSlideVisible(currentSlide, indexToCheck, slidesToShow, 'center')
       ).toEqual(expected);
     }
   );
@@ -146,9 +136,9 @@ describe('getNextMoveIndex', () => {
         slidesToScroll,
         1,
       ] as const;
-      expect(getNextMoveIndex(...args, Alignment.Left)).toEqual(expected);
-      expect(getNextMoveIndex(...args, Alignment.Right)).toEqual(expected);
-      expect(getNextMoveIndex(...args, Alignment.Center)).toEqual(expected);
+      expect(getNextMoveIndex(...args, 'left')).toEqual(expected);
+      expect(getNextMoveIndex(...args, 'right')).toEqual(expected);
+      expect(getNextMoveIndex(...args, 'center')).toEqual(expected);
     }
   );
 
@@ -263,7 +253,7 @@ describe('getPrevMoveIndex', () => {
           currentSlide,
           slidesToScroll,
           1,
-          Alignment.Left
+          'left'
         )
       ).toEqual(expected);
     }

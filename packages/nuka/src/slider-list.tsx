@@ -19,12 +19,12 @@ export const getPercentOffsetForSlide = (
   // (the left and right sets are clones meant to avoid visual gaps)
   let slide0Offset = wrapAround ? -100 / 3 : 0;
 
-  if (cellAlign === Alignment.Right && slidesToShow > 1) {
+  if (cellAlign === 'right' && slidesToShow > 1) {
     const excessSlides = slidesToShow - 1;
     slide0Offset += singleSlidePercentOfWhole * excessSlides;
   }
 
-  if (cellAlign === Alignment.Center && slidesToShow > 1) {
+  if (cellAlign === 'center' && slidesToShow > 1) {
     const excessSlides = slidesToShow - 1;
     // Half of excess is on left and half is on right when centered
     const excessLeftSlides = excessSlides / 2;

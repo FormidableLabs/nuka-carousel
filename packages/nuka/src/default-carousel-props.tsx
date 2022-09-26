@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Alignment,
-  InternalCarouselProps,
-  ControlProps,
-  ScrollMode,
-} from './types';
+import { InternalCarouselProps, ControlProps, ScrollMode } from './types';
 import { NextButton, PagingDots, PreviousButton } from './default-controls';
 import { defaultRenderAnnounceSlideMessage } from './announce-slide';
 
@@ -22,7 +17,7 @@ const defaultProps: InternalCarouselProps = {
   beforeSlide: () => {
     // do nothing
   },
-  cellAlign: Alignment.Left,
+  cellAlign: 'left',
   cellSpacing: 0,
   defaultControlsConfig: {},
   disableAnimation: false,

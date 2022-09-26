@@ -1,4 +1,4 @@
-import { Alignment, ControlProps, ScrollMode } from './types';
+import { ControlProps, ScrollMode } from './types';
 import {
   getDotIndexes,
   nextButtonDisabled,
@@ -107,7 +107,7 @@ describe('getDotIndexes', () => {
           ScrollMode.page, // ignored
           slidesToShow,
           true,
-          Alignment.Left
+          'left'
         )
       ).toEqual(expected);
     }

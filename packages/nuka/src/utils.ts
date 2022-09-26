@@ -15,14 +15,14 @@ export const isSlideVisible = (
   // will be visible at the same time, even though the position we associate
   // with index 0, its leftmost edge, is off-screen.
 
-  if (cellAlign === Alignment.Left) {
+  if (cellAlign === 'left') {
     return (
       indexToCheck < currentSlide + slidesToShow &&
       indexToCheck > currentSlide - 1
     );
   }
 
-  if (cellAlign === Alignment.Center) {
+  if (cellAlign === 'center') {
     return (
       (indexToCheck > currentSlide - slidesToShow / 2 - 0.5 &&
         indexToCheck <= currentSlide) ||
@@ -31,7 +31,7 @@ export const isSlideVisible = (
     );
   }
 
-  if (cellAlign === Alignment.Right) {
+  if (cellAlign === 'right') {
     return (
       indexToCheck < currentSlide + 1 &&
       indexToCheck > currentSlide - slidesToShow
@@ -56,12 +56,12 @@ export const getNextMoveIndex = (
   // Quit early if we're already as far right as we can go
   if (
     currentSlide >= slideCount - 1 ||
-    (cellAlign === Alignment.Left && currentSlide >= slideCount - slidesToShow)
+    (cellAlign === 'left' && currentSlide >= slideCount - slidesToShow)
   ) {
     return currentSlide;
   }
 
-  if (scrollMode === ScrollMode.remainder && cellAlign === Alignment.Left) {
+  if (scrollMode === ScrollMode.remainder && cellAlign === 'left') {
     return Math.min(currentSlide + slidesToScroll, slideCount - slidesToShow);
   }
 
@@ -83,12 +83,12 @@ export const getPrevMoveIndex = (
   // Quit early if we're already as far left as we can go
   if (
     currentSlide <= 0 ||
-    (cellAlign === Alignment.Right && currentSlide <= slidesToShow - 1)
+    (cellAlign === 'right' && currentSlide <= slidesToShow - 1)
   ) {
     return currentSlide;
   }
 
-  if (scrollMode === ScrollMode.remainder && cellAlign === Alignment.Right) {
+  if (scrollMode === ScrollMode.remainder && cellAlign === 'right') {
     return Math.max(currentSlide - slidesToScroll, slidesToShow - 1);
   }
 
