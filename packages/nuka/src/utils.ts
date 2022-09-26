@@ -1,11 +1,11 @@
 import { getDotIndexes } from './default-controls';
-import { Alignment, ScrollMode } from './types';
+import { CellAlign, ScrollMode } from './types';
 
 export const isSlideVisible = (
   currentSlide: number,
   indexToCheck: number,
   slidesToShow: number,
-  cellAlign: Alignment
+  cellAlign: CellAlign
 ) => {
   // The addition or subtraction of constants (1 , 0.5) in the following
   // calculations are accounting for the fact that a slide will be visible even
@@ -48,7 +48,7 @@ export const getNextMoveIndex = (
   slideCount: number,
   slidesToScroll: number,
   slidesToShow: number,
-  cellAlign: Alignment
+  cellAlign: CellAlign
 ) => {
   if (wrapAround) {
     return currentSlide + slidesToScroll;
@@ -74,7 +74,7 @@ export const getPrevMoveIndex = (
   currentSlide: number,
   slidesToScroll: number,
   slidesToShow: number,
-  cellAlign: Alignment
+  cellAlign: CellAlign
 ) => {
   if (wrapAround) {
     return currentSlide - slidesToScroll;
@@ -100,7 +100,7 @@ export const getDefaultSlideIndex = (
   slideCount: number,
   slidesToShow: number,
   slidesToScroll: number,
-  cellAlign: Alignment,
+  cellAlign: CellAlign,
   autoplayReverse: boolean,
   scrollMode: ScrollMode
 ) => {

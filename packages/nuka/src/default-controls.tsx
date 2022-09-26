@@ -1,5 +1,5 @@
 import React, { CSSProperties, useCallback } from 'react';
-import { Alignment, ControlProps, ScrollMode } from './types';
+import { CellAlign, ControlProps, ScrollMode } from './types';
 import { getBoundedIndex } from './utils';
 
 const defaultButtonStyles = (disabled: boolean): CSSProperties => ({
@@ -152,7 +152,7 @@ export const getDotIndexes = (
   scrollMode: ScrollMode,
   slidesToShow: number,
   wrapAround: boolean,
-  cellAlign: Alignment
+  cellAlign: CellAlign
 ) => {
   const dotIndexes: number[] = [];
   const scrollSlides = slidesToScroll <= 0 ? 1 : slidesToScroll;

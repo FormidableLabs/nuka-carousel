@@ -1,13 +1,13 @@
 import React, { ReactNode } from 'react';
 import { getDotIndexes } from './default-controls';
 import { useTween } from './hooks/use-tween';
-import { Alignment, InternalCarouselProps } from './types';
+import { CellAlign, InternalCarouselProps } from './types';
 
 export const getPercentOffsetForSlide = (
   currentSlide: number,
   slideCount: number,
   slidesToShow: number,
-  cellAlign: Alignment,
+  cellAlign: CellAlign,
   wrapAround: boolean
 ): number => {
   // When wrapAround is enabled, we show the slides 3 times

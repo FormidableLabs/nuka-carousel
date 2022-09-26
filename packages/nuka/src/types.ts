@@ -1,6 +1,13 @@
 import { ReactNode, CSSProperties, MutableRefObject } from 'react';
 
-export type Alignment = 'center' | 'right' | 'left';
+export type CellAlign = 'center' | 'right' | 'left';
+
+/** @deprecated use string literals for the values instead */
+export enum Alignment {
+  Center = 'center',
+  Right = 'right',
+  Left = 'left',
+}
 
 export enum Directions {
   Next = 'next',
@@ -219,7 +226,7 @@ export interface InternalCarouselProps {
    * When displaying more than one slide,
    * sets which position to anchor the current slide to
    */
-  cellAlign: Alignment;
+  cellAlign: CellAlign;
 
   /**
    * Space between slides, as an integer, but reflected as px

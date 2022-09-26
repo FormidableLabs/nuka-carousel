@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactNode, useRef, useEffect } from 'react';
-import { Alignment } from './types';
+import { CellAlign } from './types';
 import { isSlideVisible } from './utils';
 
 const getSlideWidth = (count: number, wrapAround?: boolean): string =>
@@ -99,7 +99,7 @@ const Slide = ({
   speed: number;
   slidesToShow: number;
   zoomScale: number | undefined;
-  cellAlign: Alignment;
+  cellAlign: CellAlign;
   /**
    * Called with `height` when slide becomes visible and `null` when it becomes
    * hidden.
