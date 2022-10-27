@@ -20,7 +20,6 @@ import { useFrameHeight } from './hooks/use-frame-height';
 import { getDotIndexes } from './default-controls';
 import { useForwardRef } from './hooks/use-forward-ref';
 
-// eslint-disable-next-line react/display-name
 export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
   (rawProps, ref): React.ReactElement => {
     /**
@@ -696,5 +695,6 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
 );
 
 Carousel.defaultProps = defaultProps;
+Carousel.displayName = 'Carousel';
 
 export default Carousel;
