@@ -646,7 +646,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         }}
         aria-label={frameAriaLabel}
         role="region"
-        tabIndex={enableKeyboardControls ? 0 : undefined}
+        tabIndex={enableKeyboardControls ? 0 : -1}
         onKeyDown={enableKeyboardControls ? onKeyDown : undefined}
         ref={carouselRef}
         onMouseUp={onMouseUp}
