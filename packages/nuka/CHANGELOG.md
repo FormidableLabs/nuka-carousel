@@ -1,5 +1,13 @@
 # Nuka Changelog
 
+## 5.4.1
+
+### Patch Changes
+
+- slider-frame is no longer a focus target if enableKeyboardControls is false ([#984](https://github.com/FormidableLabs/nuka-carousel/pull/984))
+
+* fix the Alignment type so library users don't need to import an enum for a simple value ([#974](https://github.com/FormidableLabs/nuka-carousel/pull/974))
+
 ## 5.4.0
 
 ### Minor Changes
