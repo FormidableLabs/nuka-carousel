@@ -6,10 +6,6 @@
 .main {
   padding: 4rem 0;
   max-width: 1000px;
+  width: 100%;
   margin: 0 auto;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }

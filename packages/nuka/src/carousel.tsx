@@ -60,7 +60,8 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     scrollMode,
     slideIndex,
     slidesToScroll: propsSlidesToScroll,
-    slidesToShow,
+    slidesToShow: propsSlidesToShow,
+    slideWidth,
     speed,
     style,
     swiping: mobileDraggingEnabled,
@@ -71,8 +72,18 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const filteredSlides = React.Children.toArray(children).filter(Boolean);
   const slideCount = filteredSlides.length;
 
-  const slidesToScroll =
-    animation === 'fade' ? slidesToShow : propsSlidesToScroll;
+  const [slideIOEntries, setSlideIOEntries] = useState(
+    new Map<string, boolean>()
+  );
+
+  const visibleCount = Array.from(slideIOEntries).filter(
+    ([, visible]) => visible
+  ).length;
+
+  const [constantVisibleCount, setConstantVisibleCount] =
+    useState<number>(visibleCount);
+
+  const slidesToShow = slideWidth ? constantVisibleCount : propsSlidesToShow;
 
   const [currentSlide, setCurrentSlide] = useState<number>(() =>
     getDefaultSlideIndex(
@@ -89,6 +100,39 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [dragDistance, setDragDistance] = useState<number>(0);
   const [animationDistance, setAnimationDistance] = useState<number>(0);
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+
+  const updateSlideIOEntry = useCallback(
+    (id: string, isFullyVisible: boolean) => {
+      if (!!slideIOEntries.get(id) === isFullyVisible) return;
+
+      setSlideIOEntries((prev) => {
+        const newMap = new Map(prev);
+        newMap.set(id, isFullyVisible);
+        return newMap;
+      });
+    },
+    [slideIOEntries]
+  );
+
+  const prevDragged = useRef(false);
+
+  useEffect(() => {
+    if (isDragging) prevDragged.current = true;
+
+    if (!(isDragging || isAnimating)) {
+      // Wait for the animation to complete after dragging
+      if (!prevDragged.current) setConstantVisibleCount(visibleCount);
+      prevDragged.current = false;
+    }
+  }, [isAnimating, isDragging, visibleCount]);
+
+  const slidesToScroll =
+    animation === 'fade'
+      ? slidesToShow
+      : propsSlidesToScroll === 'auto'
+      ? Math.max(constantVisibleCount, 1)
+      : propsSlidesToScroll;
 
   const prevXPosition = useRef<number | null>(null);
   const preDragOffset = useRef<number>(0);
@@ -578,21 +622,22 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       return (
         <Slide
           key={`${typeOfSlide}-${index}`}
+          id={`${typeOfSlide}-${index}`}
           count={slideCount}
-          currentSlide={currentSlide}
           index={index}
           isCurrentSlide={currentSlide === index}
           typeOfSlide={typeOfSlide}
           wrapAround={wrapAround}
           cellSpacing={cellSpacing}
           animation={animation}
-          slidesToShow={slidesToShow}
           speed={speed}
           zoomScale={zoomScale}
-          cellAlign={cellAlign}
           onVisibleSlideHeightChange={handleVisibleSlideHeightChange}
+          slideWidth={slideWidth}
+          updateIOEntry={updateSlideIOEntry}
           adaptiveHeight={adaptiveHeight}
           initializedAdaptiveHeight={initializedAdaptiveHeight}
+          carouselRef={carouselRef}
         >
           {child}
         </Slide>
@@ -674,7 +719,9 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           slidesToScroll={slidesToScroll}
           slidesToShow={slidesToShow}
           speed={speed}
+          slideWidth={slideWidth}
           wrapAround={wrapAround}
+          setIsAnimating={setIsAnimating}
         >
           {wrapAround ? renderSlides('prev-cloned') : null}
           {renderSlides()}

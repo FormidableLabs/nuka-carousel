@@ -1,46 +1,6 @@
 import { getDotIndexes } from './default-controls';
 import { CellAlign, ScrollMode } from './types';
 
-export const isSlideVisible = (
-  currentSlide: number,
-  indexToCheck: number,
-  slidesToShow: number,
-  cellAlign: CellAlign
-) => {
-  // The addition or subtraction of constants (1 , 0.5) in the following
-  // calculations are accounting for the fact that a slide will be visible even
-  // after the position associated with its index is off-screen. For example,
-  // with cellAlign="left", slidesToShow=1 and indexToCheck=0,
-  // if the currentSlide is set to 0.99, both (a sliver of) slide 0 and slide 1
-  // will be visible at the same time, even though the position we associate
-  // with index 0, its leftmost edge, is off-screen.
-
-  if (cellAlign === 'left') {
-    return (
-      indexToCheck < currentSlide + slidesToShow &&
-      indexToCheck > currentSlide - 1
-    );
-  }
-
-  if (cellAlign === 'center') {
-    return (
-      (indexToCheck > currentSlide - slidesToShow / 2 - 0.5 &&
-        indexToCheck <= currentSlide) ||
-      (indexToCheck > currentSlide &&
-        indexToCheck < currentSlide + slidesToShow / 2 + 0.5)
-    );
-  }
-
-  if (cellAlign === 'right') {
-    return (
-      indexToCheck < currentSlide + 1 &&
-      indexToCheck > currentSlide - slidesToShow
-    );
-  }
-
-  return false;
-};
-
 export const getNextMoveIndex = (
   scrollMode: ScrollMode,
   wrapAround: boolean,

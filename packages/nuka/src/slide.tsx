@@ -1,6 +1,11 @@
-import React, { CSSProperties, ReactNode, useRef, useEffect } from 'react';
-import { CellAlign } from './types';
-import { isSlideVisible } from './utils';
+import React, {
+  CSSProperties,
+  ReactNode,
+  useRef,
+  useEffect,
+  RefObject,
+} from 'react';
+import { useSlideIntersectionObserver } from './hooks/use-slide-intersection-observer';
 
 const getSlideWidth = (count: number, wrapAround?: boolean): string =>
   `${wrapAround ? 100 / (3 * count) : 100 / count}%`;
@@ -15,9 +20,11 @@ const getSlideStyles = (
   speed: number,
   zoomScale: number | undefined,
   adaptiveHeight: boolean,
-  initializedAdaptiveHeight: boolean
+  initializedAdaptiveHeight: boolean,
+  slideWidth: CSSProperties['width']
 ): CSSProperties => {
-  const width = getSlideWidth(count, wrapAround);
+  const width = slideWidth ?? getSlideWidth(count, wrapAround);
+  // const width = getSlideWidth(count, wrapAround);
   const visibleSlideOpacity = isVisibleSlide ? 1 : 0;
   const animationSpeed = animation === 'fade' ? 200 : 500;
 
@@ -41,7 +48,6 @@ const getSlideStyles = (
 
   return {
     width,
-    flex: 1,
     height,
     padding: `0 ${cellSpacing ? cellSpacing / 2 : 0}px`,
     transition: animation ? `${speed || animationSpeed}ms ease 0s` : undefined,
@@ -72,24 +78,25 @@ const generateIndex = (
 const Slide = ({
   count,
   children,
-  currentSlide,
   index,
   isCurrentSlide,
   typeOfSlide,
   wrapAround,
   cellSpacing,
+  slideWidth,
   animation,
   speed,
-  slidesToShow,
   zoomScale,
-  cellAlign,
   onVisibleSlideHeightChange,
   adaptiveHeight,
   initializedAdaptiveHeight,
+  updateIOEntry,
+  id,
+  carouselRef,
 }: {
   count: number;
+  id: string;
   children: ReactNode | ReactNode[];
-  currentSlide: number;
   index: number;
   isCurrentSlide: boolean;
   typeOfSlide: 'prev-cloned' | 'next-cloned' | undefined;
@@ -97,9 +104,10 @@ const Slide = ({
   cellSpacing: number;
   animation: 'zoom' | 'fade' | undefined;
   speed: number;
-  slidesToShow: number;
   zoomScale: number | undefined;
-  cellAlign: CellAlign;
+  slideWidth?: CSSProperties['width'];
+  updateIOEntry: (id: string, isFullyVisible: boolean) => void;
+  carouselRef: RefObject<Element>;
   /**
    * Called with `height` when slide becomes visible and `null` when it becomes
    * hidden.
@@ -111,25 +119,21 @@ const Slide = ({
   const customIndex = wrapAround
     ? generateIndex(index, count, typeOfSlide)
     : index;
-  const isVisible = isSlideVisible(
-    currentSlide,
-    customIndex,
-    slidesToShow,
-    cellAlign
-  );
 
   const slideRef = useRef<HTMLDivElement>(null);
+
+  const entry = useSlideIntersectionObserver(slideRef, carouselRef, (entry) => {
+    updateIOEntry(id, entry?.intersectionRatio >= 0.95);
+  });
+
+  const isVisible = !!entry?.isIntersecting;
+  const isFullyVisible = (entry?.intersectionRatio ?? 1) >= 0.95;
 
   const prevIsVisibleRef = useRef(false);
   useEffect(() => {
     const node = slideRef.current;
     if (node) {
       const slideHeight = node.getBoundingClientRect()?.height;
-      if (isVisible) {
-        node.removeAttribute('inert');
-      } else {
-        node.setAttribute('inert', 'true');
-      }
 
       const prevIsVisible = prevIsVisibleRef.current;
       if (isVisible && !prevIsVisible) {
@@ -140,33 +144,30 @@ const Slide = ({
 
       prevIsVisibleRef.current = isVisible;
     }
-  }, [
-    adaptiveHeight,
-    customIndex,
-    isVisible,
-    onVisibleSlideHeightChange,
-    slidesToShow,
-  ]);
+  }, [customIndex, isVisible, onVisibleSlideHeightChange]);
 
-  const currentSlideClass = isCurrentSlide && isVisible ? ' slide-current' : '';
+  const currentSlideClass =
+    isCurrentSlide && isFullyVisible ? ' slide-current' : '';
 
   return (
     <div
       ref={slideRef}
+      {...{ inert: (!isFullyVisible).toString() }}
       className={`slide${currentSlideClass}${
         typeOfSlide ? ` ${typeOfSlide}` : ''
-      }${isVisible ? ' slide-visible' : ''}`}
+      }${isFullyVisible ? ' slide-visible' : ''}`}
       style={getSlideStyles(
         count,
         isCurrentSlide,
-        isVisible,
+        isFullyVisible,
         wrapAround,
         cellSpacing,
         animation,
         speed,
         zoomScale,
         adaptiveHeight,
-        initializedAdaptiveHeight
+        initializedAdaptiveHeight,
+        slideWidth
       )}
     >
       {children}
