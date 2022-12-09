@@ -636,6 +636,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           width: '100%',
           position: 'relative',
           outline: 'none',
+          touchAction: 'pan-y',
           height: frameHeight,
           transition: adaptiveHeightAnimation
             ? 'height 300ms ease-in-out'
