@@ -4,6 +4,7 @@ import AnnounceSlide from './announce-slide';
 import { getPercentOffsetForSlide, SliderList } from './slider-list';
 import {
   CarouselProps,
+  CellAlign,
   InternalCarouselProps,
   KeyCodeConfig,
   KeyCodeFunction,
@@ -40,7 +41,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     autoplayInterval,
     autoplayReverse,
     beforeSlide,
-    cellAlign,
+    cellAlign: propsCellAlign,
     cellSpacing,
     children,
     className,
@@ -72,6 +73,9 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   const filteredSlides = React.Children.toArray(children).filter(Boolean);
   const slideCount = filteredSlides.length;
 
+  const cellAlign: CellAlign =
+    slideWidth || propsSlidesToScroll === 'auto' ? 'left' : propsCellAlign;
+
   const [slideIOEntries, setSlideIOEntries] = useState(
     new Map<string, boolean>()
   );
@@ -84,6 +88,13 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     useState<number>(visibleCount);
 
   const slidesToShow = slideWidth ? constantVisibleCount : propsSlidesToShow;
+
+  const slidesToScroll =
+    animation === 'fade'
+      ? slidesToShow
+      : propsSlidesToScroll === 'auto'
+      ? Math.max(constantVisibleCount, 1)
+      : propsSlidesToScroll;
 
   const [currentSlide, setCurrentSlide] = useState<number>(() =>
     getDefaultSlideIndex(
@@ -126,13 +137,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       prevDragged.current = false;
     }
   }, [isAnimating, isDragging, visibleCount]);
-
-  const slidesToScroll =
-    animation === 'fade'
-      ? slidesToShow
-      : propsSlidesToScroll === 'auto'
-      ? Math.max(constantVisibleCount, 1)
-      : propsSlidesToScroll;
 
   const prevXPosition = useRef<number | null>(null);
   const preDragOffset = useRef<number>(0);
