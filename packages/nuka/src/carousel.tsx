@@ -8,6 +8,7 @@ import {
   InternalCarouselProps,
   KeyCodeConfig,
   KeyCodeFunction,
+  ScrollMode,
 } from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
@@ -58,7 +59,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     onUserNavigation,
     pauseOnHover,
     renderAnnounceSlideMessage,
-    scrollMode,
+    scrollMode: propsScrollMode,
     slideIndex,
     slidesToScroll: propsSlidesToScroll,
     slidesToShow: propsSlidesToShow,
@@ -75,6 +76,9 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
 
   const cellAlign: CellAlign =
     slideWidth || propsSlidesToScroll === 'auto' ? 'left' : propsCellAlign;
+
+  const scrollMode: ScrollMode =
+    propsSlidesToScroll === 'auto' ? ScrollMode.remainder : propsScrollMode;
 
   const [slideIOEntries, setSlideIOEntries] = useState(
     new Map<string, boolean>()
