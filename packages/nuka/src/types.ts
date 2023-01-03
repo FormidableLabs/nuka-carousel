@@ -401,12 +401,17 @@ export interface InternalCarouselProps {
   /**
    * Slides to scroll at once.
    */
-  slidesToScroll: number;
+  slidesToScroll: number | 'auto';
 
   /**
    * Slides to show at once
    */
   slidesToShow: number;
+
+  /**
+   * Sets a fixed slide width
+   */
+  slideWidth?: CSSProperties['width'];
 
   /**
    * Animation duration

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { getDotIndexes } from './default-controls';
 import { useTween } from './hooks/use-tween';
 import { CellAlign, InternalCarouselProps } from './types';
@@ -46,17 +46,19 @@ interface SliderListProps
     | 'edgeEasing'
     | 'scrollMode'
     | 'animation'
-    | 'slidesToScroll'
     | 'slidesToShow'
+    | 'slideWidth'
     | 'speed'
     | 'wrapAround'
   > {
+  slidesToScroll: number;
   animationDistance: number;
   children: ReactNode;
   currentSlide: number;
   draggedOffset: number;
   isDragging: boolean;
   slideCount: number;
+  setIsAnimating: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
@@ -79,13 +81,17 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
       slidesToShow,
       speed,
       wrapAround,
+      slideWidth,
+      setIsAnimating,
     },
     forwardedRef
   ) => {
     // When wrapAround is enabled, we show the slides 3 times
     const renderedSlideCount = wrapAround ? 3 * slideCount : slideCount;
 
-    const listVisibleWidth = `${(renderedSlideCount * 100) / slidesToShow}%`;
+    const listVisibleWidth = slideWidth
+      ? `calc(${slideWidth} * ${renderedSlideCount})`
+      : `${(renderedSlideCount * 100) / slidesToShow}%`;
 
     const percentOffsetForSlideProps = [
       slideCount,
@@ -154,6 +160,10 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
         positioning = `translateX(calc(${slideBasedOffset}% - ${transitionOffset}px))`;
       }
     }
+
+    useEffect(() => {
+      setIsAnimating(isAnimating);
+    }, [isAnimating, setIsAnimating]);
 
     return (
       <div
