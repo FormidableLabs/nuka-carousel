@@ -1,0 +1,32 @@
+.feature {
+  background-color: var(--brand-beige);
+  padding: 2rem;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+@media (min-width: 1416px) {
+  .feature {
+    padding: 3rem;
+  }
+}
+
+.title {
+  font-size: 2rem;
+}
+
+.subtitle {
+  font-size: 1.45rem;
+  line-height: 2.35rem;
+}
+
+.visualExample {
+  width: 100%;
+  max-width: 35rem;
+  max-height: 15rem;
+}
+
+.sectionImageMockup {
+  max-width: 40rem;
+  width: 100%;
+}

@@ -1,0 +1,22 @@
+.footerLogo {
+  width: 12rem;
+  color: white;
+}
+
+.footerDescription {
+  font-size: 1.2rem;
+  margin: 1.5rem 0;
+}
+
+@media (min-width: 1416px) {
+  .footerContent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .footerDescription {
+    flex: 1;
+    margin: 1.25rem 0 1.25rem 7.25rem;
+  }
+}
