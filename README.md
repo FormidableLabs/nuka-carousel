@@ -1,4 +1,4 @@
-[![Nuka Carousel — Formidable, We build the modern web](./Nuka-Hero.png)](https://formidable.com/open-source/)
+[![Nuka Carousel — Formidable, We build the modern web](https://raw.githubusercontent.com/FormidableLabs/nuka-carousel/main/Nuka-Hero.png)](https://formidable.com/open-source/)
 
 [![Maintenance Status][maintenance-image]](#maintenance-status)
 
