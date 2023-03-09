@@ -50,7 +50,10 @@ describe('Carousel', () => {
   const renderCarousel = ({
     slideCount = 5,
     ...props
-  }: CarouselProps & { slideCount?: number } = {}) =>
+  }: CarouselProps & {
+    slideCount?: number;
+    ref?: React.RefObject<HTMLDivElement>;
+  } = {}) =>
     render(
       <Carousel {...props}>
         {[...Array(slideCount)].map((_, index) => (
@@ -189,7 +192,7 @@ describe('Carousel', () => {
       autoplay: true,
       autoplayInterval,
       keyCodeConfig,
-      innerRef: createCarouselRefWithMockedDimensions().ref,
+      ref: createCarouselRefWithMockedDimensions().ref,
       slideCount,
       beforeSlide,
       onUserNavigation,
