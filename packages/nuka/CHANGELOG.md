@@ -1,5 +1,13 @@
 # Nuka Changelog
 
+## 5.5.0
+
+### Minor Changes
+
+* Implement fixed width slides with intersection observer ([#985](https://github.com/FormidableLabs/nuka-carousel/pull/985))
+* Fix cellAlignment issue
+* Enforce `scrollMode` `remainder` if `slidesToScroll` `auto` is used
+
 ## 5.4.1
 
 ### Patch Changes
