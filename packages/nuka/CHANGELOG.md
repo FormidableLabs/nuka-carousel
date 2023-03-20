@@ -1,5 +1,12 @@
 # Nuka Changelog
 
+## 5.5.1
+
+### Patch Changes
+
+* Fix to only include inert property when slide is not in view ([#1000](https://github.com/FormidableLabs/nuka-carousel/pull/1000)] @allypalanzi
+
+
 ## 5.5.0
 
 ### Minor Changes
