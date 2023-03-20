@@ -22,6 +22,9 @@ context('Carousel', () => {
         .find('img')
         .should('have.attr', 'data-slide', 'Slide 1');
 
+      cy.get('.slide.slide-visible').should('not.have.attr', 'inert');
+      cy.get('.slide').not('.slide-visible').should('have.attr', 'inert');
+
       cy.get('.paging-item').should('have.length', 4);
 
       cy.get('button').contains('Prev').should('be.disabled');
