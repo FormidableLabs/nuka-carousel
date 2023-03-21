@@ -39,3 +39,15 @@ jobs:
 
       - name: Cypress run
         run: pnpm run test:ci-with-server
+
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: ./packages/nuka/cypress/screenshots
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: cypress-videos
+          path: ./packages/nuka/cypress/videos

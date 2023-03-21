@@ -29,6 +29,7 @@ context('Carousel', () => {
 
       cy.get('button').contains('Prev').should('be.disabled');
       cy.get('button').contains('Next').should('not.be.disabled').click();
+      cy.wait(2000);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 1)
@@ -37,6 +38,7 @@ context('Carousel', () => {
 
       cy.get('button').contains('Prev').should('not.be.disabled');
       cy.get('button').contains('Next').should('not.be.disabled').click();
+      cy.wait(2000);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 1)
@@ -45,6 +47,7 @@ context('Carousel', () => {
 
       cy.get('button').contains('Prev').should('not.be.disabled');
       cy.get('button').contains('Next').should('not.be.disabled').click();
+      cy.wait(2000);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 1)
@@ -53,6 +56,7 @@ context('Carousel', () => {
 
       cy.get('button').contains('Next').should('be.disabled');
       cy.get('button').contains('Prev').should('not.be.disabled').click();
+      cy.wait(2000);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 1)
@@ -79,6 +83,7 @@ context('Carousel', () => {
 
       cy.get('button').contains('Prev').should('be.disabled');
       cy.get('button').contains('Next').should('not.be.disabled').click();
+      cy.wait(2000);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 2)
@@ -88,6 +93,7 @@ context('Carousel', () => {
 
       cy.get('button').contains('Prev').should('not.be.disabled');
       cy.get('button').contains('Next').should('not.be.disabled').click();
+      cy.wait(2000);
 
       cy.get('.slide.slide-visible')
         .should('have.length', 2)
