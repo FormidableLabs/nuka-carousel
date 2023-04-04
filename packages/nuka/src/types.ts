@@ -1,4 +1,4 @@
-import { ReactNode, CSSProperties, MutableRefObject } from 'react';
+import { ReactNode, CSSProperties } from 'react';
 
 export type CellAlign = 'center' | 'right' | 'left';
 
@@ -291,11 +291,6 @@ export interface InternalCarouselProps {
    * Customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page.
    */
   frameAriaLabel?: string;
-
-  /**
-   * Ref to pass to carousel element
-   */
-  innerRef?: MutableRefObject<HTMLDivElement>;
 
   /**
    * When enableKeyboardControls is enabled, Configure keyCodes for corresponding slide actions as array of keyCodes
