@@ -9,7 +9,7 @@ const config = {
   title: 'Nuka Carousel',
   tagline: 'A flexible playground for live editing React components',
   url: 'https://formidable.com',
-  baseUrl: '/open-source/nuka-carousel',
+  baseUrl: '',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
