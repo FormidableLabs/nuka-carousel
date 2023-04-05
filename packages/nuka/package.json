@@ -70,8 +70,8 @@
     "webpack-dev-server": "^4.6.0"
   },
   "peerDependencies": {
-    "react": "^15.3.0 || ^16.0.0 || ^17.0.1 || ^18.0.0",
-    "react-dom": "^15.3.0 || ^16.0.0 || ^17.0.1 || ^18.0.0"
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "resolutions": {
     "jsdom": "^14.0.0"

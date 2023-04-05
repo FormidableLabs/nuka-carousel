@@ -1,0 +1,56 @@
+---
+sidebar_position: 2
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Installation
+
+In the directory containing package.json, run your package manager's install command:
+
+<Tabs>
+  <TabItem value="npm" label="npm" default>
+
+```bash
+npm install nuka-carousel
+```
+
+  </TabItem>
+  <TabItem value="yarn" label="Yarn">
+
+```bash
+yarn add nuka-carousel
+```
+
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add nuka-carousel
+```
+
+  </TabItem>
+</Tabs>
+
+:::note
+Nuka Carousel is a single npm package with a peer dependency on React 18.
+:::
+
+### Basic Usage
+
+```jsx
+import Carousel from "nuka-carousel"
+
+const App = () => {
+  return (
+    <Carousel>
+      <img src="/image1.png" />
+      <img src="/image2.png" />
+      <img src="/image3.png" />
+      <img src="/image4.png" />
+      <img src="/image5.png" />
+    </Carousel>
+  )
+}
+```
