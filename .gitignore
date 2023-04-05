@@ -33,6 +33,7 @@ bower_components/
 .tmp
 es
 lib
+dist
 types
 yarn-error.log*
 package-lock.json
