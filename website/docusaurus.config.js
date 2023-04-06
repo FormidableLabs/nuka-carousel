@@ -7,9 +7,10 @@ const darkCodeTheme = require('prism-react-renderer/themes/okaidia');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Nuka Carousel',
-  tagline: 'A flexible playground for live editing React components',
+  tagline:
+    'Small, fast, and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site.',
   url: 'https://formidable.com',
-  baseUrl: '/',
+  baseUrl: '/open-source/nuka-carousel',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
