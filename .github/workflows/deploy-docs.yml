@@ -65,7 +65,7 @@ jobs:
 
       - name: Deploy docs (production)
         if: github.ref == 'refs/heads/main'
-        run: yarn deploy:prod
+        run: pnpm run deploy:prod
         working-directory: ./website
         env:
           GITHUB_DEPLOYMENT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
