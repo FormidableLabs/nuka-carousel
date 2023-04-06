@@ -1,5 +1,11 @@
 # Nuka Changelog
 
+## 6.0.1
+
+### Patch Changes
+
+- Fix output of types. ([#1010](https://github.com/FormidableLabs/nuka-carousel/pull/1010))
+
 ## 6.0.0
 
 ### Major Changes
