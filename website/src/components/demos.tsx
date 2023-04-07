@@ -10,15 +10,17 @@ type Props = {
   wrapAround?: boolean;
   autoplay?: boolean;
   startIndex?: number;
+  className?: string;
 };
 
 export const BasicDemo = ({
   wrapAround = false,
   autoplay = false,
   startIndex = 0,
+  className = '',
 }: Props) => {
   return (
-    <div>
+    <div className={className}>
       <Carousel
         slideIndex={startIndex}
         wrapAround={wrapAround}

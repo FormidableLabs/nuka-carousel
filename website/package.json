@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
+    "postinstall": "pnpm run -C ../ build",
     "start": "docusaurus start",
     "build": "pnpm run -C ../ build && docusaurus build --out-dir build/open-source/nuka-carousel",
     "swizzle": "docusaurus swizzle",

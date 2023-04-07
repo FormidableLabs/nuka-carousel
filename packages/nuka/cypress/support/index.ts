@@ -29,9 +29,7 @@ declare global {
       /**
        * Opens the dev site with a carousel set to the designated props.
        */
-      visitWithCarouselProps(
-        propsObj: CarouselProps & { slideCount?: number }
-      ): ReturnType<typeof cy.visit>;
+      visitCarousel(): ReturnType<typeof cy.visit>;
       /**
        * Simulates a swipe gesture on the carousel
        * @param distance - the distance (px) to swipe from right to left (or
@@ -45,16 +43,9 @@ declare global {
   }
 }
 
-Cypress.Commands.add(
-  'visitWithCarouselProps',
-  ({ slideCount = 9, ...props } = {}) => {
-    cy.visit(
-      `http://localhost:3000/?slides=${slideCount}&params=${JSON.stringify(
-        props
-      )}`
-    );
-  }
-);
+Cypress.Commands.add('visitCarousel', () => {
+  cy.visit(`http://localhost:3000/open-source/nuka-carousel`);
+});
 
 Cypress.Commands.add('swipeSlider', (distance, { waitMs = 1000 } = {}) => {
   const [start, end] = distance >= 0 ? [distance, 0] : [0, Math.abs(distance)];
