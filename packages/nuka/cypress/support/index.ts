@@ -14,7 +14,6 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import { CarouselProps } from '../../src/types';
 import './commands';
 
 // Alternatively you can use CommonJS syntax:
@@ -38,7 +37,7 @@ declare global {
       swipeSlider(
         distance: number,
         options?: { waitMs?: number }
-      ): ReturnType<typeof cy.get>;
+      ): ReturnType<typeof cy.visit>;
     }
   }
 }

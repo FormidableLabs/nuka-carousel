@@ -20,6 +20,7 @@
   "globals": {
     "page": true
   },
+  "ignorePatterns": ["packages/nuka/dist"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 12,
@@ -27,7 +28,7 @@
       "jsx": true
     }
   },
-  "plugins": [ "react", "react-hooks", "prettier", "@typescript-eslint" ],
+  "plugins": ["react", "react-hooks", "prettier", "@typescript-eslint"],
   "rules": {
     "max-params": 0,
     "max-statements": 0,
