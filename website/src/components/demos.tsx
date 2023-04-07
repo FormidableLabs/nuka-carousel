@@ -5,6 +5,7 @@ import {
   renderCenterRightControls,
 } from '@site/src/components/controls';
 import { Cards } from '@site/src/components/cards';
+import clsx from 'clsx';
 
 type Props = {
   wrapAround?: boolean;
@@ -20,7 +21,7 @@ export const BasicDemo = ({
   className = '',
 }: Props) => {
   return (
-    <div className={className}>
+    <div className={clsx(className, 'w-full md:w-[600px] lg:w-[750px]')}>
       <Carousel
         slideIndex={startIndex}
         wrapAround={wrapAround}
