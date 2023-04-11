@@ -96,11 +96,6 @@ ___
 ### `frameAriaLabel`
 A `string` for the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page. The default value is an empty string.
 
-___
-
-### `innerRef`
-A React ref object `MutableRefObject<HTMLDivElement>` for carousel element.
-
 ---
 
 ### `keyCodeConfig`
@@ -135,6 +130,11 @@ ___
 
 ### `onUserNavigation`
 A function `(props: Pick<CarouselState, 'currentSlide' | 'count'>) => string` to render the message in the ARIA live region that is announcing the current slide on slide change.
+
+___
+
+### `ref`
+A React ref object `MutableRefObject<HTMLDivElement>` for carousel element.
 
 ---
 
