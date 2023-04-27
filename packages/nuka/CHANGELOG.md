@@ -1,5 +1,11 @@
 # Nuka Changelog
 
+## 6.0.2
+
+### Patch Changes
+
+- Add package provenance ([#1015](https://github.com/FormidableLabs/nuka-carousel/pull/1015))
+
 ## 6.0.1
 
 ### Patch Changes
