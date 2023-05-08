@@ -1,5 +1,11 @@
 # Nuka Changelog
 
+## 6.0.3
+
+### Patch Changes
+
+- Fix peer dependency version for React in package. ([#1017](https://github.com/FormidableLabs/nuka-carousel/pull/1017))
+
 ## 6.0.2
 
 ### Patch Changes
