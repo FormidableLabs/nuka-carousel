@@ -1,6 +1,6 @@
 {
   "name": "nuka-carousel",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "description": "Pure React Carousel",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
