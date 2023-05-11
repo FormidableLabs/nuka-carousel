@@ -5,6 +5,7 @@
     "build:watch": "pnpm run --filter nuka-carousel build:watch",
     "build:storybook": "pnpm run --filter nuka-carousel storybook:build",
     "build:website": "pnpm run --filter website build",
+    "build:website:vercel": "pnpm run --filter website build:vercel",
     "lint": "pnpm run --parallel lint",
     "lint:fix": "pnpm run --parallel lint --fix",
     "start:nextjs": "pnpm run --filter nuka-carousel-nextjs-example dev",
