@@ -424,11 +424,14 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
     const handleTouchDragEnd = (e: React.TouchEvent<HTMLDivElement>) => {
       if (!allowPinchZoom || e.touches.length === 0) handleDragEnd(e);
 
+      // If the user releases the touch on the carousel with a touch still active
+      // outisde of it, we will not recieve any more touchend events, even though
+      // touches.length > 0. Check to see if any touches are still inside of the slider.
       let anyTouchInTarget = false;
       for (let i = 0; i < e.touches.length; i++) {
         const isContained = !!carouselRef.current?.contains(
           // The Touch specification directly states this is Element, no clue why the TS definitions say it is something else.
-          e.touches.item(i).target as Element
+          e.touches[i].target as Element
         );
         anyTouchInTarget ||= isContained;
       }
