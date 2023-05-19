@@ -39,6 +39,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
       adaptiveHeight,
       adaptiveHeightAnimation,
       afterSlide,
+      allowPinchZoom,
       animation,
       autoplay,
       autoplayInterval,
@@ -419,6 +420,22 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
 
     const dragPositions = useRef<{ pos: number; time: number }[]>([]);
 
+    // Proxy the handleDragEnd function to make decisions based on TouchEvent only properties.
+    const handleTouchDragEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+      if (!allowPinchZoom || e.touches.length === 0) handleDragEnd(e);
+
+      let anyTouchInTarget = false;
+      for (let i = 0; i < e.touches.length; i++) {
+        const isContained = !!carouselRef.current?.contains(
+          // The Touch specification directly states this is Element, no clue why the TS definitions say it is something else.
+          e.touches.item(i).target as Element
+        );
+        anyTouchInTarget ||= isContained;
+      }
+
+      if (!anyTouchInTarget) handleDragEnd(e);
+    };
+
     const handleDragEnd = (
       e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
     ) => {
@@ -516,7 +533,8 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
         if (
           !mobileDraggingEnabled ||
           !sliderListRef.current ||
-          !carouselRef.current
+          !carouselRef.current ||
+          (allowPinchZoom && e.touches.length > 1)
         ) {
           return;
         }
@@ -527,7 +545,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
 
         onDragStart(e);
       },
-      [carouselRef, onDragStart, mobileDraggingEnabled]
+      [mobileDraggingEnabled, carouselRef, allowPinchZoom, onDragStart]
     );
 
     const handlePointerMove = useCallback(
@@ -564,7 +582,12 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
 
     const onTouchMove = useCallback(
       (e: React.TouchEvent<HTMLDivElement>) => {
-        if (!isDragging || !carouselRef.current) return;
+        if (
+          !isDragging ||
+          !carouselRef.current ||
+          (allowPinchZoom && e.touches.length > 1)
+        )
+          return;
 
         onDragStart(e);
 
@@ -572,7 +595,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
 
         handlePointerMove(moveValue);
       },
-      [isDragging, carouselRef, handlePointerMove, onDragStart]
+      [isDragging, carouselRef, allowPinchZoom, onDragStart, handlePointerMove]
     );
 
     const onMouseDown = useCallback(
@@ -697,7 +720,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
             width: '100%',
             position: 'relative',
             outline: 'none',
-            touchAction: 'pan-y',
+            touchAction: allowPinchZoom ? 'pan-y pinch-zoom' : 'pan-y',
             height: frameHeight,
             transition: adaptiveHeightAnimation
               ? 'height 300ms ease-in-out'
@@ -716,7 +739,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
           onMouseMove={onMouseMove}
           onMouseLeave={onMouseUp}
           onTouchStart={onTouchStart}
-          onTouchEnd={handleDragEnd}
+          onTouchEnd={handleTouchDragEnd}
           onTouchMove={onTouchMove}
         >
           <SliderList

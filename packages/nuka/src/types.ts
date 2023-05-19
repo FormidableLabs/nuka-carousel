@@ -193,6 +193,13 @@ export interface InternalCarouselProps {
   afterSlide: (index: number) => void;
 
   /**
+   * Allow document pinch to zoom when touches originate within the carousel.
+   * This also causes the carousel to ignore multiple touch interactions.
+   * @default true;
+   */
+  allowPinchZoom?: boolean;
+
+  /**
    * Adds a zoom or fade effect on the currently visible slide.
    */
   animation?: 'zoom' | 'fade';

@@ -11,6 +11,7 @@ const defaultProps: InternalCarouselProps = {
   afterSlide: () => {
     // do nothing
   },
+  allowPinchZoom: true,
   autoplay: false,
   autoplayInterval: 3000,
   autoplayReverse: false,
