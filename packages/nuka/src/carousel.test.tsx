@@ -254,6 +254,127 @@ describe('Carousel', () => {
     fireEvent.touchEnd(carouselFrame, { touches: [{ pageX: 100 }] });
     expect(onUserNavigation).toHaveBeenCalledTimes(9);
 
+    // Simulating multi-touch to not navigate
+    fireEvent.touchStart(carouselFrame, { touches: [{ pageX: 700 }] });
+    fireEvent.touchMove(carouselFrame, {
+      touches: [{ pageX: 700 }],
+    });
+    jest.advanceTimersByTime(100);
+    fireEvent.touchMove(carouselFrame, {
+      touches: [{ pageX: 700 }, { pageX: 701 }],
+    });
+    jest.advanceTimersByTime(100);
+    fireEvent.touchMove(carouselFrame, {
+      touches: [{ pageX: 100 }, { pageX: 101 }],
+    });
+    fireEvent.touchEnd(carouselFrame, { touches: [{ pageX: 100 }] });
+    expect(onUserNavigation).toHaveBeenCalledTimes(9);
+
+    // Simulating mixed multi-touch to navigate
+    fireEvent.touchStart(carouselFrame, { touches: [{ pageX: 700 }] });
+    fireEvent.touchMove(carouselFrame, {
+      touches: [{ pageX: 700 }],
+    });
+    jest.advanceTimersByTime(100);
+    fireEvent.touchMove(carouselFrame, {
+      touches: [{ pageX: 650 }, { pageX: 2000 }],
+    });
+    jest.advanceTimersByTime(100);
+    fireEvent.touchMove(carouselFrame, {
+      touches: [{ pageX: 100 }],
+    });
+    fireEvent.touchEnd(carouselFrame, { touches: [{ pageX: 100 }] });
+    expect(onUserNavigation).toHaveBeenCalledTimes(10);
+
+    // Should not be triggering navigation callback when dragging didn't trigger navigation
+    fireEvent.mouseDown(carouselFrame, { clientX: 100 });
+    fireEvent.mouseMove(carouselFrame, { clientX: 100 });
+    jest.advanceTimersByTime(10);
+    fireEvent.mouseMove(carouselFrame, { clientX: 105 });
+    fireEvent.mouseUp(carouselFrame, { clientX: 105 });
+    expect(onUserNavigation).toHaveBeenCalledTimes(10);
+  });
+
+  it('detects user-triggered navigation with pinch zoom disabled', () => {
+    const beforeSlide = jest.fn();
+    const onUserNavigation = jest.fn();
+    const keyCodeConfig = {
+      nextSlide: [39],
+      previousSlide: [37],
+      firstSlide: [81],
+      lastSlide: [69],
+      pause: [32],
+    };
+    const autoplayInterval = 3000;
+    const slideCount = 8;
+    renderCarousel({
+      allowPinchZoom: false,
+      enableKeyboardControls: true,
+      autoplay: true,
+      autoplayInterval,
+      keyCodeConfig,
+      ref: createCarouselRefWithMockedDimensions().ref,
+      slideCount,
+      beforeSlide,
+      onUserNavigation,
+    });
+
+    expect(onUserNavigation).toHaveBeenCalledTimes(0);
+
+    // Let enough time pass that autoplay triggers navigation
+    act(() => {
+      jest.advanceTimersByTime(autoplayInterval);
+    });
+
+    // Make sure the navigation happened, but did not trigger the
+    // `onUserNavigation` callback (because it wasn't user-initiated)
+    expect(onUserNavigation).toHaveBeenCalledTimes(0);
+    expect(beforeSlide).toHaveBeenLastCalledWith(0, 1);
+
+    const carouselFrame = screen.getByRole('region');
+
+    // Simulating keyboard shortcut use to navigate
+    fireEvent.keyDown(carouselFrame, { keyCode: keyCodeConfig.nextSlide[0] });
+    expect(beforeSlide).toHaveBeenLastCalledWith(1, 2);
+    expect(onUserNavigation).toHaveBeenCalledTimes(1);
+
+    fireEvent.keyDown(carouselFrame, {
+      keyCode: keyCodeConfig.previousSlide[0],
+    });
+    expect(onUserNavigation).toHaveBeenCalledTimes(2);
+
+    fireEvent.keyDown(carouselFrame, { keyCode: keyCodeConfig.lastSlide[0] });
+    expect(onUserNavigation).toHaveBeenCalledTimes(3);
+
+    fireEvent.keyDown(carouselFrame, { keyCode: keyCodeConfig.firstSlide[0] });
+    expect(onUserNavigation).toHaveBeenCalledTimes(4);
+
+    // Simulating clicks on default controls to navigate
+    fireEvent.click(screen.getByRole('button', { name: /next/ }));
+    expect(onUserNavigation).toHaveBeenCalledTimes(5);
+
+    fireEvent.click(screen.getByRole('button', { name: /prev/ }));
+    expect(onUserNavigation).toHaveBeenCalledTimes(6);
+
+    fireEvent.click(screen.getByRole('button', { name: /slide 2/ }));
+    expect(onUserNavigation).toHaveBeenCalledTimes(7);
+
+    // Simulating drag to navigate
+    fireEvent.mouseDown(carouselFrame, { clientX: 100 });
+    fireEvent.mouseMove(carouselFrame, { clientX: 100 });
+    jest.advanceTimersByTime(100);
+    fireEvent.mouseMove(carouselFrame, { clientX: 700 });
+    fireEvent.mouseUp(carouselFrame, { clientX: 700 });
+    expect(onUserNavigation).toHaveBeenCalledTimes(8);
+
+    // Simulating swipe to navigate
+    fireEvent.touchStart(carouselFrame, { touches: [{ pageX: 700 }] });
+    fireEvent.touchMove(carouselFrame, { touches: [{ pageX: 700 }] });
+    jest.advanceTimersByTime(100);
+    fireEvent.touchMove(carouselFrame, { touches: [{ pageX: 100 }] });
+    fireEvent.touchEnd(carouselFrame, { touches: [{ pageX: 100 }] });
+    expect(onUserNavigation).toHaveBeenCalledTimes(9);
+
     // Should not be triggering navigation callback when dragging didn't trigger navigation
     fireEvent.mouseDown(carouselFrame, { clientX: 100 });
     fireEvent.mouseMove(carouselFrame, { clientX: 100 });

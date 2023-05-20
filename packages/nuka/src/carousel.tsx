@@ -422,7 +422,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
 
     // Proxy the handleDragEnd function to make decisions based on TouchEvent only properties.
     const handleTouchDragEnd = (e: React.TouchEvent<HTMLDivElement>) => {
-      if (!allowPinchZoom || e.touches.length === 0) handleDragEnd(e);
+      if (!allowPinchZoom || e.touches.length === 0) return handleDragEnd(e);
 
       // If the user releases the touch on the carousel with a touch still active
       // outisde of it, we will not recieve any more touchend events, even though
@@ -436,7 +436,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
         anyTouchInTarget ||= isContained;
       }
 
-      if (!anyTouchInTarget) handleDragEnd(e);
+      if (!anyTouchInTarget) return handleDragEnd(e);
     };
 
     const handleDragEnd = (
