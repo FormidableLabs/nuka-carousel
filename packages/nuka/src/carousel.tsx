@@ -24,16 +24,10 @@ import { useForwardRef } from './hooks/use-forward-ref';
 
 export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
   (rawProps, ref): React.ReactElement => {
-    /**
-     * We need this cast because we want the component's properties to seem
-     * optional to external users, but always-present for the internal
-     * implementation.
-     *
-     * This cast is safe due to the `Carousel.defaultProps = defaultProps;`
-     * statement below. That guarantees all the properties are present, since
-     * `defaultProps` has type `InternalCarouselProps`.
-     */
-    const props = rawProps as InternalCarouselProps;
+    const props: InternalCarouselProps = {
+      ...defaultProps,
+      ...rawProps,
+    };
 
     const {
       adaptiveHeight,
@@ -750,7 +744,6 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
   }
 );
 
-Carousel.defaultProps = defaultProps;
 Carousel.displayName = 'Carousel';
 
 export default Carousel;

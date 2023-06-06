@@ -7,13 +7,14 @@ import { easeLinear, easeElasticOut } from 'd3-ease';
 import Carousel, { ControlProps, InternalCarouselProps } from '../src/index';
 
 import { sampleSlideImageSources } from './sample-slide-images';
+import defaultProps from '../src/default-carousel-props';
 
 export default {
   title: 'Nuka Carousel/Carousel',
   component: Carousel,
   args: {
     storySlideCount: 9,
-    ...Carousel.defaultProps,
+    ...defaultProps,
   },
 } as ComponentMeta<typeof Carousel>;
 
