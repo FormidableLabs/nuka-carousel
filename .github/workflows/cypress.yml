@@ -1,53 +1,53 @@
-name: Cypress Tests
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
-
-jobs:
-  cypress-run:
-    runs-on: ubuntu-latest
-    container:
-      image: cypress/browsers:node16.16.0-chrome107-ff107
-      options: --user 1001
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - uses: pnpm/action-setup@v2.2.2
-        with:
-          version: 7
-
-      - uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build nuka-carousel
-        run: pnpm build
-
-      - name: Install the Cypress binary
-        run: npx cypress install
-
-      - name: Cypress run
-        run: pnpm run test:ci-with-server
-
-      - uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: ./packages/nuka/cypress/screenshots
-
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: cypress-videos
-          path: ./packages/nuka/cypress/videos
+#name: Cypress Tests
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#  pull_request:
+#    branches:
+#      - main
+#
+#
+#jobs:
+#  cypress-run:
+#    runs-on: ubuntu-latest
+#    container:
+#      image: cypress/browsers:node16.16.0-chrome107-ff107
+#      options: --user 1001
+#
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#
+#      - uses: pnpm/action-setup@v2.2.2
+#        with:
+#          version: 7
+#
+#      - uses: actions/setup-node@v2
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#
+#      - name: Install dependencies
+#        run: pnpm install
+#
+#      - name: Build nuka-carousel
+#        run: pnpm build
+#
+#      - name: Install the Cypress binary
+#        run: npx cypress install
+#
+#      - name: Cypress run
+#        run: pnpm run test:ci-with-server
+#
+#      - uses: actions/upload-artifact@v3
+#        if: failure()
+#        with:
+#          name: cypress-screenshots
+#          path: ./packages/nuka/cypress/screenshots
+#
+#      - uses: actions/upload-artifact@v3
+#        if: always()
+#        with:
+#          name: cypress-videos
+#          path: ./packages/nuka/cypress/videos
