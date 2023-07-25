@@ -1,23 +1,23 @@
-import React from 'react';
-import clsx from 'clsx';
-import FormidableLogo from '@site/static/img/formidable-icon.svg';
+import React from "react"
+import clsx from "clsx"
+import FormidableLogo from "@site/static/img/formidable-icon.svg"
 
 type CardProps = {
-  className: string;
-  slideId: string;
-};
+  className: string
+  slideId: string
+}
 const Card = ({ className, slideId }: CardProps) => (
   <div
     data-slide={slideId}
     className={clsx(
       className,
-      'flex justify-center w-full flex-row',
-      'py-10 px-5 border-8 border-solid'
+      "flex justify-center w-full flex-row",
+      "py-10 px-5 border-8 border-solid"
     )}
   >
     <FormidableLogo className="h-40 z-10" />
   </div>
-);
+)
 
 export const Cards = [
   <Card
@@ -45,4 +45,4 @@ export const Cards = [
     key="stone-card"
     className="bg-stone-400 text-stone-700"
   />,
-];
+]

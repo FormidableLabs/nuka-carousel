@@ -1,3 +1,4 @@
-export { Carousel as default } from './carousel';
-export * from './types';
-export { NextButton, PreviousButton, PagingDots } from './default-controls';
+import * as React from "react"
+const Nuka = () => <div>Nuka Carousel v7</div>
+
+export default Nuka
