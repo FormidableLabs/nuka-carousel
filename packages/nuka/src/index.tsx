@@ -1,4 +1,12 @@
-import * as React from "react"
-const Nuka = () => <div>Nuka Carousel v7</div>
+import { PropsWithChildren } from "react"
+import clsx from "clsx"
+
+export type NukaProps = PropsWithChildren<{
+  className?: string
+}>
+
+const Nuka = ({ children, className }: NukaProps) => (
+  <div className={clsx(className, "")}>{children}</div>
+)
 
 export default Nuka

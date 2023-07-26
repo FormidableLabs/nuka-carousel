@@ -53,5 +53,8 @@
   "sideEffects": false,
   "publishConfig": {
     "provenance": true
+  },
+  "dependencies": {
+    "clsx": "^1.2.1"
   }
 }
