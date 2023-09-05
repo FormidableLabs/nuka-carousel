@@ -302,4 +302,104 @@ describe('Carousel', () => {
     fireEvent.click(screen.getByRole('button', { name: /slide 2/ }));
     expect(beforeSlide).toHaveBeenCalledTimes(3);
   });
+
+  it('has appropriate attributes', () => {
+    const slideCount = 8;
+    const id = 'roles';
+    renderCarousel({
+      id,
+      slideCount,
+    });
+
+    const carouselFrame = screen.getByTestId(id);
+    expect(carouselFrame).toHaveAttribute('role', 'group');
+    expect(carouselFrame).toHaveAccessibleDescription('carousel');
+
+    const next = screen.getByRole('button', { name: /Next/ });
+    expect(next).toHaveAttribute('aria-controls', `${id}-slides`);
+
+    const prev = screen.getByRole('button', { name: /Prev/ });
+    expect(prev).toHaveAttribute('aria-controls', `${id}-slides`);
+  });
+
+  it('paging dots have appropriate tab roles', () => {
+    const slideCount = 8;
+    const id = 'tabs';
+    const { container } = renderCarousel({
+      id,
+      slideCount,
+      // tabbed: true,
+    });
+
+    const dots = screen.getAllByRole('tab');
+    const firstDot = dots[0];
+    expect(firstDot).toHaveAttribute('aria-controls', `${id}-slide-1`);
+    expect(firstDot).toHaveAttribute('aria-selected', 'true');
+
+    const lastDot = dots[dots.length - 1];
+    expect(lastDot).toHaveAttribute('aria-controls', `${id}-slide-8`);
+    expect(lastDot).toHaveAttribute('aria-selected', 'false');
+
+    expect(screen.getByRole('tablist')).toBeInTheDocument();
+
+    const firstSlide = container.querySelector(`${id}-slide-1`);
+    expect(firstSlide).toHaveRole('tabpanel');
+    expect(firstSlide).not.toHaveAttribute('aria-roledescription');
+
+    lastDot.click();
+
+    expect(firstDot).toHaveAttribute('aria-selected', 'false');
+    expect(lastDot).toHaveAttribute('aria-selected', 'true');
+  });
+
+  it('autoplay should have pause button and aria live off', () => {
+    const id = 'autoplay';
+    const { container } = renderCarousel({
+      id,
+      autoplay: true,
+    });
+
+    expect(container.querySelector('[aria-live]')).toHaveAttribute(
+      'aria-live',
+      'off'
+    );
+
+    const pauseButton = screen.getByRole('button', { name: /Pause/ });
+    expect(pauseButton).toHaveTextContent('Pause');
+
+    pauseButton.click();
+    expect(pauseButton).toHaveTextContent('Play');
+  });
+
+  it('should render without pause button if autoplay is off', () => {
+    const id = 'autoplay-off';
+    const { container } = renderCarousel({
+      id,
+      autoplay: false,
+    });
+
+    expect(container.querySelector('[aria-live]')).toHaveAttribute(
+      'aria-live',
+      'polite'
+    );
+
+    expect(
+      screen.queryByRole('button', { name: /Pause/ })
+    ).not.toBeInTheDocument();
+  });
+
+  it('without tabs should have appropriate roles.', () => {
+    const id = 'no-tabs';
+    const { container } = renderCarousel({
+      id,
+      // tabbed: false,
+    });
+
+    const firstSlide = container.querySelector(`${id}-slide-1`);
+    expect(firstSlide).toHaveAttribute('role', 'group');
+    expect(firstSlide).toHaveAttribute('aria-roledescription', 'slide');
+    expect(screen.queryByRole('tab')).not.toBeInTheDocument();
+    expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+    expect(screen.queryByRole('tabpanel')).not.toBeInTheDocument();
+  });
 });

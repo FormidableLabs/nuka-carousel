@@ -95,7 +95,6 @@ const Slide = ({
   carouselRef,
 }: {
   count: number;
-  id: string;
   children: ReactNode | ReactNode[];
   index: number;
   isCurrentSlide: boolean;
@@ -107,6 +106,7 @@ const Slide = ({
   zoomScale: number | undefined;
   slideWidth?: CSSProperties['width'];
   updateIOEntry: (id: string, isFullyVisible: boolean) => void;
+  id: string;
   carouselRef: RefObject<Element>;
   /**
    * Called with `height` when slide becomes visible and `null` when it becomes
@@ -169,6 +169,8 @@ const Slide = ({
         initializedAdaptiveHeight,
         slideWidth
       )}
+      id={`${id}-slide-${index + 1}`}
+      role="tabpanel"
     >
       {children}
     </div>

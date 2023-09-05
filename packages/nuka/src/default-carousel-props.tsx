@@ -1,6 +1,11 @@
 import React from 'react';
 import { InternalCarouselProps, ControlProps, ScrollMode } from './types';
-import { NextButton, PagingDots, PreviousButton } from './default-controls';
+import {
+  NextButton,
+  PagingDots,
+  PreviousButton,
+  PauseButton,
+} from './default-controls';
 import { defaultRenderAnnounceSlideMessage } from './announce-slide';
 
 const easeOut = (t: number) => (t - 1) ** 3 + 1;
@@ -28,6 +33,7 @@ const defaultProps: InternalCarouselProps = {
   edgeEasing: easeOut,
   enableKeyboardControls: false,
   frameAriaLabel: 'carousel-slider',
+  id: 'nuka-carousel',
   keyCodeConfig: {
     nextSlide: [39, 68, 38, 87],
     previousSlide: [37, 65, 40, 83],
@@ -50,7 +56,10 @@ const defaultProps: InternalCarouselProps = {
   pauseOnHover: true,
   renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
   renderBottomCenterControls: (props: ControlProps) => (
-    <PagingDots {...props} />
+    <>
+      <PauseButton {...props} />
+      <PagingDots {...props} />
+    </>
   ),
   renderCenterLeftControls: (props: ControlProps) => (
     <PreviousButton {...props} />

@@ -51,6 +51,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     dragThreshold: propsDragThreshold,
     enableKeyboardControls,
     frameAriaLabel,
+    id,
     innerRef,
     keyCodeConfig,
     onDrag,
@@ -630,7 +631,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       return (
         <Slide
           key={`${typeOfSlide}-${index}`}
-          id={`${typeOfSlide}-${index}`}
+          id={id}
           count={slideCount}
           index={index}
           isCurrentSlide={currentSlide === index}
@@ -663,6 +664,9 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      role="group"
+      aria-roledescription="carousel"
+      data-testid={id}
     >
       <AnnounceSlide
         ariaLive={autoplay && !pause ? 'off' : 'polite'}
@@ -678,7 +682,9 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         currentSlide,
         goToSlide,
         nextSlide,
+        pause,
         prevSlide,
+        setPause,
         slidesToScroll
       )}
 
@@ -710,6 +716,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         onTouchStart={onTouchStart}
         onTouchEnd={handleDragEnd}
         onTouchMove={onTouchMove}
+        id={`${id}-slides`}
       >
         <SliderList
           animationDistance={animationDistance}

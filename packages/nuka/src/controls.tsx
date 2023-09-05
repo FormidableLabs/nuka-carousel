@@ -30,7 +30,9 @@ const renderControls = (
   currentSlide: number,
   goToSlide: (targetSlideIndex: number) => void,
   nextSlide: () => void,
+  pause: boolean,
   prevSlide: () => void,
+  setPause: (pause: boolean) => void,
   slidesToScroll: number
 ): React.ReactElement[] | null => {
   if (props.withoutControls) {
@@ -80,17 +82,21 @@ const renderControls = (
           style={{ pointerEvents: 'auto' }}
         >
           {props[control.funcName]?.({
+            autoplay: props.autoplay,
             cellAlign: props.cellAlign,
             cellSpacing: props.cellSpacing,
             currentSlide,
             defaultControlsConfig: props.defaultControlsConfig || {},
+            id: props.id,
             pagingDotsIndices,
+            pause,
             goToSlide,
             nextDisabled,
             nextSlide,
             onUserNavigation: props.onUserNavigation,
             previousDisabled,
             previousSlide: prevSlide,
+            setPause,
             scrollMode: props.scrollMode,
             slideCount,
             slidesToScroll,

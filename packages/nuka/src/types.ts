@@ -96,9 +96,11 @@ type RenderAnnounceSlideMessage = (props: {
 export interface ControlProps
   extends Pick<
     InternalCarouselProps,
+    | 'autoplay'
     | 'cellAlign'
     | 'cellSpacing'
     | 'defaultControlsConfig'
+    | 'id'
     | 'onUserNavigation'
     | 'scrollMode'
     | 'slidesToScroll'
@@ -133,6 +135,11 @@ export interface ControlProps
   nextSlide: () => void;
 
   /**
+   * Whether the carousel is paused or not
+   */
+  pause: boolean;
+
+  /**
    * Whether the "previous" button should be disabled or not
    */
   previousDisabled: boolean;
@@ -141,6 +148,12 @@ export interface ControlProps
    * Go to the previous slide
    */
   previousSlide: () => void;
+
+  /**
+   * Pause or play autoplay
+   * @param pause
+   */
+  setPause: (pause: boolean) => void;
 
   /**
    * Total number of slides
@@ -291,6 +304,11 @@ export interface InternalCarouselProps {
    * Customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page.
    */
   frameAriaLabel?: string;
+
+  /**
+   * Unique id for the carousel
+   */
+  id: string;
 
   /**
    * Ref to pass to carousel element

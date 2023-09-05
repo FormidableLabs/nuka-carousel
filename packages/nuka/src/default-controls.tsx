@@ -47,6 +47,7 @@ export const PreviousButton = ({
     prevButtonText,
     prevButtonOnClick,
   },
+  id,
   onUserNavigation,
   previousDisabled: disabled,
 }: ControlProps) => {
@@ -69,6 +70,7 @@ export const PreviousButton = ({
       }}
       disabled={disabled}
       onClick={handleClick}
+      aria-controls={`${id}-slides`}
       aria-label="previous"
       type="button"
     >
@@ -113,6 +115,7 @@ export const NextButton = ({
     nextButtonText,
     nextButtonOnClick,
   },
+  id,
   nextDisabled: disabled,
   onUserNavigation,
 }: ControlProps) => {
@@ -136,9 +139,28 @@ export const NextButton = ({
       disabled={disabled}
       onClick={handleClick}
       aria-label="next"
+      aria-controls={`${id}-slides`}
       type="button"
     >
       {nextButtonText || 'Next'}
+    </button>
+  );
+};
+
+export const PauseButton = ({ autoplay, pause, setPause }: ControlProps) => {
+  if (!autoplay) return null;
+
+  return (
+    <button
+      style={{
+        ...defaultButtonStyles(false),
+        marginBottom: '1rem',
+      }}
+      onClick={() => setPause(!pause)}
+      aria-label={pause ? 'play' : 'pause'}
+      type="button"
+    >
+      {pause ? 'Play' : 'Pause'}
     </button>
   );
 };
@@ -242,6 +264,7 @@ export const PagingDots = ({
     pagingDotsStyle = {},
     pagingDotsOnClick,
   },
+  id,
   currentSlide,
   onUserNavigation,
   slideCount,
@@ -269,7 +292,11 @@ export const PagingDots = ({
   const currentSlideBounded = getBoundedIndex(currentSlide, slideCount);
 
   return (
-    <ul className={pagingDotsContainerClassName} style={listStyles}>
+    <ul
+      className={pagingDotsContainerClassName}
+      style={listStyles}
+      role="tablist"
+    >
       {pagingDotsIndices.map((slideIndex, i) => {
         const isActive =
           currentSlideBounded === slideIndex ||
@@ -299,6 +326,8 @@ export const PagingDots = ({
               }}
               aria-label={`slide ${slideIndex + 1} bullet`}
               aria-selected={isActive}
+              aria-controls={`${id}-slide-${slideIndex + 1}`}
+              role="tab"
             >
               <svg
                 className="paging-dot"
