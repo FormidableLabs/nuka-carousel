@@ -68,6 +68,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     speed,
     style,
     swiping: mobileDraggingEnabled,
+    tabbed,
     wrapAround,
     zoomScale,
   } = props;
@@ -647,6 +648,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           adaptiveHeight={adaptiveHeight}
           initializedAdaptiveHeight={initializedAdaptiveHeight}
           carouselRef={carouselRef}
+          tabbed={tabbed}
         >
           {child}
         </Slide>

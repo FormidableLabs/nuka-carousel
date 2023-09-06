@@ -105,6 +105,7 @@ export interface ControlProps
     | 'scrollMode'
     | 'slidesToScroll'
     | 'slidesToShow'
+    | 'tabbed'
     | 'vertical'
     | 'wrapAround'
   > {
@@ -445,6 +446,11 @@ export interface InternalCarouselProps {
    * Enable touch swipe/dragging
    */
   swiping: boolean;
+
+  /**
+   * Whether dot tabbed are displayed or not
+   */
+  tabbed: boolean;
 
   /**
    * Not migrated yet

@@ -93,6 +93,7 @@ const Slide = ({
   updateIOEntry,
   id,
   carouselRef,
+  tabbed,
 }: {
   count: number;
   children: ReactNode | ReactNode[];
@@ -108,6 +109,7 @@ const Slide = ({
   updateIOEntry: (id: string, isFullyVisible: boolean) => void;
   id: string;
   carouselRef: RefObject<Element>;
+  tabbed: boolean;
   /**
    * Called with `height` when slide becomes visible and `null` when it becomes
    * hidden.
@@ -170,7 +172,8 @@ const Slide = ({
         slideWidth
       )}
       id={`${id}-slide-${index + 1}`}
-      role="tabpanel"
+      role={tabbed ? 'tabpanel' : 'group'}
+      aria-roledescription={tabbed ? undefined : 'slide'}
     >
       {children}
     </div>

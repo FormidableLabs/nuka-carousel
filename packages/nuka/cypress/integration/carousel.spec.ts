@@ -14,7 +14,7 @@ context('Carousel', () => {
       cy.get('.slider-frame').should(
         'have.attr',
         'aria-label',
-        'carousel-slider'
+        'Carousel Slider'
       );
 
       cy.get('.slide.slide-visible')
@@ -99,7 +99,7 @@ context('Carousel', () => {
       cy.get('button').contains('Next').should('be.disabled');
     });
 
-    it.skip('should render carousel with 5 slides and 2 visible slides without controls', () => {
+    it('should render carousel with 5 slides and 2 visible slides without controls', () => {
       cy.visitWithCarouselProps({
         ...sharedParams,
         slideCount: 5,
@@ -179,9 +179,9 @@ context('Carousel', () => {
       );
 
       cy.get('[aria-live]').should('have.attr', 'aria-live', 'off');
-      cy.get('[aria-label="pause"]').should('have.text', 'Pause');
-      cy.get('[aria-label="pause"]').click();
-      cy.get('[aria-label="play"]').should('have.text', 'Play');
+      cy.get('[data-testid="pause-button"]').should('have.text', 'Pause');
+      cy.get('[data-testid="pause-button"]').click();
+      cy.get('[data-testid="pause-button"]').should('have.text', 'Play');
     });
 
     it('should render without pause button if autoplay is off', () => {
@@ -196,11 +196,10 @@ context('Carousel', () => {
       );
 
       cy.get('[aria-live]').should('have.attr', 'aria-live', 'polite');
-      cy.get('[aria-label="pause"]').should('not.exist');
-      cy.get('[aria-label="play"]').should('not.exist');
+      cy.get('[data-testid="pause-button"]').should('not.exist');
     });
 
-    it.skip('untabbed should have appropriate roles', () => {
+    it('untabbed should have appropriate roles', () => {
       const params = {
         tabbed: false,
         id: 'untabbed',

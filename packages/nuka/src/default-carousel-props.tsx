@@ -32,7 +32,7 @@ const defaultProps: InternalCarouselProps = {
   easing: easeOut,
   edgeEasing: easeOut,
   enableKeyboardControls: false,
-  frameAriaLabel: 'carousel-slider',
+  frameAriaLabel: 'Carousel Slider',
   id: 'nuka-carousel',
   keyCodeConfig: {
     nextSlide: [39, 68, 38, 87],
@@ -53,7 +53,7 @@ const defaultProps: InternalCarouselProps = {
   onUserNavigation: () => {
     // do nothing
   },
-  pauseOnHover: true,
+  pauseOnHover: false,
   renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
   renderBottomCenterControls: (props: ControlProps) => (
     <>
@@ -71,6 +71,7 @@ const defaultProps: InternalCarouselProps = {
   speed: 500,
   style: {},
   swiping: true,
+  tabbed: true,
   vertical: false,
   withoutControls: false,
   wrapAround: false,

@@ -3,7 +3,13 @@
  */
 
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import Carousel from './carousel';
 import { CarouselProps } from './types';
 
@@ -232,7 +238,7 @@ describe('Carousel', () => {
     fireEvent.click(screen.getByRole('button', { name: /prev/ }));
     expect(onUserNavigation).toHaveBeenCalledTimes(6);
 
-    fireEvent.click(screen.getByRole('button', { name: /slide 2/ }));
+    fireEvent.click(screen.getByRole('tab', { name: /slide 2/ }));
     expect(onUserNavigation).toHaveBeenCalledTimes(7);
 
     // Simulating drag to navigate
@@ -286,7 +292,7 @@ describe('Carousel', () => {
     expect(prevButtonOnClick).toHaveBeenCalledTimes(1);
 
     expect(pagingDotsOnClick).toHaveBeenCalledTimes(0);
-    fireEvent.click(screen.getByRole('button', { name: /slide 2/ }));
+    fireEvent.click(screen.getByRole('tab', { name: /slide 2/ }));
     expect(pagingDotsOnClick).toHaveBeenCalledTimes(1);
 
     // Check that calling preventDefault in the custom callback will stop the
@@ -299,7 +305,7 @@ describe('Carousel', () => {
     expect(beforeSlide).toHaveBeenCalledTimes(3);
     fireEvent.click(screen.getByRole('button', { name: /next/ }));
     fireEvent.click(screen.getByRole('button', { name: /prev/ }));
-    fireEvent.click(screen.getByRole('button', { name: /slide 2/ }));
+    fireEvent.click(screen.getByRole('tab', { name: /slide 2/ }));
     expect(beforeSlide).toHaveBeenCalledTimes(3);
   });
 
@@ -313,22 +319,22 @@ describe('Carousel', () => {
 
     const carouselFrame = screen.getByTestId(id);
     expect(carouselFrame).toHaveAttribute('role', 'group');
-    expect(carouselFrame).toHaveAccessibleDescription('carousel');
+    expect(carouselFrame).toHaveAttribute('aria-roledescription', 'carousel');
 
-    const next = screen.getByRole('button', { name: /Next/ });
+    const next = screen.getByRole('button', { name: 'next' });
     expect(next).toHaveAttribute('aria-controls', `${id}-slides`);
 
-    const prev = screen.getByRole('button', { name: /Prev/ });
+    const prev = screen.getByRole('button', { name: 'previous' });
     expect(prev).toHaveAttribute('aria-controls', `${id}-slides`);
   });
 
-  it('paging dots have appropriate tab roles', () => {
+  it('paging dots have appropriate tab roles', async () => {
     const slideCount = 8;
     const id = 'tabs';
     const { container } = renderCarousel({
       id,
       slideCount,
-      // tabbed: true,
+      tabbed: true,
     });
 
     const dots = screen.getAllByRole('tab');
@@ -342,17 +348,18 @@ describe('Carousel', () => {
 
     expect(screen.getByRole('tablist')).toBeInTheDocument();
 
-    const firstSlide = container.querySelector(`${id}-slide-1`);
-    expect(firstSlide).toHaveRole('tabpanel');
+    const firstSlide = container.querySelector(`#${id}-slide-1`);
+    expect(firstSlide).toHaveAttribute('role', 'tabpanel');
     expect(firstSlide).not.toHaveAttribute('aria-roledescription');
 
-    lastDot.click();
-
-    expect(firstDot).toHaveAttribute('aria-selected', 'false');
-    expect(lastDot).toHaveAttribute('aria-selected', 'true');
+    await waitFor(() => {
+      lastDot.click();
+      expect(firstDot).toHaveAttribute('aria-selected', 'false');
+      expect(lastDot).toHaveAttribute('aria-selected', 'true');
+    });
   });
 
-  it('autoplay should have pause button and aria live off', () => {
+  it('autoplay should have pause button and aria live off', async () => {
     const id = 'autoplay';
     const { container } = renderCarousel({
       id,
@@ -364,11 +371,13 @@ describe('Carousel', () => {
       'off'
     );
 
-    const pauseButton = screen.getByRole('button', { name: /Pause/ });
+    const pauseButton = screen.getByTestId('pause-button');
     expect(pauseButton).toHaveTextContent('Pause');
 
-    pauseButton.click();
-    expect(pauseButton).toHaveTextContent('Play');
+    await waitFor(() => {
+      pauseButton.click();
+      expect(pauseButton).toHaveTextContent('Play');
+    });
   });
 
   it('should render without pause button if autoplay is off', () => {
@@ -383,19 +392,17 @@ describe('Carousel', () => {
       'polite'
     );
 
-    expect(
-      screen.queryByRole('button', { name: /Pause/ })
-    ).not.toBeInTheDocument();
+    expect(screen.queryByTestId('pause-button')).not.toBeInTheDocument();
   });
 
   it('without tabs should have appropriate roles.', () => {
-    const id = 'no-tabs';
+    const id = 'untabbed';
     const { container } = renderCarousel({
       id,
-      // tabbed: false,
+      tabbed: false,
     });
 
-    const firstSlide = container.querySelector(`${id}-slide-1`);
+    const firstSlide = container.querySelector(`#${id}-slide-1`);
     expect(firstSlide).toHaveAttribute('role', 'group');
     expect(firstSlide).toHaveAttribute('aria-roledescription', 'slide');
     expect(screen.queryByRole('tab')).not.toBeInTheDocument();

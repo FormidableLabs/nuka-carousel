@@ -158,6 +158,7 @@ export const PauseButton = ({ autoplay, pause, setPause }: ControlProps) => {
       }}
       onClick={() => setPause(!pause)}
       aria-label={pause ? 'play' : 'pause'}
+      data-testid="pause-button"
       type="button"
     >
       {pause ? 'Play' : 'Pause'}
@@ -268,6 +269,7 @@ export const PagingDots = ({
   currentSlide,
   onUserNavigation,
   slideCount,
+  tabbed,
   goToSlide,
 }: ControlProps) => {
   const listStyles: CSSProperties = {
@@ -290,6 +292,8 @@ export const PagingDots = ({
     []
   );
   const currentSlideBounded = getBoundedIndex(currentSlide, slideCount);
+
+  if (!tabbed) return null;
 
   return (
     <ul
@@ -324,7 +328,7 @@ export const PagingDots = ({
 
                 goToSlide(slideIndex);
               }}
-              aria-label={`slide ${slideIndex + 1} bullet`}
+              aria-label={`slide ${slideIndex + 1}`}
               aria-selected={isActive}
               aria-controls={`${id}-slide-${slideIndex + 1}`}
               role="tab"
