@@ -31,8 +31,6 @@ $RECYCLE.BIN/
 node_modules/
 bower_components/
 .tmp
-es
-lib
 types
 yarn-error.log*
 package-lock.json
