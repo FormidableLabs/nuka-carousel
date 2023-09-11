@@ -171,7 +171,7 @@ const Slide = ({
         initializedAdaptiveHeight,
         slideWidth
       )}
-      id={`${id}-slide-${index + 1}`}
+      id={typeOfSlide ? undefined : `${id}-slide-${index + 1}`}
       role={tabbed ? 'tabpanel' : 'group'}
       aria-roledescription={tabbed ? undefined : 'slide'}
     >
