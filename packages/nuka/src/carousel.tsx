@@ -222,6 +222,8 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       setAnimationDistance(targetOffset - currentOffset);
 
       if (slideChanged) {
+        // Uncache autoplay timer so new slide has full duration.
+        autoplayLastTriggeredRef.current = null;
         setCurrentSlide(targetSlideBounded);
 
         // if animation is disabled decrease the speed to 40
@@ -659,7 +661,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
   };
 
   return (
-    <div
+    <section
       className={'slider-container'}
       style={{
         position: 'relative',
@@ -746,7 +748,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           {wrapAround ? renderSlides('next-cloned') : null}
         </SliderList>
       </div>
-    </div>
+    </section>
   );
 };
 
