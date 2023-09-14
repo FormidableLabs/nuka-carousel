@@ -164,10 +164,18 @@ context('Carousel', () => {
 
       cy.get('button')
         .contains('Prev')
-        .should('have.attr', 'aria-controls', params.carouselId);
+        .should(
+          'have.attr',
+          'aria-controls',
+          `${params.carouselId}-slider-frame`
+        );
       cy.get('button')
         .contains('Next')
-        .should('have.attr', 'aria-controls', params.carouselId);
+        .should(
+          'have.attr',
+          'aria-controls',
+          `${params.carouselId}-slider-frame`
+        );
       cy.get('.paging-item')
         .first()
         .should('have.attr', 'role', 'tab')

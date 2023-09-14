@@ -718,7 +718,8 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         onTouchStart={onTouchStart}
         onTouchEnd={handleDragEnd}
         onTouchMove={onTouchMove}
-        data-testid="slider-frame"
+        id={`${carouselId}-slider-frame`}
+        data-testid={`${carouselId}-slider-frame`}
       >
         <SliderList
           animationDistance={animationDistance}

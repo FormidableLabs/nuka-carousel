@@ -71,7 +71,7 @@ export const PreviousButton = ({
       disabled={disabled}
       onClick={handleClick}
       aria-label="previous"
-      aria-controls={carouselId}
+      aria-controls={`${carouselId}-slider-frame`}
       type="button"
     >
       {prevButtonText || 'Prev'}
@@ -139,7 +139,7 @@ export const NextButton = ({
       disabled={disabled}
       onClick={handleClick}
       aria-label="next"
-      aria-controls={carouselId}
+      aria-controls={`${carouselId}-slider-frame`}
       type="button"
     >
       {nextButtonText || 'Next'}

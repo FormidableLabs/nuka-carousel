@@ -148,6 +148,7 @@ describe('Carousel', () => {
   });
 
   it('can be controlled with the keyboard', async () => {
+    const carouselId = 'keyboard';
     const beforeSlide = jest.fn();
     const keyCodeConfig = {
       nextSlide: [39],
@@ -164,9 +165,10 @@ describe('Carousel', () => {
       beforeSlide,
       frameAriaLabel: 'keyboard',
       landmark: true,
+      carouselId,
     });
 
-    const sliderFrame = screen.getByTestId('slider-frame');
+    const sliderFrame = screen.getByTestId(`${carouselId}-slider-frame`);
 
     fireEvent.keyDown(sliderFrame, { keyCode: keyCodeConfig.nextSlide[0] });
     expect(beforeSlide).toHaveBeenLastCalledWith(0, 1);
@@ -194,6 +196,7 @@ describe('Carousel', () => {
   });
 
   it('detects user-triggered navigation', async () => {
+    const carouselId = 'user-navigation';
     const beforeSlide = jest.fn();
     const onUserNavigation = jest.fn();
     const keyCodeConfig = {
@@ -216,6 +219,7 @@ describe('Carousel', () => {
       onUserNavigation,
       frameAriaLabel: 'user navigation',
       landmark: true,
+      carouselId,
     });
 
     expect(onUserNavigation).toHaveBeenCalledTimes(0);
@@ -230,7 +234,7 @@ describe('Carousel', () => {
     expect(onUserNavigation).toHaveBeenCalledTimes(0);
     expect(beforeSlide).toHaveBeenLastCalledWith(0, 1);
 
-    const sliderFrame = screen.getByTestId('slider-frame');
+    const sliderFrame = screen.getByTestId(`${carouselId}-slider-frame`);
     // Simulating keyboard shortcut use to navigate
     fireEvent.keyDown(sliderFrame, { keyCode: keyCodeConfig.nextSlide[0] });
     expect(beforeSlide).toHaveBeenLastCalledWith(1, 2);
@@ -372,10 +376,10 @@ describe('Carousel', () => {
     expect(carouselFrame).toHaveAttribute('aria-roledescription', 'carousel');
 
     const next = screen.getByRole('button', { name: 'next' });
-    expect(next).toHaveAttribute('aria-controls', carouselId);
+    expect(next).toHaveAttribute('aria-controls', `${carouselId}-slider-frame`);
 
     const prev = screen.getByRole('button', { name: 'previous' });
-    expect(prev).toHaveAttribute('aria-controls', carouselId);
+    expect(prev).toHaveAttribute('aria-controls', `${carouselId}-slider-frame`);
 
     await hasNoViolations(container);
   });
