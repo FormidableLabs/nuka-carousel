@@ -277,6 +277,7 @@ export const PagingDots = ({
     <div
       className={pagingDotsContainerClassName}
       style={listStyles}
+      aria-label="Choose slide to display."
       role="tablist"
     >
       {pagingDotsIndices.map((slideIndex, i) => {
@@ -307,7 +308,7 @@ export const PagingDots = ({
 
               goToSlide(slideIndex);
             }}
-            aria-label={`slide ${slideIndex + 1} bullet`}
+            aria-label={`slide ${slideIndex + 1}`}
             aria-selected={isActive}
             aria-controls={`${carouselId}-slide-${slideIndex + 1}`}
             role="tab"
