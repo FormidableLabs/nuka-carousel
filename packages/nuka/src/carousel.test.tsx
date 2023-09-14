@@ -14,7 +14,7 @@ import { axe } from 'jest-axe';
 import Carousel from './carousel';
 import { CarouselProps } from './types';
 
-async function hasNoViolations(html) {
+async function hasNoViolations(html: Element) {
   await waitFor(async () => {
     expect(await axe(html)).toHaveNoViolations();
   });
