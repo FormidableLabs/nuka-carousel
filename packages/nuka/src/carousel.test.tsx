@@ -151,6 +151,7 @@ describe('Carousel', () => {
       keyCodeConfig,
       slideCount,
       beforeSlide,
+      frameAriaLabel: 'keyboard',
     });
 
     const carouselFrame = screen.getByRole('region');
@@ -199,6 +200,7 @@ describe('Carousel', () => {
       slideCount,
       beforeSlide,
       onUserNavigation,
+      frameAriaLabel: 'user navigation',
     });
 
     expect(onUserNavigation).toHaveBeenCalledTimes(0);
@@ -238,7 +240,7 @@ describe('Carousel', () => {
     fireEvent.click(screen.getByRole('button', { name: /prev/ }));
     expect(onUserNavigation).toHaveBeenCalledTimes(6);
 
-    fireEvent.click(screen.getByRole('button', { name: /slide 2/ }));
+    fireEvent.click(screen.getByRole('tab', { name: /slide 2/ }));
     expect(onUserNavigation).toHaveBeenCalledTimes(7);
 
     // Simulating drag to navigate
@@ -292,7 +294,7 @@ describe('Carousel', () => {
     expect(prevButtonOnClick).toHaveBeenCalledTimes(1);
 
     expect(pagingDotsOnClick).toHaveBeenCalledTimes(0);
-    fireEvent.click(screen.getByRole('button', { name: /slide 2/ }));
+    fireEvent.click(screen.getByRole('tab', { name: /slide 2/ }));
     expect(pagingDotsOnClick).toHaveBeenCalledTimes(1);
 
     // Check that calling preventDefault in the custom callback will stop the
@@ -305,11 +307,11 @@ describe('Carousel', () => {
     expect(beforeSlide).toHaveBeenCalledTimes(3);
     fireEvent.click(screen.getByRole('button', { name: /next/ }));
     fireEvent.click(screen.getByRole('button', { name: /prev/ }));
-    fireEvent.click(screen.getByRole('button', { name: /slide 2/ }));
+    fireEvent.click(screen.getByRole('tab', { name: /slide 2/ }));
     expect(beforeSlide).toHaveBeenCalledTimes(3);
   });
 
-  it.only('has appropriate attributes', () => {
+  it('has appropriate attributes', () => {
     const slideCount = 8;
     const carouselId = 'roles';
     renderCarousel({
@@ -317,7 +319,7 @@ describe('Carousel', () => {
       slideCount,
     });
 
-    const carouselFrame = screen.getByTestId(carouselId);
+    const carouselFrame = screen.getByRole('group');
     expect(carouselFrame).toHaveAttribute('role', 'group');
     expect(carouselFrame).toHaveAttribute('aria-roledescription', 'carousel');
 
@@ -364,6 +366,7 @@ describe('Carousel', () => {
     const { container } = renderCarousel({
       carouselId,
       tabbed: false,
+      renderBottomCenterControls: null,
     });
 
     const firstSlide = container.querySelector(`#${carouselId}-slide-1`);

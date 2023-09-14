@@ -715,7 +715,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         onTouchStart={onTouchStart}
         onTouchEnd={handleDragEnd}
         onTouchMove={onTouchMove}
-        data-testid={carouselId}
         id={carouselId}
       >
         <SliderList
