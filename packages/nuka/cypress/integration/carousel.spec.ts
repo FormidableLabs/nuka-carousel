@@ -1,5 +1,5 @@
 /* eslint-disable cypress/no-unnecessary-waiting */
-const waitThreshold = 100;
+const waitThreshold = 300;
 
 context('Carousel', () => {
   // Speed up transition animation time
@@ -121,10 +121,11 @@ context('Carousel', () => {
       cy.get('.paging-item').should('not.exist');
     });
 
-    it('should have role region if label is supplied', () => {
+    it('should be a landmark region', () => {
       const params = {
         carouselId: 'region-carousel',
         frameAriaLabel: 'Featured',
+        landmark: true,
       };
 
       cy.visit(
@@ -137,7 +138,7 @@ context('Carousel', () => {
         .and('have.attr', 'aria-roledescription', 'carousel');
     });
 
-    it('should have role group if no label supplied', () => {
+    it('should have role group', () => {
       const params = {
         carouselId: 'group-carousel',
       };
