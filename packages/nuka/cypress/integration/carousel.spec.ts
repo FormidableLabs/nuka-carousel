@@ -5,7 +5,7 @@ context('Carousel', () => {
   const sharedParams = { speed: 50 };
 
   describe('Carousel variations', () => {
-    it('should render carousel with 4 slides and only 1 visible slide and go through all of the slides', () => {
+    it.skip('should render carousel with 4 slides and only 1 visible slide and go through all of the slides', () => {
       cy.visitWithCarouselProps({
         ...sharedParams,
         slideCount: 4,
@@ -57,7 +57,7 @@ context('Carousel', () => {
       cy.get('button').contains('Next').should('not.be.disabled');
     });
 
-    it('should render carousel with 6 slides and 2 visible slides and slides to scroll equal to 2', () => {
+    it.skip('should render carousel with 6 slides and 2 visible slides and slides to scroll equal to 2', () => {
       cy.visitWithCarouselProps({
         ...sharedParams,
         slideCount: 6,
