@@ -251,6 +251,7 @@ export const PagingDots = ({
   onUserNavigation,
   slideCount,
   goToSlide,
+  tabbed,
 }: ControlProps) => {
   const listStyles: CSSProperties = {
     position: 'relative',
@@ -272,6 +273,8 @@ export const PagingDots = ({
     []
   );
   const currentSlideBounded = getBoundedIndex(currentSlide, slideCount);
+
+  if (!tabbed) return null;
 
   return (
     <div

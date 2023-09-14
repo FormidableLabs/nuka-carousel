@@ -423,7 +423,6 @@ describe('Carousel', () => {
     const { container } = renderCarousel({
       carouselId,
       tabbed: false,
-      renderBottomCenterControls: null,
     });
 
     const firstSlide = container.querySelector(`#${carouselId}-slide-1`);

@@ -96,6 +96,7 @@ const renderControls = (
             slideCount,
             slidesToScroll,
             slidesToShow: props.slidesToShow || 1,
+            tabbed: props.tabbed,
             vertical: props.vertical,
             wrapAround: props.wrapAround,
           })}

@@ -105,6 +105,7 @@ export interface ControlProps
     | 'scrollMode'
     | 'slidesToScroll'
     | 'slidesToShow'
+    | 'tabbed'
     | 'vertical'
     | 'wrapAround'
   > {
