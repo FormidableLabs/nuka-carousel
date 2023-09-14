@@ -96,9 +96,11 @@ type RenderAnnounceSlideMessage = (props: {
 export interface ControlProps
   extends Pick<
     InternalCarouselProps,
+    | 'carouselId'
     | 'cellAlign'
     | 'cellSpacing'
     | 'defaultControlsConfig'
+    | 'carouselId'
     | 'onUserNavigation'
     | 'scrollMode'
     | 'slidesToScroll'
@@ -221,6 +223,11 @@ export interface InternalCarouselProps {
    * @param endSlide Index of the last slide
    */
   beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void;
+
+  /**
+   * Unique id attribute for the carousel which may be referenced by aria attributes.
+   */
+  carouselId: string;
 
   /**
    * When displaying more than one slide,
@@ -427,6 +434,11 @@ export interface InternalCarouselProps {
    * Enable touch swipe/dragging
    */
   swiping: boolean;
+
+  /**
+   * Whether tab pagination is used to set appropriate roles for slides.
+   */
+  tabbed: boolean;
 
   /**
    * Not migrated yet

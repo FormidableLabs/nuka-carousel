@@ -47,6 +47,7 @@ export const PreviousButton = ({
     prevButtonText,
     prevButtonOnClick,
   },
+  carouselId,
   onUserNavigation,
   previousDisabled: disabled,
 }: ControlProps) => {
@@ -70,6 +71,7 @@ export const PreviousButton = ({
       disabled={disabled}
       onClick={handleClick}
       aria-label="previous"
+      aria-controls={carouselId}
       type="button"
     >
       {prevButtonText || 'Prev'}
@@ -113,6 +115,7 @@ export const NextButton = ({
     nextButtonText,
     nextButtonOnClick,
   },
+  carouselId,
   nextDisabled: disabled,
   onUserNavigation,
 }: ControlProps) => {
@@ -136,6 +139,7 @@ export const NextButton = ({
       disabled={disabled}
       onClick={handleClick}
       aria-label="next"
+      aria-controls={carouselId}
       type="button"
     >
       {nextButtonText || 'Next'}
@@ -242,6 +246,7 @@ export const PagingDots = ({
     pagingDotsStyle = {},
     pagingDotsOnClick,
   },
+  carouselId,
   currentSlide,
   onUserNavigation,
   slideCount,
@@ -269,7 +274,11 @@ export const PagingDots = ({
   const currentSlideBounded = getBoundedIndex(currentSlide, slideCount);
 
   return (
-    <ul className={pagingDotsContainerClassName} style={listStyles}>
+    <div
+      className={pagingDotsContainerClassName}
+      style={listStyles}
+      role="tablist"
+    >
       {pagingDotsIndices.map((slideIndex, i) => {
         const isActive =
           currentSlideBounded === slideIndex ||
@@ -278,42 +287,44 @@ export const PagingDots = ({
             (i === 0 || currentSlideBounded > pagingDotsIndices[i - 1]));
 
         return (
-          <li
+          <button
             key={slideIndex}
-            className={isActive ? 'paging-item active' : 'paging-item'}
+            className={[
+              'paging-item',
+              pagingDotsClassName,
+              isActive ? 'active' : null,
+            ].join(' ')}
+            type="button"
+            style={{
+              ...getButtonStyles(isActive),
+              ...pagingDotsStyle,
+            }}
+            onClick={(event) => {
+              pagingDotsOnClick?.(event);
+              if (event.defaultPrevented) return;
+
+              onUserNavigation(event);
+
+              goToSlide(slideIndex);
+            }}
+            aria-label={`slide ${slideIndex + 1} bullet`}
+            aria-selected={isActive}
+            aria-controls={`${carouselId}-slide-${slideIndex + 1}`}
+            role="tab"
           >
-            <button
-              className={pagingDotsClassName}
-              type="button"
-              style={{
-                ...getButtonStyles(isActive),
-                ...pagingDotsStyle,
-              }}
-              onClick={(event) => {
-                pagingDotsOnClick?.(event);
-                if (event.defaultPrevented) return;
-
-                onUserNavigation(event);
-
-                goToSlide(slideIndex);
-              }}
-              aria-label={`slide ${slideIndex + 1} bullet`}
-              aria-selected={isActive}
+            <svg
+              className="paging-dot"
+              width="6"
+              height="6"
+              aria-hidden="true"
+              focusable="false"
+              viewBox="0 0 6 6"
             >
-              <svg
-                className="paging-dot"
-                width="6"
-                height="6"
-                aria-hidden="true"
-                focusable="false"
-                viewBox="0 0 6 6"
-              >
-                <circle cx="3" cy="3" r="3" />
-              </svg>
-            </button>
-          </li>
+              <circle cx="3" cy="3" r="3" />
+            </svg>
+          </button>
         );
       })}
-    </ul>
+    </div>
   );
 };

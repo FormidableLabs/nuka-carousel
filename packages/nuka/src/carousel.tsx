@@ -42,6 +42,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     autoplayInterval,
     autoplayReverse,
     beforeSlide,
+    carouselId,
     cellAlign: propsCellAlign,
     cellSpacing,
     children,
@@ -67,6 +68,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     speed,
     style,
     swiping: mobileDraggingEnabled,
+    tabbed,
     wrapAround,
     zoomScale,
   } = props;
@@ -631,6 +633,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         <Slide
           key={`${typeOfSlide}-${index}`}
           id={`${typeOfSlide}-${index}`}
+          carouselId={carouselId}
           count={slideCount}
           index={index}
           isCurrentSlide={currentSlide === index}
@@ -646,6 +649,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           adaptiveHeight={adaptiveHeight}
           initializedAdaptiveHeight={initializedAdaptiveHeight}
           carouselRef={carouselRef}
+          tabbed={tabbed}
         >
           {child}
         </Slide>
@@ -699,7 +703,8 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           ...style,
         }}
         aria-label={frameAriaLabel}
-        role="region"
+        role={frameAriaLabel ? 'region' : 'group'}
+        aria-roledescription="carousel"
         tabIndex={enableKeyboardControls ? 0 : -1}
         onKeyDown={enableKeyboardControls ? onKeyDown : undefined}
         ref={carouselRef}
@@ -710,6 +715,8 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         onTouchStart={onTouchStart}
         onTouchEnd={handleDragEnd}
         onTouchMove={onTouchMove}
+        data-testid={carouselId}
+        id={carouselId}
       >
         <SliderList
           animationDistance={animationDistance}

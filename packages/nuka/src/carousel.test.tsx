@@ -3,7 +3,13 @@
  */
 
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import Carousel from './carousel';
 import { CarouselProps } from './types';
 
@@ -301,5 +307,70 @@ describe('Carousel', () => {
     fireEvent.click(screen.getByRole('button', { name: /prev/ }));
     fireEvent.click(screen.getByRole('button', { name: /slide 2/ }));
     expect(beforeSlide).toHaveBeenCalledTimes(3);
+  });
+
+  it.only('has appropriate attributes', () => {
+    const slideCount = 8;
+    const carouselId = 'roles';
+    renderCarousel({
+      carouselId,
+      slideCount,
+    });
+
+    const carouselFrame = screen.getByTestId(carouselId);
+    expect(carouselFrame).toHaveAttribute('role', 'group');
+    expect(carouselFrame).toHaveAttribute('aria-roledescription', 'carousel');
+
+    const next = screen.getByRole('button', { name: 'next' });
+    expect(next).toHaveAttribute('aria-controls', carouselId);
+
+    const prev = screen.getByRole('button', { name: 'previous' });
+    expect(prev).toHaveAttribute('aria-controls', carouselId);
+  });
+
+  it('paging dots have appropriate tab roles', async () => {
+    const slideCount = 8;
+    const carouselId = 'tabs';
+    const { container } = renderCarousel({
+      carouselId,
+      slideCount,
+      tabbed: true,
+    });
+
+    const dots = screen.getAllByRole('tab');
+    const firstDot = dots[0];
+    expect(firstDot).toHaveAttribute('aria-controls', `${carouselId}-slide-1`);
+    expect(firstDot).toHaveAttribute('aria-selected', 'true');
+
+    const lastDot = dots[dots.length - 1];
+    expect(lastDot).toHaveAttribute('aria-controls', `${carouselId}-slide-8`);
+    expect(lastDot).toHaveAttribute('aria-selected', 'false');
+
+    expect(screen.getByRole('tablist')).toBeInTheDocument();
+
+    const firstSlide = container.querySelector(`#${carouselId}-slide-1`);
+    expect(firstSlide).toHaveAttribute('role', 'tabpanel');
+    expect(firstSlide).not.toHaveAttribute('aria-roledescription');
+
+    await waitFor(() => {
+      lastDot.click();
+      expect(firstDot).toHaveAttribute('aria-selected', 'false');
+      expect(lastDot).toHaveAttribute('aria-selected', 'true');
+    });
+  });
+
+  it('without tabs should have appropriate roles.', () => {
+    const carouselId = 'untabbed';
+    const { container } = renderCarousel({
+      carouselId,
+      tabbed: false,
+    });
+
+    const firstSlide = container.querySelector(`#${carouselId}-slide-1`);
+    expect(firstSlide).toHaveAttribute('role', 'group');
+    expect(firstSlide).toHaveAttribute('aria-roledescription', 'slide');
+    expect(screen.queryByRole('tab')).not.toBeInTheDocument();
+    expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+    expect(screen.queryByRole('tabpanel')).not.toBeInTheDocument();
   });
 });

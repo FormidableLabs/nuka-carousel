@@ -84,6 +84,7 @@ const renderControls = (
             cellSpacing: props.cellSpacing,
             currentSlide,
             defaultControlsConfig: props.defaultControlsConfig || {},
+            carouselId: props.carouselId,
             pagingDotsIndices,
             goToSlide,
             nextDisabled,

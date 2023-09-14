@@ -11,12 +11,6 @@ context('Carousel', () => {
         slideCount: 4,
       });
 
-      cy.get('.slider-frame').should(
-        'have.attr',
-        'aria-label',
-        'carousel-slider'
-      );
-
       cy.get('.slide.slide-visible')
         .should('have.length', 1)
         .find('img')
@@ -114,6 +108,108 @@ context('Carousel', () => {
         .should('have.attr', 'data-slide', 'Slide 1');
 
       cy.get('button').should('not.exist');
+      cy.get('.paging-item').should('not.exist');
+    });
+
+    it('should have role region if label is supplied', () => {
+      const params = {
+        carouselId: 'region-carousel',
+        frameAriaLabel: 'Featured',
+      };
+
+      cy.visit(
+        `http://localhost:3000/?slides=5&params=${JSON.stringify(params)}`
+      );
+
+      cy.get(`#${params.carouselId}`)
+        .should('have.attr', 'aria-label', params.frameAriaLabel)
+        .should('have.attr', 'role', 'region')
+        .and('have.attr', 'aria-roledescription', 'carousel');
+    });
+
+    it('should have role group if no label supplied', () => {
+      const params = {
+        carouselId: 'group-carousel',
+      };
+
+      cy.visit(
+        `http://localhost:3000/?slides=5&params=${JSON.stringify(params)}`
+      );
+
+      cy.get(`#${params.carouselId}`)
+        .should('have.attr', 'role', 'group')
+        .and('have.attr', 'aria-roledescription', 'carousel');
+    });
+
+    it('should render controls with appropriate roles and aria attributes.', () => {
+      const params = {
+        carouselId: 'roles-and-controls',
+        tabbed: true,
+      };
+
+      cy.visit(
+        `http://localhost:3000/?slides=5&params=${JSON.stringify(params)}`
+      );
+
+      cy.get('button')
+        .contains('Prev')
+        .should('have.attr', 'aria-controls', params.carouselId);
+      cy.get('button')
+        .contains('Next')
+        .should('have.attr', 'aria-controls', params.carouselId);
+      cy.get('.paging-item')
+        .first()
+        .should('have.attr', 'role', 'tab')
+        .and('have.attr', 'aria-controls', `${params.carouselId}-slide-1`)
+        .and('have.attr', 'aria-selected', 'true');
+      cy.get('.paging-item')
+        .last()
+        .should('have.attr', 'role', 'tab')
+        .and('have.attr', 'aria-controls', `${params.carouselId}-slide-5`)
+        .and('have.attr', 'aria-selected', 'false');
+      cy.get('.paging-item')
+        .first()
+        .parent()
+        .should('have.attr', 'role', 'tablist');
+      cy.get(`#${params.carouselId}-slide-1`).should(
+        'have.attr',
+        'role',
+        'tabpanel'
+      );
+
+      cy.get(`#${params.carouselId}-slide-1`).should(
+        'not.have.attr',
+        'aria-roledescription'
+      );
+
+      cy.get('[aria-label="next"]').click();
+
+      cy.get('.paging-item')
+        .eq(0)
+        .should('have.attr', 'aria-selected', 'false');
+      cy.get('.paging-item').eq(1).should('have.attr', 'aria-selected', 'true');
+      cy.get('.paging-item')
+        .eq(2)
+        .should('have.attr', 'aria-selected', 'false');
+      cy.get('.paging-item')
+        .eq(3)
+        .should('have.attr', 'aria-selected', 'false');
+    });
+
+    it('should render slides with correct description and role when tab pagination is unused.', () => {
+      const params = {
+        tabbed: false,
+        renderBottomCenterControls: null,
+        carouselId: 'untabbed',
+      };
+
+      cy.visit(
+        `http://localhost:3000/?slides=5&params=${JSON.stringify(params)}`
+      );
+
+      cy.get(`#${params.carouselId}-slide-1`)
+        .should('have.attr', 'role', 'group')
+        .and('have.attr', 'aria-roledescription', 'slide');
       cy.get('.paging-item').should('not.exist');
     });
   });
