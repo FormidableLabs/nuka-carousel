@@ -54,6 +54,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     frameAriaLabel,
     innerRef,
     keyCodeConfig,
+    landmark,
     onDrag,
     onDragEnd,
     onDragStart,
@@ -667,6 +668,11 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      aria-label={frameAriaLabel}
+      role={landmark ? 'region' : 'group'}
+      aria-roledescription="carousel"
+      id={carouselId}
+      data-testid={carouselId}
     >
       <AnnounceSlide
         ariaLive={autoplay && !pause ? 'off' : 'polite'}
@@ -702,9 +708,6 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
           userSelect: 'none',
           ...style,
         }}
-        aria-label={frameAriaLabel}
-        role={frameAriaLabel ? 'region' : 'group'}
-        aria-roledescription="carousel"
         tabIndex={enableKeyboardControls ? 0 : -1}
         onKeyDown={enableKeyboardControls ? onKeyDown : undefined}
         ref={carouselRef}
@@ -715,7 +718,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
         onTouchStart={onTouchStart}
         onTouchEnd={handleDragEnd}
         onTouchMove={onTouchMove}
-        id={carouselId}
+        data-testid="slider-frame"
       >
         <SliderList
           animationDistance={animationDistance}

@@ -295,7 +295,7 @@ export interface InternalCarouselProps {
   enableKeyboardControls: boolean;
 
   /**
-   * Customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page.
+   * Customize the aria-label of the frame container of the carousel.
    */
   frameAriaLabel?: string;
 
@@ -308,6 +308,11 @@ export interface InternalCarouselProps {
    * When enableKeyboardControls is enabled, Configure keyCodes for corresponding slide actions as array of keyCodes
    */
   keyCodeConfig: KeyCodeConfig;
+
+  /**
+   * Whether the carousel should be designated as a landmark region.
+   */
+  landmark: boolean;
 
   /**
    * optional callback function
