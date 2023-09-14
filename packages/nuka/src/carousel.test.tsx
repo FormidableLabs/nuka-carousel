@@ -10,8 +10,15 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import Carousel from './carousel';
 import { CarouselProps } from './types';
+
+async function hasNoViolations(html) {
+  await waitFor(async () => {
+    expect(await axe(html)).toHaveNoViolations();
+  });
+}
 
 // Fake timers using Jest
 beforeEach(() => {
@@ -311,10 +318,10 @@ describe('Carousel', () => {
     expect(beforeSlide).toHaveBeenCalledTimes(3);
   });
 
-  it('has appropriate attributes', () => {
+  it('has appropriate attributes', async () => {
     const slideCount = 8;
     const carouselId = 'roles';
-    renderCarousel({
+    const { container } = renderCarousel({
       carouselId,
       slideCount,
     });
@@ -328,6 +335,8 @@ describe('Carousel', () => {
 
     const prev = screen.getByRole('button', { name: 'previous' });
     expect(prev).toHaveAttribute('aria-controls', carouselId);
+
+    await hasNoViolations(container);
   });
 
   it('paging dots have appropriate tab roles', async () => {
@@ -359,9 +368,11 @@ describe('Carousel', () => {
       expect(firstDot).toHaveAttribute('aria-selected', 'false');
       expect(lastDot).toHaveAttribute('aria-selected', 'true');
     });
+
+    await hasNoViolations(container);
   });
 
-  it('without tabs should have appropriate roles.', () => {
+  it('without tabs should have appropriate roles.', async () => {
     const carouselId = 'untabbed';
     const { container } = renderCarousel({
       carouselId,
@@ -375,5 +386,7 @@ describe('Carousel', () => {
     expect(screen.queryByRole('tab')).not.toBeInTheDocument();
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     expect(screen.queryByRole('tabpanel')).not.toBeInTheDocument();
+
+    await hasNoViolations(container);
   });
 });
