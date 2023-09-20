@@ -131,6 +131,161 @@ describe('Carousel', () => {
     await hasNoViolations(container);
   });
 
+  it('slide change resets autoplay duration', async () => {
+    const afterSlide = jest.fn();
+    const speed = 500;
+    const autoplayInterval = 1000;
+    const slideCount = 4;
+    const carouselId = 'reset-autoplay';
+    const keyCodeConfig = {
+      pause: [32],
+    };
+    let slideChangedTimes = 0;
+
+    renderCarousel({
+      slideCount,
+      autoplay: true,
+      autoplayInterval,
+      speed,
+      wrapAround: true,
+      beforeSlide: afterSlide,
+      keyCodeConfig,
+      enableKeyboardControls: true,
+      carouselId,
+      resumeAfterPause: false,
+    });
+
+    act(() => {
+      jest.advanceTimersByTime(speed);
+    });
+
+    const sliderFrame = screen.getByTestId(`${carouselId}-slider-frame`);
+
+    expect(afterSlide).toHaveBeenCalledTimes(slideChangedTimes);
+
+    // autoplay initiated, waiting for first interval
+    act(() => {
+      jest.advanceTimersByTime(autoplayInterval);
+    });
+
+    // Slide changed by autoplay
+    expect(afterSlide).toHaveBeenCalledTimes(++slideChangedTimes);
+
+    // Pause
+    fireEvent.keyDown(sliderFrame, { keyCode: 32 });
+
+    act(() => {
+      jest.advanceTimersByTime(autoplayInterval);
+    });
+
+    // No slide change
+    expect(afterSlide).toHaveBeenCalledTimes(slideChangedTimes);
+
+    // Navigate to next slide while paused.
+    await fireEvent.click(screen.getByRole('button', { name: /next/ }));
+
+    // Slide changed by next button
+    expect(afterSlide).toHaveBeenCalledTimes(++slideChangedTimes);
+
+    // Still paused
+    act(() => {
+      jest.advanceTimersByTime(autoplayInterval);
+    });
+    expect(afterSlide).toHaveBeenCalledTimes(slideChangedTimes);
+
+    // Unpause
+    fireEvent.keyDown(sliderFrame, { keyCode: 32 });
+
+    /** Advance slightly to ensure slide navigated to while paused gets full duration */
+    act(() => {
+      jest.advanceTimersByTime(autoplayInterval - 1);
+    });
+
+    // Autoplay duration has been reset and we are still on the same slide.
+    expect(afterSlide).toHaveBeenCalledTimes(slideChangedTimes);
+
+    // Autoplay advances to the next slide.
+    act(() => {
+      jest.advanceTimersByTime(autoplayInterval - 1);
+    });
+
+    // Finally slide has changed.
+    expect(afterSlide).toHaveBeenCalledTimes(++slideChangedTimes);
+  });
+
+  it('autoplay duration is resumed if slide has not changed', async () => {
+    const afterSlide = jest.fn();
+    const speed = 500;
+    const autoplayInterval = 2000;
+    const slideCount = 4;
+    const carouselId = 'reset-autoplay';
+    const keyCodeConfig = {
+      pause: [32],
+    };
+    let slideChangedTimes = 0;
+
+    renderCarousel({
+      slideCount,
+      autoplay: true,
+      autoplayInterval,
+      speed,
+      wrapAround: true,
+      beforeSlide: afterSlide,
+      keyCodeConfig,
+      enableKeyboardControls: true,
+      carouselId,
+      resumeAfterPause: true,
+    });
+
+    act(() => {
+      jest.advanceTimersByTime(speed);
+    });
+
+    const sliderFrame = screen.getByTestId(`${carouselId}-slider-frame`);
+
+    expect(afterSlide).toHaveBeenCalledTimes(slideChangedTimes);
+
+    // autoplay initiated, waiting for first interval
+    act(() => {
+      jest.advanceTimersByTime(autoplayInterval);
+    });
+
+    // Slide changed by autoplay
+    expect(afterSlide).toHaveBeenCalledTimes(++slideChangedTimes);
+
+    // Advance half the duration. Cache will be half the duration.
+    act(() => {
+      jest.advanceTimersByTime(autoplayInterval / 2);
+    });
+    expect(afterSlide).toHaveBeenCalledTimes(slideChangedTimes);
+
+    // Pause
+    fireEvent.keyDown(sliderFrame, { keyCode: 32 });
+    // fireEvent.mouseOver(sliderFrame);
+
+    act(() => {
+      jest.advanceTimersByTime(autoplayInterval);
+    });
+
+    // No slide change
+    expect(afterSlide).toHaveBeenCalledTimes(slideChangedTimes);
+
+    // Unpause
+    fireEvent.keyDown(sliderFrame, { keyCode: 32 });
+    // fireEvent.mouseOut(sliderFrame);
+
+    // No slide change
+    expect(afterSlide).toHaveBeenCalledTimes(slideChangedTimes);
+
+    /** Advance slightly more than the cached but less than whole duration. */
+    act(() => {
+      jest.advanceTimersByTime(autoplayInterval / 2 + 1);
+    });
+
+    // Autoplay duration has been resumed and slide has changed.
+    expect(afterSlide).toHaveBeenCalledTimes(++slideChangedTimes);
+  });
+
   it('omits slides whose children are falsy', async () => {
     const { container } = render(
       <Carousel>

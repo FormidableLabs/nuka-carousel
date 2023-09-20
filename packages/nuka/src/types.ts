@@ -402,6 +402,11 @@ export interface InternalCarouselProps {
   renderTopRightControls?: RenderControls;
 
   /**
+   * Whether autoplay duration should be cached on pause and resumed on play.
+   */
+  resumeAfterPause: boolean;
+
+  /**
    * Supports 'page' and 'remainder' scroll modes.
    */
   scrollMode: ScrollMode;

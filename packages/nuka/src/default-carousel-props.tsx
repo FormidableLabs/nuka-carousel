@@ -58,6 +58,7 @@ const defaultProps: InternalCarouselProps = {
     <PreviousButton {...props} />
   ),
   renderCenterRightControls: (props: ControlProps) => <NextButton {...props} />,
+  resumeAfterPause: true,
   scrollMode: ScrollMode.page,
   slidesToScroll: 1,
   slidesToShow: 1,

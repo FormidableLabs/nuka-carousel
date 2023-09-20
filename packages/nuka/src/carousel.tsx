@@ -61,6 +61,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
     onUserNavigation,
     pauseOnHover,
     renderAnnounceSlideMessage,
+    resumeAfterPause,
     scrollMode: propsScrollMode,
     slideIndex,
     slidesToScroll: propsSlidesToScroll,
@@ -184,6 +185,12 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       );
 
       const slideChanged = targetSlideUnbounded !== currentSlide;
+      console.log({ slideChanged, targetSlideUnbounded, currentSlide });
+
+      if (!resumeAfterPause) {
+        autoplayLastTriggeredRef.current = null;
+      }
+
       slideChanged && beforeSlide(currentSlide, targetSlideBounded);
 
       // Calculate the distance the slide transition animation needs to cover.
@@ -240,6 +247,7 @@ export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
       cellAlign,
       currentSlide,
       disableAnimation,
+      resumeAfterPause,
       speed,
       slideCount,
       slidesToShow,
