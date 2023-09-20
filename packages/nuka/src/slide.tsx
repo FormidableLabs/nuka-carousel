@@ -93,6 +93,8 @@ const Slide = ({
   updateIOEntry,
   id,
   carouselRef,
+  carouselId,
+  tabbed,
 }: {
   count: number;
   id: string;
@@ -115,6 +117,8 @@ const Slide = ({
   onVisibleSlideHeightChange: (index: number, height: number | null) => unknown;
   adaptiveHeight: boolean;
   initializedAdaptiveHeight: boolean;
+  carouselId: string;
+  tabbed: boolean;
 }): JSX.Element => {
   const customIndex = wrapAround
     ? generateIndex(index, count, typeOfSlide)
@@ -169,6 +173,9 @@ const Slide = ({
         initializedAdaptiveHeight,
         slideWidth
       )}
+      id={typeOfSlide ? undefined : `${carouselId}-slide-${index + 1}`}
+      role={tabbed ? 'tabpanel' : 'group'}
+      aria-roledescription={tabbed ? undefined : 'slide'}
     >
       {children}
     </div>
