@@ -1,19 +1,24 @@
 # Nuka Changelog
 
+## 5.6.0
+
+### Minor Changes
+
+- Adjusts roles and aria attributes. Adds new "carouselId", "tabbed", and "landmark" props. ([#1031](https://github.com/FormidableLabs/nuka-carousel/pull/1031))
+
 ## 5.5.1
 
 ### Patch Changes
 
-* Fix to only include inert property when slide is not in view ([#1000](https://github.com/FormidableLabs/nuka-carousel/pull/1000)] @allypalanzi
-
+- Fix to only include inert property when slide is not in view ([#1000](https://github.com/FormidableLabs/nuka-carousel/pull/1000)] @allypalanzi
 
 ## 5.5.0
 
 ### Minor Changes
 
-* Implement fixed width slides with intersection observer ([#985](https://github.com/FormidableLabs/nuka-carousel/pull/985))
-* Fix cellAlignment issue
-* Enforce `scrollMode` `remainder` if `slidesToScroll` `auto` is used
+- Implement fixed width slides with intersection observer ([#985](https://github.com/FormidableLabs/nuka-carousel/pull/985))
+- Fix cellAlignment issue
+- Enforce `scrollMode` `remainder` if `slidesToScroll` `auto` is used
 
 ## 5.4.1
 
