@@ -3,7 +3,7 @@ name: Nuka Release Workflow
 on:
   push:
     branches:
-      - main
+      - 5
 
 jobs:
   release:
