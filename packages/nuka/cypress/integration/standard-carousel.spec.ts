@@ -1,4 +1,5 @@
 import { assertVisibleSlide, navigateToNextSlide } from '../support/util';
+const waitThreshold = 300;
 
 describe('Standard Carousel', () => {
   const stdDemoSel = '.standard-demo ';
