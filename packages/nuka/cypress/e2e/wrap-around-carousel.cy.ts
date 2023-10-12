@@ -12,10 +12,10 @@ describe('Wrap-Around Carousel', () => {
 
     cy.get('li').contains('Wrap Around').click();
 
-    cy.get(waDemoSel + '.slider-frame').should(
+    cy.get(waDemoSel + '.slider-container').should(
       'have.attr',
       'aria-label',
-      'carousel-slider'
+      'Carousel Demo'
     );
 
     assertVisibleSlide(waDemoSel, 1);

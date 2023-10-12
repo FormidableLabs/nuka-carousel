@@ -1,5 +1,4 @@
 import { assertVisibleSlide, navigateToNextSlide } from '../support/util';
-const waitThreshold = 300;
 
 describe('Standard Carousel', () => {
   const stdDemoSel = '.standard-demo ';
@@ -7,10 +6,10 @@ describe('Standard Carousel', () => {
   it('should render carousel with 5 slides and only 1 visible slide and go through all of the slides', () => {
     cy.visitCarousel();
 
-    cy.get(stdDemoSel + '.slider-frame').should(
+    cy.get(stdDemoSel + '.slider-container').should(
       'have.attr',
       'aria-label',
-      'carousel-slider'
+      'Carousel Demo'
     );
 
     assertVisibleSlide(stdDemoSel, 1);

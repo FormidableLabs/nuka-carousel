@@ -23,6 +23,7 @@ export const BasicDemo = ({
   return (
     <div className={clsx(className, 'w-full md:w-[600px] lg:w-[750px]')}>
       <Carousel
+        frameAriaLabel="Carousel Demo"
         slideIndex={startIndex}
         wrapAround={wrapAround}
         autoplay={autoplay}
