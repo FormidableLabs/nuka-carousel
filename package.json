@@ -8,7 +8,6 @@
     "build:website:vercel": "pnpm run --filter website build:vercel",
     "lint": "pnpm run --parallel lint",
     "lint:fix": "pnpm run --parallel lint --fix",
-    "start:nextjs": "pnpm run --filter nuka-carousel-nextjs-example dev",
     "start:storybook": "pnpm run --filter nuka-carousel storybook",
     "start:website": "pnpm run --filter website start",
     "test": "pnpm run -r test",
