@@ -41,4 +41,24 @@ describe('Standard Carousel', () => {
       'be.disabled'
     );
   });
+
+  it('should be a landmark region', () => {
+    const params = {
+      carouselId: 'region-carousel',
+      landmark: true,
+    };
+
+    const url = `http://localhost:3000/open-source/nuka-carousel?params=${JSON.stringify(
+      params
+    )}`;
+
+    console.log(url);
+
+    cy.visit(url);
+
+    cy.get(stdDemoSel + '.slider-container')
+      .should('have.attr', 'aria-label', 'Carousel Demo')
+      .should('have.attr', 'role', 'region')
+      .and('have.attr', 'aria-roledescription', 'carousel');
+  });
 });
