@@ -331,5 +331,7 @@ describe('Carousel', () => {
     fireEvent.click(screen.getByRole('button', { name: /prev/ }));
     fireEvent.click(screen.getByRole('tab', { name: /slide 2/ }));
     expect(beforeSlide).toHaveBeenCalledTimes(3);
+
+    await hasNoViolations(container);
   });
 });
