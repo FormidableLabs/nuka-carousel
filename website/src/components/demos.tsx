@@ -21,6 +21,7 @@ export const BasicDemo = ({
   className = '',
 }: Props) => {
   const carouselParams = useMemo(() => {
+    if (typeof window === 'undefined') return {};
     const searchParams = new URLSearchParams(window.location.search);
     let paramsString = searchParams.get('params');
     if (paramsString)
