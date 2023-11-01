@@ -28,6 +28,7 @@ export const BasicDemo = ({
     else return {};
     return JSON.parse(paramsString);
   }, []);
+
   return (
     <div className={clsx(className, 'w-full md:w-[600px] lg:w-[750px]')}>
       <Carousel

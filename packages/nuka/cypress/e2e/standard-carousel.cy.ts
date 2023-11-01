@@ -48,11 +48,9 @@ describe('Standard Carousel', () => {
       landmark: true,
     };
 
-    const url = `http://localhost:3000/open-source/nuka-carousel?params=${JSON.stringify(
+    const url = `http://localhost:3000/open-source/nuka-carousel?params='${JSON.stringify(
       params
-    )}`;
-
-    console.log(url);
+    )}'`;
 
     cy.visit(url);
 
