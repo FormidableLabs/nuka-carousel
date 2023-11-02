@@ -44,6 +44,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
       autoplayInterval,
       autoplayReverse,
       beforeSlide,
+      carouselId,
       cellAlign: propsCellAlign,
       cellSpacing,
       children,
@@ -54,6 +55,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
       enableKeyboardControls,
       frameAriaLabel,
       keyCodeConfig,
+      landmark,
       onDrag,
       onDragEnd,
       onDragStart,
@@ -68,6 +70,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
       speed,
       style,
       swiping: mobileDraggingEnabled,
+      tabbed,
       wrapAround,
       zoomScale,
     } = props;
@@ -639,6 +642,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
           <Slide
             key={`${typeOfSlide}-${index}`}
             id={`${typeOfSlide}-${index}`}
+            carouselId={carouselId}
             count={slideCount}
             index={index}
             isCurrentSlide={currentSlide === index}
@@ -654,6 +658,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
             adaptiveHeight={adaptiveHeight}
             initializedAdaptiveHeight={initializedAdaptiveHeight}
             carouselRef={carouselRef}
+            tabbed={tabbed}
           >
             {child}
           </Slide>
@@ -671,6 +676,11 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
         }}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
+        aria-label={frameAriaLabel}
+        role={landmark ? 'region' : 'group'}
+        aria-roledescription="carousel"
+        id={carouselId}
+        data-testid={carouselId}
       >
         <AnnounceSlide
           ariaLive={autoplay && !pause ? 'off' : 'polite'}
@@ -706,8 +716,6 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
             userSelect: 'none',
             ...style,
           }}
-          aria-label={frameAriaLabel}
-          role="region"
           tabIndex={enableKeyboardControls ? 0 : -1}
           onKeyDown={enableKeyboardControls ? onKeyDown : undefined}
           ref={carouselRef}
@@ -718,6 +726,8 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
           onTouchStart={onTouchStart}
           onTouchEnd={handleDragEnd}
           onTouchMove={onTouchMove}
+          id={`${carouselId}-slider-frame`}
+          data-testid={`${carouselId}-slider-frame`}
         >
           <SliderList
             animationDistance={animationDistance}

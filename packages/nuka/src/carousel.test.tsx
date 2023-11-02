@@ -3,9 +3,16 @@
  */
 
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import Carousel from './carousel';
 import { CarouselProps } from './types';
+import { axe } from 'jest-axe';
 
 // Fake timers using Jest
 beforeEach(() => {
@@ -17,6 +24,12 @@ afterEach(() => {
   jest.runOnlyPendingTimers();
   jest.useRealTimers();
 });
+
+async function hasNoViolations(html: Element) {
+  await waitFor(async () => {
+    expect(await axe(html)).toHaveNoViolations();
+  });
+}
 
 /**
  * Mock dimensions for the carousel for calculations where carousel dimensions
@@ -62,14 +75,14 @@ describe('Carousel', () => {
       </Carousel>
     );
 
-  it('autoplays at the right rate', () => {
+  it('autoplays at the right rate', async () => {
     const beforeSlide = jest.fn();
     const afterSlide = jest.fn();
     const speed = 500;
     const autoplayInterval = 1000;
     const slideCount = 2;
 
-    renderCarousel({
+    const { container } = renderCarousel({
       slideCount,
       autoplay: true,
       autoplayInterval,
@@ -117,9 +130,11 @@ describe('Carousel', () => {
     checkTimingCycle(1);
     checkTimingCycle(2);
     checkTimingCycle(3);
+
+    await hasNoViolations(container);
   });
 
-  it('omits slides whose children are falsy', () => {
+  it('omits slides whose children are falsy', async () => {
     const { container } = render(
       <Carousel>
         <img src="#" alt={`slide 1`} />
@@ -131,9 +146,11 @@ describe('Carousel', () => {
     );
 
     expect(container.getElementsByClassName('slide').length).toBe(3);
+    await hasNoViolations(container);
   });
 
-  it('can be controlled with the keyboard', () => {
+  it('can be controlled with the keyboard', async () => {
+    const carouselId = 'keyboard';
     const beforeSlide = jest.fn();
     const keyCodeConfig = {
       nextSlide: [39],
@@ -143,39 +160,45 @@ describe('Carousel', () => {
       pause: [32],
     };
     const slideCount = 8;
-    renderCarousel({
+    const { container } = renderCarousel({
       enableKeyboardControls: true,
       keyCodeConfig,
       slideCount,
       beforeSlide,
+      frameAriaLabel: 'keyboard',
+      landmark: true,
+      carouselId,
     });
 
-    const carouselFrame = screen.getByRole('region');
+    const sliderFrame = screen.getByTestId(`${carouselId}-slider-frame`);
 
-    fireEvent.keyDown(carouselFrame, { keyCode: keyCodeConfig.nextSlide[0] });
+    fireEvent.keyDown(sliderFrame, { keyCode: keyCodeConfig.nextSlide[0] });
     expect(beforeSlide).toHaveBeenLastCalledWith(0, 1);
 
-    fireEvent.keyDown(carouselFrame, { keyCode: keyCodeConfig.nextSlide[0] });
+    fireEvent.keyDown(sliderFrame, { keyCode: keyCodeConfig.nextSlide[0] });
     expect(beforeSlide).toHaveBeenLastCalledWith(1, 2);
 
-    fireEvent.keyDown(carouselFrame, {
+    fireEvent.keyDown(sliderFrame, {
       keyCode: keyCodeConfig.previousSlide[0],
     });
     expect(beforeSlide).toHaveBeenLastCalledWith(2, 1);
 
-    fireEvent.keyDown(carouselFrame, {
+    fireEvent.keyDown(sliderFrame, {
       keyCode: keyCodeConfig.previousSlide[0],
     });
     expect(beforeSlide).toHaveBeenLastCalledWith(1, 0);
 
-    fireEvent.keyDown(carouselFrame, { keyCode: keyCodeConfig.lastSlide[0] });
+    fireEvent.keyDown(sliderFrame, { keyCode: keyCodeConfig.lastSlide[0] });
     expect(beforeSlide).toHaveBeenLastCalledWith(0, slideCount - 1);
 
-    fireEvent.keyDown(carouselFrame, { keyCode: keyCodeConfig.firstSlide[0] });
+    fireEvent.keyDown(sliderFrame, { keyCode: keyCodeConfig.firstSlide[0] });
     expect(beforeSlide).toHaveBeenLastCalledWith(slideCount - 1, 0);
+
+    await hasNoViolations(container);
   });
 
-  it('detects user-triggered navigation', () => {
+  it('detects user-triggered navigation', async () => {
+    const carouselId = 'user-navigation';
     const beforeSlide = jest.fn();
     const onUserNavigation = jest.fn();
     const keyCodeConfig = {
@@ -187,7 +210,7 @@ describe('Carousel', () => {
     };
     const autoplayInterval = 3000;
     const slideCount = 8;
-    renderCarousel({
+    const { container } = renderCarousel({
       enableKeyboardControls: true,
       autoplay: true,
       autoplayInterval,
@@ -196,6 +219,7 @@ describe('Carousel', () => {
       slideCount,
       beforeSlide,
       onUserNavigation,
+      carouselId,
     });
 
     expect(onUserNavigation).toHaveBeenCalledTimes(0);
@@ -210,22 +234,22 @@ describe('Carousel', () => {
     expect(onUserNavigation).toHaveBeenCalledTimes(0);
     expect(beforeSlide).toHaveBeenLastCalledWith(0, 1);
 
-    const carouselFrame = screen.getByRole('region');
+    const sliderFrame = screen.getByTestId(`${carouselId}-slider-frame`);
 
     // Simulating keyboard shortcut use to navigate
-    fireEvent.keyDown(carouselFrame, { keyCode: keyCodeConfig.nextSlide[0] });
+    fireEvent.keyDown(sliderFrame, { keyCode: keyCodeConfig.nextSlide[0] });
     expect(beforeSlide).toHaveBeenLastCalledWith(1, 2);
     expect(onUserNavigation).toHaveBeenCalledTimes(1);
 
-    fireEvent.keyDown(carouselFrame, {
+    fireEvent.keyDown(sliderFrame, {
       keyCode: keyCodeConfig.previousSlide[0],
     });
     expect(onUserNavigation).toHaveBeenCalledTimes(2);
 
-    fireEvent.keyDown(carouselFrame, { keyCode: keyCodeConfig.lastSlide[0] });
+    fireEvent.keyDown(sliderFrame, { keyCode: keyCodeConfig.lastSlide[0] });
     expect(onUserNavigation).toHaveBeenCalledTimes(3);
 
-    fireEvent.keyDown(carouselFrame, { keyCode: keyCodeConfig.firstSlide[0] });
+    fireEvent.keyDown(sliderFrame, { keyCode: keyCodeConfig.firstSlide[0] });
     expect(onUserNavigation).toHaveBeenCalledTimes(4);
 
     // Simulating clicks on default controls to navigate
@@ -235,41 +259,44 @@ describe('Carousel', () => {
     fireEvent.click(screen.getByRole('button', { name: /prev/ }));
     expect(onUserNavigation).toHaveBeenCalledTimes(6);
 
-    fireEvent.click(screen.getByRole('button', { name: /slide 2/ }));
+    fireEvent.click(screen.getByRole('tab', { name: /slide 2/ }));
     expect(onUserNavigation).toHaveBeenCalledTimes(7);
 
     // Simulating drag to navigate
-    fireEvent.mouseDown(carouselFrame, { clientX: 100 });
-    fireEvent.mouseMove(carouselFrame, { clientX: 100 });
+    fireEvent.mouseDown(sliderFrame, { clientX: 100 });
+    fireEvent.mouseMove(sliderFrame, { clientX: 100 });
     jest.advanceTimersByTime(100);
-    fireEvent.mouseMove(carouselFrame, { clientX: 700 });
-    fireEvent.mouseUp(carouselFrame, { clientX: 700 });
+    fireEvent.mouseMove(sliderFrame, { clientX: 700 });
+    fireEvent.mouseUp(sliderFrame, { clientX: 700 });
     expect(onUserNavigation).toHaveBeenCalledTimes(8);
 
     // Simulating swipe to navigate
-    fireEvent.touchStart(carouselFrame, { touches: [{ pageX: 700 }] });
-    fireEvent.touchMove(carouselFrame, { touches: [{ pageX: 700 }] });
+    fireEvent.touchStart(sliderFrame, { touches: [{ pageX: 700 }] });
+    fireEvent.touchMove(sliderFrame, { touches: [{ pageX: 700 }] });
     jest.advanceTimersByTime(100);
-    fireEvent.touchMove(carouselFrame, { touches: [{ pageX: 100 }] });
-    fireEvent.touchEnd(carouselFrame, { touches: [{ pageX: 100 }] });
+    fireEvent.touchMove(sliderFrame, { touches: [{ pageX: 100 }] });
+    fireEvent.touchEnd(sliderFrame, { touches: [{ pageX: 100 }] });
     expect(onUserNavigation).toHaveBeenCalledTimes(9);
 
     // Should not be triggering navigation callback when dragging didn't trigger navigation
-    fireEvent.mouseDown(carouselFrame, { clientX: 100 });
-    fireEvent.mouseMove(carouselFrame, { clientX: 100 });
+    fireEvent.mouseDown(sliderFrame, { clientX: 100 });
+    fireEvent.mouseMove(sliderFrame, { clientX: 100 });
     jest.advanceTimersByTime(10);
-    fireEvent.mouseMove(carouselFrame, { clientX: 105 });
-    fireEvent.mouseUp(carouselFrame, { clientX: 105 });
+    fireEvent.mouseMove(sliderFrame, { clientX: 105 });
+    fireEvent.mouseUp(sliderFrame, { clientX: 105 });
     expect(onUserNavigation).toHaveBeenCalledTimes(9);
+
+    await hasNoViolations(container);
   });
 
-  it('calls default control callbacks when interacted with', () => {
+  it('calls default control callbacks when interacted with', async () => {
     const beforeSlide = jest.fn();
     const nextButtonOnClick = jest.fn();
     const prevButtonOnClick = jest.fn();
     const pagingDotsOnClick = jest.fn();
     const slideCount = 8;
-    renderCarousel({
+
+    const { container } = renderCarousel({
       slideCount,
       beforeSlide,
       defaultControlsConfig: {
@@ -289,7 +316,7 @@ describe('Carousel', () => {
     expect(prevButtonOnClick).toHaveBeenCalledTimes(1);
 
     expect(pagingDotsOnClick).toHaveBeenCalledTimes(0);
-    fireEvent.click(screen.getByRole('button', { name: /slide 2/ }));
+    fireEvent.click(screen.getByRole('tab', { name: /slide 2/ }));
     expect(pagingDotsOnClick).toHaveBeenCalledTimes(1);
 
     // Check that calling preventDefault in the custom callback will stop the
@@ -302,7 +329,9 @@ describe('Carousel', () => {
     expect(beforeSlide).toHaveBeenCalledTimes(3);
     fireEvent.click(screen.getByRole('button', { name: /next/ }));
     fireEvent.click(screen.getByRole('button', { name: /prev/ }));
-    fireEvent.click(screen.getByRole('button', { name: /slide 2/ }));
+    fireEvent.click(screen.getByRole('tab', { name: /slide 2/ }));
     expect(beforeSlide).toHaveBeenCalledTimes(3);
+
+    await hasNoViolations(container);
   });
 });

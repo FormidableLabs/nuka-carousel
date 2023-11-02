@@ -17,6 +17,7 @@ const defaultProps: InternalCarouselProps = {
   beforeSlide: () => {
     // do nothing
   },
+  carouselId: 'nuka-carousel',
   cellAlign: 'left',
   cellSpacing: 0,
   defaultControlsConfig: {},
@@ -27,7 +28,7 @@ const defaultProps: InternalCarouselProps = {
   easing: easeOut,
   edgeEasing: easeOut,
   enableKeyboardControls: false,
-  frameAriaLabel: 'carousel-slider',
+  frameAriaLabel: 'Slider',
   keyCodeConfig: {
     nextSlide: [39, 68, 38, 87],
     previousSlide: [37, 65, 40, 83],
@@ -35,6 +36,7 @@ const defaultProps: InternalCarouselProps = {
     lastSlide: [69],
     pause: [32],
   },
+  landmark: false,
   onDragStart: () => {
     // do nothing
   },
@@ -62,6 +64,7 @@ const defaultProps: InternalCarouselProps = {
   speed: 500,
   style: {},
   swiping: true,
+  tabbed: true,
   vertical: false,
   withoutControls: false,
   wrapAround: false,

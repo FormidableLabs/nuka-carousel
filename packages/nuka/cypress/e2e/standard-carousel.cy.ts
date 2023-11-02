@@ -6,10 +6,10 @@ describe('Standard Carousel', () => {
   it('should render carousel with 5 slides and only 1 visible slide and go through all of the slides', () => {
     cy.visitCarousel();
 
-    cy.get(stdDemoSel + '.slider-frame').should(
+    cy.get(stdDemoSel + '.slider-container').should(
       'have.attr',
       'aria-label',
-      'carousel-slider'
+      'Carousel Demo'
     );
 
     assertVisibleSlide(stdDemoSel, 1);
@@ -40,5 +40,23 @@ describe('Standard Carousel', () => {
     cy.get(stdDemoSel + 'button[aria-label="Go to next slide"]').should(
       'be.disabled'
     );
+  });
+
+  it('should be a landmark region', () => {
+    const params = {
+      carouselId: 'region-carousel',
+      landmark: true,
+    };
+
+    const url = `http://localhost:3000/open-source/nuka-carousel?params='${JSON.stringify(
+      params
+    )}'`;
+
+    cy.visit(url);
+
+    cy.get(stdDemoSel + '.slider-container')
+      .should('have.attr', 'aria-label', 'Carousel Demo')
+      .should('have.attr', 'role', 'region')
+      .and('have.attr', 'aria-roledescription', 'carousel');
   });
 });

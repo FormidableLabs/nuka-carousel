@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Carousel from 'nuka-carousel';
 import {
   renderCenterLeftControls,
@@ -20,15 +20,27 @@ export const BasicDemo = ({
   startIndex = 0,
   className = '',
 }: Props) => {
+  const carouselParams = useMemo(() => {
+    if (typeof window === 'undefined') return {};
+    const searchParams = new URLSearchParams(window.location.search);
+    let paramsString = searchParams.get('params');
+    if (paramsString)
+      paramsString = paramsString.substr(1, paramsString.length - 2);
+    else return {};
+    return JSON.parse(paramsString);
+  }, []);
+
   return (
     <div className={clsx(className, 'w-full md:w-[600px] lg:w-[750px]')}>
       <Carousel
+        frameAriaLabel="Carousel Demo"
         slideIndex={startIndex}
         wrapAround={wrapAround}
         autoplay={autoplay}
         autoplayInterval={2000}
         renderCenterLeftControls={renderCenterLeftControls}
         renderCenterRightControls={renderCenterRightControls}
+        {...carouselParams}
       >
         {Cards}
       </Carousel>

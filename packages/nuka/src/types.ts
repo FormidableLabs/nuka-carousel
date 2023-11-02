@@ -96,13 +96,16 @@ type RenderAnnounceSlideMessage = (props: {
 export interface ControlProps
   extends Pick<
     InternalCarouselProps,
+    | 'carouselId'
     | 'cellAlign'
     | 'cellSpacing'
     | 'defaultControlsConfig'
+    | 'carouselId'
     | 'onUserNavigation'
     | 'scrollMode'
     | 'slidesToScroll'
     | 'slidesToShow'
+    | 'tabbed'
     | 'vertical'
     | 'wrapAround'
   > {
@@ -223,6 +226,11 @@ export interface InternalCarouselProps {
   beforeSlide: (currentSlideIndex: number, endSlideIndex: number) => void;
 
   /**
+   * Unique id attribute for the carousel which may be referenced by aria attributes.
+   */
+  carouselId: string;
+
+  /**
    * When displaying more than one slide,
    * sets which position to anchor the current slide to
    */
@@ -288,7 +296,7 @@ export interface InternalCarouselProps {
   enableKeyboardControls: boolean;
 
   /**
-   * Customize the aria-label of the frame container of the carousel. This is useful when you have more than one carousel on the page.
+   * Customize the aria-label of the frame container of the carousel.
    */
   frameAriaLabel?: string;
 
@@ -296,6 +304,11 @@ export interface InternalCarouselProps {
    * When enableKeyboardControls is enabled, Configure keyCodes for corresponding slide actions as array of keyCodes
    */
   keyCodeConfig: KeyCodeConfig;
+
+  /**
+   * Whether the carousel should be designated as a landmark region.
+   */
+  landmark: boolean;
 
   /**
    * optional callback function
@@ -422,6 +435,11 @@ export interface InternalCarouselProps {
    * Enable touch swipe/dragging
    */
   swiping: boolean;
+
+  /**
+   * Whether tab pagination is used to set appropriate roles for slides.
+   */
+  tabbed: boolean;
 
   /**
    * Not migrated yet
