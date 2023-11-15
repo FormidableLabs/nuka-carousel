@@ -692,7 +692,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
         />
 
         {renderControls(
-          props,
+          { ...props, carouselId },
           slideCount,
           currentSlide,
           goToSlide,
