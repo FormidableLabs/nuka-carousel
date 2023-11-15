@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useId } from 'react';
 import Slide from './slide';
 import AnnounceSlide from './announce-slide';
 import { getPercentOffsetForSlide, SliderList } from './slider-list';
@@ -34,6 +34,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
      * `defaultProps` has type `InternalCarouselProps`.
      */
     const props = rawProps as InternalCarouselProps;
+    const internalCarouselId = useId();
 
     const {
       adaptiveHeight,
@@ -44,7 +45,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
       autoplayInterval,
       autoplayReverse,
       beforeSlide,
-      carouselId,
+      carouselId = internalCarouselId,
       cellAlign: propsCellAlign,
       cellSpacing,
       children,
@@ -691,7 +692,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
         />
 
         {renderControls(
-          props,
+          { ...props, carouselId },
           slideCount,
           currentSlide,
           goToSlide,

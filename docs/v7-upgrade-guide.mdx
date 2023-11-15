@@ -1,0 +1,25 @@
+---
+sidebar_position: 4
+title: 'v7 Upgrade Guide'
+---
+
+Nuka Carousel 7 is a major release that introduces changes to make the carousel better align with the WCAG Aria Authoring Practices Guide. This guide will help you upgrade from v6 to v7.
+
+## New props
+
+- [`tabbed`](api#tabbed) determines whether roles should follow the WCAG tabbed carousel requirements.
+- [`landmark`](api#landmark) prop determines whether role should be a region landmark or have role group.
+- [`carouselId`](api#carouselid) prop gives the carousel frame an id attribute which can be uniquely targeted by controls.
+
+## Changes in functionality
+
+- The `frameAriaLabel` default value has been changed to 'slider'
+- Default pagination dots have been given the role `tab` and aria-controls will target their slide.
+- Pagination dots parent has been given the role `tablist`. As tabs need to be the immediate child of `tablist`, and since `tablist` already has list semantics, `ul` and `li` have been removed.
+- When the `tabbed` prop is `true`, slides will have the role `tabpanel` indicating they are the target of the tab, otherwise they will have the role `group` and a description of slide.
+- When the `tabbed` prop is `false`, default pagination dots will not be rendered.
+- Default next and previous buttons now target the slider frame with aria-controls.
+
+## Changes in dev tooling
+
+- This release adds `jest-axe` and their corresponding as dev dependencies to ensure Nuka’s test suite verifies accessibility.

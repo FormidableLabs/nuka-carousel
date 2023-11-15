@@ -17,7 +17,6 @@ const defaultProps: InternalCarouselProps = {
   beforeSlide: () => {
     // do nothing
   },
-  carouselId: 'nuka-carousel',
   cellAlign: 'left',
   cellSpacing: 0,
   defaultControlsConfig: {},

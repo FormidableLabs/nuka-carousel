@@ -228,7 +228,7 @@ export interface InternalCarouselProps {
   /**
    * Unique id attribute for the carousel which may be referenced by aria attributes.
    */
-  carouselId: string;
+  carouselId?: string;
 
   /**
    * When displaying more than one slide,
