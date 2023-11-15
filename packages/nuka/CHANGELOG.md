@@ -1,5 +1,11 @@
 # Nuka Changelog
 
+## 7.0.0
+
+### Major Changes
+
+- Adjusts roles and aria attributes. Adds new "carouselId", "tabbed", and "landmark" props. ([#1036](https://github.com/FormidableLabs/nuka-carousel/pull/1036))
+
 ## 6.0.3
 
 ### Patch Changes
