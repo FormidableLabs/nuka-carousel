@@ -56,3 +56,41 @@ const App = () => {
   )
 }
 ```
+
+### Customization demo using `defaultControlsConfig`
+
+```jsx
+import Carousel from "nuka-carousel"
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+
+const App = () => {
+
+ const defaultControlsConfig = {
+    // To replace "PREV" & "NEXT" text as icon
+     nextButtonText : React.ReactNode = <NavigateNextIcon />,
+     prevButtonText: React.ReactNode = <ArrowBackIosNewIcon/>,
+     // to give some space around paging dots
+     pagingDotsStyle: {
+            margin: "0 2.5px 0 2.5px",
+     },
+     // with this class name you can position dots container
+     pagingDotsContainerClassName : "paging_dot_container",
+  }
+
+  return (
+    <Carousel 
+      autoplay  // autoplays carousel
+      wrapAround // starts again when carousel reaches end
+      defaultControlsConfig={defaultControlsConfig} 
+    >
+      <img src="/image1.png" />
+      <img src="/image2.png" />
+      <img src="/image3.png" />
+      <img src="/image4.png" />
+      <img src="/image5.png" />
+    </Carousel>
+  )
+}
+```
+[Learn more](https://formidable.com/open-source/nuka-carousel/api/#default-controls-configuration) about `defaultControlsConfig` in docs!
