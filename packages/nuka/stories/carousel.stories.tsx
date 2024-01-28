@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { ComponentMeta, Story } from '@storybook/react';
 import isChromatic from 'chromatic/isChromatic';
 import { renderToString } from 'react-dom/server';
 import { easeLinear, easeElasticOut } from 'd3-ease';
 
-import Carousel, { ControlProps, InternalCarouselProps } from '../src/index';
+import Carousel, {
+  CarouselRef,
+  ControlProps,
+  InternalCarouselProps,
+} from '../src/index';
 
 import { sampleSlideImageSources } from './sample-slide-images';
 
@@ -21,11 +25,13 @@ export default {
 interface StoryProps {
   storySlideCount: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14;
   slideHeights?: number[];
+  carouselRef?: React.Ref<CarouselRef>;
 }
 
 const Template: Story<InternalCarouselProps & StoryProps> = ({
   storySlideCount = 9,
   slideHeights,
+  carouselRef,
   ...args
 }) => {
   const slides = sampleSlideImageSources
@@ -56,7 +62,9 @@ const Template: Story<InternalCarouselProps & StoryProps> = ({
           margin: '0px auto',
         }}
       >
-        <Carousel {...args}>{slides}</Carousel>
+        <Carousel carouselRef={carouselRef} {...args}>
+          {slides}
+        </Carousel>
       </div>
     </div>
   );
@@ -76,6 +84,34 @@ const StaticTemplate: Story<InternalCarouselProps & StoryProps> = (args) => {
 /* Stories - add common combinations of props here! */
 export const Default = Template.bind({});
 Default.args = {};
+
+/** Template that lets us use a ref to change the slides */
+const RefControlsTemplate: Story<
+  Omit<InternalCarouselProps & StoryProps, 'carouselRef'>
+> = (args) => {
+  const carouselRef = useRef<CarouselRef>(null);
+
+  return (
+    <>
+      <div style={{ textAlign: 'center' }}>
+        Controls using ref:{' '}
+        <button onClick={() => carouselRef.current?.nextSlide()}>
+          Next slide
+        </button>
+        <button onClick={() => carouselRef.current?.prevSlide()}>
+          Previous slide
+        </button>
+        <button onClick={() => carouselRef.current?.goToSlide(0)}>
+          Move to first slide
+        </button>
+      </div>
+      <Template {...args} carouselRef={carouselRef} />
+    </>
+  );
+};
+
+export const WithRefControls = RefControlsTemplate.bind({});
+WithRefControls.args = {};
 
 export const Vertical = Template.bind({});
 Vertical.args = {
@@ -249,6 +285,36 @@ AdaptiveHeightThreeSlidesStatic.args = {
   slidesToShow: 3,
   slidesToScroll: 3,
   slideHeights: [210, 220, 230, 240, 250, 260, 270, 280, 290],
+};
+
+/** Template that lets us change the heights of the slides */
+const ChangeHeightsTemplate: Story<
+  Omit<InternalCarouselProps & StoryProps, 'slideHeights'>
+> = (args) => {
+  const [extraHeight, setExtraHeight] = useState(0);
+  const slideHeights = [210, 220, 230, 240, 250, 260, 270, 280, 290].map(
+    (height) => height + extraHeight
+  );
+
+  return (
+    <>
+      <div style={{ textAlign: 'center' }}>
+        Verify that the heights adapt when heights of children change:
+        <button onClick={() => setExtraHeight(extraHeight + 10)}>
+          Expand slides by 10px
+        </button>
+        <button onClick={() => setExtraHeight(extraHeight - 10)}>
+          Shrink slides by 10px
+        </button>
+      </div>
+      <Template {...args} slideHeights={slideHeights} />
+    </>
+  );
+};
+
+export const AdaptiveHeightChangeHeights = ChangeHeightsTemplate.bind({});
+AdaptiveHeightChangeHeights.args = {
+  adaptiveHeight: true,
 };
 
 export const KeyboardControls = Template.bind({});

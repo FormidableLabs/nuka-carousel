@@ -3,6 +3,7 @@ import React, {
   ReactNode,
   useRef,
   useEffect,
+  useCallback,
   RefObject,
 } from 'react';
 import { useSlideIntersectionObserver } from './hooks/use-slide-intersection-observer';
@@ -92,9 +93,10 @@ const Slide = ({
   initializedAdaptiveHeight,
   updateIOEntry,
   id,
-  carouselRef,
+  carouselDivRef,
   carouselId,
   tabbed,
+  slideClassName,
 }: {
   count: number;
   id: string;
@@ -109,7 +111,7 @@ const Slide = ({
   zoomScale: number | undefined;
   slideWidth?: CSSProperties['width'];
   updateIOEntry: (id: string, isFullyVisible: boolean) => void;
-  carouselRef: RefObject<Element>;
+  carouselDivRef: RefObject<Element>;
   /**
    * Called with `height` when slide becomes visible and `null` when it becomes
    * hidden.
@@ -119,6 +121,7 @@ const Slide = ({
   initializedAdaptiveHeight: boolean;
   carouselId: string;
   tabbed: boolean;
+  slideClassName: string | undefined;
 }): JSX.Element => {
   const customIndex = wrapAround
     ? generateIndex(index, count, typeOfSlide)
@@ -126,40 +129,63 @@ const Slide = ({
 
   const slideRef = useRef<HTMLDivElement>(null);
 
-  const entry = useSlideIntersectionObserver(slideRef, carouselRef, (entry) => {
-    updateIOEntry(id, entry?.intersectionRatio >= 0.95);
-  });
+  const entry = useSlideIntersectionObserver(
+    slideRef,
+    carouselDivRef,
+    (entry) => {
+      updateIOEntry(id, entry?.intersectionRatio >= 0.95);
+    }
+  );
 
   const isVisible = !!entry?.isIntersecting;
   const isFullyVisible = (entry?.intersectionRatio ?? 1) >= 0.95;
 
-  const prevIsVisibleRef = useRef(false);
-  useEffect(() => {
+  const prevSlideHeightRef = useRef<number | null>(null);
+
+  const handleHeightOrVisibilityChange = useCallback(() => {
     const node = slideRef.current;
     if (node) {
-      const slideHeight = node.getBoundingClientRect()?.height;
+      const slideHeight = isVisible
+        ? node.getBoundingClientRect().height
+        : null;
 
-      const prevIsVisible = prevIsVisibleRef.current;
-      if (isVisible && !prevIsVisible) {
+      if (slideHeight !== prevSlideHeightRef.current) {
+        prevSlideHeightRef.current = slideHeight;
         onVisibleSlideHeightChange(customIndex, slideHeight);
-      } else if (!isVisible && prevIsVisible) {
-        onVisibleSlideHeightChange(customIndex, null);
       }
-
-      prevIsVisibleRef.current = isVisible;
     }
   }, [customIndex, isVisible, onVisibleSlideHeightChange]);
 
-  const currentSlideClass =
-    isCurrentSlide && isFullyVisible ? ' slide-current' : '';
+  // Make sure `handleHeightOrVisibilityChange` gets called if any of its
+  // dependencies (`isVisible`, `customIndex`) change.
+  useEffect(() => {
+    handleHeightOrVisibilityChange();
+  }, [handleHeightOrVisibilityChange]);
+
+  // Also allow for re-measuring height even if none of the props or state
+  // changes. This is useful if a carousel item is expandable.
+  useEffect(() => {
+    const node = slideRef.current;
+    if (node && typeof ResizeObserver !== 'undefined') {
+      const resizeObserver = new ResizeObserver(handleHeightOrVisibilityChange);
+      resizeObserver.observe(node);
+      return () => resizeObserver.disconnect();
+    }
+  }, [handleHeightOrVisibilityChange]);
 
   return (
     <div
       ref={slideRef}
       {...{ inert: isFullyVisible ? undefined : 'true' }}
-      className={`slide${currentSlideClass}${
-        typeOfSlide ? ` ${typeOfSlide}` : ''
-      }${isFullyVisible ? ' slide-visible' : ''}`}
+      className={[
+        'slide',
+        isCurrentSlide && isVisible && 'slide-current',
+        typeOfSlide,
+        isFullyVisible && 'slide-visible',
+        slideClassName,
+      ]
+        .filter(Boolean)
+        .join(' ')}
       style={getSlideStyles(
         count,
         isCurrentSlide,

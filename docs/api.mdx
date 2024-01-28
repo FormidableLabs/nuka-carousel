@@ -44,6 +44,16 @@ A `string` prop that gives the carousel frame an id attribute which can be uniqu
 
 ---
 
+### `carouselRef`
+A React ref `Ref<CarouselRef>` for carousel element that can be used to change slides from a parent.
+
+- `nextSlide()`: go to the next slide
+- `prevSlide()`: go to the previous slide
+- `goToSlide(targetSlideUnbounded: number)`: can advance to any slide by its index. Negative indexes or indexes greater than the number of slides are allowed. The function will translate the index.
+
+
+---
+
 ### `cellAlign`
 An enum `'left' | 'center' | 'right'` for when displaying more than one slide, sets which position to anchor the current slide. Default value: `'left'`.
 
@@ -55,7 +65,7 @@ A `number` representing pixels for the spacing between slides. Default value: `0
 ---
 
 ### `className`
-A `string` for the CSS selectors to be applied to the slider frame.
+A `string` for the CSS classes to be applied to the slider frame.
 
 ---
 
@@ -111,6 +121,11 @@ A configuration object for the key codes to override the default keyboard keys c
 
 ### `landmark`
 A `boolean` that determines whether role should be a region landmark or have role group. Role and label have been moved from the slider frame to the parent carousel element so controls are contained within the label and role. Landmark regions should be intentional, so the default value is set to `false`.
+
+---
+
+### `listClassName`
+A `string` for the CSS classes to add to the slider list, which is the scrollable container that contains all the items.
 
 ---
 
@@ -196,6 +211,11 @@ A function to render custom controls for the bottom right area of the carousel. 
 
 ### `scrollMode`
 An enum `'page' | 'remainder'` for showing whitespace when you scroll to the end of a carousel with `wrapAround` set to `false`. Setting to `'remainder'` will not show the whitespace. Default value: `'page'`.
+
+---
+
+### `slideClassName`
+A `string` for the CSS classes to add to each slide of the carousel.
 
 ---
 

@@ -44,6 +44,7 @@ interface SliderListProps
     | 'disableEdgeSwiping'
     | 'easing'
     | 'edgeEasing'
+    | 'listClassName'
     | 'scrollMode'
     | 'animation'
     | 'slidesToShow'
@@ -75,6 +76,7 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
       easing,
       edgeEasing,
       isDragging,
+      listClassName,
       scrollMode,
       slideCount,
       slidesToScroll,
@@ -168,7 +170,7 @@ export const SliderList = React.forwardRef<HTMLDivElement, SliderListProps>(
     return (
       <div
         ref={forwardedRef}
-        className="slider-list"
+        className={['slider-list', listClassName].filter(Boolean).join(' ')}
         style={{
           width: listVisibleWidth,
           textAlign: 'left',
