@@ -1,49 +1,79 @@
-import React, { useMemo } from 'react';
-import Carousel from 'nuka-carousel';
-import {
-  renderCenterLeftControls,
-  renderCenterRightControls,
-} from '@site/src/components/controls';
-import { Cards } from '@site/src/components/cards';
-import clsx from 'clsx';
+import React, { useRef } from 'react';
+import { Carousel, SlideHandle } from 'nuka-carousel';
+import { generateCards } from '@site/src/components/cards';
+
+type scrollDistanceType = number | 'slide' | 'screen';
 
 type Props = {
-  wrapAround?: boolean;
-  autoplay?: boolean;
-  startIndex?: number;
   className?: string;
+  scrollDistance?: scrollDistanceType;
+  wrapperClassName?: string;
+  autoplay?: boolean;
+  autoplayInterval?: number;
+  showPageIndicators?: boolean;
+  pageIndicatorProps?: {
+    currentPageIndicatorClassName?: string;
+    pageIndicatorClassName?: string;
+    containerClassName?: string;
+  };
+  showForwardBackButtons?: boolean;
 };
 
 export const BasicDemo = ({
-  wrapAround = false,
-  autoplay = false,
-  startIndex = 0,
+  autoplay,
+  autoplayInterval,
+  scrollDistance,
+  showPageIndicators,
+  pageIndicatorProps,
+  wrapperClassName,
+  showForwardBackButtons,
   className = '',
 }: Props) => {
-  const carouselParams = useMemo(() => {
-    if (typeof window === 'undefined') return {};
-    const searchParams = new URLSearchParams(window.location.search);
-    let paramsString = searchParams.get('params');
-    if (paramsString)
-      paramsString = paramsString.substr(1, paramsString.length - 2);
-    else return {};
-    return JSON.parse(paramsString);
-  }, []);
-
+  const ref = useRef<SlideHandle>(null);
   return (
-    <div className={clsx(className, 'w-full md:w-[600px] lg:w-[750px]')}>
+    <div className={className}>
       <Carousel
-        frameAriaLabel="Carousel Demo"
-        slideIndex={startIndex}
-        wrapAround={wrapAround}
         autoplay={autoplay}
-        autoplayInterval={2000}
-        renderCenterLeftControls={renderCenterLeftControls}
-        renderCenterRightControls={renderCenterRightControls}
-        {...carouselParams}
+        autoplayInterval={autoplayInterval}
+        showPageIndicators={showPageIndicators}
+        pageIndicatorProps={pageIndicatorProps}
+        scrollDistance={scrollDistance}
+        wrapperClassName={wrapperClassName}
+        ref={ref}
       >
-        {Cards}
+        {generateCards()}
       </Carousel>
+
+      {showForwardBackButtons && (
+        <div>
+          <button onClick={() => ref.current && ref.current.goBack()}>
+            &lt;
+          </button>
+          <button onClick={() => ref.current && ref.current.goForward()}>
+            &gt;
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const MethodsDemo = () => {
+  const ref = useRef<SlideHandle>(null);
+  return (
+    <div>
+      <Carousel autoplay={false} scrollDistance={'slide'} ref={ref}>
+        {generateCards()}
+      </Carousel>
+
+      <div>
+        <button onClick={() => ref.current && ref.current.goBack()}>
+          goBack()
+        </button>
+        <button onClick={() => ref.current && ref.current.goForward()}>
+          goForward()
+        </button>
+      </div>
     </div>
   );
 };
