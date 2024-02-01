@@ -7,4 +7,5 @@ export default defineConfig({
   dts: true,
   format: ['cjs', 'esm'],
   target: 'es6',
+  injectStyle: true,
 });

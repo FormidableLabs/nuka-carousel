@@ -1,3 +1,1 @@
-export { Carousel as default } from './carousel';
-export * from './types';
-export { NextButton, PreviousButton, PagingDots } from './default-controls';
+export { Carousel, SlideHandle } from './Carousel/Carousel';
