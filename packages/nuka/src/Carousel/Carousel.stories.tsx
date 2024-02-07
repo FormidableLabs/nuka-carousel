@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Carousel, CarouselProps, SlideHandle } from './Carousel';
 import { useRef } from 'react';
 import { ExampleSlide } from './ExampleSlide';
+import './CarouselStories.css';
 
 const StorybookComponent = (props: CarouselProps) => {
   const ref = useRef<SlideHandle>(null);
@@ -51,9 +52,10 @@ export const Default: Story = {
 export const Slide: Story = {
   args: {
     scrollDistance: 'slide',
+    wrapperClassName: 'slide__with-gap',
     children: (
       <>
-        {[...Array(6)].map((_, index) => (
+        {[...Array(10)].map((_, index) => (
           <ExampleSlide key={index} index={index} />
         ))}
       </>
