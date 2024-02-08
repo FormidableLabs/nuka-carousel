@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Carousel, CarouselProps, SlideHandle } from './Carousel';
 import { useRef } from 'react';
-import { ExampleSlide } from './ExampleSlide';
+import { ExampleSlide, FullWidthSlide } from './ExampleSlide';
 import './CarouselStories.css';
 
 const StorybookComponent = (props: CarouselProps) => {
@@ -37,7 +37,7 @@ export default meta;
 
 type Story = StoryObj<typeof Carousel>;
 
-export const Default: Story = {
+export const FixedWidthScroll: Story = {
   args: {
     children: (
       <>
@@ -57,6 +57,33 @@ export const Slide: Story = {
       <>
         {[...Array(10)].map((_, index) => (
           <ExampleSlide key={index} index={index} />
+        ))}
+      </>
+    ),
+  },
+};
+
+export const FullWidth: Story = {
+  args: {
+    scrollDistance: 'slide',
+    children: (
+      <>
+        {[...Array(10)].map((_, index) => (
+          <FullWidthSlide key={index} index={index} />
+        ))}
+      </>
+    ),
+  },
+};
+
+export const AutoPlay: Story = {
+  args: {
+    scrollDistance: 'slide',
+    autoplay: true,
+    children: (
+      <>
+        {[...Array(10)].map((_, index) => (
+          <FullWidthSlide key={index} index={index} />
         ))}
       </>
     ),

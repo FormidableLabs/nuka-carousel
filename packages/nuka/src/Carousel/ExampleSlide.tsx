@@ -12,3 +12,15 @@ const getExampleSlideStyles = (index: number): CSSProperties => ({
 export const ExampleSlide = ({ index }: { index: number }) => (
   <div style={getExampleSlideStyles(index)}>{index}</div>
 );
+
+export const FullWidthSlide = ({ index }: { index: number }) => (
+  <div
+    style={{
+      ...getExampleSlideStyles(index),
+      padding: '15vw 0',
+      minWidth: '100%',
+    }}
+  >
+    {index}
+  </div>
+);

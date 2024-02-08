@@ -13,6 +13,8 @@ export type CarouselProps = {
   children: ReactNode;
   scrollDistance?: number | 'slide';
   wrapperClassName?: string;
+  autoplay?: boolean;
+  autoplayInterval?: number;
 };
 
 export type SlideHandle = {
@@ -27,7 +29,13 @@ enum SlideDirection {
 
 export const Carousel = forwardRef<SlideHandle, CarouselProps>(
   (
-    { children, scrollDistance = 100, wrapperClassName }: CarouselProps,
+    {
+      children,
+      scrollDistance = 100,
+      wrapperClassName,
+      autoplay = false,
+      autoplayInterval = 3000,
+    }: CarouselProps,
     ref
   ) => {
     const [currentScrollIndex, setCurrentScrollIndex] = useState(0);
@@ -91,17 +99,34 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
             currentSlideIndex + (direction === SlideDirection.Forward ? 1 : -1);
           const proposedSlide =
             wrapperRef.current?.children[proposedSlideIndex];
+          const containerRefOffset = containerRef.current?.offsetLeft;
 
           if (proposedSlide) {
-            const proposedScrollIndex = (proposedSlide as HTMLElement)
-              .offsetLeft;
+            const proposedScrollIndex =
+              (proposedSlide as HTMLElement).offsetLeft -
+              (containerRefOffset || 0);
             setCurrentScrollIndex(proposedScrollIndex);
             setCurrentSlideIndex(proposedSlideIndex);
           }
         }
       },
-      [currentScrollIndex, currentSlideIndex, setCurrentSlideIndex, wrapperRef]
+      [
+        currentScrollIndex,
+        currentSlideIndex,
+        setCurrentSlideIndex,
+        wrapperRef,
+        containerRef,
+      ]
     );
+
+    useEffect(() => {
+      if (autoplay) {
+        setTimeout(() => {
+          handleScrollAction(scrollDistance, SlideDirection.Forward);
+        }, autoplayInterval);
+      }
+      return () => clearTimeout(autoplayInterval);
+    }, [autoplay, autoplayInterval, handleScrollAction, scrollDistance]);
 
     useImperativeHandle(ref, () => ({
       nextSlide() {
