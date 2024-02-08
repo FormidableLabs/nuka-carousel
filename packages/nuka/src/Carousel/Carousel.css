@@ -1,6 +1,12 @@
 .overflow {
   overflow: scroll;
   scroll-behavior: smooth;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.overflow::-webkit-scrollbar {
+  display: none;
 }
 
 .wrapper {

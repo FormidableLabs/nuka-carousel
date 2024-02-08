@@ -9,9 +9,11 @@ import {
 } from 'react';
 import './Carousel.css';
 
+type scrollDistanceType = number | 'slide' | 'screen';
+
 export type CarouselProps = {
   children: ReactNode;
-  scrollDistance?: number | 'slide';
+  scrollDistance?: scrollDistanceType;
   wrapperClassName?: string;
   autoplay?: boolean;
   autoplayInterval?: number;
@@ -88,15 +90,23 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     }, [wrapperRef]);
 
     const handleScrollAction = useCallback(
-      (distance: number | 'slide', direction: SlideDirection) => {
+      (distance: scrollDistanceType, direction: SlideDirection) => {
+        const movementDirectionMultiplier =
+          direction === SlideDirection.Forward ? 1 : -1;
         if (typeof distance === 'number') {
           setCurrentScrollIndex(
-            currentScrollIndex +
-              distance * (direction === SlideDirection.Forward ? 1 : -1)
+            currentScrollIndex + distance * movementDirectionMultiplier
           );
+        } else if (distance === 'screen') {
+          if (wrapperRef.current) {
+            setCurrentScrollIndex(
+              currentScrollIndex +
+                wrapperRef.current.offsetWidth * movementDirectionMultiplier
+            );
+          }
         } else {
           const proposedSlideIndex =
-            currentSlideIndex + (direction === SlideDirection.Forward ? 1 : -1);
+            currentSlideIndex + movementDirectionMultiplier;
           const proposedSlide =
             wrapperRef.current?.children[proposedSlideIndex];
           const containerRefOffset = containerRef.current?.offsetLeft;

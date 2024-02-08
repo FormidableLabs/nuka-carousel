@@ -76,6 +76,20 @@ export const FullWidth: Story = {
   },
 };
 
+export const Screen: Story = {
+  args: {
+    scrollDistance: 'screen',
+    wrapperClassName: 'slide__with-gap',
+    children: (
+      <>
+        {[...Array(10)].map((_, index) => (
+          <ExampleSlide key={index} index={index} />
+        ))}
+      </>
+    ),
+  },
+};
+
 export const AutoPlay: Story = {
   args: {
     scrollDistance: 'slide',
