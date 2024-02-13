@@ -52,7 +52,6 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     const [currentScrollIndex, setCurrentScrollIndex] = useState(0);
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const [currentManualScrollIndex, setCurrentManualScrollIndex] = useState(0);
-    const [slideStartIndices, setSlideStartIndices] = useState<number[]>([]);
     const [pageStartIndices, setPageStartIndices] = useState<number[]>([]);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -68,7 +67,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       const handleDebounce = setTimeout(() => {
         setCurrentScrollIndex(currentManualScrollIndex);
 
-        const closestPassedSlide = slideStartIndices.reduce(
+        const closestPassedSlide = pageStartIndices.reduce(
           (prev, current, index) =>
             current - currentManualScrollIndex < 0 ? index + 1 : prev,
           0
@@ -79,25 +78,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       return () => {
         clearTimeout(handleDebounce);
       };
-    }, [currentManualScrollIndex, slideStartIndices]);
-
-    useEffect(() => {
-      if (wrapperRef.current?.children) {
-        const wrapperChildren = Array.from(
-          wrapperRef.current.children
-        ) as HTMLDivElement[];
-        const startIndices = wrapperChildren.reduce<number[]>(
-          (prev, child, currentIndex) => [
-            ...prev,
-            currentIndex === 0
-              ? child.offsetWidth
-              : prev[currentIndex - 1] + child.offsetWidth,
-          ],
-          []
-        );
-        setSlideStartIndices(startIndices);
-      }
-    }, [wrapperRef]);
+    }, [currentManualScrollIndex, pageStartIndices]);
 
     const handleScrollAction = useCallback(
       (slideDirection: SlideDirection) => {
@@ -159,15 +140,9 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
                 },
                 (_, index) => {
                   if (index === arrayLength - 1) {
-                    return (
-                      carouselTotalWidth -
-                      wrapperCurrent.offsetWidth -
-                      containerRefOffsetLeft
-                    );
+                    return carouselTotalWidth - wrapperCurrent.offsetWidth;
                   }
-                  return (
-                    wrapperCurrent.offsetWidth * index - containerRefOffsetLeft
-                  );
+                  return wrapperCurrent.offsetWidth * index;
                 }
               )
             );
