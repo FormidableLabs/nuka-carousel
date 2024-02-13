@@ -1,5 +1,10 @@
+/**
+ * @jest-environment jsdom
+ */
+
+import { createRef } from 'react';
 import { render } from '@testing-library/react';
-import { Carousel } from './Carousel';
+import { Carousel, SlideHandle } from './Carousel';
 import { ExampleSlide } from './ExampleSlide';
 
 describe('Carousel', () => {
@@ -17,4 +22,17 @@ describe('Carousel', () => {
   it.todo('omits slides whose children are falsy');
 
   it.todo('autoplays at the right rate');
+
+  it('returns the right number of page dots', () => {
+    const ref = createRef<SlideHandle>();
+    render(
+      <Carousel ref={ref} scrollDistance={200}>
+        <div style={{ minWidth: 400 }} />
+        <div style={{ minWidth: 400 }} />
+        <div style={{ minWidth: 400 }} />
+      </Carousel>
+    );
+
+    // expect(ref.current?.getTotalNumberOfPagesFromScrollDistance()).toBe(6);
+  });
 });

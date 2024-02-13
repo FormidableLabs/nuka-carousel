@@ -8,7 +8,6 @@ const StorybookComponent = (props: CarouselProps) => {
   const ref = useRef<SlideHandle>(null);
   return (
     <div>
-      <Carousel ref={ref} {...props} />
       <button
         onClick={() => {
           if (ref.current) ref.current.previousSlide();
@@ -23,6 +22,7 @@ const StorybookComponent = (props: CarouselProps) => {
       >
         next
       </button>
+      <Carousel ref={ref} {...props} />
     </div>
   );
 };
@@ -98,6 +98,25 @@ export const AutoPlay: Story = {
       <>
         {[...Array(10)].map((_, index) => (
           <FullWidthSlide key={index} index={index} />
+        ))}
+      </>
+    ),
+  },
+};
+
+export const PageIndicators: Story = {
+  args: {
+    scrollDistance: 'screen',
+    showPageIndicators: true,
+    pageIndicatorProps: {
+      currentPageIndicatorClassName: 'indicator__current',
+      pageIndicatorClassName: 'indicator',
+      containerClassName: 'indicator-container',
+    },
+    children: (
+      <>
+        {[...Array(10)].map((_, index) => (
+          <ExampleSlide key={index} index={index} />
         ))}
       </>
     ),

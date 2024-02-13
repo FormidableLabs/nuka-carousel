@@ -1,3 +1,23 @@
 .slide__with-gap {
   gap: 8px;
 }
+
+.indicator-container {
+  display: flex;
+  gap: 4px;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 0;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  background-color: lightgray;
+}
+
+.indicator__current {
+  background-color: darkslategray;
+}
