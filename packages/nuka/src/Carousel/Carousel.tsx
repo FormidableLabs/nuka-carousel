@@ -85,7 +85,8 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
         const proposedSlideIndex =
           currentSlideIndex +
           (slideDirection === SlideDirection.Forward ? 1 : -1);
-        const totalSlides = pageStartIndices.length - 1;
+
+        const totalSlides = pageStartIndices.length;
         setCurrentScrollIndex(
           pageStartIndices[
             proposedSlideIndex < 0
@@ -100,11 +101,11 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
 
     useEffect(() => {
       if (autoplay) {
-        setTimeout(() => {
+        const autoplayTimeout = setTimeout(() => {
           handleScrollAction(SlideDirection.Forward);
         }, autoplayInterval);
+        return () => clearTimeout(autoplayTimeout);
       }
-      return () => clearTimeout(autoplayInterval);
     }, [autoplay, autoplayInterval, handleScrollAction, scrollDistance]);
 
     useEffect(() => {
@@ -112,48 +113,51 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
         const wrapperCurrent = wrapperRef.current;
         const containerRefOffsetLeft = containerRef.current.offsetLeft;
 
+        const lastChild = wrapperCurrent.lastChild as HTMLElement;
+        const carouselTotalWidth =
+          lastChild.offsetLeft +
+          lastChild.offsetWidth -
+          wrapperCurrent.offsetLeft;
+
+        let proposedPageStartIndices = [];
+
         if (scrollDistance === 'slide') {
-          setPageStartIndices(
-            Array.from(wrapperCurrent.children).map(
-              (child) =>
-                (child as HTMLElement).offsetLeft - containerRefOffsetLeft
-            )
+          proposedPageStartIndices = Array.from(wrapperCurrent.children).map(
+            (child) =>
+              (child as HTMLElement).offsetLeft - containerRefOffsetLeft
           );
         } else {
-          const lastChild = wrapperCurrent.lastChild as HTMLElement;
-          const carouselTotalWidth =
-            lastChild.offsetLeft +
-            lastChild.offsetWidth -
-            wrapperCurrent.offsetLeft;
-
           if (typeof scrollDistance === 'number') {
-            setPageStartIndices(
-              Array.from(
-                {
-                  length: carouselTotalWidth / scrollDistance,
-                },
-                (_, index) => wrapperCurrent.offsetLeft + index * scrollDistance
-              )
+            proposedPageStartIndices = Array.from(
+              {
+                length: carouselTotalWidth / scrollDistance,
+              },
+              (_, index) => wrapperCurrent.offsetLeft + index * scrollDistance
             );
           } else {
             const arrayLength = Math.ceil(
               carouselTotalWidth / wrapperCurrent.offsetWidth
             );
-            setPageStartIndices(
-              Array.from(
-                {
-                  length: arrayLength,
-                },
-                (_, index) => {
-                  if (index === arrayLength - 1) {
-                    return carouselTotalWidth - wrapperCurrent.offsetWidth;
-                  }
-                  return wrapperCurrent.offsetWidth * index;
+            proposedPageStartIndices = Array.from(
+              {
+                length: arrayLength,
+              },
+              (_, index) => {
+                if (index === arrayLength - 1) {
+                  return carouselTotalWidth - wrapperCurrent.offsetWidth;
                 }
-              )
+                return wrapperCurrent.offsetWidth * index;
+              }
             );
           }
         }
+
+        const lastIndexInView =
+          proposedPageStartIndices.findLastIndex(
+            (index) => index < carouselTotalWidth - wrapperCurrent.offsetWidth
+          ) + 2;
+
+        setPageStartIndices(proposedPageStartIndices.slice(0, lastIndexInView));
       }
     }, [scrollDistance, wrapperRef, containerRef]);
 
