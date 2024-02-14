@@ -82,12 +82,18 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
 
     const handleScrollAction = useCallback(
       (slideDirection: SlideDirection) => {
+        const proposedSlideIndex =
+          currentSlideIndex +
+          (slideDirection === SlideDirection.Forward ? 1 : -1);
+        const totalSlides = pageStartIndices.length - 1;
         setCurrentScrollIndex(
           pageStartIndices[
-            currentSlideIndex +
-              (slideDirection === SlideDirection.Forward ? 1 : -1)
+            proposedSlideIndex < 0
+              ? totalSlides + proposedSlideIndex
+              : proposedSlideIndex % totalSlides
           ]
         );
+        setCurrentSlideIndex(proposedSlideIndex);
       },
       [pageStartIndices, currentSlideIndex]
     );
