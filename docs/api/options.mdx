@@ -1,0 +1,79 @@
+---
+sidebar_position: 1
+---
+
+# Options
+
+## Autoplay
+
+The carousel can advance on its own with a specified interval measured in milliseconds. An `autoplayInterval` without the `autoplay` prop being true will not do anything.
+
+### Details
+
+| Prop Name          | Type    | Default Value |
+| :----------------- | :------ | :------------ |
+| `autoplay`         | boolean | `false`       |
+| `autoplayInterval` | number  | `3000`        |
+
+---
+
+## Scroll
+
+How far the carousel should move when its goForward() and goBack() methods are called.
+
+### Details
+
+| Prop Name        | Type                          | Default Value |
+| :--------------- | :---------------------------- | :------------ |
+| `scrollDistance` | number \| "slide" \| "screen" | `100`         |
+
+Using a number will cause the carousel to scroll that many pixels each time.
+Using "slide" will advance the carousel one slide each time.
+Using "screen" will advance the carousel by the width of the visible carousel.
+
+### Examples
+
+Add examples here
+
+---
+
+## Page Indicators
+
+Indicators that show what page the carousel is on. These pages are calculated from the `scrollDistance` and have to be styled in addition to setting the `showPageIndicators` boolean to true.
+
+### Details
+
+| Prop Name            | Type               | Default Value |
+| :------------------- | :----------------- | :------------ |
+| `showPageIndicators` | boolean            | `false`       |
+| `pageIndicatorProps` | object (see below) | see below     |
+
+#### `pageIndicatorProps` Details
+
+| Prop Name                       | Type   | Default Value |
+| :------------------------------ | :----- | :------------ |
+| `containerClassName`            | string | `undefined`   |
+| `currentPageIndicatorClassName` | string | `undefined`   |
+| `pageIndicatorClassName`        | string | `undefined`   |
+
+### Examples
+
+Add examples here
+
+---
+
+## Wrapper Styling
+
+Apply classNames to the `<div>` that contains the `children`. This is likely how you will determine the spacing between items in the carousel.
+
+By default, this wrapper has `display: flex` applied.
+
+### Details
+
+| Prop Name          | Type   | Default Value |
+| :----------------- | :----- | :------------ |
+| `wrapperClassName` | string | `undefined`   |
+
+### Examples
+
+Add examples here
