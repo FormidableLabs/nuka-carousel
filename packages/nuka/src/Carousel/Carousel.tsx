@@ -27,8 +27,8 @@ export type CarouselProps = {
 };
 
 export type SlideHandle = {
-  nextSlide: () => void;
-  previousSlide: () => void;
+  goForward: () => void;
+  goBack: () => void;
 };
 
 enum SlideDirection {
@@ -37,7 +37,7 @@ enum SlideDirection {
 }
 
 const findLastIndex = (
-  array: any[],
+  array: number[],
   findFunction: (index: number) => boolean
 ) => {
   const arrayCopy = [...array];
@@ -48,7 +48,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
   (
     {
       children,
-      scrollDistance = 100,
+      scrollDistance = 'slide',
       wrapperClassName,
       autoplay = false,
       autoplayInterval = 3000,
@@ -140,7 +140,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
               {
                 length: carouselTotalWidth / scrollDistance,
               },
-              (_, index) => wrapperCurrent.offsetLeft + index * scrollDistance
+              (_, index) => index * scrollDistance
             );
           } else {
             const arrayLength = Math.ceil(
@@ -191,10 +191,10 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     useImperativeHandle(
       ref,
       () => ({
-        nextSlide() {
+        goForward() {
           handleScrollAction(SlideDirection.Forward);
         },
-        previousSlide() {
+        goBack() {
           handleScrollAction(SlideDirection.Back);
         },
       }),
@@ -202,15 +202,19 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     );
 
     return (
-      <div
-        className="overflow"
-        ref={containerRef}
-        onScroll={(event) => {
-          setCurrentManualScrollIndex((event.target as HTMLElement).scrollLeft);
-        }}
-      >
-        <div className={'wrapper ' + wrapperClassName} ref={wrapperRef}>
-          {children}
+      <div>
+        <div
+          className="overflow"
+          ref={containerRef}
+          onScroll={(event) => {
+            setCurrentManualScrollIndex(
+              (event.target as HTMLElement).scrollLeft
+            );
+          }}
+        >
+          <div className={'wrapper ' + wrapperClassName} ref={wrapperRef}>
+            {children}
+          </div>
         </div>
         {showPageIndicators && (
           <PageIndicators

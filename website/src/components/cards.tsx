@@ -12,7 +12,7 @@ const Card = ({ className, slideId }: CardProps) => (
     className={clsx(
       className,
       'flex justify-center w-full flex-row',
-      'py-10 px-5 border-8 border-solid'
+      'py-8 md:py-10 px-8 md:px-16 border-8 border-solid'
     )}
   >
     <FormidableLogo className="h-40 z-10" />

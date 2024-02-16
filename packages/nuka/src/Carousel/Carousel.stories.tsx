@@ -10,14 +10,14 @@ const StorybookComponent = (props: CarouselProps) => {
     <div>
       <button
         onClick={() => {
-          if (ref.current) ref.current.previousSlide();
+          if (ref.current) ref.current.goBack();
         }}
       >
         previous
       </button>
       <button
         onClick={() => {
-          if (ref.current) ref.current.nextSlide();
+          if (ref.current) ref.current.goForward();
         }}
       >
         next
@@ -39,6 +39,7 @@ type Story = StoryObj<typeof Carousel>;
 
 export const FixedWidthScroll: Story = {
   args: {
+    scrollDistance: 200,
     children: (
       <>
         {[...Array(6)].map((_, index) => (

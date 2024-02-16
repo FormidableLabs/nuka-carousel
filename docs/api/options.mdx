@@ -2,6 +2,10 @@
 sidebar_position: 1
 ---
 
+import { BasicDemo } from '../../website/src/components/demos';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Options
 
 ## Autoplay
@@ -15,6 +19,10 @@ The carousel can advance on its own with a specified interval measured in millis
 | `autoplay`         | boolean | `false`       |
 | `autoplayInterval` | number  | `3000`        |
 
+### Example
+
+<BasicDemo className="standard-demo" autoplay={true} />
+
 ---
 
 ## Scroll
@@ -25,7 +33,7 @@ How far the carousel should move when its goForward() and goBack() methods are c
 
 | Prop Name        | Type                          | Default Value |
 | :--------------- | :---------------------------- | :------------ |
-| `scrollDistance` | number \| "slide" \| "screen" | `100`         |
+| `scrollDistance` | "slide" \| number \| "screen" | `slide`       |
 
 Using a number will cause the carousel to scroll that many pixels each time.
 Using "slide" will advance the carousel one slide each time.
@@ -33,7 +41,28 @@ Using "screen" will advance the carousel by the width of the visible carousel.
 
 ### Examples
 
-Add examples here
+<Tabs lazy>
+  <TabItem value="slide" label="Slide" default>
+    <p>
+      Default scroll by slide width. The scroll distance will automatically
+      update on the widths of the slides so you can have multiple widths for
+      each slide.
+    </p>
+    <BasicDemo className="slide-distance-demo" scrollDistance="slide" />
+  </TabItem>
+  <TabItem value="fixed" label="Fixed Distance (number)">
+    <p>
+      Scroll by a fixed distance measured in px. This example scrolls by 100px.
+    </p>
+    <BasicDemo className="fixed-distance-demo" scrollDistance={100} />
+  </TabItem>
+  <TabItem value="screen" label="Screen">
+    <p>
+      Scroll by the width of the "screen" or the container the carousel is in.
+    </p>
+    <BasicDemo className="screen=distance-demo" scrollDistance="screen" />
+  </TabItem>
+</Tabs>
 
 ---
 
@@ -56,9 +85,19 @@ Indicators that show what page the carousel is on. These pages are calculated fr
 | `currentPageIndicatorClassName` | string | `undefined`   |
 | `pageIndicatorClassName`        | string | `undefined`   |
 
-### Examples
+### Example
 
-Add examples here
+<BasicDemo
+  className="standard-demo"
+  showPageIndicators={true}
+  pageIndicatorProps={{
+    containerClassName: 'flex items-center justify-center py-4 gap-2',
+    pageIndicatorClassName:
+      'w-3 h-3 p-0 rounded-full bg-gray-200 border-none cursor-pointer hover:bg-pink-200',
+    currentPageIndicatorClassName: 'bg-pink-500 hover:bg-pink-500',
+  }}
+  scrollDistance="screen"
+/>
 
 ---
 
@@ -74,6 +113,6 @@ By default, this wrapper has `display: flex` applied.
 | :----------------- | :----- | :------------ |
 | `wrapperClassName` | string | `undefined`   |
 
-### Examples
+### Example
 
-Add examples here
+<BasicDemo className="standard-demo" wrapperClassName="gap-4" />
