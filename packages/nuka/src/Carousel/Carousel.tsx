@@ -36,6 +36,14 @@ enum SlideDirection {
   Forward = 'forward',
 }
 
+const findLastIndex = (
+  array: any[],
+  findFunction: (index: number) => boolean
+) => {
+  const arrayCopy = [...array];
+  return array.length - 1 - arrayCopy.reverse().findIndex(findFunction);
+};
+
 export const Carousel = forwardRef<SlideHandle, CarouselProps>(
   (
     {
@@ -153,7 +161,8 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
         }
 
         const lastIndexInView =
-          proposedPageStartIndices.findLastIndex(
+          findLastIndex(
+            proposedPageStartIndices,
             (index) => index < carouselTotalWidth - wrapperCurrent.offsetWidth
           ) + 2;
 
@@ -167,8 +176,9 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
 
         return containerScrollDistance === 0
           ? 0
-          : pageStartIndices.findLastIndex(
-              (pageStartIndex) => containerScrollDistance >= pageStartIndex
+          : findLastIndex(
+              pageStartIndices,
+              (index) => containerScrollDistance >= index
             );
       }
       return 0;
