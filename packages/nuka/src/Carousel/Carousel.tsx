@@ -211,8 +211,13 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
               (event.target as HTMLElement).scrollLeft
             );
           }}
+          data-testId="overflow"
         >
-          <div className={'wrapper ' + wrapperClassName} ref={wrapperRef}>
+          <div
+            className={'wrapper ' + wrapperClassName}
+            ref={wrapperRef}
+            data-testId="wrapper"
+          >
             {children}
           </div>
         </div>

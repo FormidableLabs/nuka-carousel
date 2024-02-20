@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { within, waitFor, userEvent } from '@storybook/testing-library';
+import { expect } from '@storybook/jest';
 import { Carousel, CarouselProps, SlideHandle } from './Carousel';
 import { useRef } from 'react';
 import { ExampleSlide, FullWidthSlide } from './ExampleSlide';
@@ -37,9 +39,11 @@ export default meta;
 
 type Story = StoryObj<typeof Carousel>;
 
+const FIXED_SCROLL_DISTANCE = 200;
+
 export const FixedWidthScroll: Story = {
   args: {
-    scrollDistance: 200,
+    scrollDistance: FIXED_SCROLL_DISTANCE,
     children: (
       <>
         {[...Array(6)].map((_, index) => (
@@ -47,6 +51,27 @@ export const FixedWidthScroll: Story = {
         ))}
       </>
     ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const backButton = canvas.getByText('previous');
+    const forwardButton = canvas.getByText('next');
+
+    await expect(backButton).toBeInTheDocument();
+    await expect(forwardButton).toBeInTheDocument();
+
+    await userEvent.click(forwardButton);
+
+    await waitFor(async () => {
+      expect(canvas.getByTestId('overflow').scrollLeft).toEqual(
+        FIXED_SCROLL_DISTANCE
+      );
+    });
+    await userEvent.click(backButton);
+
+    await waitFor(async () => {
+      expect(canvas.getByTestId('overflow').scrollLeft).toEqual(0);
+    });
   },
 };
 
