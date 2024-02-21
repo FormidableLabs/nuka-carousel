@@ -16,7 +16,7 @@ export const PageIndicators = ({
   scrollToPage,
 }: PageIndicatorsProps) => {
   return (
-    <div className={containerClassName}>
+    <div className={containerClassName} data-testId={'pageIndicatorContainer'}>
       {[...Array(totalIndicators)].map((_, index) => (
         <button
           key={index}
