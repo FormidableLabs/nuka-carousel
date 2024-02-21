@@ -21,3 +21,8 @@
 .indicator__current {
   background-color: darkslategray;
 }
+
+.focusable:focus::after {
+  display: block;
+  content: 'focused';
+}

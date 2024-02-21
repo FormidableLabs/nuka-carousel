@@ -24,3 +24,17 @@ export const FullWidthSlide = ({ index }: { index: number }) => (
     {index}
   </div>
 );
+
+export const FocusableLinkSlide = ({ index }: { index: number }) => (
+  <a
+    href="#"
+    style={{
+      ...getExampleSlideStyles(index),
+      flexDirection: 'column',
+    }}
+    onFocus={(event) => event.target.scrollIntoView()}
+    className="focusable"
+  >
+    Card {index}
+  </a>
+);

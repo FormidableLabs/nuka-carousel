@@ -19,30 +19,21 @@ const Card = ({ className, slideId }: CardProps) => (
   </div>
 );
 
-export const Cards = [
-  <Card
-    slideId="Slide 1"
-    key="amber-card"
-    className="bg-amber-400 text-amber-700"
-  />,
-  <Card
-    slideId="Slide 2"
-    key="indigo-card"
-    className="bg-indigo-400 text-indigo-800"
-  />,
-  <Card
-    slideId="Slide 3"
-    key="green-card"
-    className="bg-green-400 text-green-800"
-  />,
-  <Card
-    slideId="Slide 4"
-    key="rose-card"
-    className="bg-rose-400 text-rose-800"
-  />,
-  <Card
-    slideId="Slide 5"
-    key="stone-card"
-    className="bg-stone-400 text-stone-700"
-  />,
+const colorPairings = [
+  'bg-red-300 text-red-700',
+  'bg-orange-300 text-orange-700',
+  'bg-yellow-300 text-yellow-700',
+  'bg-green-300 text-green-700',
+  'bg-blue-300 text-blue-700',
+  'bg-purple-300 text-purple-700',
+  'bg-violet-300 text-violet-700',
 ];
+
+export const generateCards = (length: number = 7) =>
+  [...Array(length)].map((_, index) => (
+    <Card
+      slideId={`Slide ${index}`}
+      key={index}
+      className={colorPairings[index % 7]}
+    />
+  ));

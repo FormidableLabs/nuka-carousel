@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import Carousel, { SlideHandle } from 'nuka-carousel';
-import { Cards } from '@site/src/components/cards';
+import { generateCards } from '@site/src/components/cards';
 
 type scrollDistanceType = number | 'slide' | 'screen';
 
@@ -29,7 +29,6 @@ export const BasicDemo = ({
   className = '',
 }: Props) => {
   const ref = useRef<SlideHandle>(null);
-  console.log(scrollDistance);
   return (
     <div className={className}>
       <Carousel
@@ -41,7 +40,7 @@ export const BasicDemo = ({
         wrapperClassName={wrapperClassName}
         ref={ref}
       >
-        {Cards}
+        {generateCards()}
       </Carousel>
 
       <div>

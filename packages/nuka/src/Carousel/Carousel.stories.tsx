@@ -3,7 +3,11 @@ import { within, waitFor, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 import { Carousel, CarouselProps, SlideHandle } from './Carousel';
 import { useRef } from 'react';
-import { ExampleSlide, FullWidthSlide } from './ExampleSlide';
+import {
+  ExampleSlide,
+  FocusableLinkSlide,
+  FullWidthSlide,
+} from './ExampleSlide';
 import './CarouselStories.css';
 
 const StorybookComponent = (props: CarouselProps) => {
@@ -120,6 +124,18 @@ export const PageIndicators: Story = {
       <>
         {[...Array(10)].map((_, index) => (
           <ExampleSlide key={index} index={index} />
+        ))}
+      </>
+    ),
+  },
+};
+
+export const FocusableCards: Story = {
+  args: {
+    children: (
+      <>
+        {[...Array(10)].map((_, index) => (
+          <FocusableLinkSlide key={index} index={index} />
         ))}
       </>
     ),
