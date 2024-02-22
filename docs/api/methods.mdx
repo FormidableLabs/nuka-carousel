@@ -2,9 +2,33 @@
 sidebar_position: 2
 ---
 
+import { MethodsDemo } from '../../website/src/components/demos';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Methods
 
-Nuka Carousel has a few exposed methods that allow the user to control certain parts of the carousel manually.
+Nuka Carousel has a few exposed methods that allow the user to control certain parts of the carousel manually. These methods are accessed via a ref attached to the carousel.
+
+```tsx title="MyComponent.tsx"
+import { useRef } from 'react';
+import Carousel, { SlideHandle } from 'nuka-carousel';
+
+const MyComponent = () => {
+  const ref = useRef<SlideHandle>(null);
+
+  return (
+    <div>
+      <Carousel ref={ref}>...</Carousel>
+
+      <button onClick={() => ref.current.goBack()}>Back</button>
+      <button onClick={() => ref.current.goForward()}>Forward</button>
+    </div>
+  );
+};
+```
+
+---
 
 ## Progression
 
@@ -20,4 +44,4 @@ Advances the carousel backward by the given `scrollDistance`.
 
 ### Usage/Examples
 
-Add examples here
+<MethodsDemo />

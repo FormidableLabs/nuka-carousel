@@ -30,7 +30,7 @@ const StorybookComponent = (props: CarouselProps) => {
 };
 
 const meta: Meta<typeof Carousel> = {
-  title: 'components/TestRunners',
+  title: 'TestRunners',
   component: StorybookComponent,
   tags: ['autodocs'],
 };
@@ -103,7 +103,7 @@ export const Slide: Story = {
           canvas.getByTestId('overflow').offsetLeft
       );
     });
-    
+
     await userEvent.click(forwardButton);
 
     await waitFor(async () => {

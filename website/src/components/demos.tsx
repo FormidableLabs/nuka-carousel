@@ -54,3 +54,23 @@ export const BasicDemo = ({
     </div>
   );
 };
+
+export const MethodsDemo = () => {
+  const ref = useRef<SlideHandle>(null);
+  return (
+    <div>
+      <Carousel autoplay={false} scrollDistance={'slide'} ref={ref}>
+        {generateCards()}
+      </Carousel>
+
+      <div>
+        <button onClick={() => ref.current && ref.current.goBack()}>
+          goBack()
+        </button>
+        <button onClick={() => ref.current && ref.current.goForward()}>
+          goForward()
+        </button>
+      </div>
+    </div>
+  );
+};

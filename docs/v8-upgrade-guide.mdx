@@ -1,0 +1,101 @@
+---
+sidebar_position: 6
+---
+
+# v8 Upgrade Guide
+
+Nuka v8 and above are completely rewritten with new props and might not be completely backwards compatable with v7.
+
+---
+
+## New Props
+
+`scrollDistance`
+
+`showPageIndicators`
+
+`pageIndicatorProps`
+
+`wrapperClassName`
+
+Read more about how to use them in the API (v8+) pages.
+
+---
+
+## Removed Props
+
+`adaptiveHeight` - The carousel should adapt automatically to the height of the items in the carousel without the need of this prop.
+
+`adaptiveHeightAnimation` - The carousel should adapt automatically to the height of the items in the carousel without the need of this prop.
+
+`carouselId`
+
+`cellAlign` - this should just be controlled through passed CSS (prop `wrapperClassName`).
+
+`cellSpacing` - this should just be controlled through passed CSS.
+
+`defaultControlsConfig`
+
+`disableAnimation` - should just be controlled through passed CSS.
+
+`dragging` - this is always on, it defaults to the OS/browser settings.
+
+`dragThreshold` - this defaults to the OS/browser settings.
+
+`easing` - should just be controlled through passed CSS.
+
+`edgeEasing` - should just be controlled through passed CSS.
+
+`enableKeyboardControls` - this should be native without interference. If the content is focusable through normal tabbing, it will focus.
+
+`keyCodeConfig` - should be native.
+
+`landmark`
+
+`renderTop{direction}Controls` - build your own next/prev controls with the goBack() and goForward() exposed methods.
+
+`scrollMode` - always on `remainder` for now.
+
+`slideIndex`
+
+`slidesToScroll` - renamed to scrollDistance.
+
+`slidesToShow` - now based on media queries and how large the slides are.
+
+`speed` - should be native.
+
+`style` - pass styles through the wrapperClassName if needed.
+
+`swiping` - default to OS/browser settings.
+
+`tabbed` - should be native.
+
+`withoutControls` - controls are not rendered by default. Use methods to build your own next/prev triggers or style the page controls with `showPageIndicators` and `pageIndicatorProps`.
+
+`zoomScale` - should just be controlled through passed CSS.
+
+---
+
+## Props in consideration
+
+These v7 and below props are being worked on or are considered for v8.
+
+`afterSlide`
+
+`beforeSlide`
+
+`disableEdgeSwiping`
+
+`frameAriaLabel`
+
+`onDragStart`
+
+`onDrag`
+
+`onDragEnd`
+
+`onUserNavigation`
+
+`pauseOnHover`
+
+`wrapAround` - right now, you can wrap the the front but it won't infinitely scroll like in v7.
