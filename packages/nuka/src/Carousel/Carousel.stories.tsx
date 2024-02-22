@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { within, waitFor, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
 import { Carousel, CarouselProps, SlideHandle } from './Carousel';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import {
   ExampleSlide,
   FocusableLinkSlide,
@@ -131,6 +129,39 @@ export const PageIndicators: Story = {
 };
 
 export const FocusableCards: Story = {
+  args: {
+    children: (
+      <>
+        {[...Array(10)].map((_, index) => (
+          <FocusableLinkSlide key={index} index={index} />
+        ))}
+      </>
+    ),
+  },
+};
+
+export const GoToIndex: Story = {
+  render: (props) => {
+    const ref = useRef<SlideHandle>(null);
+    const [randomInRangeIndex, setRandomInRangeIndex] = useState(
+      Math.floor(Math.random() * 7)
+    );
+    return (
+      <div>
+        <button
+          onClick={() => {
+            if (ref.current) {
+              ref.current.goToIndex(randomInRangeIndex);
+              setRandomInRangeIndex(Math.floor(Math.random() * 7));
+            }
+          }}
+        >
+          Go to Random Index {randomInRangeIndex}
+        </button>
+        <Carousel ref={ref} {...props} />
+      </div>
+    );
+  },
   args: {
     children: (
       <>

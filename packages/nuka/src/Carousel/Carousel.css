@@ -12,3 +12,7 @@
 .wrapper {
   display: flex;
 }
+
+.wrapper--scroll-snapping {
+  scroll-snap-type: x mandatory;
+}

@@ -29,6 +29,7 @@ export type CarouselProps = {
 export type SlideHandle = {
   goForward: () => void;
   goBack: () => void;
+  goToIndex: (proposedIndex: number) => void;
 };
 
 enum SlideDirection {
@@ -89,12 +90,24 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     }, [currentManualScrollIndex, pageStartIndices]);
 
     const handleScrollAction = useCallback(
-      (slideDirection: SlideDirection) => {
-        const proposedSlideIndex =
-          currentSlideIndex +
-          (slideDirection === SlideDirection.Forward ? 1 : -1);
-
+      ({
+        slideDirection,
+        proposedIndex,
+      }: {
+        slideDirection?: SlideDirection;
+        proposedIndex?: number;
+      }) => {
         const totalSlides = pageStartIndices.length;
+
+        const passedProposedIndex =
+          proposedIndex && Math.min(Math.max(0, proposedIndex), totalSlides);
+
+        const proposedSlideIndex =
+          typeof passedProposedIndex === 'number'
+            ? passedProposedIndex
+            : currentSlideIndex +
+              (slideDirection === SlideDirection.Forward ? 1 : -1);
+
         setCurrentScrollIndex(
           pageStartIndices[
             proposedSlideIndex < 0
@@ -110,7 +123,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     useEffect(() => {
       if (autoplay) {
         const autoplayTimeout = setTimeout(() => {
-          handleScrollAction(SlideDirection.Forward);
+          handleScrollAction({ slideDirection: SlideDirection.Forward });
         }, autoplayInterval);
         return () => clearTimeout(autoplayTimeout);
       }
@@ -192,10 +205,13 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       ref,
       () => ({
         goForward() {
-          handleScrollAction(SlideDirection.Forward);
+          handleScrollAction({ slideDirection: SlideDirection.Forward });
         },
         goBack() {
-          handleScrollAction(SlideDirection.Back);
+          handleScrollAction({ slideDirection: SlideDirection.Back });
+        },
+        goToIndex(proposedIndex: number) {
+          handleScrollAction({ proposedIndex });
         },
       }),
       [handleScrollAction]
