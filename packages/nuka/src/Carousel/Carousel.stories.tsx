@@ -140,33 +140,35 @@ export const FocusableCards: Story = {
   },
 };
 
+const CustomGoToIndexRenderComponent = (props: CarouselProps) => {
+  const ref = useRef<SlideHandle>(null);
+  const [randomInRangeIndex, setRandomInRangeIndex] = useState(
+    Math.floor(Math.random() * 7)
+  );
+  return (
+    <div>
+      <button
+        onClick={() => {
+          if (ref.current) {
+            ref.current.goToIndex(randomInRangeIndex);
+            setRandomInRangeIndex(Math.floor(Math.random() * 7));
+          }
+        }}
+      >
+        Go to Random Index {randomInRangeIndex}
+      </button>
+      <Carousel ref={ref} {...props} />
+    </div>
+  );
+};
+
 export const GoToIndex: Story = {
-  render: (props) => {
-    const ref = useRef<SlideHandle>(null);
-    const [randomInRangeIndex, setRandomInRangeIndex] = useState(
-      Math.floor(Math.random() * 7)
-    );
-    return (
-      <div>
-        <button
-          onClick={() => {
-            if (ref.current) {
-              ref.current.goToIndex(randomInRangeIndex);
-              setRandomInRangeIndex(Math.floor(Math.random() * 7));
-            }
-          }}
-        >
-          Go to Random Index {randomInRangeIndex}
-        </button>
-        <Carousel ref={ref} {...props} />
-      </div>
-    );
-  },
+  render: CustomGoToIndexRenderComponent,
   args: {
     children: (
       <>
         {[...Array(10)].map((_, index) => (
-          <FocusableLinkSlide key={index} index={index} />
+          <ExampleSlide key={index} index={index} />
         ))}
       </>
     ),
