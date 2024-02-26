@@ -37,8 +37,8 @@ jobs:
       - name: Install the Cypress binary
         run: npx cypress install
 
-      - name: Cypress run
-        run: pnpm run test:ci-with-server
+      # - name: Cypress run
+      #   run: pnpm run test:ci-with-server
 
       - uses: actions/upload-artifact@v3
         if: failure()

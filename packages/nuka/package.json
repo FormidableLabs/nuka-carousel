@@ -25,7 +25,7 @@
     "test:unit:watch": "pnpm run test:unit --watchAll",
     "test:e2e": "cypress open",
     "test:e2e:ci": "cypress run",
-    "test:storybook": "test-storybook --watch",
+    "test:storybook": "test-storybook",
     "package": "pnpm pack",
     "prepublishOnly": "shx cp ../../README.md ./README.md && shx cp ../../LICENSE ./LICENSE && pnpm run build",
     "postpack": "shx rm ./README.md && shx rm ./LICENSE",

@@ -13,6 +13,7 @@
     "test": "pnpm run -r test",
     "test:ci": "pnpm run -r test:ci",
     "test:ci-with-server": "start-server-and-test start:website http://localhost:3000 test:ci",
+    "test:storybook-with-server": "start-server-and-test start:storybook http://localhost:3000 test:storybook",
     "test:storybook": "pnpm run --filter nuka-carousel test:storybook",
     "check": "pnpm run lint",
     "check:ci": "pnpm run check",
