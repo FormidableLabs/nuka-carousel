@@ -90,6 +90,8 @@ export const Slide: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
+    const overflow = canvas.getByTestId('overflow');
+
     await expect(canvas.getByTestId('wrapper').classList).toContain(
       'slide__with-gap'
     );
@@ -98,9 +100,9 @@ export const Slide: Story = {
     await userEvent.click(forwardButton);
 
     await waitFor(async () => {
-      expect(canvas.getByTestId('overflow').scrollLeft).toEqual(
+      expect(overflow.scrollLeft).toEqual(
         (canvas.getByTestId('wrapper').children[1] as HTMLElement).offsetLeft -
-          canvas.getByTestId('overflow').offsetLeft
+          overflow.offsetLeft
       );
     });
 
@@ -112,6 +114,15 @@ export const Slide: Story = {
           canvas.getByTestId('overflow').offsetLeft
       );
     });
+
+    overflow.scrollBy({ left: 1000000, behavior: 'instant' });
+
+    setTimeout(async () => {
+      await userEvent.click(forwardButton);
+      await waitFor(async () => {
+        expect(canvas.getByTestId('overflow').scrollLeft).toEqual(0);
+      });
+    }, 300);
   },
 };
 
