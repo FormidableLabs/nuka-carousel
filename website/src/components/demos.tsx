@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import Carousel, { SlideHandle } from 'nuka-carousel';
+import { Carousel, SlideHandle } from 'nuka-carousel';
 import { generateCards } from '@site/src/components/cards';
 
 type scrollDistanceType = number | 'slide' | 'screen';

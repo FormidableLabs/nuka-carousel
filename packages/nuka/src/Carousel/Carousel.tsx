@@ -130,57 +130,66 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     }, [autoplay, autoplayInterval, handleScrollAction, scrollDistance]);
 
     useEffect(() => {
-      if (wrapperRef.current && containerRef.current) {
-        const wrapperCurrent = wrapperRef.current;
-        const containerRefOffsetLeft = containerRef.current.offsetLeft;
+      const updateIndices = () => {
+        if (wrapperRef.current && containerRef.current) {
+          const wrapperCurrent = wrapperRef.current;
+          const containerRefOffsetLeft = containerRef.current.offsetLeft;
 
-        const lastChild = wrapperCurrent.lastChild as HTMLElement;
-        const carouselTotalWidth =
-          lastChild.offsetLeft +
-          lastChild.offsetWidth -
-          wrapperCurrent.offsetLeft;
+          const lastChild = wrapperCurrent.lastChild as HTMLElement;
+          const carouselTotalWidth =
+            lastChild.offsetLeft +
+            lastChild.offsetWidth -
+            wrapperCurrent.offsetLeft;
 
-        let proposedPageStartIndices = [];
+          let proposedPageStartIndices = [];
 
-        if (scrollDistance === 'slide') {
-          proposedPageStartIndices = Array.from(wrapperCurrent.children).map(
-            (child) =>
-              (child as HTMLElement).offsetLeft - containerRefOffsetLeft
-          );
-        } else {
-          if (typeof scrollDistance === 'number') {
-            proposedPageStartIndices = Array.from(
-              {
-                length: carouselTotalWidth / scrollDistance,
-              },
-              (_, index) => index * scrollDistance
+          if (scrollDistance === 'slide') {
+            proposedPageStartIndices = Array.from(wrapperCurrent.children).map(
+              (child) =>
+                (child as HTMLElement).offsetLeft - containerRefOffsetLeft
             );
           } else {
-            const arrayLength = Math.ceil(
-              carouselTotalWidth / wrapperCurrent.offsetWidth
-            );
-            proposedPageStartIndices = Array.from(
-              {
-                length: arrayLength,
-              },
-              (_, index) => {
-                if (index === arrayLength - 1) {
-                  return carouselTotalWidth - wrapperCurrent.offsetWidth;
+            if (typeof scrollDistance === 'number') {
+              proposedPageStartIndices = Array.from(
+                {
+                  length: carouselTotalWidth / scrollDistance,
+                },
+                (_, index) => index * scrollDistance
+              );
+            } else {
+              const arrayLength = Math.ceil(
+                carouselTotalWidth / wrapperCurrent.offsetWidth
+              );
+              proposedPageStartIndices = Array.from(
+                {
+                  length: arrayLength,
+                },
+                (_, index) => {
+                  if (index === arrayLength - 1) {
+                    return carouselTotalWidth - wrapperCurrent.offsetWidth;
+                  }
+                  return wrapperCurrent.offsetWidth * index;
                 }
-                return wrapperCurrent.offsetWidth * index;
-              }
-            );
+              );
+            }
           }
+
+          const lastIndexInView =
+            findLastIndex(
+              proposedPageStartIndices,
+              (index) => index < carouselTotalWidth - wrapperCurrent.offsetWidth
+            ) + 2;
+
+          setPageStartIndices(
+            proposedPageStartIndices.slice(0, lastIndexInView)
+          );
         }
+      };
 
-        const lastIndexInView =
-          findLastIndex(
-            proposedPageStartIndices,
-            (index) => index < carouselTotalWidth - wrapperCurrent.offsetWidth
-          ) + 2;
+      window.addEventListener('resize', updateIndices);
+      updateIndices();
 
-        setPageStartIndices(proposedPageStartIndices.slice(0, lastIndexInView));
-      }
+      return () => window.removeEventListener('resize', updateIndices);
     }, [scrollDistance, wrapperRef, containerRef]);
 
     const getCurrentPageIndex = useCallback(() => {
