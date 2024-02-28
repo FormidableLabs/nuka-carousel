@@ -93,7 +93,7 @@
     "url": "https://github.com/FormidableLabs/nuka-carousel/issues"
   },
   "homepage": "https://github.com/FormidableLabs/nuka-carousel",
-  "sideEffects": true,
+  "sideEffects": false,
   "publishConfig": {
     "provenance": true
   }

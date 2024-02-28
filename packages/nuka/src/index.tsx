@@ -1,1 +1,1 @@
-export { Carousel as default, SlideHandle } from './Carousel/Carousel';
+export { Carousel, SlideHandle } from './Carousel/Carousel';
