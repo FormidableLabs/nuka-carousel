@@ -5,6 +5,7 @@ sidebar_position: 1
 import { BasicDemo } from '../../website/src/components/demos';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
 
 # Options
 
@@ -22,6 +23,14 @@ The carousel can advance on its own with a specified interval measured in millis
 ### Example
 
 <BasicDemo className="standard-demo" autoplay={true} />
+
+#### Code
+
+```tsx
+<Carousel autoplay={true} scrollDistance="slide">
+  {/* Cards */}
+</Carousel>
+```
 
 ---
 
@@ -48,19 +57,38 @@ Using "screen" will advance the carousel by the width of the visible carousel.
       update on the widths of the slides so you can have multiple widths for
       each slide.
     </p>
-    <BasicDemo className="slide-distance-demo" scrollDistance="slide" />
+    <BasicDemo
+      className="slide-distance-demo"
+      scrollDistance="slide"
+      showForwardBackButtons={true}
+    />
+    <h4 className="mt-4">Code</h4>
+    <CodeBlock language="tsx">{`<Carousel scrollDistance="slide">{/* Cards */}</Carousel>`}</CodeBlock>
+
   </TabItem>
   <TabItem value="fixed" label="Fixed Distance (number)">
     <p>
       Scroll by a fixed distance measured in px. This example scrolls by 100px.
     </p>
-    <BasicDemo className="fixed-distance-demo" scrollDistance={100} />
+    <BasicDemo
+      className="fixed-distance-demo"
+      scrollDistance={100}
+      showForwardBackButtons={true}
+    />
+    <h4 className="mt-4">Code</h4>
+    <CodeBlock language="tsx">{`<Carousel scrollDistance={100}>{/* Cards */}</Carousel>`}</CodeBlock>
   </TabItem>
   <TabItem value="screen" label="Screen">
     <p>
       Scroll by the width of the "screen" or the container the carousel is in.
     </p>
-    <BasicDemo className="screen=distance-demo" scrollDistance="screen" />
+    <BasicDemo
+      className="screen=distance-demo"
+      scrollDistance="screen"
+      showForwardBackButtons={true}
+    />
+    <h4 className="mt-4">Code</h4>
+    <CodeBlock language="tsx">{`<Carousel scrollDistance="screen">{/* Cards */}</Carousel>`}</CodeBlock>
   </TabItem>
 </Tabs>
 
@@ -99,6 +127,23 @@ Indicators that show what page the carousel is on. These pages are calculated fr
   scrollDistance="screen"
 />
 
+#### Code
+
+```tsx
+<Carousel
+  showPageIndicators={true}
+  pageIndicatorProps={{
+    containerClassName: 'flex items-center justify-center py-4 gap-2',
+    pageIndicatorClassName:
+      'w-3 h-3 p-0 rounded-full bg-gray-200 border-none cursor-pointer hover:bg-pink-200',
+    currentPageIndicatorClassName: 'bg-pink-500 hover:bg-pink-500',
+  }}
+  scrollDistance="screen"
+>
+  {/* Cards */}
+</Carousel>
+```
+
 ---
 
 ## Wrapper Styling
@@ -116,6 +161,12 @@ By default, this wrapper has `display: flex` applied.
 ### Example
 
 <BasicDemo className="standard-demo" wrapperClassName="gap-4" />
+
+#### Code
+
+```tsx
+<Carousel wrapperClassName={'gap-4'}>{/* Cards */}</Carousel>
+```
 
 ---
 
@@ -139,17 +190,9 @@ afterSlide: Runs a given function after scrolling when a progression method is c
 This is a code usage example. Docusaurus will not run passed functions because the components are converted to static HTML at build time.
 
 ```tsx
-<BasicDemo
-  beforeSlide={() => {
-    myCustomBeforeFunction();
-  }}
-/>
+<Carousel beforeSlide={() => myCustomBeforeFunction()}>{/* Cards */}</Carousel>
 ```
 
 ```tsx
-<BasicDemo
-  afterSlide={() => {
-    myCustomAfterFunction();
-  }}
-/>
+<Carousel afterSlide={() => myCustomAfterFunction()}>{/* Cards */}</Carousel>
 ```

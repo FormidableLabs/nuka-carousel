@@ -10,11 +10,11 @@ import {
 import './Carousel.css';
 import { PageIndicators } from '../PageIndicators/PageIndicators';
 
-type scrollDistanceType = number | 'slide' | 'screen';
+type ScrollDistanceType = number | 'slide' | 'screen';
 
 export type CarouselProps = {
   children: ReactNode;
-  scrollDistance?: scrollDistanceType;
+  scrollDistance?: ScrollDistanceType;
   wrapperClassName?: string;
   autoplay?: boolean;
   autoplayInterval?: number;

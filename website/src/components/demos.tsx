@@ -26,6 +26,7 @@ export const BasicDemo = ({
   showPageIndicators,
   pageIndicatorProps,
   wrapperClassName,
+  showForwardBackButtons,
   className = '',
 }: Props) => {
   const ref = useRef<SlideHandle>(null);
@@ -43,14 +44,16 @@ export const BasicDemo = ({
         {generateCards()}
       </Carousel>
 
-      <div>
-        <button onClick={() => ref.current && ref.current.goBack()}>
-          &lt;
-        </button>
-        <button onClick={() => ref.current && ref.current.goForward()}>
-          &gt;
-        </button>
-      </div>
+      {showForwardBackButtons && (
+        <div>
+          <button onClick={() => ref.current && ref.current.goBack()}>
+            &lt;
+          </button>
+          <button onClick={() => ref.current && ref.current.goForward()}>
+            &gt;
+          </button>
+        </div>
+      )}
     </div>
   );
 };

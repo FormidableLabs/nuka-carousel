@@ -20,9 +20,6 @@ const MyComponent = () => {
   return (
     <div>
       <Carousel ref={ref}>...</Carousel>
-
-      <button onClick={() => ref.current.goBack()}>Back</button>
-      <button onClick={() => ref.current.goForward()}>Forward</button>
     </div>
   );
 };
@@ -45,3 +42,23 @@ Advances the carousel backward by the given `scrollDistance`.
 ### Usage/Examples
 
 <MethodsDemo />
+
+#### Code
+
+```tsx title="MyComponent.tsx"
+import { useRef } from 'react';
+import Carousel, { SlideHandle } from 'nuka-carousel';
+
+const MyComponent = () => {
+  const ref = useRef<SlideHandle>(null);
+
+  return (
+    <div>
+      <Carousel ref={ref}>...</Carousel>
+
+      <button onClick={() => ref.current.goBack()}>goBack()</button>
+      <button onClick={() => ref.current.goForward()}>goForward()</button>
+    </div>
+  );
+};
+```
