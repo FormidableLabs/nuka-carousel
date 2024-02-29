@@ -80,7 +80,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
         containerRef.current.scroll(currentScrollIndex, 0);
         afterSlide && setTimeout(() => afterSlide(), 0);
       }
-    }, [currentScrollIndex]);
+    }, [currentScrollIndex, beforeSlide, afterSlide]);
 
     useEffect(() => {
       const handleDebounce = setTimeout(() => {
