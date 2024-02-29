@@ -24,6 +24,8 @@ export type CarouselProps = {
     pageIndicatorClassName?: string;
     containerClassName?: string;
   };
+  beforeSlide?: () => void;
+  afterSlide?: () => void;
 };
 
 export type SlideHandle = {
@@ -55,6 +57,8 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       autoplayInterval = 3000,
       showPageIndicators = false,
       pageIndicatorProps,
+      beforeSlide,
+      afterSlide,
     }: CarouselProps,
     ref
   ) => {
@@ -66,9 +70,15 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     const containerRef = useRef<HTMLDivElement | null>(null);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 
+    const isFirstRender = useRef(true);
+
     useEffect(() => {
-      if (containerRef.current) {
+      if (isFirstRender.current) {
+        isFirstRender.current = false;
+      } else if (containerRef.current) {
+        beforeSlide && beforeSlide();
         containerRef.current.scroll(currentScrollIndex, 0);
+        afterSlide && setTimeout(() => afterSlide(), 0);
       }
     }, [currentScrollIndex]);
 

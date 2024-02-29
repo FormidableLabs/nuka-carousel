@@ -174,3 +174,29 @@ export const GoToIndex: Story = {
     ),
   },
 };
+
+export const BeforeSlide: Story = {
+  args: {
+    beforeSlide: () => alert('Function was called before scroll occurred '),
+    children: (
+      <>
+        {[...Array(10)].map((_, index) => (
+          <ExampleSlide key={index} index={index} />
+        ))}
+      </>
+    ),
+  },
+};
+
+export const AfterSlide: Story = {
+  args: {
+    afterSlide: () => alert('Function was called after scroll occurred '),
+    children: (
+      <>
+        {[...Array(10)].map((_, index) => (
+          <ExampleSlide key={index} index={index} />
+        ))}
+      </>
+    ),
+  },
+};

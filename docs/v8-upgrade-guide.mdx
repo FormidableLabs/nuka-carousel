@@ -20,6 +20,12 @@ Nuka v8 and above are completely rewritten with new props and might not be compl
 
 `wrapperClassName`
 
+## Changed Props
+
+`afterSlide`
+
+`beforeSlide` - implemented with some changes from v7
+
 <Link to="/api">Read more about how to use them in the API (v8+) pages.</Link>
 
 ---
@@ -82,22 +88,18 @@ Nuka v8 and above are completely rewritten with new props and might not be compl
 
 These v7 and below props are being worked on or are considered for v8.
 
-`afterSlide`
+`disableEdgeSwiping` - This might just be covered natively by browser/os. Not entirely sure yet.
 
-`beforeSlide`
+`frameAriaLabel` - would like to do sweeping functionality and docs update for all accessibility things
 
-`disableEdgeSwiping`
+`onDragStart` - in theory should be the same as `beforeSlide` but the debounce is too late for manual scrolling for this to really be effective.
 
-`frameAriaLabel`
+`onDrag` - considering the use case for this, this would involve writing a shorter debounce on a useEffect that runs this function every time the scrollIndex changes.
 
-`onDragStart`
+`onDragEnd` - in theory should be the same as `afterSlide` since dragging with a touch device will trigger `afterSlide` after the scroll listening debounce ends.
 
-`onDrag`
+`onUserNavigation` - would like to do sweeping functionality and docs update for all accessibility things
 
-`onDragEnd`
-
-`onUserNavigation`
-
-`pauseOnHover`
+`pauseOnHover` - not implemented, not documented.
 
 `wrapAround` - right now, you can wrap the the front but it won't infinitely scroll like in v7.

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { within, waitFor, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+import { expect, jest } from '@storybook/jest';
 import { Carousel, CarouselProps, SlideHandle } from './Carousel';
 import { useRef } from 'react';
 import { ExampleSlide, FullWidthSlide } from './ExampleSlide';
@@ -230,6 +230,54 @@ export const PageIndicators: Story = {
     await waitFor(async () => {
       userEvent.click(pageIndicatorContainer.children[0]);
       expect(canvas.getByTestId('overflow').scrollLeft).toEqual(0);
+    });
+  },
+};
+
+const beforeFn = jest.fn();
+
+export const BeforeSlide: Story = {
+  args: {
+    beforeSlide: beforeFn,
+    children: (
+      <>
+        {[...Array(10)].map((_, index) => (
+          <ExampleSlide key={index} index={index} />
+        ))}
+      </>
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    expect(beforeFn).not.toHaveBeenCalled();
+
+    const forwardButton = canvas.getByText('next');
+    await userEvent.click(forwardButton);
+    await expect(beforeFn).toHaveBeenCalled();
+  },
+};
+
+const afterFn = jest.fn();
+export const AfterSlide: Story = {
+  args: {
+    afterSlide: afterFn,
+    children: (
+      <>
+        {[...Array(10)].map((_, index) => (
+          <ExampleSlide key={index} index={index} />
+        ))}
+      </>
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    expect(afterFn).not.toHaveBeenCalled();
+
+    const forwardButton = canvas.getByText('next');
+    userEvent.click(forwardButton);
+    expect(afterFn).not.toHaveBeenCalled(); // should not be immediately called
+    await waitFor(async () => {
+      await expect(afterFn).toHaveBeenCalled();
     });
   },
 };

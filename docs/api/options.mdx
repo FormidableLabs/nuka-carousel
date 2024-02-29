@@ -116,3 +116,40 @@ By default, this wrapper has `display: flex` applied.
 ### Example
 
 <BasicDemo className="standard-demo" wrapperClassName="gap-4" />
+
+---
+
+## Before/After Slide
+
+Functions that are invoked when the progression methods (goBack()/goForward()) are called or when carousel changes its scroll position.
+
+### Details
+
+| Prop Name     | Type       | Default Value |
+| :------------ | :--------- | :------------ |
+| `beforeSlide` | () => void | `undefined`   |
+| `afterSlide`  | () => void | `undefined`   |
+
+beforeSlide: Runs a given function before scrolling when a progression method is called. It will also run right before the carousel registers that it has been scrolled on if manually scrolled.
+
+afterSlide: Runs a given function after scrolling when a progression method is called or after manually scrolling.
+
+### Example
+
+This is a code usage example. Docusaurus will not run passed functions because the components are converted to static HTML at build time.
+
+```tsx
+<BasicDemo
+  beforeSlide={() => {
+    myCustomBeforeFunction();
+  }}
+/>
+```
+
+```tsx
+<BasicDemo
+  afterSlide={() => {
+    myCustomAfterFunction();
+  }}
+/>
+```
