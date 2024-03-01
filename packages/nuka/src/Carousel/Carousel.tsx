@@ -84,11 +84,10 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
 
     useEffect(() => {
       const handleDebounce = setTimeout(() => {
-        setCurrentScrollIndex(currentManualScrollIndex);
-
+        const roundedManualScrollIndex = Math.round(currentManualScrollIndex);
         const closestPassedSlide = pageStartIndices.reduce(
           (prev, current, index) =>
-            current - currentManualScrollIndex < 0 ? index + 1 : prev,
+            current - roundedManualScrollIndex < 0 ? index + 1 : prev,
           0
         );
         setCurrentSlideIndex(closestPassedSlide);
@@ -210,7 +209,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
           ? 0
           : findLastIndex(
               pageStartIndices,
-              (index) => containerScrollDistance >= index
+              (index) => Math.round(containerScrollDistance) >= index
             );
       }
       return 0;
