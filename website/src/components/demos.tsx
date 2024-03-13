@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { Carousel, SlideHandle } from 'nuka-carousel';
-import { generateCards } from '@site/src/components/cards';
 
 type scrollDistanceType = number | 'slide' | 'screen';
 
@@ -39,7 +38,9 @@ export const BasicDemo = ({
         className={className}
         ref={ref}
       >
-        {generateCards()}
+        <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+        <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+        <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
       </Carousel>
 
       {showForwardBackButtons && (
@@ -61,7 +62,9 @@ export const MethodsDemo = () => {
   return (
     <div>
       <Carousel autoplay={false} scrollDistance={'slide'} ref={ref}>
-        {generateCards()}
+        <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+        <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+        <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
       </Carousel>
 
       <div>
