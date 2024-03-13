@@ -1,0 +1,46 @@
+---
+sidebar_position: 5
+---
+
+import { Carousel } from 'nuka-carousel';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+# Styling
+
+## Wrapper Styling
+
+Apply css classes to the carousel container.
+
+### Details
+
+| Prop Name   | Type   | Default Value |
+| :---------- | :----- | :------------ |
+| `className` | string | `undefined`   |
+
+### Example
+
+<Carousel
+  scrollDistance="screen"
+  showDots
+  className="border-8 border-pink-500 border-solid"
+>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel
+  scrollDistance="screen"
+  showDots
+  className="border-8 border-pink-500 border-solid"
+>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```

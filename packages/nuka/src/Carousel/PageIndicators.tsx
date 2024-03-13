@@ -1,3 +1,5 @@
+import { cls } from '../utils';
+
 export type PageIndicatorsProps = {
   totalIndicators: number;
   currentPageIndex: number;
@@ -16,17 +18,23 @@ export const PageIndicators = ({
   scrollToPage,
 }: PageIndicatorsProps) => {
   return (
-    <div className={containerClassName} data-testId={'pageIndicatorContainer'}>
+    <div
+      className={containerClassName || 'nuka-page-container'}
+      data-testid="pageIndicatorContainer"
+    >
       {[...Array(totalIndicators)].map((_, index) => (
         <button
           key={index}
           onClick={() => scrollToPage(index)}
-          className={
-            pageIndicatorClassName +
-            ' ' +
-            (currentPageIndex === index ? currentPageIndicatorClassName : '')
-          }
-        />
+          className={cls(
+            pageIndicatorClassName || 'nuka-page-indicator',
+            currentPageIndex === index
+              ? currentPageIndicatorClassName || 'nuka-page-indicator-active'
+              : ''
+          )}
+        >
+          <span className="nuka-hidden">{index + 1}</span>
+        </button>
       ))}
     </div>
   );

@@ -1,0 +1,139 @@
+---
+sidebar_position: 2
+---
+
+import { Carousel } from 'nuka-carousel';
+
+# Navigation
+
+The carousel supports several navigation options, including arrows and dots.
+You can also control whether the carousel should wrap around when the first or last slide is active.
+
+### Details
+
+| Prop Name          | Type     | Default Value |
+| :----------------- | :------- | :------------ |
+| `showArrows`       | boolean \| "always" \| "hover" | `false`       |
+| `showDots`         | boolean  | `false`       |
+| `wrapAround`       | boolean  | `false`        |
+
+### Navigation Arrows
+
+When set to `true` or `always`, the arrows will always be visible. When set to `hover`, the arrows will be visible only when the mouse is over the carousel.
+
+<Carousel showArrows>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel showArrows>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+### Navigation Arrows (hover)
+
+<Carousel showArrows="hover">
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel showArrows>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+### Wraparound
+
+If you set `wrapAround` to `true`, the carousel will wrap around when it reaches the end of the slide set. This means that if you are on the last slide and you click next, it will go to the first slide.
+
+<Carousel showArrows wrapAround>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel showArrows wrapAround>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+### Navigation Dots
+
+<Carousel showDots>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel showDots>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+## Styling
+
+#### `pageIndicatorProps` Details
+
+| Prop Name                       | Type   | Default Value |
+| :------------------------------ | :----- | :------------ |
+| `pageIndicatorProps` | object (see below) | see below    |
+| `containerClassName`            | string | `undefined`   |
+| `currentPageIndicatorClassName` | string | `undefined`   |
+| `pageIndicatorClassName`        | string | `undefined`   |
+
+### Example
+
+<Carousel
+  showDots
+  pageIndicatorProps={{
+    containerClassName: 'flex items-center py-4 gap-1',
+    pageIndicatorClassName:
+      'w-3 h-3 p-0 rounded-full bg-gray-200 border-none cursor-pointer hover:bg-green-200',
+    currentPageIndicatorClassName: 'bg-green-500 hover:bg-green-500',
+  }}
+>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel
+  showDots
+  pageIndicatorProps={{
+    containerClassName: 'flex items-center py-4 gap-1',
+    pageIndicatorClassName:
+      'w-3 h-3 p-0 rounded-full bg-gray-200 border-none cursor-pointer hover:bg-green-200',
+    currentPageIndicatorClassName: 'bg-green-500 hover:bg-green-500',
+  }}
+>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
