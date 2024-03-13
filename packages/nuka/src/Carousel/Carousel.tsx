@@ -15,7 +15,7 @@ type ScrollDistanceType = number | 'slide' | 'screen';
 export type CarouselProps = {
   children: ReactNode;
   scrollDistance?: ScrollDistanceType;
-  wrapperClassName?: string;
+  className?: string;
   autoplay?: boolean;
   autoplayInterval?: number;
   showPageIndicators?: boolean;
@@ -51,8 +51,8 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
   (
     {
       children,
+      className = '',
       scrollDistance = 'slide',
-      wrapperClassName,
       autoplay = false,
       autoplayInterval = 3000,
       showPageIndicators = false,
@@ -245,12 +245,12 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
               (event.target as HTMLElement).scrollLeft
             );
           }}
-          data-testId="overflow"
+          data-testid="overflow"
         >
           <div
-            className={'wrapper ' + wrapperClassName}
+            className={`wrapper ${className}`}
             ref={wrapperRef}
-            data-testId="wrapper"
+            data-testid="wrapper"
           >
             {children}
           </div>

@@ -5,9 +5,8 @@ import { generateCards } from '@site/src/components/cards';
 type scrollDistanceType = number | 'slide' | 'screen';
 
 type Props = {
-  className?: string;
   scrollDistance?: scrollDistanceType;
-  wrapperClassName?: string;
+  className?: string;
   autoplay?: boolean;
   autoplayInterval?: number;
   showPageIndicators?: boolean;
@@ -25,7 +24,6 @@ export const BasicDemo = ({
   scrollDistance,
   showPageIndicators,
   pageIndicatorProps,
-  wrapperClassName,
   showForwardBackButtons,
   className = '',
 }: Props) => {
@@ -38,7 +36,7 @@ export const BasicDemo = ({
         showPageIndicators={showPageIndicators}
         pageIndicatorProps={pageIndicatorProps}
         scrollDistance={scrollDistance}
-        wrapperClassName={wrapperClassName}
+        className={className}
         ref={ref}
       >
         {generateCards()}

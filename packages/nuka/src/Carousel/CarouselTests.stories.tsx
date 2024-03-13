@@ -78,7 +78,7 @@ export const FixedWidthScroll: Story = {
 export const Slide: Story = {
   args: {
     scrollDistance: 'slide',
-    wrapperClassName: 'slide__with-gap',
+    className: 'slide__with-gap',
     children: (
       <>
         {[...Array(10)].map((_, index) => (
@@ -142,7 +142,7 @@ export const FullWidth: Story = {
 export const Screen: Story = {
   args: {
     scrollDistance: 'screen',
-    wrapperClassName: 'slide__with-gap',
+    className: 'slide__with-gap',
     children: (
       <>
         {[...Array(10)].map((_, index) => (

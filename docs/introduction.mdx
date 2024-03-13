@@ -4,29 +4,56 @@ title: Introduction
 slug: /
 ---
 
-import { BasicDemo } from "../website/src/components/demos";
+import { Carousel } from 'nuka-carousel';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 [![Nuka Carousel — Formidable, We build the modern web](https://raw.githubusercontent.com/FormidableLabs/nuka-carousel/main/Nuka-Hero.png)](https://formidable.com/open-source/)
 
-Small, fast and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site.
+Small, fast, and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site.
 
+### Basic Usage
 
-### Nuka Demos
-See Nuka Carousel in action with three common configurations:
+Nuka Carousel accepts any React component as children, and will render them as slides. Here's a basic example:
 
-<Tabs>
-  <TabItem value="standard" label="Standard" default>
-    <p>Nuka with standard options. Slides can navigate using gestures or arrow buttons at the edges.</p>
-    <BasicDemo className="standard-demo" />
-  </TabItem>
-  <TabItem value="wrapAround" label="Wrap Around" default>
-    <p>Nuka with wrap around mode can navigate to the last slide from the first or the first slide from the last.</p>
-    <BasicDemo className="wrap-around-demo" wrapAround />
-  </TabItem>
-  <TabItem value="autoPlay" label="Auto Play" default>
-    <p>Nuka can auto play slides at a custom interval with or without wrap around mode.</p>
-    <BasicDemo autoplay wrapAround />
-  </TabItem>
-</Tabs>
+<Carousel
+  autoplay
+  wrapAround
+  showPageIndicators
+  pageIndicatorProps={{
+    containerClassName: 'flex items-center justify-center py-4 gap-2',
+    pageIndicatorClassName:
+      'w-3 h-3 p-0 rounded-full bg-gray-200 border-none cursor-pointer hover:bg-pink-200',
+    currentPageIndicatorClassName: 'bg-pink-500 hover:bg-pink-500',
+  }}
+>
+  <img src="img/pexels-01.jpg" />
+  <img src="img/pexels-02.jpg" />
+  <img src="img/pexels-03.jpg" />
+</Carousel>
+
+#### Basic Code
+
+```jsx
+import Carousel from 'nuka-carousel';
+
+const App = () => {
+  return (
+    <Carousel autoplay wrapAround showPageIndicators>
+      <div>Slide 1</div>
+      <div>Slide 2</div>
+      <div>Slide 3</div>
+    </Carousel>
+  );
+};
+```
+
+Feel free to mix React components and HTML elements as children. Nuka Carousel will handle them all.
+
+```jsx
+<Carousel>
+  <div>Slide 1</div>
+  <img src="/img/image3.png" />
+  <MyCustomComponent />
+</Carousel>
+```
