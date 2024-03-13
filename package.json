@@ -4,6 +4,7 @@
     "build": "pnpm run --filter nuka-carousel build",
     "build:watch": "pnpm run --filter nuka-carousel build:watch",
     "build:storybook": "pnpm run --filter nuka-carousel storybook:build",
+    "build-storybook": "pnpm run --filter nuka-carousel storybook:build",
     "build:website": "pnpm run --filter website build",
     "build:website:vercel": "pnpm run --filter website build:vercel",
     "lint": "pnpm run --parallel lint",
