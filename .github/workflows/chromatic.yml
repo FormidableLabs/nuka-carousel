@@ -1,0 +1,32 @@
+name: Chromatic
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'packages/**'
+
+jobs:
+  chromatic:
+    name: Storybook Publish
+    runs-on: ubuntu-latest
+    steps:
+      # requires all branches and tags to be fetched for chromatic
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup
+
+      - name: Build
+        run: pnpm build
+
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}

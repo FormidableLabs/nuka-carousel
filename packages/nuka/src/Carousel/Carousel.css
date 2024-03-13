@@ -1,18 +1,86 @@
-.overflow {
+.nuka-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.nuka-container {
+  position: relative;
+}
+.nuka-slide-container {
+  position: relative;
+}
+.nuka-overflow {
   overflow: scroll;
   scroll-behavior: smooth;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
-
-.overflow::-webkit-scrollbar {
+.nuka-overflow::-webkit-scrollbar {
   display: none;
 }
-
-.wrapper {
+.nuka-wrapper {
   display: flex;
 }
-
-.wrapper--scroll-snapping {
-  scroll-snap-type: x mandatory;
+.nuka-nav-button {
+  position: absolute;
+  top: calc(50% - 2rem);
+  margin: 1rem;
+  display: none;
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+  background-color: rgba(146, 148, 151, 0.5);
+  color: white;
+  border-radius: 9999px;
+  font-size: 1rem;
+  user-select: none;
+}
+.nuka-nav-button.nuka-nav-button-prev {
+  left: 0;
+  margin-right: 1rem;
+}
+.nuka-nav-button.nuka-nav-button-next {
+  right: 0;
+  margin-left: 1rem;
+}
+.nuka-nav-button:hover {
+  background-color: rgba(146, 148, 151, 0.65);
+}
+.nuka-nav-button-enabled {
+  display: block;
+}
+.nuka-container-auto-hide .nuka-nav-button {
+  display: none;
+}
+.nuka-container-auto-hide:hover .nuka-nav-button-enabled {
+  display: block;
+}
+.nuka-page-container {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+.nuka-page-indicator {
+  width: 0.75rem;
+  height: 0.75rem;
+  cursor: pointer;
+  border-radius: 9999px;
+  border-style: none;
+  background-color: rgba(146, 148, 151, 0.65);
+}
+.nuka-page-indicator.nuka-page-indicator-active,
+.nuka-page-indicator.nuka-page-indicator-active:hover {
+  background-color: rgb(229 231 235 / 1);
+}
+.nuka-page-indicator:hover {
+  background-color: rgb(229 231 235 / 1);
 }

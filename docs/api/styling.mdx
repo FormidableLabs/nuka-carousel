@@ -1,0 +1,160 @@
+---
+sidebar_position: 5
+---
+
+import { Carousel } from 'nuka-carousel';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+import { CustomDots } from '../../website/src/components/custom-dots-demo';
+import { CustomArrows } from '../../website/src/components/custom-arrows-demo';
+
+# Styling
+
+Apply css classes to the carousel container. This is the property you would use if you want to constrain the width or height of the carousel.
+
+| Prop Name   | Type   | Default Value |
+| :---------- | :----- | :------------ |
+| `className` | string | `undefined`   |
+
+#### Example
+
+<Carousel
+  scrollDistance="screen"
+  showDots
+  className="border-8 border-pink-500 border-solid mx-auto w-[600px]"
+>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel
+  scrollDistance="screen"
+  showDots
+  className="border-8 border-pink-500 border-solid mx-auto w-[600px]"
+>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+## Navigation Dots
+
+You can supply a custom React component to render the navigation dots by using the Carousel hooks.
+
+| Prop Name                       | Type   | Default Value |
+| :------------------------------ | :----- | :------------ |
+| `dots` | `ReactNode` | `undefined` |
+
+#### Example
+
+<Carousel showDots dots={<CustomDots />}>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+import { useCarousel } from 'nuka-carousel';
+
+export const CustomDots = () => {
+  const { totalPages, currentPage, goToPage } = useCarousel();
+
+  const className = (index: number) => {
+    let value =
+      'w-3 h-3 p-0 rounded-full bg-gray-200 border-none cursor-pointer hover:bg-green-200';
+    if (currentPage === index) {
+      value += ' bg-green-500 hover:bg-green-500';
+    }
+    return value;
+  };
+
+  return (
+    <div className="flex items-center py-4 gap-1">
+      {[...Array(totalPages)].map((_, index) => (
+        <button
+          key={index}
+          onClick={() => goToPage(index)}
+          className={className(index)}
+        />
+      ))}
+    </div>
+  );
+};
+
+<Carousel showDots dots={<CustomDots />}>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+## Navigation Arrows
+
+You can supply a custom React component to render the navigation arrows by using the Carousel hooks.
+
+| Prop Name                       | Type   | Default Value |
+| :------------------------------ | :----- | :------------ |
+| `arrows` | `ReactNode` | `undefined` |
+
+#### Example
+
+<Carousel showArrows arrows={<CustomArrows />}>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+import { useCarousel } from 'nuka-carousel';
+
+function cls(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
+
+export function CustomArrows() {
+  const { currentPage, totalPages, wrapMode, goBack, goForward } =
+    useCarousel();
+
+  const allowWrap = wrapMode === 'wrap';
+  const enablePrevNavButton = allowWrap || currentPage > 0;
+  const enableNextNavButton = allowWrap || currentPage < totalPages - 1;
+
+  const prevNavClassName = cls(
+    'inline-block px-4 py-2 bg-pink-800 cursor-pointer invisible',
+    enablePrevNavButton && '!visible',
+  );
+
+  const nextNavClassName = cls(
+    'inline-block px-4 py-2 bg-pink-800 cursor-pointer invisible',
+    enableNextNavButton && '!visible',
+  );
+
+  return (
+    <div className="flex justify-between mt-4">
+      <div className={prevNavClassName} onClick={goBack}>
+        PREV
+      </div>
+      <div className={nextNavClassName} onClick={goForward}>
+        NEXT
+      </div>
+    </div>
+  );
+}
+
+<Carousel showArrows arrows={<CustomArrows />}>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```

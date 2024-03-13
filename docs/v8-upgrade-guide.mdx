@@ -1,107 +1,54 @@
 ---
-sidebar_position: 6
+sidebar_position: 3
 ---
 
 import Link from '@docusaurus/Link';
 
 # v8 Upgrade Guide
 
-Nuka v8 and above are completely rewritten with new props and might not be completely backwards compatable with v7.
+Nuka v8 was rewritten with simplicity and native support in mind. Many props have been removed or renamed to make the API easier to understand and use. This guide will help you upgrade your v7 carousel to v8.
 
 ---
 
-## New Props
-
-`scrollDistance`
-
-`showPageIndicators`
-
-`pageIndicatorProps`
-
-`wrapperClassName`
-
 ## Changed Props
 
-`afterSlide`
-
-`beforeSlide` - implemented with some changes from v7
-
-<Link to="/api">Read more about how to use them in the API (v8+) pages.</Link>
+- `afterSlide` - API signature changed from v7. See the <Link to="/docs/api/callbacks">callbacks</Link> for more information.
+- `beforeSlide` - API signature changed from v7. See the <Link to="/docs/api/callbacks">callbacks</Link> for more information.
+- `carouselId` - Use the `id` prop instead.
+- `disableAnimation` - See the <Link to="/docs/api">navigation</Link> docs for the `autoPlay` property.
+- `dragging` - Enabled by default, see the <Link to="/docs/api/swiping">swiping</Link> docs for the `swiping` property.
+- `enableKeyboardControls` - Enabled by default, see the <Link to="/docs/api/accessibility">accessibility</Link> docs for the `keyboard` property.
+- `frameAriaLabel` - Replaced by the `title` prop. See the <Link to="/docs/api/accessibility">accessibility</Link> docs.
+- `slidesToScroll` - Renamed to scrollDistance. See the <Link to="/docs/api/scroll">scrolling</Link> docs for more information.
 
 ---
 
 ## Removed Props
 
-`adaptiveHeight` - The carousel should adapt automatically to the height of the items in the carousel without the need of this prop.
+The following props were removed becuase they are no longer valid or replaced by built in functionality. If there is any functionality lost, we may consider adding some of these back in the future.
 
-`adaptiveHeightAnimation` - The carousel should adapt automatically to the height of the items in the carousel without the need of this prop.
-
-`carouselId`
-
-`cellAlign` - this should just be controlled through passed CSS (prop `wrapperClassName`).
-
-`cellSpacing` - this should just be controlled through passed CSS.
-
-`defaultControlsConfig`
-
-`disableAnimation` - should just be controlled through passed CSS.
-
-`dragging` - this is always on, it defaults to the OS/browser settings.
-
-`dragThreshold` - this defaults to the OS/browser settings.
-
-`easing` - should just be controlled through passed CSS.
-
-`edgeEasing` - should just be controlled through passed CSS.
-
-`enableKeyboardControls` - this should be native without interference. If the content is focusable through normal tabbing, it will focus.
-
-`keyCodeConfig` - should be native.
-
-`landmark`
-
-`renderTop{direction}Controls` - build your own next/prev controls with the goBack() and goForward() exposed methods.
-
-`scrollMode` - always on `remainder` for now.
-
-`slideIndex`
-
-`slidesToScroll` - renamed to scrollDistance.
-
-`slidesToShow` - now based on media queries and how large the slides are.
-
-`speed` - should be native.
-
-`style` - pass styles through the wrapperClassName if needed.
-
-`swiping` - default to OS/browser settings.
-
-`tabbed` - should be native.
-
-`withoutControls` - controls are not rendered by default. Use methods to build your own next/prev triggers or style the page controls with `showPageIndicators` and `pageIndicatorProps`.
-
-`zoomScale` - should just be controlled through passed CSS.
-
----
-
-## Props in consideration
-
-These v7 and below props are being worked on or are considered for v8.
-
-`disableEdgeSwiping` - This might just be covered natively by browser/os. Not entirely sure yet.
-
-`frameAriaLabel` - would like to do sweeping functionality and docs update for all accessibility things
-
-`onDragStart` - in theory should be the same as `beforeSlide` but the debounce is too late for manual scrolling for this to really be effective.
-
-`onDrag` - considering the use case for this, this would involve writing a shorter debounce on a useEffect that runs this function every time the scrollIndex changes.
-
-`onDragEnd` - in theory should be the same as `afterSlide` since dragging with a touch device will trigger `afterSlide` after the scroll listening debounce ends.
-
-`onUserNavigation` - would like to do sweeping functionality and docs update for all accessibility things
-
-`pauseOnHover` - not implemented, not documented.
-
-`wrapAround` - right now, you can wrap the the front but it won't infinitely scroll like in v7.
-
-`showDefaultButtons?` - would be a new prop and not sure about the naming. The idea would be that there's built in forward/back buttons that don't require the user to use the imperative handle hooks. It would likely have a className for styling and children property, but also unsure about how to organize it.
+- `adaptiveHeight` - The carousel will adapt automatically to the height of the items in the carousel without the need of this prop.
+- `adaptiveHeightAnimation` - The carousel will adapt automatically to the height of the items in the carousel without the need of this prop.
+- `cellAlign` - Controlled through CSS. See the <Link to="/docs/api">style guide</Link>.
+- `cellSpacing` - Controlled through CSS. See the <Link to="/docs/api">style guide</Link>.
+- `defaultControlsConfig`- Replaced by various properties like `showArrows`, `showDots`, `arrows`, `dots`.
+- `disableEdgeSwiping`
+- `dragThreshold` - this defaults to the OS/browser settings.
+- `easing`
+- `edgeEasing`
+- `keyCodeConfig`
+- `landmark`
+- `onDragStart`
+- `onDrag`
+- `onDragEnd`
+- `onUserNavigation`
+- `pauseOnHover` - Enabled by default. See the <Link to="/docs/api/autoplay">autoplay</Link> docs.
+- `renderTop{direction}Controls`
+- `scrollMode` - Defaults to `remainder`.
+- `slideIndex`
+- `slidesToShow` - Now based on media queries and how large the slides are.
+- `speed` - Controlled by native browser settings.
+- `style` - See the <Link to="/docs/api">style guide</Link>.
+- `tabbed` - Enabled by default, see the <Link to="/docs/api/accessibility">accessibility</Link> docs
+- `withoutControls`- Replaced by various properties like `showArrows`, `showDots`, `arrows`, `dots`.
+- `zoomScale`

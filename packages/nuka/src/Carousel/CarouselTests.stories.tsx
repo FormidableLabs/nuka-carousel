@@ -1,9 +1,11 @@
+import { useRef } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { within, waitFor, userEvent } from '@storybook/testing-library';
 import { expect, jest } from '@storybook/jest';
+
 import { Carousel, CarouselProps, SlideHandle } from './Carousel';
-import { useRef } from 'react';
 import { ExampleSlide, FullWidthSlide } from './ExampleSlide';
+
 import './CarouselStories.css';
 
 const StorybookComponent = (props: CarouselProps) => {
@@ -63,14 +65,14 @@ export const FixedWidthScroll: Story = {
     await userEvent.click(forwardButton);
 
     await waitFor(async () => {
-      expect(canvas.getByTestId('overflow').scrollLeft).toEqual(
-        FIXED_SCROLL_DISTANCE
+      expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(
+        FIXED_SCROLL_DISTANCE,
       );
     });
     await userEvent.click(backButton);
 
     await waitFor(async () => {
-      expect(canvas.getByTestId('overflow').scrollLeft).toEqual(0);
+      expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(0);
     });
   },
 };
@@ -78,7 +80,7 @@ export const FixedWidthScroll: Story = {
 export const Slide: Story = {
   args: {
     scrollDistance: 'slide',
-    wrapperClassName: 'slide__with-gap',
+    className: 'slide__with-gap',
     children: (
       <>
         {[...Array(10)].map((_, index) => (
@@ -90,10 +92,10 @@ export const Slide: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const overflow = canvas.getByTestId('overflow');
+    const overflow = canvas.getByTestId('nuka-overflow');
 
-    await expect(canvas.getByTestId('wrapper').classList).toContain(
-      'slide__with-gap'
+    await expect(canvas.getByTestId('nuka-wrapper').classList).toContain(
+      'slide__with-gap',
     );
     const forwardButton = canvas.getByText('next');
 
@@ -101,17 +103,17 @@ export const Slide: Story = {
 
     await waitFor(async () => {
       expect(overflow.scrollLeft).toEqual(
-        (canvas.getByTestId('wrapper').children[1] as HTMLElement).offsetLeft -
-          overflow.offsetLeft
+        (canvas.getByTestId('nuka-wrapper').children[1] as HTMLElement)
+          .offsetLeft - overflow.offsetLeft,
       );
     });
 
     await userEvent.click(forwardButton);
 
     await waitFor(async () => {
-      expect(canvas.getByTestId('overflow').scrollLeft).toEqual(
-        (canvas.getByTestId('wrapper').children[2] as HTMLElement).offsetLeft -
-          canvas.getByTestId('overflow').offsetLeft
+      expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(
+        (canvas.getByTestId('nuka-wrapper').children[2] as HTMLElement)
+          .offsetLeft - canvas.getByTestId('nuka-overflow').offsetLeft,
       );
     });
 
@@ -120,7 +122,7 @@ export const Slide: Story = {
     setTimeout(async () => {
       await userEvent.click(forwardButton);
       await waitFor(async () => {
-        expect(canvas.getByTestId('overflow').scrollLeft).toEqual(0);
+        expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(0);
       });
     }, 300);
   },
@@ -142,7 +144,7 @@ export const FullWidth: Story = {
 export const Screen: Story = {
   args: {
     scrollDistance: 'screen',
-    wrapperClassName: 'slide__with-gap',
+    className: 'slide__with-gap',
     children: (
       <>
         {[...Array(10)].map((_, index) => (
@@ -170,14 +172,14 @@ export const AutoPlay: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const overflow = canvas.getByTestId('overflow');
-    expect(canvas.getByTestId('overflow').scrollLeft).toEqual(0);
+    const overflow = canvas.getByTestId('nuka-overflow');
+    expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(0);
 
     setTimeout(async () => {
       await waitFor(async () => {
-        expect(canvas.getByTestId('overflow').scrollLeft).toEqual(
+        expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(
           (overflow.children[0].children[1] as HTMLElement).offsetLeft -
-            overflow.offsetLeft
+            overflow.offsetLeft,
         );
       });
     }, AUTOPLAY_INTERVAL_IN_MS);
@@ -191,7 +193,7 @@ const PAGE_INDICATOR_CONTAINER_CLASSNAME = 'indicator--container';
 export const PageIndicators: Story = {
   args: {
     scrollDistance: 'screen',
-    showPageIndicators: true,
+    showDots: true,
     pageIndicatorProps: {
       currentPageIndicatorClassName: CURRENT_PAGE_INDICATOR_CLASSNAME,
       pageIndicatorClassName: GENERAL_PAGE_INDICATOR_CLASSNAME,
@@ -208,28 +210,30 @@ export const PageIndicators: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const carouselWidth = canvas.getByTestId('wrapper').clientWidth;
+    const carouselWidth = canvas.getByTestId('nuka-wrapper').clientWidth;
 
     const pageIndicatorContainer = canvas.getByTestId('pageIndicatorContainer');
 
     await expect(pageIndicatorContainer).toBeInTheDocument();
     await expect(pageIndicatorContainer).toHaveClass(
-      PAGE_INDICATOR_CONTAINER_CLASSNAME
+      PAGE_INDICATOR_CONTAINER_CLASSNAME,
     );
     await expect(
       pageIndicatorContainer.getElementsByClassName(
-        GENERAL_PAGE_INDICATOR_CLASSNAME
-      ).length
+        GENERAL_PAGE_INDICATOR_CLASSNAME,
+      ).length,
     ).toBe(pageIndicatorContainer.children.length);
 
     await waitFor(async () => {
       userEvent.click(pageIndicatorContainer.children[1]);
-      expect(canvas.getByTestId('overflow').scrollLeft).toEqual(carouselWidth);
+      expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(
+        carouselWidth,
+      );
     });
 
     await waitFor(async () => {
       userEvent.click(pageIndicatorContainer.children[0]);
-      expect(canvas.getByTestId('overflow').scrollLeft).toEqual(0);
+      expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(0);
     });
   },
 };

@@ -1,11 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Carousel, CarouselProps, SlideHandle } from './Carousel';
 import { useRef, useState } from 'react';
+
+import { Carousel, CarouselProps, SlideHandle } from './Carousel';
 import {
   ExampleSlide,
   FocusableLinkSlide,
   FullWidthSlide,
 } from './ExampleSlide';
+
 import './CarouselStories.css';
 
 const StorybookComponent = (props: CarouselProps) => {
@@ -57,7 +59,7 @@ export const FixedWidthScroll: Story = {
 export const Slide: Story = {
   args: {
     scrollDistance: 'slide',
-    wrapperClassName: 'slide__with-gap',
+    className: 'slide__with-gap',
     children: (
       <>
         {[...Array(10)].map((_, index) => (
@@ -84,7 +86,7 @@ export const FullWidth: Story = {
 export const Screen: Story = {
   args: {
     scrollDistance: 'screen',
-    wrapperClassName: 'slide__with-gap',
+    className: 'slide__with-gap',
     children: (
       <>
         {[...Array(10)].map((_, index) => (
@@ -112,7 +114,7 @@ export const AutoPlay: Story = {
 export const PageIndicators: Story = {
   args: {
     scrollDistance: 'screen',
-    showPageIndicators: true,
+    showDots: true,
     pageIndicatorProps: {
       currentPageIndicatorClassName: 'indicator__current',
       pageIndicatorClassName: 'indicator',
@@ -143,7 +145,7 @@ export const FocusableCards: Story = {
 const CustomGoToIndexRenderComponent = (props: CarouselProps) => {
   const ref = useRef<SlideHandle>(null);
   const [randomInRangeIndex, setRandomInRangeIndex] = useState(
-    Math.floor(Math.random() * 7)
+    Math.floor(Math.random() * 7),
   );
   return (
     <div>
@@ -177,7 +179,8 @@ export const GoToIndex: Story = {
 
 export const BeforeSlide: Story = {
   args: {
-    beforeSlide: () => alert('Function was called before scroll occurred '),
+    beforeSlide: () =>
+      console.log('Function was called before scroll occurred '),
     children: (
       <>
         {[...Array(10)].map((_, index) => (
@@ -190,7 +193,7 @@ export const BeforeSlide: Story = {
 
 export const AfterSlide: Story = {
   args: {
-    afterSlide: () => alert('Function was called after scroll occurred '),
+    afterSlide: () => console.log('Function was called after scroll occurred '),
     children: (
       <>
         {[...Array(10)].map((_, index) => (
