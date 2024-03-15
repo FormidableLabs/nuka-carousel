@@ -1,0 +1,89 @@
+---
+sidebar_position: 1
+---
+
+import { Carousel } from 'nuka-carousel';
+
+# Page Indicators
+
+Indicators that show what page the carousel is on. These pages are calculated from the `scrollDistance` and have to be styled in addition to setting the `showPageIndicators` boolean to true.
+
+### Details
+
+| Prop Name            | Type               | Default Value |
+| :------------------- | :----------------- | :------------ |
+| `showPageIndicators` | boolean            | `false`       |
+
+### Example
+
+<Carousel
+  showPageIndicators={true}
+  pageIndicatorProps={{
+    containerClassName: 'flex items-center justify-center py-4 gap-2',
+    pageIndicatorClassName:
+      'w-3 h-3 p-0 rounded-full bg-gray-200 border-none cursor-pointer hover:bg-pink-200',
+    currentPageIndicatorClassName: 'bg-pink-500 hover:bg-pink-500',
+  }}
+  scrollDistance="screen"
+>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel showPageIndicators={true}>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+## Styling
+
+#### `pageIndicatorProps` Details
+
+| Prop Name                       | Type   | Default Value |
+| :------------------------------ | :----- | :------------ |
+| `pageIndicatorProps` | object (see below) | see below    |
+| `containerClassName`            | string | `undefined`   |
+| `currentPageIndicatorClassName` | string | `undefined`   |
+| `pageIndicatorClassName`        | string | `undefined`   |
+
+### Example
+
+<Carousel
+  showPageIndicators={true}
+  pageIndicatorProps={{
+    containerClassName: 'flex items-center justify-center py-4 gap-2',
+    pageIndicatorClassName:
+      'w-3 h-3 p-0 rounded-full bg-gray-200 border-none cursor-pointer hover:bg-pink-200',
+    currentPageIndicatorClassName: 'bg-pink-500 hover:bg-pink-500',
+  }}
+  scrollDistance="screen"
+>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel
+  showPageIndicators={true}
+  pageIndicatorProps={{
+    containerClassName: 'flex items-center justify-center py-4 gap-2',
+    pageIndicatorClassName:
+      'w-3 h-3 p-0 rounded-full bg-gray-200 border-none cursor-pointer hover:bg-pink-200',
+    currentPageIndicatorClassName: 'bg-pink-500 hover:bg-pink-500',
+  }}
+  scrollDistance="screen"
+>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```

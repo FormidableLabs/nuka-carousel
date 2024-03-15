@@ -1,0 +1,40 @@
+---
+sidebar_position: 4
+---
+
+import { Carousel } from 'nuka-carousel';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+# Styling
+
+## Wrapper Styling
+
+Apply classNames to the `<div>` that contains the `children`. This is likely how you will determine the spacing between items in the carousel.
+
+By default, this wrapper has `display: flex` applied.
+
+### Details
+
+| Prop Name          | Type   | Default Value |
+| :----------------- | :----- | :------------ |
+| `className` | string | `undefined`   |
+
+### Example
+
+<Carousel className="gap-4">
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel className="gap-4">
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```

@@ -1,0 +1,34 @@
+---
+sidebar_position: 2
+---
+
+import { Carousel } from 'nuka-carousel';
+
+# Autoplay
+
+The carousel can advance on its own with a specified interval measured in milliseconds. An `autoplayInterval` without the `autoplay` prop being true will not do anything.
+
+### Details
+
+| Prop Name          | Type    | Default Value |
+| :----------------- | :------ | :------------ |
+| `autoplay`         | boolean | `false`       |
+| `autoplayInterval` | number  | `3000`        |
+
+### Example
+
+<Carousel autoplay={true} autoplayInterval={1000}>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel autoplay={true} autoplayInterval={1000}>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
