@@ -1,18 +1,18 @@
-.overflow {
+.nuka-overflow {
   overflow: scroll;
   scroll-behavior: smooth;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
 
-.overflow::-webkit-scrollbar {
+.nuka-overflow::-webkit-scrollbar {
   display: none;
 }
 
-.wrapper {
+.nuka-wrapper {
   display: flex;
 }
 
-.wrapper--scroll-snapping {
+.nuka-wrapper--scroll-snapping {
   scroll-snap-type: x mandatory;
 }

@@ -238,7 +238,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     return (
       <div>
         <div
-          className="overflow"
+          className="nuka-overflow"
           ref={containerRef}
           onScroll={(event) => {
             setCurrentManualScrollIndex(
@@ -248,7 +248,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
           data-testid="overflow"
         >
           <div
-            className={`wrapper ${className}`}
+            className={`nuka-wrapper ${className}`}
             ref={wrapperRef}
             data-testid="wrapper"
           >
