@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 
 How far the carousel should move when its goForward() and goBack() methods are called.
 
-### Details
+### API
 
 | Prop Name        | Type                          | Default Value |
 | :--------------- | :---------------------------- | :------------ |
@@ -29,15 +29,30 @@ How far the carousel should move when its goForward() and goBack() methods are c
       update on the widths of the slides so you can have multiple widths for
       each slide.
     </p>
-    <Carousel scrollDistance="slide" showForwardBackButtons={true}>
-      <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
-      <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
-      <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+    <Carousel scrollDistance="slide" showPageIndicators>
+      <div className="demo-slide bg-green-500" />
+      <div className="demo-slide bg-red-500" />
+      <div className="demo-slide bg-blue-500" />
+      <div className="demo-slide bg-yellow-500" />
+      <div className="demo-slide bg-gray-500" />
+      <div className="demo-slide bg-orange-500" />
+      <div className="demo-slide bg-blue-700" />
+      <div className="demo-slide bg-red-900" />
+      <div className="demo-slide bg-gray-800" />
+      <div className="demo-slide bg-green-500" />
+      <div className="demo-slide bg-red-500" />
+      <div className="demo-slide bg-blue-500" />
+      <div className="demo-slide bg-yellow-500" />
+      <div className="demo-slide bg-gray-500" />
+      <div className="demo-slide bg-orange-800" />
+      <div className="demo-slide bg-blue-200" />
+      <div className="demo-slide bg-red-900" />
+      <div className="demo-slide bg-gray-400" />
     </Carousel>
     <h4 className="mt-4">Code</h4>
 
 ```tsx
-<Carousel scrollDistance="slide" showForwardBackButtons={true}>
+<Carousel scrollDistance="slide" showPageIndicators>
   <img src="pexels-01.jpg" />
   <img src="pexels-02.jpg" />
   <img src="pexels-03.jpg" />
@@ -49,7 +64,7 @@ How far the carousel should move when its goForward() and goBack() methods are c
     <p>
       Scroll by a fixed distance measured in px. This example scrolls by 100px.
     </p>
-    <Carousel scrollDistance={100} showForwardBackButtons={true}>
+    <Carousel scrollDistance={100} showPageIndicators>
       <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
       <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
       <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
@@ -57,7 +72,7 @@ How far the carousel should move when its goForward() and goBack() methods are c
     <h4 className="mt-4">Code</h4>
 
 ```tsx
-<Carousel scrollDistance={100} showForwardBackButtons={true}>
+<Carousel scrollDistance={100} showPageIndicators>
   <img src="pexels-01.jpg" />
   <img src="pexels-02.jpg" />
   <img src="pexels-03.jpg" />
@@ -69,15 +84,30 @@ How far the carousel should move when its goForward() and goBack() methods are c
     <p>
       Scroll by the width of the "screen" or the container the carousel is in.
     </p>
-    <Carousel scrollDistance="screen" showForwardBackButtons={true}>
-      <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
-      <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
-      <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+    <Carousel scrollDistance="screen" showPageIndicators>
+      <div className="demo-slide bg-green-500" />
+      <div className="demo-slide bg-red-500" />
+      <div className="demo-slide bg-blue-500" />
+      <div className="demo-slide bg-yellow-500" />
+      <div className="demo-slide bg-gray-500" />
+      <div className="demo-slide bg-orange-500" />
+      <div className="demo-slide bg-blue-700" />
+      <div className="demo-slide bg-red-900" />
+      <div className="demo-slide bg-gray-800" />
+      <div className="demo-slide bg-green-500" />
+      <div className="demo-slide bg-red-500" />
+      <div className="demo-slide bg-blue-500" />
+      <div className="demo-slide bg-yellow-500" />
+      <div className="demo-slide bg-gray-500" />
+      <div className="demo-slide bg-orange-800" />
+      <div className="demo-slide bg-blue-200" />
+      <div className="demo-slide bg-red-900" />
+      <div className="demo-slide bg-gray-400" />
     </Carousel>
     <h4 className="mt-4">Code</h4>
 
 ```tsx
-<Carousel scrollDistance="screen" showForwardBackButtons={true}>
+<Carousel scrollDistance="screen" showPageIndicators>
   <img src="pexels-01.jpg" />
   <img src="pexels-02.jpg" />
   <img src="pexels-03.jpg" />
