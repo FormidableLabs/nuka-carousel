@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
+import { useDebounced } from 'src/hooks/use-debounced';
 import { arraySeq, arraySum } from 'src/utils';
 
 type MeasurementProps = {
@@ -18,7 +19,7 @@ export function useMeasurement({
   const [totalPages, setTotalPages] = useState(totalSlides);
   const [scrollOffset, setScrollOffset] = useState(arraySeq(totalPages, 0));
 
-  useEffect(() => {
+  const measure = useCallback(() => {
     // execute before paint to ensure refs are set with the
     // correct dimensions for the calculation
     // note: this is similar to useLayout, but runs async
@@ -65,6 +66,17 @@ export function useMeasurement({
       }
     });
   }, [scrollDistance, totalSlides, containerRef, wrapperRef]);
+
+  // debounce the measure function when resizing so
+  // it doesnt fire on every pixel change
+  const resizer = useDebounced(measure, 100);
+
+  useEffect(() => {
+    measure();
+
+    window.addEventListener('resize', resizer as EventListener);
+    return () => window.removeEventListener('resize', resizer as EventListener);
+  }, [measure, resizer]);
 
   return { totalPages, scrollOffset };
 }
