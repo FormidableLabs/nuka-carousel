@@ -1,3 +1,11 @@
+.nuka-container {
+  position: relative;
+}
+
+.nuka-slide-container {
+  position: relative;
+}
+
 .nuka-overflow {
   overflow: scroll;
   scroll-behavior: smooth;
@@ -17,6 +25,38 @@
   scroll-snap-type: x mandatory;
 }
 
+.nuka-nav {
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.nuka-nav-button {
+  visibility: hidden;
+  margin: 1rem;
+  display: block;
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+  background-color: rgb(229 231 235 / 0.5);
+  color: white;
+  border-radius: 9999px;
+  font-size: 1rem;
+  user-select: none;
+
+  &:hover {
+    background-color: rgb(229 231 235 / 0.65);
+  }
+}
+
+.nuka-nav-button-enabled {
+  visibility: visible;
+}
+
 .nuka-page-container {
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -34,8 +74,9 @@
   border-style: none;
   background-color: rgb(229 231 235 / 1);
 
-  &.active, &.active:hover {
-    background-color: rgb(236 72 153 / 1);
+  &.nuka-page-indicator-active,
+  &.nuka-page-indicator-active:hover {
+    background-color: rgb(236, 72, 153);
   }
 
   &:hover {

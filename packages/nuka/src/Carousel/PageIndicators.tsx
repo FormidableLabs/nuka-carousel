@@ -27,7 +27,7 @@ export const PageIndicators = ({
           className={classNames(
             pageIndicatorClassName || 'nuka-page-indicator',
             currentPageIndex === index
-              ? currentPageIndicatorClassName || 'active'
+              ? currentPageIndicatorClassName || 'nuka-page-indicator-active'
               : ''
           )}
         />

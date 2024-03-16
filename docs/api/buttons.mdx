@@ -1,0 +1,53 @@
+---
+sidebar_position: 2
+---
+
+import { Carousel } from 'nuka-carousel';
+
+# Navigation
+
+The carousel can show buttons to navigate between slides.
+
+### Details
+
+| Prop Name          | Type     | Default Value |
+| :----------------- | :------- | :------------ |
+| `showButtons`          | boolean  | `false`       |
+
+### Example
+
+<Carousel showButtons>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel showButtons>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+### Wraparound
+
+When the `wrapAround` prop is set to `false`, the buttons will be hidden when the first or last slide is active.
+
+<Carousel showButtons wrapAround={false}>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel showButtons wrapAround={false}>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```

@@ -8,12 +8,13 @@ import {
 } from 'react';
 
 import './Carousel.css';
-import { PageIndicators } from '../PageIndicators/PageIndicators';
 import { useInterval } from 'src/hooks/use-interval';
 import { usePaging } from 'src/hooks/use-paging';
 import { useDebounced } from 'src/hooks/use-debounced';
 import { useMeasurement } from 'src/hooks/use-measurement';
 import { nint } from 'src/utils';
+import { NavButtons } from './NavButtons';
+import { PageIndicators } from './PageIndicators';
 
 type ScrollDistanceType = number | 'slide' | 'screen';
 
@@ -28,7 +29,6 @@ export type CarouselProps = CarouselCallbacks & {
   className?: string;
   autoplay?: boolean;
   autoplayInterval?: number;
-  swiping?: boolean;
   pageIndicatorProps?: {
     currentPageIndicatorClassName?: string;
     pageIndicatorClassName?: string;
@@ -36,6 +36,8 @@ export type CarouselProps = CarouselCallbacks & {
   };
   scrollDistance?: ScrollDistanceType;
   showPageIndicators?: boolean;
+  showButtons?: boolean;
+  swiping?: boolean;
   wrapAround?: boolean;
 };
 
@@ -52,6 +54,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       className = '',
       autoplay = false,
       autoplayInterval = 3000,
+      showButtons = false,
       swiping = true,
       pageIndicatorProps,
       scrollDistance = 'slide',
@@ -111,18 +114,36 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       goToPage(closestPageIndex);
     }, 100);
 
+    // -- button nav
+    const enablePrevNavButton = wrapAround || currentPage > 0;
+    const enableNextNavButton = wrapAround || currentPage < totalPages - 1;
+
     return (
-      <div>
-        <div
-          className={`nuka-overflow ${className}`}
-          ref={containerRef}
-          onTouchMove={onContainerScroll}
-          data-testid="overflow"
-          style={{ touchAction: swiping ? 'pan-x' : 'none' }}
-        >
-          <div className="nuka-wrapper" ref={wrapperRef} data-testid="wrapper">
-            {children}
+      <div className={`nuka-container ${className}`}>
+        <div className="nuka-slide-container">
+          <div
+            className="nuka-overflow"
+            ref={containerRef}
+            onTouchMove={onContainerScroll}
+            data-testid="overflow"
+            style={{ touchAction: swiping ? 'pan-x' : 'none' }}
+          >
+            <div
+              className="nuka-wrapper"
+              ref={wrapperRef}
+              data-testid="wrapper"
+            >
+              {children}
+            </div>
           </div>
+          {showButtons && (
+            <NavButtons
+              goBack={goBack}
+              goForward={goForward}
+              enablePrevNavButton={enablePrevNavButton}
+              enableNextNavButton={enableNextNavButton}
+            />
+          )}
         </div>
         {showPageIndicators && (
           <PageIndicators
