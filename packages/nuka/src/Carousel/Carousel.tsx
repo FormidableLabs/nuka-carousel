@@ -144,16 +144,12 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     return (
       <div>
         <div
-          className="nuka-overflow"
+          className={`nuka-overflow ${className}`}
           ref={containerRef}
           onTouchMove={onContainerScroll}
           data-testid="overflow"
         >
-          <div
-            className={`nuka-wrapper ${className}`}
-            ref={wrapperRef}
-            data-testid="wrapper"
-          >
+          <div className="nuka-wrapper" ref={wrapperRef} data-testid="wrapper">
             {children}
           </div>
         </div>

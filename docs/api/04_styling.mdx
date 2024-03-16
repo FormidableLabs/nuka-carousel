@@ -11,9 +11,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## Wrapper Styling
 
-Apply classNames to the `<div>` that contains the `children`. This is likely how you will determine the spacing between items in the carousel.
-
-By default, this wrapper has `display: flex` applied.
+Apply css classes to the carousel container.
 
 ### Details
 
@@ -23,22 +21,24 @@ By default, this wrapper has `display: flex` applied.
 
 ### Example
 
-<Carousel showPageIndicators className="gap-4">
-  <div className="demo-slide bg-green-500" />
-  <div className="demo-slide bg-red-500" />
-  <div className="demo-slide bg-blue-500" />
-  <div className="demo-slide bg-yellow-500" />
-  <div className="demo-slide bg-gray-500" />
-  <div className="demo-slide bg-orange-500" />
-  <div className="demo-slide bg-blue-700" />
-  <div className="demo-slide bg-red-900" />
-  <div className="demo-slide bg-gray-800" />
+<Carousel
+  scrollDistance="screen"
+  showPageIndicators
+  className="border-8 border-pink-500 border-solid"
+>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
 </Carousel>
 
 #### Code
 
 ```tsx
-<Carousel showPageIndicators className="gap-4">
+<Carousel
+  scrollDistance="screen"
+  showPageIndicators
+  className="border-8 border-pink-500 border-solid"
+>
   <img src="pexels-01.jpg" />
   <img src="pexels-02.jpg" />
   <img src="pexels-03.jpg" />
