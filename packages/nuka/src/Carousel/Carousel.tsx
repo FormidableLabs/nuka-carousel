@@ -13,6 +13,7 @@ import { PageIndicators } from '../PageIndicators/PageIndicators';
 import { useInterval } from 'src/hooks/use-interval';
 import { usePaging } from 'src/hooks/use-paging';
 import { useDebounced } from 'src/hooks/use-debounced';
+import { arraySeq, arraySum, nint } from 'src/utils';
 
 type ScrollDistanceType = number | 'slide' | 'screen';
 
@@ -58,7 +59,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
 
     const totalSlides = Children.count(children);
     const [totalPages, setTotalPages] = useState(totalSlides);
-    const [scrollOffset, setScrollOffset] = useState(0);
+    const [scrollOffset, setScrollOffset] = useState(arraySeq(totalPages, 0));
     const { currentPage, goBack, goForward, goToPage } = usePaging(totalPages);
 
     // -- update page count and scroll offset based on scroll distance
@@ -70,21 +71,27 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
         switch (scrollDistance) {
           case 'screen': {
             if (containerRef.current && wrapperRef.current) {
-              setTotalPages(
-                Math.ceil(
-                  containerRef.current.scrollWidth /
-                    containerRef.current.offsetWidth
-                )
+              const pageCount = Math.ceil(
+                wrapperRef.current.scrollWidth /
+                  containerRef.current.offsetWidth
               );
-              setScrollOffset(containerRef.current.offsetWidth);
+              setTotalPages(pageCount);
+              setScrollOffset(
+                arraySeq(pageCount, containerRef.current.offsetWidth)
+              );
             }
             break;
           }
           case 'slide': {
             if (wrapperRef.current) {
+              // creates an array of slide widths in order to support
+              // slides of varying widths as children
+              const offsets = Array.from(wrapperRef.current.children).map(
+                (child) => (child as HTMLElement).offsetWidth
+              );
+
               setTotalPages(totalSlides);
-              const firstChild = wrapperRef.current.firstChild as HTMLElement;
-              setScrollOffset(firstChild.offsetWidth);
+              setScrollOffset(arraySum([0, ...offsets.slice(0, -1)]));
             }
             break;
           }
@@ -94,8 +101,11 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
                 containerRef.current.scrollWidth -
                 containerRef.current.offsetWidth;
 
-              setTotalPages(Math.ceil(carouselTotalWidth / scrollDistance) + 1);
-              setScrollOffset(scrollDistance);
+              const pageCount =
+                Math.ceil(carouselTotalWidth / scrollDistance) + 1;
+
+              setTotalPages(pageCount);
+              setScrollOffset(arraySeq(pageCount, scrollDistance));
             }
           }
         }
@@ -109,7 +119,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     useEffect(() => {
       if (containerRef.current) {
         beforeSlide && beforeSlide();
-        containerRef.current.scrollLeft = currentPage * scrollOffset;
+        containerRef.current.scrollLeft = scrollOffset[currentPage];
         afterSlide && setTimeout(() => afterSlide(), 0);
       }
     }, [currentPage, scrollOffset, beforeSlide, afterSlide]);
@@ -127,7 +137,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
 
       // find the closest page index based on the scroll position
       const scrollLeft = containerRef.current.scrollLeft;
-      const closestPageIndex = Math.round(scrollLeft / scrollOffset);
+      const closestPageIndex = nint(scrollOffset, scrollLeft);
       goToPage(closestPageIndex);
     }, 100);
 
