@@ -28,6 +28,7 @@ export type CarouselProps = CarouselCallbacks & {
   className?: string;
   autoplay?: boolean;
   autoplayInterval?: number;
+  swiping?: boolean;
   pageIndicatorProps?: {
     currentPageIndicatorClassName?: string;
     pageIndicatorClassName?: string;
@@ -51,6 +52,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       className = '',
       autoplay = false,
       autoplayInterval = 3000,
+      swiping = true,
       pageIndicatorProps,
       scrollDistance = 'slide',
       showPageIndicators = false,
@@ -103,7 +105,9 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
 
       // find the closest page index based on the scroll position
       const scrollLeft = containerRef.current.scrollLeft;
-      const closestPageIndex = nint(scrollOffset, scrollLeft);
+      const closestPageIndex = scrollOffset.indexOf(
+        nint(scrollOffset, scrollLeft)
+      );
       goToPage(closestPageIndex);
     }, 100);
 
@@ -114,6 +118,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
           ref={containerRef}
           onTouchMove={onContainerScroll}
           data-testid="overflow"
+          style={{ touchAction: swiping ? 'pan-x' : 'none' }}
         >
           <div className="nuka-wrapper" ref={wrapperRef} data-testid="wrapper">
             {children}

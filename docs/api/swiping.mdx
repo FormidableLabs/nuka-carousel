@@ -1,0 +1,67 @@
+---
+sidebar_position: 5
+---
+
+import { Carousel } from 'nuka-carousel';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Swiping
+
+By default the carousel will allow you to drag the carousel to the next slide. You can disable this by setting the `swiping` prop to `false`. This is only enabled on mobile devices.
+
+### API
+
+| Prop Name  | Type      | Default Value |
+| :--------- | :-------- | :------------ |
+| `swiping`  | `boolean` | `true`        |
+
+### Enabled (default)
+
+<Carousel scrollDistance="slide" showPageIndicators>
+  <div className="demo-slide bg-green-500" />
+  <div className="demo-slide bg-red-500" />
+  <div className="demo-slide bg-blue-500" />
+  <div className="demo-slide bg-yellow-500" />
+  <div className="demo-slide bg-gray-500" />
+  <div className="demo-slide bg-orange-500" />
+  <div className="demo-slide bg-blue-700" />
+  <div className="demo-slide bg-red-900" />
+  <div className="demo-slide bg-gray-800" />
+  <div className="demo-slide bg-green-500" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel scrollDistance="slide" showPageIndicators>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+### Disabled
+
+<Carousel scrollDistance="slide" showPageIndicators swiping={false}>
+  <div className="demo-slide bg-green-500" />
+  <div className="demo-slide bg-red-500" />
+  <div className="demo-slide bg-blue-500" />
+  <div className="demo-slide bg-yellow-500" />
+  <div className="demo-slide bg-gray-500" />
+  <div className="demo-slide bg-orange-500" />
+  <div className="demo-slide bg-blue-700" />
+  <div className="demo-slide bg-red-900" />
+  <div className="demo-slide bg-gray-800" />
+  <div className="demo-slide bg-green-500" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel scrollDistance="slide" showPageIndicators swiping={false}>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
