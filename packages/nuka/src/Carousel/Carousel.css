@@ -16,3 +16,29 @@
 .nuka-wrapper--scroll-snapping {
   scroll-snap-type: x mandatory;
 }
+
+.nuka-page-container {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.nuka-page-indicator {
+  width: 0.75rem;
+  height: 0.75rem;
+  cursor: pointer;
+  border-radius: 9999px;
+  border-style: none;
+  background-color: rgb(229 231 235 / 1);
+
+  &.active, &.active:hover {
+    background-color: rgb(236 72 153 / 1);
+  }
+
+  &:hover {
+    background-color: rgb(236, 234, 90);
+  }
+}

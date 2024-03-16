@@ -16,15 +16,7 @@ Indicators that show what page the carousel is on. These pages are calculated fr
 
 ### Example
 
-<Carousel
-  showPageIndicators={true}
-  pageIndicatorProps={{
-    containerClassName: 'flex items-center justify-center py-4 gap-2',
-    pageIndicatorClassName:
-      'w-3 h-3 p-0 rounded-full bg-gray-200 border-none cursor-pointer hover:bg-pink-200',
-    currentPageIndicatorClassName: 'bg-pink-500 hover:bg-pink-500',
-  }}
->
+<Carousel showPageIndicators>
   <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
   <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
   <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
@@ -33,7 +25,7 @@ Indicators that show what page the carousel is on. These pages are calculated fr
 #### Code
 
 ```tsx
-<Carousel showPageIndicators={true}>
+<Carousel showPageIndicators>
   <img src="pexels-01.jpg" />
   <img src="pexels-02.jpg" />
   <img src="pexels-03.jpg" />
@@ -54,14 +46,13 @@ Indicators that show what page the carousel is on. These pages are calculated fr
 ### Example
 
 <Carousel
-  showPageIndicators={true}
+  showPageIndicators
   pageIndicatorProps={{
-    containerClassName: 'flex items-center justify-center py-4 gap-2',
+    containerClassName: 'flex items-center py-4 gap-1',
     pageIndicatorClassName:
-      'w-3 h-3 p-0 rounded-full bg-gray-200 border-none cursor-pointer hover:bg-pink-200',
-    currentPageIndicatorClassName: 'bg-pink-500 hover:bg-pink-500',
+      'w-3 h-3 p-0 rounded-full bg-gray-200 border-none cursor-pointer hover:bg-green-200',
+    currentPageIndicatorClassName: 'bg-green-500 hover:bg-green-500',
   }}
-  scrollDistance="screen"
 >
   <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
   <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
@@ -72,14 +63,13 @@ Indicators that show what page the carousel is on. These pages are calculated fr
 
 ```tsx
 <Carousel
-  showPageIndicators={true}
+  showPageIndicators
   pageIndicatorProps={{
-    containerClassName: 'flex items-center justify-center py-4 gap-2',
+    containerClassName: 'flex items-center py-4 gap-1',
     pageIndicatorClassName:
-      'w-3 h-3 p-0 rounded-full bg-gray-200 border-none cursor-pointer hover:bg-pink-200',
-    currentPageIndicatorClassName: 'bg-pink-500 hover:bg-pink-500',
+      'w-3 h-3 p-0 rounded-full bg-gray-200 border-none cursor-pointer hover:bg-green-200',
+    currentPageIndicatorClassName: 'bg-green-500 hover:bg-green-500',
   }}
-  scrollDistance="screen"
 >
   <img src="pexels-01.jpg" />
   <img src="pexels-02.jpg" />
