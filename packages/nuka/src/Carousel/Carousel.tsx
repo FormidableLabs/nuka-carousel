@@ -1,14 +1,18 @@
 import {
-  ReactNode,
+  Children,
   forwardRef,
-  useCallback,
+  ReactNode,
   useEffect,
   useImperativeHandle,
   useRef,
   useState,
 } from 'react';
+
 import './Carousel.css';
 import { PageIndicators } from '../PageIndicators/PageIndicators';
+import { useInterval } from 'src/hooks/use-interval';
+import { usePaging } from 'src/hooks/use-paging';
+import { useDebounced } from 'src/hooks/use-debounced';
 
 type ScrollDistanceType = number | 'slide' | 'screen';
 
@@ -34,19 +38,6 @@ export type SlideHandle = {
   goToIndex: (proposedIndex: number) => void;
 };
 
-enum SlideDirection {
-  Back = 'back',
-  Forward = 'forward',
-}
-
-const findLastIndex = (
-  array: number[],
-  findFunction: (index: number) => boolean
-) => {
-  const arrayCopy = [...array];
-  return array.length - 1 - arrayCopy.reverse().findIndex(findFunction);
-};
-
 export const Carousel = forwardRef<SlideHandle, CarouselProps>(
   (
     {
@@ -62,189 +53,90 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     }: CarouselProps,
     ref
   ) => {
-    const [currentScrollIndex, setCurrentScrollIndex] = useState(0);
-    const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-    const [currentManualScrollIndex, setCurrentManualScrollIndex] = useState(0);
-    const [pageStartIndices, setPageStartIndices] = useState<number[]>([]);
-
     const containerRef = useRef<HTMLDivElement | null>(null);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-    const isFirstRender = useRef(true);
+    const totalSlides = Children.count(children);
+    const [totalPages, setTotalPages] = useState(totalSlides);
+    const [scrollOffset, setScrollOffset] = useState(0);
+    const { currentPage, goBack, goForward, goToPage } = usePaging(totalPages);
 
+    // -- update page count and scroll offset based on scroll distance
     useEffect(() => {
-      if (isFirstRender.current) {
-        isFirstRender.current = false;
-      } else if (containerRef.current) {
-        beforeSlide && beforeSlide();
-        containerRef.current.scroll(currentScrollIndex, 0);
-        afterSlide && setTimeout(() => afterSlide(), 0);
-      }
-    }, [currentScrollIndex, beforeSlide, afterSlide]);
-
-    useEffect(() => {
-      const handleDebounce = setTimeout(() => {
-        const roundedManualScrollIndex = Math.round(currentManualScrollIndex);
-        const closestPassedSlide = pageStartIndices.reduce(
-          (prev, current, index) =>
-            current - roundedManualScrollIndex < 0 ? index + 1 : prev,
-          0
-        );
-        setCurrentSlideIndex(closestPassedSlide);
-      }, 100);
-
-      return () => {
-        clearTimeout(handleDebounce);
-      };
-    }, [currentManualScrollIndex, pageStartIndices]);
-
-    const handleScrollAction = useCallback(
-      ({
-        slideDirection,
-        proposedIndex,
-      }: {
-        slideDirection?: SlideDirection;
-        proposedIndex?: number;
-      }) => {
-        const totalSlides = pageStartIndices.length;
-
-        const passedProposedIndex =
-          proposedIndex && Math.min(Math.max(0, proposedIndex), totalSlides);
-
-        const proposedSlideIndex =
-          typeof passedProposedIndex === 'number'
-            ? passedProposedIndex
-            : currentSlideIndex +
-              (slideDirection === SlideDirection.Forward ? 1 : -1);
-
-        setCurrentScrollIndex(
-          pageStartIndices[
-            proposedSlideIndex < 0
-              ? totalSlides + proposedSlideIndex
-              : proposedSlideIndex % totalSlides
-          ]
-        );
-        setCurrentSlideIndex(proposedSlideIndex);
-      },
-      [pageStartIndices, currentSlideIndex]
-    );
-
-    useEffect(() => {
-      if (autoplay) {
-        const autoplayTimeout = setTimeout(() => {
-          handleScrollAction({ slideDirection: SlideDirection.Forward });
-        }, autoplayInterval);
-        return () => clearTimeout(autoplayTimeout);
-      }
-    }, [autoplay, autoplayInterval, handleScrollAction, scrollDistance]);
-
-    useEffect(() => {
-      const updateIndices = () => {
-        if (wrapperRef.current && containerRef.current) {
-          const wrapperCurrent = wrapperRef.current;
-          const containerRefOffsetLeft = containerRef.current.offsetLeft;
-
-          const lastChild = wrapperCurrent.lastChild as HTMLElement;
-          const carouselTotalWidth =
-            lastChild.offsetLeft +
-            lastChild.offsetWidth -
-            wrapperCurrent.offsetLeft;
-
-          let proposedPageStartIndices = [];
-
-          if (scrollDistance === 'slide') {
-            proposedPageStartIndices = Array.from(wrapperCurrent.children).map(
-              (child) =>
-                (child as HTMLElement).offsetLeft - containerRefOffsetLeft
-            );
-          } else {
-            if (typeof scrollDistance === 'number') {
-              proposedPageStartIndices = Array.from(
-                {
-                  length: carouselTotalWidth / scrollDistance,
-                },
-                (_, index) => index * scrollDistance
+      // execute before paint to ensure refs are set with the
+      // correct dimensions for the calculation
+      // note: this is similar to useLayout, but runs async
+      requestAnimationFrame(() => {
+        switch (scrollDistance) {
+          case 'screen': {
+            if (containerRef.current && wrapperRef.current) {
+              setTotalPages(
+                Math.ceil(
+                  containerRef.current.scrollWidth /
+                    containerRef.current.offsetWidth
+                )
               );
-            } else {
-              const arrayLength = Math.ceil(
-                carouselTotalWidth / wrapperCurrent.offsetWidth
-              );
-              proposedPageStartIndices = Array.from(
-                {
-                  length: arrayLength,
-                },
-                (_, index) => {
-                  if (index === arrayLength - 1) {
-                    return carouselTotalWidth - wrapperCurrent.offsetWidth;
-                  }
-                  return wrapperCurrent.offsetWidth * index;
-                }
-              );
+              setScrollOffset(containerRef.current.offsetWidth);
+            }
+            break;
+          }
+          case 'slide': {
+            if (wrapperRef.current) {
+              setTotalPages(totalSlides);
+              const firstChild = wrapperRef.current.firstChild as HTMLElement;
+              setScrollOffset(firstChild.offsetWidth);
+            }
+            break;
+          }
+          default: {
+            if (containerRef.current && typeof scrollDistance === 'number') {
+              const carouselTotalWidth =
+                containerRef.current.scrollWidth -
+                containerRef.current.offsetWidth;
+
+              setTotalPages(Math.ceil(carouselTotalWidth / scrollDistance) + 1);
+              setScrollOffset(scrollDistance);
             }
           }
-
-          const lastIndexInView =
-            findLastIndex(
-              proposedPageStartIndices,
-              (index) => index < carouselTotalWidth - wrapperCurrent.offsetWidth
-            ) + 2;
-
-          setPageStartIndices(
-            proposedPageStartIndices.slice(0, lastIndexInView)
-          );
         }
-      };
+      });
+    }, [scrollDistance, totalSlides]);
 
-      window.addEventListener('resize', updateIndices);
-      updateIndices();
+    // -- autoplay
+    useInterval(goForward, autoplayInterval, autoplay);
 
-      return () => window.removeEventListener('resize', updateIndices);
-    }, [scrollDistance, wrapperRef, containerRef]);
-
-    const getCurrentPageIndex = useCallback(() => {
+    // -- scroll container when page index changes
+    useEffect(() => {
       if (containerRef.current) {
-        const containerScrollDistance = containerRef.current.scrollLeft;
-
-        return containerScrollDistance === 0
-          ? 0
-          : findLastIndex(
-              pageStartIndices,
-              (index) => Math.round(containerScrollDistance) >= index
-            );
+        beforeSlide && beforeSlide();
+        containerRef.current.scrollLeft = currentPage * scrollOffset;
+        afterSlide && setTimeout(() => afterSlide(), 0);
       }
-      return 0;
-    }, [containerRef, pageStartIndices]);
+    }, [currentPage, scrollOffset, beforeSlide, afterSlide]);
 
-    const getTotalNumberOfPages = useCallback(() => {
-      return pageStartIndices.length;
-    }, [pageStartIndices]);
-
+    // -- forward events to ref
     useImperativeHandle(
       ref,
-      () => ({
-        goForward() {
-          handleScrollAction({ slideDirection: SlideDirection.Forward });
-        },
-        goBack() {
-          handleScrollAction({ slideDirection: SlideDirection.Back });
-        },
-        goToIndex(proposedIndex: number) {
-          handleScrollAction({ proposedIndex });
-        },
-      }),
-      [handleScrollAction]
+      () => ({ goForward, goBack, goToIndex: goToPage }),
+      [goForward, goBack, goToPage]
     );
+
+    // -- handle touch scroll events
+    const onContainerScroll = useDebounced(() => {
+      if (!containerRef.current) return;
+
+      // find the closest page index based on the scroll position
+      const scrollLeft = containerRef.current.scrollLeft;
+      const closestPageIndex = Math.round(scrollLeft / scrollOffset);
+      goToPage(closestPageIndex);
+    }, 100);
 
     return (
       <div>
         <div
           className="nuka-overflow"
           ref={containerRef}
-          onScroll={(event) => {
-            setCurrentManualScrollIndex(
-              (event.target as HTMLElement).scrollLeft
-            );
-          }}
+          onTouchMove={onContainerScroll}
           data-testid="overflow"
         >
           <div
@@ -257,11 +149,9 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
         </div>
         {showPageIndicators && (
           <PageIndicators
-            totalIndicators={getTotalNumberOfPages()}
-            currentPageIndex={getCurrentPageIndex()}
-            scrollToPage={(index: number) =>
-              setCurrentScrollIndex(pageStartIndices[index])
-            }
+            totalIndicators={totalPages}
+            currentPageIndex={currentPage}
+            scrollToPage={goToPage}
             {...pageIndicatorProps}
           />
         )}
