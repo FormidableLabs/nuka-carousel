@@ -7,7 +7,10 @@ type UsePagingReturnType = {
   goBack: () => void;
 };
 
-export function usePaging(totalSlides: number): UsePagingReturnType {
+export function usePaging(
+  totalSlides: number,
+  wrapAround: boolean
+): UsePagingReturnType {
   const [currentPage, setCurrentPage] = useState(0);
 
   const goToPage = (idx: number) => {
@@ -16,11 +19,19 @@ export function usePaging(totalSlides: number): UsePagingReturnType {
   };
 
   const goForward = () => {
-    setCurrentPage((prev) => (prev + 1) % totalSlides);
+    if (wrapAround) {
+      setCurrentPage((prev) => (prev + 1) % totalSlides);
+    } else {
+      setCurrentPage((prev) => Math.min(prev + 1, totalSlides - 1));
+    }
   };
 
   const goBack = () => {
-    setCurrentPage((prev) => (prev - 1 + totalSlides) % totalSlides);
+    if (wrapAround) {
+      setCurrentPage((prev) => (prev - 1 + totalSlides) % totalSlides);
+    } else {
+      setCurrentPage((prev) => Math.max(prev - 1, 0));
+    }
   };
 
   return { currentPage, goToPage, goForward, goBack };

@@ -17,20 +17,25 @@ import { arraySeq, arraySum, nint } from 'src/utils';
 
 type ScrollDistanceType = number | 'slide' | 'screen';
 
-export type CarouselProps = {
+export type CarouselCallbacks = {
+  beforeSlide?: () => void;
+  afterSlide?: () => void;
+};
+
+export type CarouselProps = CarouselCallbacks & {
   children: ReactNode;
-  scrollDistance?: ScrollDistanceType;
+
   className?: string;
   autoplay?: boolean;
   autoplayInterval?: number;
-  showPageIndicators?: boolean;
   pageIndicatorProps?: {
     currentPageIndicatorClassName?: string;
     pageIndicatorClassName?: string;
     containerClassName?: string;
   };
-  beforeSlide?: () => void;
-  afterSlide?: () => void;
+  scrollDistance?: ScrollDistanceType;
+  showPageIndicators?: boolean;
+  wrapAround?: boolean;
 };
 
 export type SlideHandle = {
@@ -44,11 +49,12 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     {
       children,
       className = '',
-      scrollDistance = 'slide',
       autoplay = false,
       autoplayInterval = 3000,
-      showPageIndicators = false,
       pageIndicatorProps,
+      scrollDistance = 'slide',
+      showPageIndicators = false,
+      wrapAround = true,
       beforeSlide,
       afterSlide,
     }: CarouselProps,
@@ -60,7 +66,10 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     const totalSlides = Children.count(children);
     const [totalPages, setTotalPages] = useState(totalSlides);
     const [scrollOffset, setScrollOffset] = useState(arraySeq(totalPages, 0));
-    const { currentPage, goBack, goForward, goToPage } = usePaging(totalPages);
+    const { currentPage, goBack, goForward, goToPage } = usePaging(
+      totalPages,
+      wrapAround
+    );
 
     // -- update page count and scroll offset based on scroll distance
     useEffect(() => {

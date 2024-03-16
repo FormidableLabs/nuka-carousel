@@ -1,1 +1,1 @@
-export { Carousel, SlideHandle } from './Carousel/Carousel';
+export * from './Carousel/Carousel';

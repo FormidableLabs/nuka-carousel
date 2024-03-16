@@ -1,0 +1,47 @@
+---
+sidebar_position: 2
+title: Wraparound
+slug: /
+---
+
+import { BasicButtonDemo } from '../../website/src/components/basic-button-demo';
+
+# Wraparound
+
+By default, the carousel will wrap around when it reaches the end of the slide set. This means that if you are on the last slide and you click next, it will go to the first slide.
+
+### API
+
+| Prop Name    | Type      | Default Value |
+| :----------- | :-------- | :------------ |
+| `wrapAround` | `boolean` | `true`        |
+
+Nuka Carousel accepts any React component as children, and will render them as slides.
+
+#### Enabled (default)
+
+<BasicButtonDemo autoplay={false} />
+
+#### Code
+
+```tsx
+<Carousel>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+#### Disabled
+
+<BasicButtonDemo autoplay={false} wrapAround={false} />
+
+#### Code
+
+```tsx
+<Carousel wrapAround={false}>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
