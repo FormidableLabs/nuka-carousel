@@ -5,9 +5,6 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "engines": {
-    "node": ">=12.0.0"
-  },
   "scripts": {
     "build": "tsup",
     "build:watch": "tsup --watch",
@@ -18,13 +15,11 @@
     "prettier": "prettier \"**/*.{js,json,ts,tsx,css,md}\"",
     "prettier:fix": "prettier \"**/*.{js,json,ts,tsx,css,md}\" --write",
     "preversion": "pnpm run check",
-    "test": "pnpm run test:unit && pnpm run test:e2e",
-    "test:ci": "pnpm run test:unit:ci && pnpm run test:e2e:ci",
-    "test:unit": "jest --testPathIgnorePatterns=\\(/cypress /es /lib\\)",
+    "test": "pnpm run test:unit",
+    "test:ci": "pnpm run test:unit:ci",
+    "test:unit": "jest --testPathIgnorePatterns=\\(/es /lib\\)",
     "test:unit:ci": "pnpm run test:unit",
     "test:unit:watch": "pnpm run test:unit --watchAll",
-    "test:e2e": "cypress open",
-    "test:e2e:ci": "cypress run",
     "test:storybook": "test-storybook",
     "package": "pnpm pack",
     "prepublishOnly": "shx cp ../../README.md ./README.md && shx cp ../../LICENSE ./LICENSE && pnpm run build",
