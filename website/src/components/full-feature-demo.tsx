@@ -30,7 +30,7 @@ export const FullFeatureDemo = () => {
       <Carousel
         showPageIndicators
         showButtons
-        scrollDistance="screen"
+        scrollDistance="slide"
         wrapAround={false}
       >
         <FeatureCard

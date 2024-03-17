@@ -9,17 +9,12 @@ const config = {
   title: 'Nuka Carousel',
   tagline:
     'Small, fast, and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site.',
-  url: 'https://formidable.com',
+  url: 'https://commerce.nearform.com',
   baseUrl:
     process.env.VERCEL_ENV === 'preview' ? '/' : '/open-source/nuka-carousel',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
-
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'Formidable',
-  projectName: 'nuka-carousel', // Usually your repo name.
+  favicon: 'img/nearform-icon.svg',
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -68,8 +63,8 @@ const config = {
       navbar: {
         title: 'Nuka Carousel',
         logo: {
-          alt: 'Formidable logo',
-          src: 'img/formidable-f.svg',
+          alt: 'Nearform logo',
+          src: 'img/nearform-logo-white.svg',
         },
         items: [
           {
@@ -78,17 +73,17 @@ const config = {
             'aria-label': 'GitHub Repository',
             position: 'right',
           },
-          {
-            href: 'https://formidable.com',
-            className: 'header-formidable-link',
-            'aria-label': 'Formidable Website',
-            position: 'right',
-          },
         ],
       },
       footer: {
-        style: 'dark',
-        copyright: `Copyright © ${new Date().getFullYear()} Formidable`,
+        logo: {
+          alt: 'Nearform logo',
+          src: 'img/nearform-logo-white.svg',
+          href: 'https://nearform.com',
+          width: 100,
+          height: 100,
+        },
+        copyright: `Copyright © 2013-${new Date().getFullYear()} Nearform`,
       },
       prism: {
         theme: lightCodeTheme,
