@@ -4,19 +4,17 @@ import { useDebounced } from 'src/hooks/use-debounced';
 import { arraySeq, arraySum } from 'src/utils';
 
 type MeasurementProps = {
-  totalSlides: number;
   scrollDistance: number | 'slide' | 'screen';
   containerRef: React.RefObject<HTMLDivElement>;
   wrapperRef: React.RefObject<HTMLDivElement>;
 };
 
 export function useMeasurement({
-  totalSlides,
   scrollDistance,
   containerRef,
   wrapperRef,
 }: MeasurementProps) {
-  const [totalPages, setTotalPages] = useState(totalSlides);
+  const [totalPages, setTotalPages] = useState(0);
   const [scrollOffset, setScrollOffset] = useState(arraySeq(totalPages, 0));
 
   const measure = useCallback(() => {
@@ -45,8 +43,17 @@ export function useMeasurement({
               (child) => (child as HTMLElement).offsetWidth
             );
 
-            setTotalPages(totalSlides);
-            setScrollOffset(arraySum([0, ...offsets.slice(0, -1)]));
+            const scrollOffsets = arraySum([0, ...offsets.slice(0, -1)]);
+
+            // find the index of the scroll offset that is greater than
+            // the remainder of the full width and window width
+            const remainder =
+              wrapperRef.current.scrollWidth - wrapperRef.current.offsetWidth;
+            const pageCount =
+              scrollOffsets.findIndex((offset) => offset >= remainder) + 1;
+
+            setTotalPages(pageCount);
+            setScrollOffset(scrollOffsets);
           }
           break;
         }
@@ -65,7 +72,7 @@ export function useMeasurement({
         }
       }
     });
-  }, [scrollDistance, totalSlides, containerRef, wrapperRef]);
+  }, [scrollDistance, containerRef, wrapperRef]);
 
   // debounce the measure function when resizing so
   // it doesnt fire on every pixel change

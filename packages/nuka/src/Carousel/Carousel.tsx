@@ -1,5 +1,4 @@
 import {
-  Children,
   forwardRef,
   ReactNode,
   useEffect,
@@ -69,9 +68,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 
     // -- update page count and scroll offset based on scroll distance
-    const totalSlides = Children.count(children);
     const { totalPages, scrollOffset } = useMeasurement({
-      totalSlides,
       scrollDistance,
       containerRef,
       wrapperRef,
