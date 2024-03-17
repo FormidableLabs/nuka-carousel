@@ -7,28 +7,33 @@ type UsePagingReturnType = {
   goBack: () => void;
 };
 
-export function usePaging(
-  totalSlides: number,
-  wrapAround: boolean
-): UsePagingReturnType {
+type PagingProps = {
+  totalPages: number;
+  wrapAround: boolean;
+};
+
+export function usePaging({
+  totalPages,
+  wrapAround,
+}: PagingProps): UsePagingReturnType {
   const [currentPage, setCurrentPage] = useState(0);
 
   const goToPage = (idx: number) => {
-    if (idx < 0 || idx >= totalSlides) return;
+    if (idx < 0 || idx >= totalPages) return;
     setCurrentPage(idx);
   };
 
   const goForward = () => {
     if (wrapAround) {
-      setCurrentPage((prev) => (prev + 1) % totalSlides);
+      setCurrentPage((prev) => (prev + 1) % totalPages);
     } else {
-      setCurrentPage((prev) => Math.min(prev + 1, totalSlides - 1));
+      setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
     }
   };
 
   const goBack = () => {
     if (wrapAround) {
-      setCurrentPage((prev) => (prev - 1 + totalSlides) % totalSlides);
+      setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
     } else {
       setCurrentPage((prev) => Math.max(prev - 1, 0));
     }

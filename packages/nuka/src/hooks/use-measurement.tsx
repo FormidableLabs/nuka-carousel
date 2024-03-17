@@ -4,15 +4,13 @@ import { useDebounced } from 'src/hooks/use-debounced';
 import { arraySeq, arraySum } from 'src/utils';
 
 type MeasurementProps = {
-  scrollDistance: number | 'slide' | 'screen';
   containerRef: React.RefObject<HTMLDivElement>;
-  wrapperRef: React.RefObject<HTMLDivElement>;
+  scrollDistance: number | 'slide' | 'screen';
 };
 
 export function useMeasurement({
-  scrollDistance,
   containerRef,
-  wrapperRef,
+  scrollDistance,
 }: MeasurementProps) {
   const [totalPages, setTotalPages] = useState(0);
   const [scrollOffset, setScrollOffset] = useState(arraySeq(totalPages, 0));
@@ -22,49 +20,46 @@ export function useMeasurement({
     // correct dimensions for the calculation
     // note: this is similar to useLayout, but runs async
     requestAnimationFrame(() => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      // determine the width of the content that is not visible (overflow)
+      const remainder = container.scrollWidth - container.offsetWidth;
+
       switch (scrollDistance) {
         case 'screen': {
-          if (containerRef.current && wrapperRef.current) {
-            const pageCount = Math.ceil(
-              wrapperRef.current.scrollWidth / containerRef.current.offsetWidth
-            );
-            setTotalPages(pageCount);
-            setScrollOffset(
-              arraySeq(pageCount, containerRef.current.offsetWidth)
-            );
-          }
+          const pageCount = Math.ceil(
+            container.scrollWidth / container.offsetWidth
+          );
+          setTotalPages(pageCount);
+          setScrollOffset(arraySeq(pageCount, container.offsetWidth));
           break;
         }
         case 'slide': {
-          if (wrapperRef.current) {
-            // creates an array of slide widths in order to support
-            // slides of varying widths as children
-            const offsets = Array.from(wrapperRef.current.children).map(
-              (child) => (child as HTMLElement).offsetWidth
-            );
+          // creates an array of slide widths in order to support
+          // slides of varying widths as children
+          const children =
+            container.querySelector('#nuka-wrapper')?.children || [];
+          const offsets = Array.from(children).map(
+            (child) => (child as HTMLElement).offsetWidth
+          );
 
-            const scrollOffsets = arraySum([0, ...offsets.slice(0, -1)]);
+          const scrollOffsets = arraySum([0, ...offsets.slice(0, -1)]);
 
-            // find the index of the scroll offset that is greater than
-            // the remainder of the full width and window width
-            const remainder =
-              wrapperRef.current.scrollWidth - wrapperRef.current.offsetWidth;
-            const pageCount =
-              scrollOffsets.findIndex((offset) => offset >= remainder) + 1;
+          // find the index of the scroll offset that is greater than
+          // the remainder of the full width and window width
+          const pageCount =
+            scrollOffsets.findIndex((offset) => offset >= remainder) + 1;
 
-            setTotalPages(pageCount);
-            setScrollOffset(scrollOffsets);
-          }
+          setTotalPages(pageCount);
+          setScrollOffset(scrollOffsets);
           break;
         }
         default: {
-          if (containerRef.current && typeof scrollDistance === 'number') {
-            const carouselTotalWidth =
-              containerRef.current.scrollWidth -
-              containerRef.current.offsetWidth;
-
-            const pageCount =
-              Math.ceil(carouselTotalWidth / scrollDistance) + 1;
+          if (typeof scrollDistance === 'number') {
+            // find the number of pages required to scroll the all slides
+            // to the end of the container
+            const pageCount = Math.ceil(remainder / scrollDistance) + 1;
 
             setTotalPages(pageCount);
             setScrollOffset(arraySeq(pageCount, scrollDistance));
@@ -72,7 +67,7 @@ export function useMeasurement({
         }
       }
     });
-  }, [scrollDistance, containerRef, wrapperRef]);
+  }, [scrollDistance, containerRef]);
 
   // debounce the measure function when resizing so
   // it doesnt fire on every pixel change

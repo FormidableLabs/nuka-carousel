@@ -65,20 +65,18 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     ref
   ) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const wrapperRef = useRef<HTMLDivElement | null>(null);
 
     // -- update page count and scroll offset based on scroll distance
     const { totalPages, scrollOffset } = useMeasurement({
       scrollDistance,
       containerRef,
-      wrapperRef,
     });
 
     // -- paging
-    const { currentPage, goBack, goForward, goToPage } = usePaging(
+    const { currentPage, goBack, goForward, goToPage } = usePaging({
       totalPages,
-      wrapAround
-    );
+      wrapAround,
+    });
 
     // -- autoplay
     useInterval(goForward, autoplayInterval, autoplay);
@@ -122,13 +120,14 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
             className="nuka-overflow"
             ref={containerRef}
             onTouchMove={onContainerScroll}
-            data-testid="overflow"
+            id="nuka-overflow"
+            data-testid="nuka-overflow"
             style={{ touchAction: swiping ? 'pan-x' : 'none' }}
           >
             <div
               className="nuka-wrapper"
-              ref={wrapperRef}
-              data-testid="wrapper"
+              id="nuka-wrapper"
+              data-testid="nuka-wrapper"
             >
               {children}
             </div>
