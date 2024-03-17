@@ -63,14 +63,14 @@ export const FixedWidthScroll: Story = {
     await userEvent.click(forwardButton);
 
     await waitFor(async () => {
-      expect(canvas.getByTestId('overflow').scrollLeft).toEqual(
+      expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(
         FIXED_SCROLL_DISTANCE
       );
     });
     await userEvent.click(backButton);
 
     await waitFor(async () => {
-      expect(canvas.getByTestId('overflow').scrollLeft).toEqual(0);
+      expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(0);
     });
   },
 };
@@ -90,9 +90,9 @@ export const Slide: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const overflow = canvas.getByTestId('overflow');
+    const overflow = canvas.getByTestId('nuka-overflow');
 
-    await expect(canvas.getByTestId('wrapper').classList).toContain(
+    await expect(canvas.getByTestId('nuka-wrapper').classList).toContain(
       'slide__with-gap'
     );
     const forwardButton = canvas.getByText('next');
@@ -101,17 +101,17 @@ export const Slide: Story = {
 
     await waitFor(async () => {
       expect(overflow.scrollLeft).toEqual(
-        (canvas.getByTestId('wrapper').children[1] as HTMLElement).offsetLeft -
-          overflow.offsetLeft
+        (canvas.getByTestId('nuka-wrapper').children[1] as HTMLElement)
+          .offsetLeft - overflow.offsetLeft
       );
     });
 
     await userEvent.click(forwardButton);
 
     await waitFor(async () => {
-      expect(canvas.getByTestId('overflow').scrollLeft).toEqual(
-        (canvas.getByTestId('wrapper').children[2] as HTMLElement).offsetLeft -
-          canvas.getByTestId('overflow').offsetLeft
+      expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(
+        (canvas.getByTestId('nuka-wrapper').children[2] as HTMLElement)
+          .offsetLeft - canvas.getByTestId('nuka-overflow').offsetLeft
       );
     });
 
@@ -120,7 +120,7 @@ export const Slide: Story = {
     setTimeout(async () => {
       await userEvent.click(forwardButton);
       await waitFor(async () => {
-        expect(canvas.getByTestId('overflow').scrollLeft).toEqual(0);
+        expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(0);
       });
     }, 300);
   },
@@ -170,12 +170,12 @@ export const AutoPlay: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const overflow = canvas.getByTestId('overflow');
-    expect(canvas.getByTestId('overflow').scrollLeft).toEqual(0);
+    const overflow = canvas.getByTestId('nuka-overflow');
+    expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(0);
 
     setTimeout(async () => {
       await waitFor(async () => {
-        expect(canvas.getByTestId('overflow').scrollLeft).toEqual(
+        expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(
           (overflow.children[0].children[1] as HTMLElement).offsetLeft -
             overflow.offsetLeft
         );
@@ -208,7 +208,7 @@ export const PageIndicators: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const carouselWidth = canvas.getByTestId('wrapper').clientWidth;
+    const carouselWidth = canvas.getByTestId('nuka-wrapper').clientWidth;
 
     const pageIndicatorContainer = canvas.getByTestId('pageIndicatorContainer');
 
@@ -224,12 +224,12 @@ export const PageIndicators: Story = {
 
     await waitFor(async () => {
       userEvent.click(pageIndicatorContainer.children[1]);
-      expect(canvas.getByTestId('overflow').scrollLeft).toEqual(carouselWidth);
+      expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(carouselWidth);
     });
 
     await waitFor(async () => {
       userEvent.click(pageIndicatorContainer.children[0]);
-      expect(canvas.getByTestId('overflow').scrollLeft).toEqual(0);
+      expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(0);
     });
   },
 };
