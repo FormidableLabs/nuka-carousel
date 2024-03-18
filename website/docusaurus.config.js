@@ -30,7 +30,7 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          routeBasePath: '/',
+          routeBasePath: '/docs',
           path: '../docs',
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl:
@@ -67,6 +67,7 @@ const config = {
           src: 'img/nearform-logo-white.svg',
         },
         items: [
+          { to: 'docs', label: 'Documentation', position: 'left' },
           {
             href: 'https://github.com/FormidableLabs/nuka-carousel',
             className: 'header-github-link',
