@@ -44,7 +44,7 @@ export default function Index() {
             <div>
               <FeaturedBadge name="nuka" className="h-64 w-64" />
             </div>
-            <div className="text-center">
+            <div className="text-left">
               <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
                 Nuka Carousel
               </h1>
@@ -52,12 +52,25 @@ export default function Index() {
                 Small, fast, and accessibility-first React carousel library with
                 easily customizable UI and behavior to fit your brand and site.
               </p>
-              <div className="mt-10 flex items-center justify-center gap-x-6">
+              <div className="mt-10 flex items-center justify-start gap-x-6">
+                <button
+                  className="grid grid-cols-6 align-center rounded-md shadow-sm border-none bg-white my-0 py-0 pr-0 pl-3.5 text-sm font-semibold text-[#dd4add] hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b13bb1]"
+                  onClick={() =>
+                    navigator.clipboard.writeText('pnpm add nuka-carousel')
+                  }
+                >
+                  <code className="py-2.5 col-span-4 border-0 bg-white">
+                    pnpm add nuka-carousel
+                  </code>
+                  <span className="col-span-2 capitalize rounded-r-md text-white bg-[#dd4add] ml-2 pr-3.5 pl-2.5 py-2.5 h-full">
+                    Copy
+                  </span>
+                </button>
                 <a
-                  href="#"
+                  href="/docs"
                   className="rounded-md bg-[#dd4add] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#b13bb1] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b13bb1]"
                 >
-                  Get started
+                  Documentation
                 </a>
               </div>
             </div>
