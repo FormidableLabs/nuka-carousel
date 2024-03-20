@@ -6,6 +6,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { Carousel } from 'nuka-carousel';
 
+import { Image } from '../../website/src/components/image-demo';
+
 # Usage
 
 Nuka v8 and above are completely rewritten with new props and might not be completely backwards compatable with v7.
@@ -72,7 +74,7 @@ Feel free to mix React components and HTML elements as children. Nuka Carousel w
 ```
 
 <Carousel autoplay showDots>
-  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
-  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
-  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+  <Image src="/img/pexels-01.jpg" />
+  <Image src="/img/pexels-02.jpg" />
+  <Image src="/img/pexels-03.jpg" />
 </Carousel>

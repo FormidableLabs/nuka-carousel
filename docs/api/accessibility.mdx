@@ -4,9 +4,9 @@ sidebar_position: 6
 
 import { Carousel } from 'nuka-carousel';
 
+import { Image } from '../../website/src/components/image-demo';
+
 # Accessibility
-
-
 
 ### Details
 
@@ -20,9 +20,9 @@ import { Carousel } from 'nuka-carousel';
 By default the carousel can be navigated using the keyboard. The `keyboard` prop can be used to disable the keyboard navigation.
 
 <Carousel showDots showArrows keyboard={false}>
-  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
-  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
-  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+  <Image src="/img/pexels-01.jpg" />
+  <Image src="/img/pexels-02.jpg" />
+  <Image src="/img/pexels-03.jpg" />
 </Carousel>
 
 #### Code
@@ -41,9 +41,9 @@ By default the carousel can be navigated using the keyboard. The `keyboard` prop
 The carousel has a `title` prop that can be used to provide a title for the carousel. The value of the title will be rendered as a hidden `h3` tag for the carousel targeted with the `aria-labeledby` attribute. This will help screen readers to announce the title of the carousel when it is focused. 
 
 <Carousel showDots showArrows title="Carousel">
-  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
-  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
-  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+  <Image src="/img/pexels-01.jpg" />
+  <Image src="/img/pexels-02.jpg" />
+  <Image src="/img/pexels-03.jpg" />
 </Carousel>
 
 #### Code

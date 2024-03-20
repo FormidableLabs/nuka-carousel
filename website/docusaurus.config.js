@@ -10,7 +10,9 @@ const config = {
   tagline:
     'Small, fast, and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site.',
   url: 'https://commerce.nearform.com',
-  baseUrl: '/open-source/nuka-carousel',
+  baseUrl:
+    process.env.VERCEL_ENV === 'preview' ? '/' : '/open-source/nuka-carousel',
+  trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/nearform-icon.svg',
