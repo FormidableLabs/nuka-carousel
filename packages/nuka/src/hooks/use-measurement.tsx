@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { arraySeq, arraySum } from '../utils';
+import { arraySeq, arraySum, isBrowser } from '../utils';
 import { useDebounced } from './use-debounced';
 
 type MeasurementProps = {
@@ -76,6 +76,7 @@ export function useMeasurement({
   useEffect(() => {
     measure();
 
+    if (!isBrowser()) return;
     window.addEventListener('resize', resizer as EventListener);
     return () => window.removeEventListener('resize', resizer as EventListener);
   }, [measure, resizer]);
