@@ -24,6 +24,6 @@ export function arraySum(values: number[]): number[] {
  */
 export function nint(array: number[], target: number): number {
   return array.reduce((prev, curr) =>
-    Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev
+    Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev,
   );
 }

@@ -73,7 +73,7 @@
     display: none;
   }
 
-  &:hover .nuka-nav-button {
+  &:hover .nuka-nav-button-enabled {
     display: block;
   }
 }

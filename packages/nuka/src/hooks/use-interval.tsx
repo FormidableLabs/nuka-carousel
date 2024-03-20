@@ -5,7 +5,7 @@ type CallbackFunction = (...args: never[]) => void;
 export function useInterval(
   callback: CallbackFunction,
   delay: number,
-  enabled = true
+  enabled = true,
 ) {
   const _callback = useRef<CallbackFunction>();
 

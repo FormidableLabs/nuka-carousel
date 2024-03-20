@@ -15,6 +15,6 @@ export function useDebounced(callback: CallbackFunction, delay: number) {
         callback(...args);
       }, delay);
     },
-    [callback, delay]
+    [callback, delay],
   );
 }

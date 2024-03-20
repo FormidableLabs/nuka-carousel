@@ -66,7 +66,7 @@ export const FixedWidthScroll: Story = {
 
     await waitFor(async () => {
       expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(
-        FIXED_SCROLL_DISTANCE
+        FIXED_SCROLL_DISTANCE,
       );
     });
     await userEvent.click(backButton);
@@ -95,7 +95,7 @@ export const Slide: Story = {
     const overflow = canvas.getByTestId('nuka-overflow');
 
     await expect(canvas.getByTestId('nuka-wrapper').classList).toContain(
-      'slide__with-gap'
+      'slide__with-gap',
     );
     const forwardButton = canvas.getByText('next');
 
@@ -104,7 +104,7 @@ export const Slide: Story = {
     await waitFor(async () => {
       expect(overflow.scrollLeft).toEqual(
         (canvas.getByTestId('nuka-wrapper').children[1] as HTMLElement)
-          .offsetLeft - overflow.offsetLeft
+          .offsetLeft - overflow.offsetLeft,
       );
     });
 
@@ -113,7 +113,7 @@ export const Slide: Story = {
     await waitFor(async () => {
       expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(
         (canvas.getByTestId('nuka-wrapper').children[2] as HTMLElement)
-          .offsetLeft - canvas.getByTestId('nuka-overflow').offsetLeft
+          .offsetLeft - canvas.getByTestId('nuka-overflow').offsetLeft,
       );
     });
 
@@ -179,7 +179,7 @@ export const AutoPlay: Story = {
       await waitFor(async () => {
         expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(
           (overflow.children[0].children[1] as HTMLElement).offsetLeft -
-            overflow.offsetLeft
+            overflow.offsetLeft,
         );
       });
     }, AUTOPLAY_INTERVAL_IN_MS);
@@ -216,18 +216,18 @@ export const PageIndicators: Story = {
 
     await expect(pageIndicatorContainer).toBeInTheDocument();
     await expect(pageIndicatorContainer).toHaveClass(
-      PAGE_INDICATOR_CONTAINER_CLASSNAME
+      PAGE_INDICATOR_CONTAINER_CLASSNAME,
     );
     await expect(
       pageIndicatorContainer.getElementsByClassName(
-        GENERAL_PAGE_INDICATOR_CLASSNAME
-      ).length
+        GENERAL_PAGE_INDICATOR_CLASSNAME,
+      ).length,
     ).toBe(pageIndicatorContainer.children.length);
 
     await waitFor(async () => {
       userEvent.click(pageIndicatorContainer.children[1]);
       expect(canvas.getByTestId('nuka-overflow').scrollLeft).toEqual(
-        carouselWidth
+        carouselWidth,
       );
     });
 

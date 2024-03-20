@@ -1,78 +1,57 @@
-import {
-  forwardRef,
-  ReactNode,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-} from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 import { useInterval } from '../hooks/use-interval';
 import { usePaging } from '../hooks/use-paging';
 import { useDebounced } from '../hooks/use-debounced';
 import { useMeasurement } from '../hooks/use-measurement';
+import useHover from '../hooks/use-hover';
+import useKeyboard from '../hooks/use-keyboard';
+import { useReducedMotion } from '../hooks/use-reduced-motion';
+import { CarouselProps, SlideHandle } from '../types';
 import { cls, nint } from '../utils';
 import { NavButtons } from './NavButtons';
 import { PageIndicators } from './PageIndicators';
 
 import './Carousel.css';
-import useHover from 'src/hooks/use-hover';
-import useKeyboard from 'src/hooks/use-keyboard';
-import { useReducedMotion } from 'src/hooks/use-reduced-motion';
+import { CarouselProvider } from 'src/hooks/use-carousel';
 
-type ShowArrowsOption = boolean | 'always' | 'hover';
-type ScrollDistanceType = number | 'slide' | 'screen';
-
-export type CarouselCallbacks = {
-  beforeSlide?: () => void;
-  afterSlide?: () => void;
-};
-
-export type CarouselProps = CarouselCallbacks & {
-  children: ReactNode;
-
-  className?: string;
-  autoplay?: boolean;
-  autoplayInterval?: number;
-  pageIndicatorProps?: {
-    currentPageIndicatorClassName?: string;
-    pageIndicatorClassName?: string;
-    containerClassName?: string;
-  };
-  keyboard?: boolean;
-  scrollDistance?: ScrollDistanceType;
-  showArrows?: ShowArrowsOption;
-  showDots?: boolean;
-  swiping?: boolean;
-  title?: string;
-  wrapAround?: boolean;
-};
-
-export type SlideHandle = {
-  goForward: () => void;
-  goBack: () => void;
-  goToIndex: (proposedIndex: number) => void;
-};
+const defaults = {
+  arrows: <NavButtons />,
+  autoplay: false,
+  autoplayInterval: 3000,
+  dots: <PageIndicators />,
+  id: 'nuka-carousel',
+  keyboard: true,
+  scrollDistance: 'slide',
+  showArrows: false,
+  showDots: false,
+  swiping: true,
+  wrapAround: false,
+} satisfies Partial<CarouselProps>;
 
 export const Carousel = forwardRef<SlideHandle, CarouselProps>(
-  (
-    {
-      children,
-      className = '',
-      autoplay = false,
-      autoplayInterval = 3000,
-      pageIndicatorProps,
-      keyboard = true,
-      scrollDistance = 'slide',
-      showArrows = false,
-      showDots = false,
-      swiping = true,
-      title,
-      wrapAround = false,
-      beforeSlide,
+  (props: CarouselProps, ref) => {
+    const options = { ...defaults, ...props };
+
+    const {
       afterSlide,
-    }: CarouselProps,
-    ref
-  ) => {
+      arrows,
+      autoplay,
+      autoplayInterval,
+      beforeSlide,
+      children,
+      className,
+      dots,
+      id,
+      keyboard,
+      scrollDistance,
+      showArrows,
+      showDots,
+      swiping,
+      title,
+      wrapAround,
+    } = options;
+
     const carouselRef = useRef<HTMLDivElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -87,6 +66,13 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       totalPages,
       wrapAround,
     });
+
+    // -- forward events to ref
+    useImperativeHandle(
+      ref,
+      () => ({ goForward, goBack, goToIndex: goToPage }),
+      [goForward, goBack, goToPage],
+    );
 
     // -- autoplay
     const isHovered = useHover(containerRef);
@@ -103,13 +89,6 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       }
     }, [currentPage, scrollOffset, beforeSlide, afterSlide]);
 
-    // -- forward events to ref
-    useImperativeHandle(
-      ref,
-      () => ({ goForward, goBack, goToIndex: goToPage }),
-      [goForward, goBack, goToPage]
-    );
-
     // -- handle touch scroll events
     const onContainerScroll = useDebounced(() => {
       if (!containerRef.current) return;
@@ -117,14 +96,10 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       // find the closest page index based on the scroll position
       const scrollLeft = containerRef.current.scrollLeft;
       const closestPageIndex = scrollOffset.indexOf(
-        nint(scrollOffset, scrollLeft)
+        nint(scrollOffset, scrollLeft),
       );
       goToPage(closestPageIndex);
     }, 100);
-
-    // -- button nav
-    const enablePrevNavButton = wrapAround || currentPage > 0;
-    const enableNextNavButton = wrapAround || currentPage < totalPages - 1;
 
     // -- keyboard nav
     useKeyboard({
@@ -137,16 +112,27 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     const containerClassName = cls(
       'nuka-container',
       showArrows === 'hover' && 'nuka-container-auto-hide',
-      className
+      className,
     );
 
+    const providerValues = {
+      ...options,
+      totalPages,
+      currentPage,
+      scrollOffset,
+      goBack,
+      goForward,
+      goToPage,
+    };
+
     return (
-      <>
+      <CarouselProvider value={providerValues}>
         <div
           className={containerClassName}
           aria-labelledby="nuka-carousel-heading"
           tabIndex={keyboard ? 0 : undefined}
           ref={carouselRef}
+          id={id}
         >
           {title && (
             <h3 id="nuka-carousel-heading" className="nuka-hidden">
@@ -170,27 +156,13 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
                 {children}
               </div>
             </div>
-            {showArrows && (
-              <NavButtons
-                enablePrevNavButton={enablePrevNavButton}
-                enableNextNavButton={enableNextNavButton}
-                goBack={goBack}
-                goForward={goForward}
-              />
-            )}
+            {showArrows && arrows}
           </div>
         </div>
-        {showDots && (
-          <PageIndicators
-            totalIndicators={totalPages}
-            currentPageIndex={currentPage}
-            scrollToPage={goToPage}
-            {...pageIndicatorProps}
-          />
-        )}
-      </>
+        {showDots && dots}
+      </CarouselProvider>
     );
-  }
+  },
 );
 
 Carousel.displayName = 'Carousel';

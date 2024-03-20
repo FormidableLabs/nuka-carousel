@@ -1,37 +1,22 @@
+import { useCarousel } from '../hooks/use-carousel';
 import { cls } from '../utils';
 
-export type PageIndicatorsProps = {
-  totalIndicators: number;
-  currentPageIndex: number;
-  currentPageIndicatorClassName?: string;
-  pageIndicatorClassName?: string;
-  containerClassName?: string;
-  scrollToPage: (index: number) => void;
-};
+export const PageIndicators = () => {
+  const { totalPages, currentPage, goToPage } = useCarousel();
 
-export const PageIndicators = ({
-  totalIndicators,
-  currentPageIndex,
-  currentPageIndicatorClassName,
-  pageIndicatorClassName,
-  containerClassName,
-  scrollToPage,
-}: PageIndicatorsProps) => {
+  const className = (index: number) =>
+    cls(
+      'nuka-page-indicator',
+      currentPage === index ? 'nuka-page-indicator-active' : '',
+    );
+
   return (
-    <div
-      className={containerClassName || 'nuka-page-container'}
-      data-testid="pageIndicatorContainer"
-    >
-      {[...Array(totalIndicators)].map((_, index) => (
+    <div className="nuka-page-container" data-testid="pageIndicatorContainer">
+      {[...Array(totalPages)].map((_, index) => (
         <button
           key={index}
-          onClick={() => scrollToPage(index)}
-          className={cls(
-            pageIndicatorClassName || 'nuka-page-indicator',
-            currentPageIndex === index
-              ? currentPageIndicatorClassName || 'nuka-page-indicator-active'
-              : ''
-          )}
+          onClick={() => goToPage(index)}
+          className={className(index)}
         >
           <span className="nuka-hidden">{index + 1}</span>
         </button>

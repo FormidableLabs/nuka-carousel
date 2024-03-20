@@ -1,28 +1,23 @@
+import { useCarousel } from 'src/hooks/use-carousel';
 import { cls } from '../utils';
 
-type NavButtonsProps = {
-  enablePrevNavButton: boolean;
-  enableNextNavButton: boolean;
-  goBack: () => void;
-  goForward: () => void;
-};
+export function NavButtons() {
+  const { currentPage, totalPages, wrapAround, goBack, goForward } =
+    useCarousel();
 
-export function NavButtons({
-  enablePrevNavButton,
-  enableNextNavButton,
-  goBack,
-  goForward,
-}: NavButtonsProps) {
+  const enablePrevNavButton = wrapAround || currentPage > 0;
+  const enableNextNavButton = wrapAround || currentPage < totalPages - 1;
+
   const prevNavClassName = cls(
     'nuka-nav-button',
     'nuka-nav-button-prev',
-    enablePrevNavButton && 'nuka-nav-button-enabled'
+    enablePrevNavButton && 'nuka-nav-button-enabled',
   );
 
   const nextNavClassName = cls(
     'nuka-nav-button',
     'nuka-nav-button-next',
-    enableNextNavButton && 'nuka-nav-button-enabled'
+    enableNextNavButton && 'nuka-nav-button-enabled',
   );
 
   return (

@@ -29,7 +29,7 @@ export function useMeasurement({
       switch (scrollDistance) {
         case 'screen': {
           const pageCount = Math.ceil(
-            container.scrollWidth / container.offsetWidth
+            container.scrollWidth / container.offsetWidth,
           );
           setTotalPages(pageCount);
           setScrollOffset(arraySeq(pageCount, container.offsetWidth));
@@ -41,7 +41,7 @@ export function useMeasurement({
           const children =
             container.querySelector('#nuka-wrapper')?.children || [];
           const offsets = Array.from(children).map(
-            (child) => (child as HTMLElement).offsetWidth
+            (child) => (child as HTMLElement).offsetWidth,
           );
 
           const scrollOffsets = arraySum([0, ...offsets.slice(0, -1)]);

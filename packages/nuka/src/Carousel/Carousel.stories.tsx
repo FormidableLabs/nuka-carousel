@@ -145,7 +145,7 @@ export const FocusableCards: Story = {
 const CustomGoToIndexRenderComponent = (props: CarouselProps) => {
   const ref = useRef<SlideHandle>(null);
   const [randomInRangeIndex, setRandomInRangeIndex] = useState(
-    Math.floor(Math.random() * 7)
+    Math.floor(Math.random() * 7),
   );
   return (
     <div>
