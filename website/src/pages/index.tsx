@@ -1,11 +1,11 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import { CarouselDemo } from '../components/carousel-demo';
-import { LandingBanner } from '../components/landing-banner';
-import { LandingHero } from '../components/landing-hero';
-import { LandingFans } from '../components/landing-fans';
-import { OtherOSS } from '../components/other-oss';
-import { LandingFeatures } from '../components/landing-features';
+import { LandingBanner } from '../components/landing/landing-banner';
+import { LandingHero } from '../components/landing/landing-hero';
+import { LandingFans } from '../components/landing/landing-fans';
+import { LandingFeaturedProjects } from '../components/landing/landing-featured-projects';
+import { LandingFeatures } from '../components/landing/landing-features';
 
 export default function Index() {
   return (
@@ -13,26 +13,42 @@ export default function Index() {
       title="Nuka Carousel"
       description="Small, fast, and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site."
     >
-      <div className="dark:bg-[#1b1b1d] bg-gray-200 dark:text-white text-theme-2">
-        <LandingHero />
+      <div className="dark:bg-gray-500 bg-gray-200 dark:text-white text-theme-2">
+        <LandingHero
+          heading="Nuka Carousel"
+          body="Small, fast, and accessibility-first React carousel library with
+          easily customizable UI and behavior to fit your brand and site."
+          copyText="pnpm add nuka-carousel"
+          navItems={[
+            { link: '/docs', title: 'Documentation' },
+            { link: '#demo', title: 'Demo' },
+            {
+              link: 'https://github.com/FormidableLabs/nuka-carousel',
+              title: 'Github',
+            },
+          ]}
+        />
       </div>
       <LandingFeatures
         heading="Features"
         list={[
           {
-            imgSrc: '#',
+            imgSrc:
+              'https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png',
             alt: 'logo alt',
             title: 'Fully Responsive!',
             body: 'lorem ipsum dolar .sdjlkadfjlajsdf ads',
           },
           {
-            imgSrc: '#',
+            imgSrc:
+              'https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png',
             alt: 'logo alt',
             title: 'Easy to Style Controls!',
             body: 'lorem ipsum dolar .sdjlkadfjlajsdf ads',
           },
           {
-            imgSrc: '#',
+            imgSrc:
+              'https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png',
             alt: 'logo alt',
             title: 'Native touch support!',
             body: 'lorem ipsum dolar .sdjlkadfjlajsdf ads',
@@ -41,6 +57,7 @@ export default function Index() {
       />
       <CarouselDemo />
       <LandingFans
+        showDivider
         heading="A Few of our Fans"
         body="lorem ipsum ajfdklajdflk jalkjda "
         list={[
@@ -72,11 +89,41 @@ export default function Index() {
         ]}
       />
       <LandingBanner
+        showDivider
         heading="Get Started"
         body="Build a performative, fully accessible and customizable carousel today!"
         cta={{ link: '/docs', text: 'Documentation' }}
       />
-      <OtherOSS />
+      <LandingFeaturedProjects
+        heading="Other Open Source from Nearform_Commerce"
+        projects={[
+          {
+            name: 'spectacle',
+            link: 'https://commerce.nearform.com/open-source/spectacle',
+            description:
+              'A React.js based library for creating sleek presentations using JSX syntax with the ability to live demo your code!',
+          },
+          {
+            name: 'figlog',
+            link: 'https://github.com/FormidableLabs/FigLog',
+            description:
+              'FigLog is the easiest and most efficient way to document team decisions and the evolution of your changes in Figma.',
+            title: 'FigLog',
+          },
+          {
+            name: 'envy',
+            link: 'https://github.com/FormidableLabs/envy',
+            description:
+              'Envy will trace the network calls from every application in your stack and allow you to view them in a central place.',
+          },
+          {
+            name: 'victory',
+            link: 'https://commerce.nearform.com/open-source/victory/',
+            description:
+              'React.js components for modular charting and data visualization.',
+          },
+        ]}
+      />
     </Layout>
   );
 }
