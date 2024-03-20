@@ -7,13 +7,13 @@ import { useMeasurement } from '../hooks/use-measurement';
 import useHover from '../hooks/use-hover';
 import useKeyboard from '../hooks/use-keyboard';
 import { useReducedMotion } from '../hooks/use-reduced-motion';
+import { CarouselProvider } from '../hooks/use-carousel';
 import { CarouselProps, SlideHandle } from '../types';
 import { cls, nint } from '../utils';
 import { NavButtons } from './NavButtons';
 import { PageIndicators } from './PageIndicators';
 
 import './Carousel.css';
-import { CarouselProvider } from 'src/hooks/use-carousel';
 
 const defaults = {
   arrows: <NavButtons />,

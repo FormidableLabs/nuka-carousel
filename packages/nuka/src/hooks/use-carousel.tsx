@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { CarouselProps } from 'src/types';
+
+import { CarouselProps } from '../types';
 
 type CarouselContextType = CarouselProps & {
   currentPage: number;

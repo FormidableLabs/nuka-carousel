@@ -1,4 +1,4 @@
-import { useCarousel } from 'src/hooks/use-carousel';
+import { useCarousel } from '../hooks/use-carousel';
 import { cls } from '../utils';
 
 export function NavButtons() {
