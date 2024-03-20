@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const LandingFans = ({
+export const LandingLogos = ({
   body,
   heading,
   list,

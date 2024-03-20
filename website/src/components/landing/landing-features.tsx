@@ -12,7 +12,7 @@ export const LandingFeatures = ({
   <div className="flex flex-col text-left mx-16 lg:mx-32 xl:mx-64 my-12">
     {showDivider && <div className="mt-8 h-1 bg-theme-1" />}
     <h2 className="my-8 text-4xl font-semibold">{heading}</h2>
-    <ul className="grid grid-cols-3 items-center content-start justify-items-start justify-between gap-8 list-none pl-0">
+    <ul className="grid grid-cols-3 items-start content-start justify-items-start justify-between gap-8 list-none pl-0">
       {list.map(({ alt, body, imgSrc, title }) => (
         <li className="col-span-1 flex flex-col items-center">
           <img src={imgSrc} alt={alt} className="max-h-72" />

@@ -3,7 +3,7 @@ import Layout from '@theme/Layout';
 import { CarouselDemo } from '../components/carousel-demo';
 import { LandingBanner } from '../components/landing/landing-banner';
 import { LandingHero } from '../components/landing/landing-hero';
-import { LandingFans } from '../components/landing/landing-fans';
+import { LandingLogos } from '../components/landing/landing-logos';
 import { LandingFeaturedProjects } from '../components/landing/landing-featured-projects';
 import { LandingFeatures } from '../components/landing/landing-features';
 
@@ -36,27 +36,27 @@ export default function Index() {
             imgSrc:
               'https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png',
             alt: 'logo alt',
-            title: 'Fully Responsive!',
-            body: 'lorem ipsum dolar .sdjlkadfjlajsdf ads',
+            title: 'Fully Responsive',
+            body: 'Nuka leans into responsive front-end practices from the foundation so it will scale with your user screens and devices. While Nuka is responsive out of the box, you can override it for your specific use cases.',
           },
           {
             imgSrc:
               'https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png',
             alt: 'logo alt',
-            title: 'Easy to Style Controls!',
-            body: 'lorem ipsum dolar .sdjlkadfjlajsdf ads',
+            title: 'Easy to Style Controls',
+            body: 'Straight forward API that allows you to zero in on the adaptations you want right away.',
           },
           {
             imgSrc:
               'https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png',
             alt: 'logo alt',
             title: 'Native touch support!',
-            body: 'lorem ipsum dolar .sdjlkadfjlajsdf ads',
+            body: 'Nothing is worse than building a beautiful carousel and going to test it on mobile only to find that tapping does nothing! With Nuka, we baked in the mobile support to ensure accessibility for all users.',
           },
         ]}
       />
       <CarouselDemo />
-      <LandingFans
+      <LandingLogos
         showDivider
         heading="A Few of our Fans"
         body="lorem ipsum ajfdklajdflk jalkjda "

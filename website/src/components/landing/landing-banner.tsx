@@ -12,7 +12,7 @@ export const LandingBanner = ({
   heading: string;
   showDivider?: boolean;
 }) => (
-  <div className="flex flex-col text-left mx-16 lg:mx-32 xl:mx-64">
+  <div className="flex flex-col text-left mx-16 lg:mx-32 xl:mx-64 my-8">
     {showDivider && <div className="mt-8 h-1 bg-theme-1" />}
 
     <h2 className="my-8 text-4xl font-semibold">{heading}</h2>
