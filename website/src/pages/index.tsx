@@ -50,7 +50,7 @@ export default function Index() {
             imgSrc:
               'https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png',
             alt: 'logo alt',
-            title: 'Native touch support!',
+            title: 'Native Touch Support',
             body: 'Nothing is worse than building a beautiful carousel and going to test it on mobile only to find that tapping does nothing! With Nuka, we baked in the mobile support to ensure accessibility for all users.',
           },
         ]}
