@@ -2,16 +2,15 @@ import React, { useRef } from 'react';
 import { Carousel, CarouselProps, SlideHandle } from 'nuka-carousel';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { FlatDarkButton } from './buttons';
-import { Image } from './image-demo';
 
 export const BasicButtonDemo = (props: CarouselProps) => {
   const ref = useRef<SlideHandle>(null);
   return (
     <div>
       <Carousel ref={ref} {...props}>
-        <Image src="/img/pexels-01.jpg" />
-        <Image src="/img/pexels-02.jpg" />
-        <Image src="/img/pexels-03.jpg" />
+        <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+        <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+        <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
       </Carousel>
 
       <div className="flex items-center justify-between mt-2" role="group">

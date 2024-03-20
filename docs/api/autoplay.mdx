@@ -4,8 +4,6 @@ sidebar_position: 3
 
 import { Carousel } from 'nuka-carousel';
 
-import { Image } from '../../website/src/components/image-demo';
-
 # Autoplay
 
 The carousel can advance on its own with a specified interval measured in milliseconds. An `autoplayInterval` without the `autoplay` prop being true will not do anything.
@@ -21,9 +19,9 @@ For accessibility, the carousel will pause when the user is interacting with it.
 ### Example
 
 <Carousel autoplay={true} autoplayInterval={1000} wrapAround>
-  <Image src="/img/pexels-01.jpg" />
-  <Image src="/img/pexels-02.jpg" />
-  <Image src="/img/pexels-03.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
 </Carousel>
 
 #### Code
