@@ -22,7 +22,7 @@ const defaults = {
   dots: <PageIndicators />,
   id: 'nuka-carousel',
   keyboard: true,
-  scrollDistance: 'slide',
+  scrollDistance: 'screen',
   showArrows: false,
   showDots: false,
   swiping: true,

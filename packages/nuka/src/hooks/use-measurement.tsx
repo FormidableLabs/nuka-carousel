@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { arraySeq, arraySum, isBrowser } from '../utils';
-import { useDebounced } from './use-debounced';
+import { arraySeq, arraySum } from '../utils';
+import { useResizeObserver } from './use-resize-observer';
 
 type MeasurementProps = {
   containerRef: React.RefObject<HTMLDivElement>;
@@ -14,72 +14,61 @@ export function useMeasurement({
 }: MeasurementProps) {
   const [totalPages, setTotalPages] = useState(0);
   const [scrollOffset, setScrollOffset] = useState(arraySeq(totalPages, 0));
-
-  const measure = useCallback(() => {
-    // execute before paint to ensure refs are set with the
-    // correct dimensions for the calculation
-    // note: this is similar to useLayout, but runs async
-    requestAnimationFrame(() => {
-      const container = containerRef.current;
-      if (!container) return;
-
-      // determine the width of the content that is not visible (overflow)
-      const remainder = container.scrollWidth - container.offsetWidth;
-
-      switch (scrollDistance) {
-        case 'screen': {
-          const pageCount = Math.ceil(
-            container.scrollWidth / container.offsetWidth,
-          );
-          setTotalPages(pageCount);
-          setScrollOffset(arraySeq(pageCount, container.offsetWidth));
-          break;
-        }
-        case 'slide': {
-          // creates an array of slide widths in order to support
-          // slides of varying widths as children
-          const children =
-            container.querySelector('#nuka-wrapper')?.children || [];
-          const offsets = Array.from(children).map(
-            (child) => (child as HTMLElement).offsetWidth,
-          );
-
-          const scrollOffsets = arraySum([0, ...offsets.slice(0, -1)]);
-
-          // find the index of the scroll offset that is greater than
-          // the remainder of the full width and window width
-          const pageCount =
-            scrollOffsets.findIndex((offset) => offset >= remainder) + 1;
-
-          setTotalPages(pageCount);
-          setScrollOffset(scrollOffsets);
-          break;
-        }
-        default: {
-          if (typeof scrollDistance === 'number') {
-            // find the number of pages required to scroll the all slides
-            // to the end of the container
-            const pageCount = Math.ceil(remainder / scrollDistance) + 1;
-
-            setTotalPages(pageCount);
-            setScrollOffset(arraySeq(pageCount, scrollDistance));
-          }
-        }
-      }
-    });
-  }, [scrollDistance, containerRef]);
-
-  // debounce the measure function when resizing so
-  // it doesnt fire on every pixel change
-  const resizer = useDebounced(measure, 100);
+  const dimensions = useResizeObserver(containerRef);
 
   useEffect(() => {
-    measure();
+    const container = containerRef.current;
+    if (!(container && dimensions)) return;
 
-    if (!isBrowser()) return;
-    window.addEventListener('resize', resizer as EventListener);
-    return () => window.removeEventListener('resize', resizer as EventListener);
-  }, [measure, resizer]);
+    // determine the width of the content that is not visible (overflow)
+    // we ignore the bounding box width because its a float
+    // and scrollWidth is an integer, so it creates an imperfect
+    // calculation when the scrollWidth is a few pixels larger
+    const scrollWidth = container.scrollWidth;
+    const visibleWidth = container.offsetWidth;
+    const remainder = scrollWidth - visibleWidth;
+
+    switch (scrollDistance) {
+      case 'screen': {
+        const pageCount = Math.ceil(scrollWidth / visibleWidth);
+
+        setTotalPages(pageCount);
+        setScrollOffset(arraySeq(pageCount, visibleWidth));
+        break;
+      }
+      case 'slide': {
+        // creates an array of slide widths in order to support
+        // slides of varying widths as children
+        const children =
+          container.querySelector('#nuka-wrapper')?.children || [];
+        const offsets = Array.from(children).map(
+          (child) => (child as HTMLElement).offsetWidth,
+        );
+
+        // shift the scroll offsets by one to account for the first slide
+        const scrollOffsets = arraySum([0, ...offsets.slice(0, -1)]);
+
+        // find the index of the scroll offset that is greater than
+        // the remainder of the full width and window width
+        const pageCount =
+          scrollOffsets.findIndex((offset) => offset >= remainder) + 1;
+
+        setTotalPages(pageCount);
+        setScrollOffset(scrollOffsets);
+        break;
+      }
+      default: {
+        if (typeof scrollDistance === 'number') {
+          // find the number of pages required to scroll the all slides
+          // to the end of the container
+          const pageCount = Math.ceil(remainder / scrollDistance) + 1;
+
+          setTotalPages(pageCount);
+          setScrollOffset(arraySeq(pageCount, scrollDistance));
+        }
+      }
+    }
+  }, [containerRef, scrollDistance, dimensions]);
 
   return { totalPages, scrollOffset };
 }
