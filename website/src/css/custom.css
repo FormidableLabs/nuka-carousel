@@ -36,6 +36,10 @@ body {
   font-display: swap;
 }
 
+.hero-pattern {
+  background-image: url('../assets/images/hero-pattern.png');
+}
+
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #dd4add;
