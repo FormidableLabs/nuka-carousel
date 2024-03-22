@@ -6,16 +6,16 @@ const QUERY = '(prefers-reduced-motion: no-preference)';
 const getInitialState = () =>
   isBrowser() ? !window.matchMedia(QUERY).matches : true;
 
-export function useReducedMotion() {
-  const [enabled, setEnabled] = useState(getInitialState);
+export function useReducedMotion({ enabled }: { enabled: boolean }) {
+  const [reduceMotion, setReducedMotion] = useState(getInitialState);
 
   useEffect(() => {
-    if (!isBrowser()) return;
+    if (!(isBrowser() && enabled)) return;
 
     const mediaQueryList = window.matchMedia(QUERY);
 
     const listener = (event: MediaQueryListEvent) => {
-      setEnabled(!event.matches);
+      setReducedMotion(!event.matches);
     };
 
     mediaQueryList.addEventListener('change', listener);
@@ -23,6 +23,6 @@ export function useReducedMotion() {
     return () => {
       mediaQueryList.removeEventListener('change', listener);
     };
-  }, []);
-  return enabled;
+  }, [enabled]);
+  return reduceMotion;
 }

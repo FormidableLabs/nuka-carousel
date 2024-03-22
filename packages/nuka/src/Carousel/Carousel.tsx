@@ -26,7 +26,7 @@ const defaults = {
   showArrows: false,
   showDots: false,
   swiping: true,
-  wrapAround: false,
+  wrapMode: 'nowrap',
 } satisfies Partial<CarouselProps>;
 
 export const Carousel = forwardRef<SlideHandle, CarouselProps>(
@@ -49,7 +49,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       showDots,
       swiping,
       title,
-      wrapAround,
+      wrapMode,
     } = options;
 
     const carouselRef = useRef<HTMLDivElement | null>(null);
@@ -57,37 +57,15 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
 
     // -- update page count and scroll offset based on scroll distance
     const { totalPages, scrollOffset } = useMeasurement({
+      element: containerRef,
       scrollDistance,
-      containerRef,
     });
 
     // -- paging
     const { currentPage, goBack, goForward, goToPage } = usePaging({
       totalPages,
-      wrapAround,
+      wrapMode,
     });
-
-    // -- forward events to ref
-    useImperativeHandle(
-      ref,
-      () => ({ goForward, goBack, goToIndex: goToPage }),
-      [goForward, goBack, goToPage],
-    );
-
-    // -- autoplay
-    const isHovered = useHover(containerRef);
-    const prefersReducedMotion = useReducedMotion();
-    const autoplayEnabled = autoplay && !(isHovered || prefersReducedMotion);
-    useInterval(goForward, autoplayInterval, autoplayEnabled);
-
-    // -- scroll container when page index changes
-    useEffect(() => {
-      if (containerRef.current) {
-        beforeSlide && beforeSlide();
-        containerRef.current.scrollLeft = scrollOffset[currentPage];
-        afterSlide && setTimeout(() => afterSlide(), 0);
-      }
-    }, [currentPage, scrollOffset, beforeSlide, afterSlide]);
 
     // -- handle touch scroll events
     const onContainerScroll = useDebounced(() => {
@@ -108,6 +86,28 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       goForward,
       goBack,
     });
+
+    // -- forward events to ref
+    useImperativeHandle(
+      ref,
+      () => ({ goForward, goBack, goToIndex: goToPage }),
+      [goForward, goBack, goToPage],
+    );
+
+    // -- autoplay
+    const isHovered = useHover({ element: containerRef, enabled: autoplay });
+    const prefersReducedMotion = useReducedMotion({ enabled: autoplay });
+    const autoplayEnabled = autoplay && !(isHovered || prefersReducedMotion);
+    useInterval(goForward, autoplayInterval, autoplayEnabled);
+
+    // -- scroll container when page index changes
+    useEffect(() => {
+      if (containerRef.current) {
+        beforeSlide && beforeSlide();
+        containerRef.current.scrollLeft = scrollOffset[currentPage];
+        afterSlide && setTimeout(() => afterSlide(), 0);
+      }
+    }, [currentPage, scrollOffset, beforeSlide, afterSlide]);
 
     const containerClassName = cls(
       'nuka-container',

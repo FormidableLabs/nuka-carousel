@@ -15,7 +15,7 @@ You can also control whether the carousel should wrap around when the first or l
 | :----------------- | :------- | :------------ |
 | `showArrows`       | boolean \| "always" \| "hover" | `false`       |
 | `showDots`         | boolean  | `false`       |
-| `wrapAround`       | boolean  | `false`        |
+| `wrapMode`       | `nowrap` \| `wrap`  | `nowrap`        |
 
 ### Navigation Arrows
 
@@ -55,11 +55,11 @@ When set to `true` or `always`, the arrows will always be visible. When set to `
 </Carousel>
 ```
 
-### Wraparound
+### Wrapping
 
-If you set `wrapAround` to `true`, the carousel will wrap around when it reaches the end of the slide set. This means that if you are on the last slide and you click next, it will go to the first slide.
+If you set `wrapMode` to `wrap`, the carousel will wrap around when it reaches the end of the slide set. This means that if you are on the last slide and you click next, it will go to the first slide.
 
-<Carousel showArrows wrapAround>
+<Carousel showArrows wrapMode="wrap">
   <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
   <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
   <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
@@ -68,7 +68,7 @@ If you set `wrapAround` to `true`, the carousel will wrap around when it reaches
 #### Code
 
 ```tsx
-<Carousel showArrows wrapAround>
+<Carousel showArrows wrapMode="wrap">
   <img src="pexels-01.jpg" />
   <img src="pexels-02.jpg" />
   <img src="pexels-03.jpg" />

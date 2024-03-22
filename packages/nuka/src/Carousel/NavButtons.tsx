@@ -2,11 +2,13 @@ import { useCarousel } from '../hooks/use-carousel';
 import { cls } from '../utils';
 
 export function NavButtons() {
-  const { currentPage, totalPages, wrapAround, goBack, goForward } =
+  const { currentPage, totalPages, wrapMode, goBack, goForward } =
     useCarousel();
 
-  const enablePrevNavButton = wrapAround || currentPage > 0;
-  const enableNextNavButton = wrapAround || currentPage < totalPages - 1;
+  const allowWrap = wrapMode !== 'nowrap';
+
+  const enablePrevNavButton = allowWrap || currentPage > 0;
+  const enableNextNavButton = allowWrap || currentPage < totalPages - 1;
 
   const prevNavClassName = cls(
     'nuka-nav-button',

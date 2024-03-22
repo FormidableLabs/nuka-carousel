@@ -4,20 +4,17 @@ import { arraySeq, arraySum } from '../utils';
 import { useResizeObserver } from './use-resize-observer';
 
 type MeasurementProps = {
-  containerRef: React.RefObject<HTMLDivElement>;
+  element: React.RefObject<HTMLDivElement>;
   scrollDistance: number | 'slide' | 'screen';
 };
 
-export function useMeasurement({
-  containerRef,
-  scrollDistance,
-}: MeasurementProps) {
+export function useMeasurement({ element, scrollDistance }: MeasurementProps) {
   const [totalPages, setTotalPages] = useState(0);
   const [scrollOffset, setScrollOffset] = useState(arraySeq(totalPages, 0));
-  const dimensions = useResizeObserver(containerRef);
+  const dimensions = useResizeObserver(element);
 
   useEffect(() => {
-    const container = containerRef.current;
+    const container = element.current;
     if (!(container && dimensions)) return;
 
     // determine the width of the content that is not visible (overflow)
@@ -68,7 +65,7 @@ export function useMeasurement({
         }
       }
     }
-  }, [containerRef, scrollDistance, dimensions]);
+  }, [element, scrollDistance, dimensions]);
 
   return { totalPages, scrollOffset };
 }

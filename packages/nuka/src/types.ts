@@ -23,7 +23,7 @@ export type CarouselProps = CarouselCallbacks & {
   showDots?: boolean;
   swiping?: boolean;
   title?: string;
-  wrapAround?: boolean;
+  wrapMode?: 'nowrap' | 'wrap';
 };
 
 export type SlideHandle = {

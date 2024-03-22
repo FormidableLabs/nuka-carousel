@@ -7,11 +7,13 @@ function cls(...classes) {
 }
 
 export function CustomArrows() {
-  const { currentPage, totalPages, wrapAround, goBack, goForward } =
+  const { currentPage, totalPages, wrapMode, goBack, goForward } =
     useCarousel();
 
-  const enablePrevNavButton = wrapAround || currentPage > 0;
-  const enableNextNavButton = wrapAround || currentPage < totalPages - 1;
+  const allowWrap = wrapMode !== 'nowrap';
+
+  const enablePrevNavButton = allowWrap || currentPage > 0;
+  const enableNextNavButton = allowWrap || currentPage < totalPages - 1;
 
   const prevNavClassName = cls(
     'inline-block px-4 py-2 bg-pink-800 cursor-pointer invisible',
