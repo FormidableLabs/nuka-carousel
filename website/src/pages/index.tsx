@@ -43,14 +43,14 @@ export default function Index() {
           {
             imgSrc: styleFeature,
             alt: 'logo alt',
-            title: 'Easy to Style Controls',
-            body: 'Straight forward API that allows you to zero in on the adaptations you want right away.',
+            title: 'Customizable Controls',
+            body: 'With a straight forward API that allows you to zero in on the adaptations you want right away, Nuka is flexible enough to fit almost any need or use case.',
           },
           {
             imgSrc: nativeFeature,
             alt: 'logo alt',
             title: 'Native Touch Support',
-            body: 'Nothing is worse than building a beautiful carousel and going to test it on mobile only to find that tapping does nothing! With Nuka, we baked in the mobile support to ensure accessibility for all users.',
+            body: "Nothing is worse than building a beautiful carousel only to discover it's not mobile friendly. With Nuka, we baked in the mobile device support to ensure accessibility for all your users.",
           },
         ]}
       />
