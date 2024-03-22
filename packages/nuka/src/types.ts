@@ -29,5 +29,5 @@ export type CarouselProps = CarouselCallbacks & {
 export type SlideHandle = {
   goForward: () => void;
   goBack: () => void;
-  goToIndex: (proposedIndex: number) => void;
+  goToPage: (proposedIndex: number) => void;
 };

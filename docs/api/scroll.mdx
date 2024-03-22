@@ -10,15 +10,9 @@ import TabItem from '@theme/TabItem';
 
 How far the carousel should move when its goForward() and goBack() methods are called.
 
-### API
-
 | Prop Name        | Type                            | Default Value |
 | :--------------- | :------------------------------ | :------------ |
 | `scrollDistance` | "screen" \| "slide" \| `number` | `screen`      |
-
-- `slide` - Using "slide" will advance the carousel one slide each time.
-- `number` - Using a number will cause the carousel to scroll that many pixels each time.
-- `screen` - Using "screen" will advance the carousel by the width of the visible carousel.
 
 ### Screen (default)
 
@@ -57,7 +51,7 @@ Scroll by the width of the "screen" or the container the carousel is in.
 
 ### Slide
 
-Default scroll by slide width. The scroll distance will automatically update on the widths of the slides so you can have multiple widths for each slide.
+Scroll by the width of each slide. Slides can be different widths and the carousel will scroll adjust the scroll distance internally when the container size is changed.
 
 <Carousel scrollDistance="slide" showDots>
   <div className="demo-slide bg-green-500" />

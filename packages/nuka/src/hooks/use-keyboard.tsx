@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import type { RefObject } from 'react';
 
-export default function useKeyboard<T extends HTMLElement>({
+export function useKeyboard<T extends HTMLElement>({
   element,
   enabled,
   goForward,

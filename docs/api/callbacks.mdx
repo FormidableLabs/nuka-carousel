@@ -24,12 +24,14 @@ Functions that are invoked when the progression methods (goBack()/goForward()) a
 
 ### Example
 
-This is a code usage example. Docusaurus will not run passed functions because the components are converted to static HTML at build time.
-
 ```tsx
-<Carousel beforeSlide={() => myCustomBeforeFunction()}>{/* Cards */}</Carousel>
+<Carousel beforeSlide={() => myCustomBeforeFunction()}>
+  {/* Cards */}
+</Carousel>
 ```
 
 ```tsx
-<Carousel afterSlide={() => myCustomAfterFunction()}>{/* Cards */}</Carousel>
+<Carousel afterSlide={() => myCustomAfterFunction()}>
+  {/* Cards */}
+</Carousel>
 ```

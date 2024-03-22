@@ -4,8 +4,8 @@ import { useInterval } from '../hooks/use-interval';
 import { usePaging } from '../hooks/use-paging';
 import { useDebounced } from '../hooks/use-debounced';
 import { useMeasurement } from '../hooks/use-measurement';
-import useHover from '../hooks/use-hover';
-import useKeyboard from '../hooks/use-keyboard';
+import { useHover } from '../hooks/use-hover';
+import { useKeyboard } from '../hooks/use-keyboard';
 import { useReducedMotion } from '../hooks/use-reduced-motion';
 import { CarouselProvider } from '../hooks/use-carousel';
 import { CarouselProps, SlideHandle } from '../types';
@@ -88,11 +88,11 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     });
 
     // -- forward events to ref
-    useImperativeHandle(
-      ref,
-      () => ({ goForward, goBack, goToIndex: goToPage }),
-      [goForward, goBack, goToPage],
-    );
+    useImperativeHandle(ref, () => ({ goForward, goBack, goToPage }), [
+      goForward,
+      goBack,
+      goToPage,
+    ]);
 
     // -- autoplay
     const isHovered = useHover({ element: containerRef, enabled: autoplay });

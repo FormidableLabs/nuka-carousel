@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { RefObject } from 'react';
 
-export default function useHover<T extends HTMLElement>({
+export function useHover<T extends HTMLElement>({
   element,
   enabled,
 }: {
