@@ -1,5 +1,6 @@
 import React from 'react';
 import { Carousel } from 'nuka-carousel';
+import { LandingDivider } from './landing/landing-divider';
 
 function DemoCard({ title, description, imageSrc, price }) {
   return (
@@ -33,7 +34,7 @@ function DemoCard({ title, description, imageSrc, price }) {
 export const CarouselDemo = () => (
   <div className="">
     <div className="flex flex-col text-left mx-16 lg:mx-32 xl:mx-64 my-auto py-12">
-      <div className="mt-8 h-1 bg-theme-1" />
+      <LandingDivider />
       <h2 className="my-8 text-4xl font-semibold">Carousel Demo</h2>
       <p className="text-lg max-w-prose">
         This carousel library is small but mighty! Here's this demo of product

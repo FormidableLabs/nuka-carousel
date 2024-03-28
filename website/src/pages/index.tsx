@@ -63,6 +63,7 @@ export default function Index() {
       />
       <LandingFeaturedProjects
         heading="Other Open Source from Nearform_Commerce"
+        showDivider
         projects={[
           {
             name: 'spectacle',
