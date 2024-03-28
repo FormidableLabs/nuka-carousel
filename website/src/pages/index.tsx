@@ -1,36 +1,13 @@
 import React from 'react';
 import Layout from '@theme/Layout';
-import { FeaturedBadge } from 'formidable-oss-badges';
-import { Carousel } from 'nuka-carousel';
-
-function DemoCard({ title, description, imageSrc, price }) {
-  return (
-    <div className="min-w-[300px] m-4 first:ml-0 last:mr-0 bg-white rounded-sm shadow-md">
-      <div className="relative">
-        <div className="absolute top-4 left-4 py-0.5 px-2 bg-gray-800 rounded-sm text-white">
-          ${price.toFixed(2)}
-        </div>
-        <img src={imageSrc} alt={title} className="bg-cover" />
-      </div>
-      <div className="flex flex-col">
-        <div className="text-gray-800 text-center text-xl uppercase font-semibold mt-4">
-          {title}
-        </div>
-        <div className="flex-1 p-4 text-gray-600 text-center">
-          {description}
-        </div>
-        <div className="flex justify-center mb-4">
-          <a
-            href="#"
-            className="inline-block bg-[#dd4add] mx-auto px-6 py-2 text-white hover:text-white rounded-sm"
-          >
-            Buy Now
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-}
+import { CarouselDemo } from '../components/carousel-demo';
+import { LandingBanner } from '../components/landing/landing-banner';
+import { LandingHero } from '../components/landing/landing-hero';
+import { LandingFeaturedProjects } from '../components/landing/landing-featured-projects';
+import { LandingFeatures } from '../components/landing/landing-features';
+import responsiveFeature from '../assets/images/responsive.png';
+import nativeFeature from '../assets/images/native-support.png';
+import styleFeature from '../assets/images/style.png';
 
 export default function Index() {
   return (
@@ -38,71 +15,83 @@ export default function Index() {
       title="Nuka Carousel"
       description="Small, fast, and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site."
     >
-      <div className="dark:bg-[#1b1b1d] bg-gray-200">
-        <div className="relative isolate overflow-hidden pt-14">
-          <div className="flex gap-16 mx-16 lg:mx-32 xl:mx-64 py-24">
-            <div>
-              <FeaturedBadge name="nuka" className="h-64 w-64" />
-            </div>
-            <div className="text-center">
-              <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-                Nuka Carousel
-              </h1>
-              <p className="mt-6 text-lg leading-8">
-                Small, fast, and accessibility-first React carousel library with
-                easily customizable UI and behavior to fit your brand and site.
-              </p>
-              <div className="mt-10 flex items-center justify-center gap-x-6">
-                <a
-                  href="#"
-                  className="rounded-md bg-[#dd4add] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#b13bb1] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b13bb1]"
-                >
-                  Get started
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <h2 className="my-8 text-4xl font-semibold text-center">
-            Feature Demo
-          </h2>
-        </div>
-        <div className="mx-16 my-8">
-          <Carousel showArrows showDots>
-            <DemoCard
-              title="Headphones"
-              description="Audio-Technica ATH-M50x Professional Studio Monitor Headphones"
-              imageSrc="/open-source/nuka-carousel/img/product-1.jpg"
-              price={45}
-            />
-            <DemoCard
-              title="Photography"
-              description="Vintage cameras and accessories for the modern photographer with a love of polaroids"
-              imageSrc="/open-source/nuka-carousel/img/product-3.jpg"
-              price={250}
-            />
-            <DemoCard
-              title="Watches"
-              description="High quality watches for the discerning customer available today at all locations"
-              imageSrc="/open-source/nuka-carousel/img/product-2.jpg"
-              price={90}
-            />
-            <DemoCard
-              title="Lotion"
-              description="Organic, natural, and cruelty-free lotions for the whole family. Just in time for holidays"
-              imageSrc="/open-source/nuka-carousel/img/product-4.jpg"
-              price={45}
-            />
-            <DemoCard
-              title="Body Care"
-              description="Our wonderful body care products take care of your skin and hair with all natural ingredients"
-              imageSrc="/open-source/nuka-carousel/img/product-5.jpg"
-              price={45}
-            />
-          </Carousel>
-        </div>
+      <div className="dark:bg-gray-500 bg-gray-200 dark:text-white text-theme-2">
+        <LandingHero
+          heading="Nuka Carousel"
+          body="Small, fast, and accessibility-first React carousel library with
+          easily customizable UI and behavior to fit your brand and site."
+          copyText="pnpm add nuka-carousel"
+          navItems={[
+            { link: '/docs', title: 'Documentation' },
+            { link: '#demo', title: 'Demo' },
+            {
+              link: 'https://github.com/FormidableLabs/nuka-carousel',
+              title: 'Github',
+            },
+          ]}
+        />
       </div>
+      <LandingFeatures
+        heading="Features"
+        list={[
+          {
+            imgSrc: responsiveFeature,
+            alt: 'logo alt',
+            title: 'Fully Responsive',
+            body: 'Nuka leans into responsive front-end practices from the foundation so it will scale with your user screens and devices. While Nuka is responsive out of the box, you can override it for your specific use cases.',
+          },
+          {
+            imgSrc: styleFeature,
+            alt: 'logo alt',
+            title: 'Customizable Controls',
+            body: 'With a straight forward API that allows you to zero in on the adaptations you want right away, Nuka is flexible enough to fit almost any need or use case.',
+          },
+          {
+            imgSrc: nativeFeature,
+            alt: 'logo alt',
+            title: 'Native Touch Support',
+            body: "Nothing is worse than building a beautiful carousel only to discover it's not mobile friendly. With Nuka, we baked in the mobile device support to ensure accessibility for all your users.",
+          },
+        ]}
+      />
+      <CarouselDemo />
+      <LandingBanner
+        showDivider
+        heading="Get Started"
+        body="Build a performative, fully accessible and customizable carousel today!"
+        cta={{ link: '/docs', text: 'Documentation' }}
+      />
+      <LandingFeaturedProjects
+        heading="Other Open Source from Nearform_Commerce"
+        showDivider
+        projects={[
+          {
+            name: 'spectacle',
+            link: 'https://commerce.nearform.com/open-source/spectacle',
+            description:
+              'A React.js based library for creating sleek presentations using JSX syntax with the ability to live demo your code!',
+          },
+          {
+            name: 'figlog',
+            link: 'https://github.com/FormidableLabs/FigLog',
+            description:
+              'FigLog is the easiest and most efficient way to document team decisions and the evolution of your changes in Figma.',
+            title: 'FigLog',
+          },
+          {
+            name: 'envy',
+            link: 'https://github.com/FormidableLabs/envy',
+            description:
+              'Envy will trace the network calls from every application in your stack and allow you to view them in a central place.',
+          },
+          {
+            name: 'victory',
+            link: 'https://commerce.nearform.com/open-source/victory/',
+            description:
+              'React.js components for modular charting and data visualization.',
+          },
+        ]}
+      />
     </Layout>
   );
 }

@@ -7,6 +7,39 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter/InterRegular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter/InterMedium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter/InterBold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+.hero-pattern {
+  background-image: url('../assets/images/hero-pattern.png');
+}
+
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #dd4add;
