@@ -22,7 +22,7 @@ export default function Index() {
           easily customizable UI and behavior to fit your brand and site."
           copyText="pnpm add nuka-carousel"
           navItems={[
-            { link: '/docs', title: 'Documentation' },
+            { link: '/open-source/nuka-carousel/docs', title: 'Documentation' },
             { link: '#demo', title: 'Demo' },
             {
               link: 'https://github.com/FormidableLabs/nuka-carousel',
@@ -59,7 +59,7 @@ export default function Index() {
         showDivider
         heading="Get Started"
         body="Build a performative, fully accessible and customizable carousel today!"
-        cta={{ link: '/docs', text: 'Documentation' }}
+        cta={{ link: '/open-source/nuka-carousel/docs', text: 'Documentation' }}
       />
       <LandingFeaturedProjects
         heading="Other Open Source from Nearform_Commerce"

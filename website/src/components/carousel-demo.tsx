@@ -32,13 +32,13 @@ function DemoCard({ title, description, imageSrc, price }) {
 }
 
 export const CarouselDemo = () => (
-  <div className="">
+  <div id="demo">
     <div className="flex flex-col text-left mx-16 lg:mx-32 xl:mx-64 my-auto py-12">
       <LandingDivider />
       <h2 className="my-8 text-4xl font-semibold">Carousel Demo</h2>
       <p className="text-lg max-w-prose">
-        This carousel library is small but mighty! Here's this demo of product
-        cards turned into a carousel with a few simple lines!
+        This carousel library is small but mighty! Here&apos;s this demo of
+        product cards turned into a carousel with a few simple lines!
       </p>
     </div>
     <div className="mx-16 lg:mx-32 xl:mx-64">
