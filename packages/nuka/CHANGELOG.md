@@ -1,5 +1,11 @@
 # Nuka Changelog
 
+## 8.0.0
+
+### Major Changes
+
+- Nuka v8 Release ([#1047](https://github.com/FormidableLabs/nuka-carousel/pull/1047))
+
 ## 7.0.0
 
 ### Major Changes
