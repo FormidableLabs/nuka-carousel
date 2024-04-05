@@ -1,0 +1,105 @@
+---
+sidebar_position: 4
+---
+
+import { Carousel } from 'nuka-carousel';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Scroll
+
+How far the carousel should move when its goForward() and goBack() methods are called.
+
+| Prop Name        | Type                            | Default Value |
+| :--------------- | :------------------------------ | :------------ |
+| `scrollDistance` | "screen" \| "slide" \| `number` | `screen`      |
+
+### Screen (default)
+
+Scroll by the width of the "screen" or the container the carousel is in.
+
+<Carousel scrollDistance="screen" showDots>
+  <div className="demo-slide bg-green-500" />
+  <div className="demo-slide bg-red-500" />
+  <div className="demo-slide bg-blue-500" />
+  <div className="demo-slide bg-yellow-500" />
+  <div className="demo-slide bg-gray-500" />
+  <div className="demo-slide bg-orange-500" />
+  <div className="demo-slide bg-blue-700" />
+  <div className="demo-slide bg-red-900" />
+  <div className="demo-slide bg-gray-800" />
+  <div className="demo-slide bg-green-500" />
+  <div className="demo-slide bg-red-500" />
+  <div className="demo-slide bg-blue-500" />
+  <div className="demo-slide bg-yellow-500" />
+  <div className="demo-slide bg-gray-500" />
+  <div className="demo-slide bg-orange-800" />
+  <div className="demo-slide bg-blue-200" />
+  <div className="demo-slide bg-red-900" />
+  <div className="demo-slide bg-gray-400" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel scrollDistance="screen" showDots>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+### Slide
+
+Scroll by the width of each slide. Slides can be different widths and the carousel will scroll adjust the scroll distance internally when the container size is changed.
+
+<Carousel scrollDistance="slide" showDots>
+  <div className="demo-slide bg-green-500" />
+  <div className="demo-slide bg-red-500" />
+  <div className="demo-slide bg-blue-500" />
+  <div className="demo-slide bg-yellow-500" />
+  <div className="demo-slide bg-gray-500" />
+  <div className="demo-slide bg-orange-500" />
+  <div className="demo-slide bg-blue-700" />
+  <div className="demo-slide bg-red-900" />
+  <div className="demo-slide bg-gray-800" />
+  <div className="demo-slide bg-green-500" />
+  <div className="demo-slide bg-red-500" />
+  <div className="demo-slide bg-blue-500" />
+  <div className="demo-slide bg-yellow-500" />
+  <div className="demo-slide bg-gray-500" />
+  <div className="demo-slide bg-orange-800" />
+  <div className="demo-slide bg-blue-200" />
+  <div className="demo-slide bg-red-900" />
+  <div className="demo-slide bg-gray-400" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel scrollDistance="slide" showDots>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+### Fixed Distance (number)
+
+Scroll by a fixed distance measured in px. This example scrolls by 100px.
+
+<Carousel scrollDistance={100} showDots>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel scrollDistance={100} showDots>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```

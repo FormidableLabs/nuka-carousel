@@ -1,0 +1,54 @@
+---
+sidebar_position: 3
+---
+
+import Link from '@docusaurus/Link';
+
+# v8 Upgrade Guide
+
+Nuka v8 was rewritten with simplicity and native support in mind. Many props have been removed or renamed to make the API easier to understand and use. This guide will help you upgrade your v7 carousel to v8.
+
+---
+
+## Changed Props
+
+- `afterSlide` - API signature changed from v7. See the <Link to="/docs/api/callbacks">callbacks</Link> for more information.
+- `beforeSlide` - API signature changed from v7. See the <Link to="/docs/api/callbacks">callbacks</Link> for more information.
+- `carouselId` - Use the `id` prop instead.
+- `disableAnimation` - See the <Link to="/docs/api">navigation</Link> docs for the `autoPlay` property.
+- `dragging` - Enabled by default, see the <Link to="/docs/api/swiping">swiping</Link> docs for the `swiping` property.
+- `enableKeyboardControls` - Enabled by default, see the <Link to="/docs/api/accessibility">accessibility</Link> docs for the `keyboard` property.
+- `frameAriaLabel` - Replaced by the `title` prop. See the <Link to="/docs/api/accessibility">accessibility</Link> docs.
+- `slidesToScroll` - Renamed to scrollDistance. See the <Link to="/docs/api/scroll">scrolling</Link> docs for more information.
+
+---
+
+## Removed Props
+
+The following props were removed becuase they are no longer valid or replaced by built in functionality. If there is any functionality lost, we may consider adding some of these back in the future.
+
+- `adaptiveHeight` - The carousel will adapt automatically to the height of the items in the carousel without the need of this prop.
+- `adaptiveHeightAnimation` - The carousel will adapt automatically to the height of the items in the carousel without the need of this prop.
+- `cellAlign` - Controlled through CSS. See the <Link to="/docs/api">style guide</Link>.
+- `cellSpacing` - Controlled through CSS. See the <Link to="/docs/api">style guide</Link>.
+- `defaultControlsConfig`- Replaced by various properties like `showArrows`, `showDots`, `arrows`, `dots`.
+- `disableEdgeSwiping`
+- `dragThreshold` - this defaults to the OS/browser settings.
+- `easing`
+- `edgeEasing`
+- `keyCodeConfig`
+- `landmark`
+- `onDragStart`
+- `onDrag`
+- `onDragEnd`
+- `onUserNavigation`
+- `pauseOnHover` - Enabled by default. See the <Link to="/docs/api/autoplay">autoplay</Link> docs.
+- `renderTop{direction}Controls`
+- `scrollMode` - Defaults to `remainder`.
+- `slideIndex`
+- `slidesToShow` - Now based on media queries and how large the slides are.
+- `speed` - Controlled by native browser settings.
+- `style` - See the <Link to="/docs/api">style guide</Link>.
+- `tabbed` - Enabled by default, see the <Link to="/docs/api/accessibility">accessibility</Link> docs
+- `withoutControls`- Replaced by various properties like `showArrows`, `showDots`, `arrows`, `dots`.
+- `zoomScale`

@@ -1,3 +1,3 @@
-export { Carousel as default } from './carousel';
+export * from './hooks/use-carousel';
+export * from './Carousel/Carousel';
 export * from './types';
-export { NextButton, PreviousButton, PagingDots } from './default-controls';

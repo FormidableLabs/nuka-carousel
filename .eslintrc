@@ -4,7 +4,6 @@
     "prettier",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
-    "plugin:cypress/recommended",
     "plugin:react/recommended"
   ],
   "env": {
@@ -45,6 +44,7 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
     "@typescript-eslint/no-unused-vars": ["error"],
-    "@typescript-eslint/no-var-requires": 0
+    "@typescript-eslint/no-var-requires": 0,
+    "react/react-in-jsx-scope": "off"
   }
 }

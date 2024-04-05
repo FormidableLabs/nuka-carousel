@@ -1,0 +1,78 @@
+---
+sidebar_position: 2
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { Carousel } from 'nuka-carousel';
+
+# Usage
+
+Nuka v8 and above are completely rewritten with new props and might not be completely backwards compatable with v7.
+
+
+## Installation
+
+In the directory containing package.json, run your package manager's install command:
+
+<Tabs>
+  <TabItem value="npm" label="npm" default>
+
+```bash
+npm install nuka-carousel
+```
+
+  </TabItem>
+  <TabItem value="yarn" label="Yarn">
+
+```bash
+yarn add nuka-carousel
+```
+
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add nuka-carousel
+```
+
+  </TabItem>
+</Tabs>
+
+:::info
+
+Nuka Carousel has a peer dependency on React 18.
+
+:::
+
+## Basic Usage
+
+```jsx
+import { Carousel } from 'nuka-carousel';
+
+const App = () => {
+  return (
+    <Carousel autoplay showDots>
+      <div>Slide 1</div>
+      <div>Slide 2</div>
+      <div>Slide 3</div>
+    </Carousel>
+  );
+};
+```
+
+Feel free to mix React components and HTML elements as children. Nuka Carousel will handle them all.
+
+```jsx
+<Carousel>
+  <div>Slide 1</div>
+  <img src="/img/image3.png" />
+  <MyCustomComponent />
+</Carousel>
+```
+
+<Carousel autoplay showDots>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>

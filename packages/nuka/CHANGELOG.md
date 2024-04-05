@@ -83,7 +83,7 @@
 
 ### Patch Changes
 
-- Fix autoplay timing so the interval is not extended occasionally when wrapAround=true ([#954](https://github.com/FormidableLabs/nuka-carousel/pull/954))
+- Fix autoplay timing so the interval is not extended occasionally when wrapMode=true ([#954](https://github.com/FormidableLabs/nuka-carousel/pull/954))
 
 * make the prev/next buttons jump to appropriate indices with cellAlign=center|right ([#952](https://github.com/FormidableLabs/nuka-carousel/pull/952))
 
@@ -183,7 +183,7 @@
 
 ## 4.7.1 (2020-09-08)
 
-- [#706](https://github.com/FormidableLabs/nuka-carousel/pull/706) Add a more descriptive explanation about wrapAround
+- [#706](https://github.com/FormidableLabs/nuka-carousel/pull/706) Add a more descriptive explanation about wrapMode
 - [#707](https://github.com/FormidableLabs/nuka-carousel/pull/707) Push fresh yarn.lock
 - [#716](https://github.com/FormidableLabs/nuka-carousel/pull/716) Update types for missing slideOffset, zoomScale
 - [#717](https://github.com/FormidableLabs/nuka-carousel/pull/717) fixes #709 - Carousel collapsing with certain prop config
@@ -204,7 +204,7 @@
 
 ## 4.6.6 (2020-03-10)
 
-- [#676](https://github.com/FormidableLabs/nuka-carousel/pull/676) hot-fix: flash after wraparound
+- [#676](https://github.com/FormidableLabs/nuka-carousel/pull/676) hot-fix: flash after wrapMode
 
 ## 4.6.5 (2020-03-05)
 
@@ -244,7 +244,7 @@
 
 - [#632](https://github.com/FormidableLabs/nuka-carousel/pull/632) Dependency vulnerability fixed, upgrade handlebars from 4.1.2 to 4.5.3
 - [#633](https://github.com/FormidableLabs/nuka-carousel/pull/633) Fixes #618 max (and first) height mode calculations
-- [#635](https://github.com/FormidableLabs/nuka-carousel/pull/635) Fixes #494 Updates scroll transition logic to fix wraparound flash
+- [#635](https://github.com/FormidableLabs/nuka-carousel/pull/635) Fixes #494 Updates scroll transition logic to fix wrapMode flash
 - [#636](https://github.com/FormidableLabs/nuka-carousel/pull/636) Fixes #503 updates logic so Next button enables/disables correctly
 - [#638](https://github.com/FormidableLabs/nuka-carousel/pull/638) Fixes #531 styling issue in Demo and some minor cleanup of the code
 
@@ -262,7 +262,7 @@
 ## 4.5.13 (2019-11-08)
 
 - [#592](https://github.com/FormidableLabs/nuka-carousel/pull/592) change componentWillReceiveProps to UNSAFE_componentWillReceiveProps
-- [#600](https://github.com/FormidableLabs/nuka-carousel/pull/600) Fix wraparound logic to account for cellAlign property
+- [#600](https://github.com/FormidableLabs/nuka-carousel/pull/600) Fix wrapMode logic to account for cellAlign property
 - [#601](https://github.com/FormidableLabs/nuka-carousel/pull/601) Change dot styling
 - [#608](https://github.com/FormidableLabs/nuka-carousel/pull/608) Fix dragging issue in Safari
 - [#609](https://github.com/FormidableLabs/nuka-carousel/pull/609) Prevent scroll when dragging on iOS
@@ -270,7 +270,7 @@
 ## 4.5.12 (2019-09-13)
 
 - [#582](https://github.com/FormidableLabs/nuka-carousel/pull/582) Another attempt to fix the height issue by changing the default prop value for height
-- [#584](https://github.com/FormidableLabs/nuka-carousel/pull/584) Fix multi-slide wraparound
+- [#584](https://github.com/FormidableLabs/nuka-carousel/pull/584) Fix multi-slide wrapMode
 - [#585](https://github.com/FormidableLabs/nuka-carousel/pull/585) Fix onDragStart, should only happen with dragging/swiping
 - [#588](https://github.com/FormidableLabs/nuka-carousel/pull/588) Impossible to select last images when swiping, this fixes that
 

@@ -1,0 +1,68 @@
+---
+sidebar_position: 80
+---
+
+import { BasicButtonDemo } from '../../website/src/components/basic-button-demo';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Methods
+
+Nuka Carousel has a few exposed methods that allow the user to control certain parts of the carousel manually. These methods are accessed via a ref attached to the carousel.
+
+```tsx title="MyComponent.tsx"
+import { useRef } from 'react';
+import Carousel, { SlideHandle } from 'nuka-carousel';
+
+const MyComponent = () => {
+  const ref = useRef<SlideHandle>(null);
+
+  return (
+    <div>
+      <Carousel ref={ref}>...</Carousel>
+    </div>
+  );
+};
+```
+
+---
+
+## Progression
+
+The carousel can be advanced forward and backwards based on the `scrollDistance` defined from the props.
+
+### `goForward()`
+
+Advances the carousel forward by the given `scrollDistance`.
+
+### `goBack()`
+
+Advances the carousel backward by the given `scrollDistance`.
+
+### `goToPage()`
+
+Advances the carousel to the specified page.
+
+### Usage/Examples
+
+<BasicButtonDemo autoplay={false} />
+
+#### Code
+
+```tsx title="MyComponent.tsx"
+import { useRef } from 'react';
+import Carousel, { SlideHandle } from 'nuka-carousel';
+
+const MyComponent = () => {
+  const ref = useRef<SlideHandle>(null);
+
+  return (
+    <div>
+      <Carousel ref={ref}>...</Carousel>
+
+      <button onClick={() => ref.current.goBack()}>goBack()</button>
+      <button onClick={() => ref.current.goForward()}>goForward()</button>
+    </div>
+  );
+};
+```

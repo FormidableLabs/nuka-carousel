@@ -1,0 +1,92 @@
+---
+sidebar_position: 2
+---
+
+import { Carousel } from 'nuka-carousel';
+
+# Navigation
+
+The carousel supports several navigation options, including arrows and dots.
+You can also control whether the carousel should wrap around when the first or last slide is active.
+
+| Prop Name          | Type     | Default Value |
+| :----------------- | :------- | :------------ |
+| `showArrows`       | boolean \| "always" \| "hover" | `false`       |
+| `showDots`         | boolean  | `false`       |
+| `wrapMode`       | `nowrap` \| `wrap`  | `nowrap`        |
+
+### Navigation Arrows
+
+When set to `true` or `always`, the arrows will always be visible. When set to `hover`, the arrows will be visible only when the mouse is over the carousel.
+
+<Carousel showArrows>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel showArrows>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+### Navigation Arrows (hover)
+
+<Carousel showArrows="hover">
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel showArrows>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+### Wrapping
+
+If you set `wrapMode` to `wrap`, the carousel will wrap around when it reaches the end of the slide set. This means that if you are on the last slide and you click next, it will go to the first slide.
+
+<Carousel showArrows wrapMode="wrap">
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel showArrows wrapMode="wrap">
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+### Navigation Dots
+
+<Carousel showDots>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel showDots>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
