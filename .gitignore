@@ -37,6 +37,7 @@ dist
 types
 yarn-error.log*
 package-lock.json
+coverage
 
 cypress/screenshots
 cypress/videos

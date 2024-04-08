@@ -17,7 +17,7 @@
     "preversion": "pnpm run check",
     "test": "pnpm run test:unit",
     "test:ci": "pnpm run test:unit:ci",
-    "test:unit": "jest --testPathIgnorePatterns=\\(/es /lib\\)",
+    "test:unit": "jest",
     "test:unit:ci": "pnpm run test:unit",
     "test:unit:watch": "pnpm run test:unit --watchAll",
     "test:storybook": "test-storybook",
