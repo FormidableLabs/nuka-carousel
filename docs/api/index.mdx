@@ -10,7 +10,6 @@ import { Carousel } from 'nuka-carousel';
 
 Nuka v8 and above are completely rewritten with new props and might not be completely backwards compatable with v7.
 
-
 ## Installation
 
 In the directory containing package.json, run your package manager's install command:
@@ -76,3 +75,75 @@ Feel free to mix React components and HTML elements as children. Nuka Carousel w
   <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
   <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
 </Carousel>
+
+:::caution
+
+Nuka Carousel uses a flex container for its magic
+
+:::
+
+In order for Nuka to measure your slides, they must have a width that can be calculated.
+
+### Images
+
+If you're using images, Nuka will correctly calculate the width and height of the image after it has loaded.
+
+#### Default
+
+```jsx
+<Carousel showDots>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+#### Recommended
+
+However, it's recommended to set the width and height of the image in the HTML to prevent layout shifts. This is best practice for all images on the web and some frameworks such as `Next/image` require it.
+
+```jsx
+<Carousel showDots>
+  <img src="pexels-01.jpg" width={300} height={100} />
+  <img src="pexels-02.jpg" width={300} height={100} />
+  <img src="pexels-03.jpg" width={300} height={100} />
+</Carousel>
+```
+
+### HTML Block Elements
+
+When using HTML block elements, such as `div`, you must set the min width in the HTML.
+
+```jsx
+.demo-slide {
+  min-width: 300px;
+  min-height: 100px;
+}
+
+<Carousel showDots>
+  <div className="demo-slide bg-green-500" />
+  <div className="demo-slide bg-red-500" />
+  <div className="demo-slide bg-blue-500" />
+</Carousel>
+```
+
+### Custom React components
+
+Nuka supports all custom React components. Just make sure to set the width in the component.
+
+```jsx
+function CarouselImage() {
+  return (
+    <div className="min-w-[400px]">
+      <Image src={image} alt="image" />
+      <div className="">Title</div>
+    </div>
+  );
+}
+
+<Carousel showDots>
+  <CarouselImage />
+  <CarouselImage />
+  <CarouselImage />
+</Carousel>
+```
