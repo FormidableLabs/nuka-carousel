@@ -22,6 +22,78 @@ describe('useMeasurement', () => {
     expect(scrollOffset).toEqual([]);
   });
 
+  it('should return default values if offsetWidth is 0', () => {
+    const element = {
+      current: {
+        scrollWidth: 0,
+        offsetWidth: 0,
+        querySelector: () => ({
+          children: [],
+        }),
+      },
+    } as any;
+
+    const { result } = renderHook(() =>
+      useMeasurement({
+        element,
+        scrollDistance: 'screen',
+      }),
+    );
+
+    const { totalPages, scrollOffset } = result.current;
+
+    expect(totalPages).toBe(0);
+    expect(scrollOffset).toEqual([]);
+  });
+
+  it('should return default values if scrollDistance is 0', () => {
+    const element = {
+      current: {
+        scrollWidth: 1000,
+        offsetWidth: 500,
+        querySelector: () => ({
+          children: [],
+        }),
+      },
+    } as any;
+
+    const { result } = renderHook(() =>
+      useMeasurement({
+        element,
+        scrollDistance: 0,
+      }),
+    );
+
+    const { totalPages, scrollOffset } = result.current;
+
+    expect(totalPages).toBe(0);
+    expect(scrollOffset).toEqual([]);
+  });
+
+  it('should return default values if scrollDistance is < 0', () => {
+    const element = {
+      current: {
+        scrollWidth: 1000,
+        offsetWidth: 500,
+        querySelector: () => ({
+          children: [],
+        }),
+      },
+    } as any;
+
+    const { result } = renderHook(() =>
+      useMeasurement({
+        element,
+        scrollDistance: -1,
+      }),
+    );
+
+    const { totalPages, scrollOffset } = result.current;
+
+    expect(totalPages).toBe(0);
+    expect(scrollOffset).toEqual([]);
+  });
+
   it('should return measurements for screen', () => {
     const element = {
       current: {
