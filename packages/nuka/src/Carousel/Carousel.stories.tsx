@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
-import { Carousel, CarouselProps, SlideHandle } from './Carousel';
+import { Carousel } from './Carousel';
 import {
   ExampleSlide,
   FocusableLinkSlide,
@@ -9,6 +9,7 @@ import {
 } from './ExampleSlide';
 
 import './CarouselStories.css';
+import { CarouselProps, SlideHandle } from '../types';
 
 const StorybookComponent = (props: CarouselProps) => {
   const ref = useRef<SlideHandle>(null);
@@ -115,11 +116,6 @@ export const PageIndicators: Story = {
   args: {
     scrollDistance: 'screen',
     showDots: true,
-    pageIndicatorProps: {
-      currentPageIndicatorClassName: 'indicator__current',
-      pageIndicatorClassName: 'indicator',
-      containerClassName: 'indicator-container',
-    },
     children: (
       <>
         {[...Array(10)].map((_, index) => (
@@ -142,30 +138,26 @@ export const FocusableCards: Story = {
   },
 };
 
-const CustomGoToIndexRenderComponent = (props: CarouselProps) => {
+const CustomGoToPageRenderComponent = (props: CarouselProps) => {
   const ref = useRef<SlideHandle>(null);
-  const [randomInRangeIndex, setRandomInRangeIndex] = useState(
-    Math.floor(Math.random() * 7),
-  );
   return (
     <div>
       <button
         onClick={() => {
           if (ref.current) {
-            ref.current.goToIndex(randomInRangeIndex);
-            setRandomInRangeIndex(Math.floor(Math.random() * 7));
+            ref.current.goToPage(2);
           }
         }}
       >
-        Go to Random Index {randomInRangeIndex}
+        Go to Page 2
       </button>
       <Carousel ref={ref} {...props} />
     </div>
   );
 };
 
-export const GoToIndex: Story = {
-  render: CustomGoToIndexRenderComponent,
+export const GoToPage: Story = {
+  render: CustomGoToPageRenderComponent,
   args: {
     children: (
       <>
