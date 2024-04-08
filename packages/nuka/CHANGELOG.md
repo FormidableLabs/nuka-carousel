@@ -1,5 +1,13 @@
 # Nuka Changelog
 
+## 8.0.1
+
+### Patch Changes
+
+- Fix screen measurement when scrollWidth is a float ([#1055](https://github.com/FormidableLabs/nuka-carousel/pull/1055))
+
+* Prevent divide by zero errors in measurements ([#1058](https://github.com/FormidableLabs/nuka-carousel/pull/1058))
+
 ## 8.0.0
 
 ### Major Changes
