@@ -27,7 +27,7 @@ export function useMeasurement({ element, scrollDistance }: MeasurementProps) {
 
     switch (scrollDistance) {
       case 'screen': {
-        const pageCount = Math.ceil(scrollWidth / visibleWidth);
+        const pageCount = Math.round(scrollWidth / visibleWidth);
 
         setTotalPages(pageCount);
         setScrollOffset(arraySeq(pageCount, visibleWidth));
@@ -56,7 +56,7 @@ export function useMeasurement({ element, scrollDistance }: MeasurementProps) {
       }
       default: {
         if (typeof scrollDistance === 'number') {
-          // find the number of pages required to scroll the all slides
+          // find the number of pages required to scroll all the slides
           // to the end of the container
           const pageCount = Math.ceil(remainder / scrollDistance) + 1;
 
