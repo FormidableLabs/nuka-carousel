@@ -3,7 +3,14 @@ import { useState } from 'react';
 import { CarouselProps } from '../types';
 
 type UsePagingReturnType = {
+  /**
+   * The current page index, within the bounds of totalPages.
+   */
   currentPage: number;
+  /**
+   * The current page index, which may be outside the bounds of totalPages in infinite mode.
+   */
+  virtualPage: number;
   goToPage: (idx: number) => void;
   goForward: () => void;
   goBack: () => void;
@@ -18,28 +25,40 @@ export function usePaging({
   totalPages,
   wrapMode,
 }: PagingProps): UsePagingReturnType {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [index, setIndex] = useState(0);
 
   const goToPage = (idx: number) => {
-    if (idx < 0 || idx >= totalPages) return;
-    setCurrentPage(idx);
+    if (wrapMode !== 'infinite') {
+      if (idx < 0 || idx >= totalPages) return;
+    }
+    setIndex(idx);
   };
 
   const goForward = () => {
     if (wrapMode === 'wrap') {
-      setCurrentPage((prev) => (prev + 1) % totalPages);
+      setIndex((prev) => (prev + 1) % totalPages);
+    } else if (wrapMode === 'infinite') {
+      setIndex((prev) => prev + 1);
     } else {
-      setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
+      setIndex((prev) => Math.min(prev + 1, totalPages - 1));
     }
   };
 
   const goBack = () => {
     if (wrapMode === 'wrap') {
-      setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+      setIndex((prev) => (prev - 1 + totalPages) % totalPages);
+    } else if (wrapMode === 'infinite') {
+      setIndex((prev) => prev - 1);
     } else {
-      setCurrentPage((prev) => Math.max(prev - 1, 0));
+      setIndex((prev) => Math.max(prev - 1, 0));
     }
   };
 
-  return { currentPage, goToPage, goForward, goBack };
+  return {
+    currentPage: totalPages > 0 ? index % totalPages : index,
+    virtualPage: index,
+    goToPage,
+    goForward,
+    goBack,
+  };
 }

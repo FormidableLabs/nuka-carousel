@@ -3,12 +3,20 @@ import { useEffect, useState } from 'react';
 import { arraySeq, arraySum } from '../utils';
 import { useResizeObserver } from './use-resize-observer';
 
+type MeasurementReturnType = {
+  totalPages: number;
+  scrollOffset: number[];
+};
+
 type MeasurementProps = {
   element: React.RefObject<HTMLDivElement>;
   scrollDistance: number | 'slide' | 'screen';
 };
 
-export function useMeasurement({ element, scrollDistance }: MeasurementProps) {
+export function useMeasurement({
+  element,
+  scrollDistance,
+}: MeasurementProps): MeasurementReturnType {
   const [totalPages, setTotalPages] = useState(0);
   const [scrollOffset, setScrollOffset] = useState(arraySeq(totalPages, 0));
   const dimensions = useResizeObserver(element);

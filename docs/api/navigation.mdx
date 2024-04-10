@@ -55,7 +55,7 @@ When set to `true` or `always`, the arrows will always be visible. When set to `
 
 ### Wrapping
 
-If you set `wrapMode` to `wrap`, the carousel will wrap around when it reaches the end of the slide set. This means that if you are on the last slide and you click next, it will go to the first slide.
+If you set `wrapMode` to `wrap`, the carousel will wrap around when it reaches the end of the slide set. This means that if you are on the last slide and you click next, it will scroll back to the first slide.
 
 <Carousel showArrows wrapMode="wrap">
   <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
@@ -67,6 +67,26 @@ If you set `wrapMode` to `wrap`, the carousel will wrap around when it reaches t
 
 ```tsx
 <Carousel showArrows wrapMode="wrap">
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+### Wrapping (infinite)
+
+If you set `wrapMode` to `infinite`, the carousel will insert the next slide in an infinite loop when it reaches the end of the slide set.
+
+<Carousel showArrows wrapMode="infinite">
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel showArrows wrapMode="infinite">
   <img src="pexels-01.jpg" />
   <img src="pexels-02.jpg" />
   <img src="pexels-03.jpg" />
