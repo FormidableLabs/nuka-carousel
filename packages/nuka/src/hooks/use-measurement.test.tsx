@@ -121,7 +121,7 @@ describe('useMeasurement', () => {
     const { totalPages, scrollOffset } = result.current;
 
     expect(totalPages).toBe(2);
-    expect(scrollOffset).toEqual([0, 500]);
+    expect(scrollOffset).toEqual([0, 400]);
   });
 
   it('should return measurements for screen with fractional pixels', () => {
@@ -150,8 +150,36 @@ describe('useMeasurement', () => {
 
     const { totalPages, scrollOffset } = result.current;
 
-    expect(totalPages).toBe(3);
-    expect(scrollOffset).toEqual([0, 573, 1146]);
+    expect(totalPages).toBe(4);
+    // 573 * 0, 573 * 1, 573 * 2, 573 * 3 + (1720 - 573 * 3)
+    expect(scrollOffset).toEqual([0, 573, 1146, 1147]);
+  });
+
+  it('should return measurements for screen with less than half offset', () => {
+    const element = {
+      current: {
+        // this test covers that even when the leftover width is less than
+        // half of the screen width, it should still be scrollable so that user can see
+        // the small overflow
+        scrollWidth: 600,
+        offsetWidth: 500,
+        querySelector: () => ({
+          children: [{ offsetWidth: 200 }, { offsetWidth: 400 }],
+        }),
+      },
+    } as any;
+
+    const { result } = renderHook(() =>
+      useMeasurement({
+        element,
+        scrollDistance: 'screen',
+      }),
+    );
+
+    const { totalPages, scrollOffset } = result.current;
+
+    expect(totalPages).toBe(2);
+    expect(scrollOffset).toEqual([0, 100]);
   });
 
   it('should return measurements for slide distance', () => {
