@@ -171,8 +171,12 @@ export const GoToPage: Story = {
 
 export const BeforeSlide: Story = {
   args: {
-    beforeSlide: () =>
-      console.log('Function was called before scroll occurred '),
+    beforeSlide: (currentSlideIndex, endSlideIndex) =>
+      console.log(
+        'Function was called before scroll occurred ',
+        currentSlideIndex,
+        endSlideIndex,
+      ),
     children: (
       <>
         {[...Array(10)].map((_, index) => (
@@ -185,7 +189,8 @@ export const BeforeSlide: Story = {
 
 export const AfterSlide: Story = {
   args: {
-    afterSlide: () => console.log('Function was called after scroll occurred '),
+    afterSlide: (endSlideIndex) =>
+      console.log('Function was called after scroll occurred ', endSlideIndex),
     children: (
       <>
         {[...Array(10)].map((_, index) => (

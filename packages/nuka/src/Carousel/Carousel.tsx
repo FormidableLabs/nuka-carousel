@@ -54,6 +54,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
 
     const carouselRef = useRef<HTMLDivElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
+    const previousPageRef = useRef<number>(-1);
 
     // -- update page count and scroll offset based on scroll distance
     const { totalPages, scrollOffset } = useMeasurement({
@@ -103,9 +104,12 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     // -- scroll container when page index changes
     useEffect(() => {
       if (containerRef.current) {
-        beforeSlide && beforeSlide();
+        const currentSlideIndex = previousPageRef.current;
+        const endSlideIndex = currentPage;
+        beforeSlide && beforeSlide(currentSlideIndex, endSlideIndex);
         containerRef.current.scrollLeft = scrollOffset[currentPage];
-        afterSlide && setTimeout(() => afterSlide(), 0);
+        afterSlide && setTimeout(() => afterSlide(endSlideIndex), 0);
+        previousPageRef.current = currentPage;
       }
     }, [currentPage, scrollOffset, beforeSlide, afterSlide]);
 
