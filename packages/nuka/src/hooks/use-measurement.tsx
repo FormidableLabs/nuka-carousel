@@ -29,17 +29,10 @@ export function useMeasurement({ element, scrollDistance }: MeasurementProps) {
 
     switch (scrollDistance) {
       case 'screen': {
-        const pageCount = Math.ceil(scrollWidth / visibleWidth);
-        // For every page of the visibleWidth, we should scroll by the amount of the width
-        const fullScrollOffsets = arraySeq(pageCount - 1, visibleWidth);
-        // For the last page, we should only scroll by the leftover amount
-        const leftoverLastPage = scrollWidth % visibleWidth;
+        const pageCount = Math.round(scrollWidth / visibleWidth);
 
         setTotalPages(pageCount);
-        setScrollOffset([
-          ...fullScrollOffsets,
-          fullScrollOffsets[fullScrollOffsets.length - 1] + leftoverLastPage,
-        ]);
+        setScrollOffset(arraySeq(pageCount, visibleWidth));
         break;
       }
       case 'slide': {
