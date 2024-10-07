@@ -12,9 +12,10 @@ By default the carousel will allow you to drag the carousel to the next slide. Y
 
 | Prop Name  | Type      | Default Value |
 | :--------- | :-------- | :------------ |
+| `minSwipeDistance`  | `number` | 10        |
 | `swiping`  | `boolean` | `true`        |
 
-### Enabled (default)
+### Enabled with `scrollDistance="slide"`
 
 <Carousel scrollDistance="slide" showDots>
   <div className="demo-slide bg-green-500" />
@@ -33,6 +34,31 @@ By default the carousel will allow you to drag the carousel to the next slide. Y
 
 ```tsx
 <Carousel scrollDistance="slide" showDots>
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+### Enabled with `scrollDistance="screen"`
+
+<Carousel scrollDistance="screen" showDots>
+  <div className="demo-slide bg-green-500" />
+  <div className="demo-slide bg-red-500" />
+  <div className="demo-slide bg-blue-500" />
+  <div className="demo-slide bg-yellow-500" />
+  <div className="demo-slide bg-gray-500" />
+  <div className="demo-slide bg-orange-500" />
+  <div className="demo-slide bg-blue-700" />
+  <div className="demo-slide bg-red-900" />
+  <div className="demo-slide bg-gray-800" />
+  <div className="demo-slide bg-green-500" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel scrollDistance="screen" showDots>
   <img src="pexels-01.jpg" />
   <img src="pexels-02.jpg" />
   <img src="pexels-03.jpg" />
