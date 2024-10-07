@@ -1,5 +1,15 @@
 # Nuka Changelog
 
+## 8.1.0
+
+### Minor Changes
+
+- feat: provide page info on beforeSlide and afterSlide callbacks ([#1070](https://github.com/FormidableLabs/nuka-carousel/pull/1070))
+
+### Patch Changes
+
+- fix carousel missing last page if it is less than half of the container width in scrollDistance screen ([#1064](https://github.com/FormidableLabs/nuka-carousel/pull/1064))
+
 ## 8.0.1
 
 ### Patch Changes
