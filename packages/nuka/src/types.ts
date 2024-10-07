@@ -4,8 +4,8 @@ export type ShowArrowsOption = boolean | 'always' | 'hover';
 export type ScrollDistanceType = number | 'slide' | 'screen';
 
 export type CarouselCallbacks = {
-  beforeSlide?: () => void;
-  afterSlide?: () => void;
+  beforeSlide?: (currentSlideIndex: number, endSlideIndex: number) => void;
+  afterSlide?: (endSlideIndex: number) => void;
 };
 
 export type CarouselProps = CarouselCallbacks & {
