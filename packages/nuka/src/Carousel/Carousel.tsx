@@ -181,7 +181,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
               onTouchStart={onTouchStart}
               id="nuka-overflow"
               data-testid="nuka-overflow"
-              style={{ touchAction: 'none' }}
+              style={{ touchAction: 'pan-y' }}
             >
               <div
                 className="nuka-wrapper"
