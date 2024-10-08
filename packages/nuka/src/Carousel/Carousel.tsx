@@ -1,15 +1,22 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import {
+  MouseEvent,
+  TouchEvent,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 
 import { useInterval } from '../hooks/use-interval';
 import { usePaging } from '../hooks/use-paging';
-import { useDebounced } from '../hooks/use-debounced';
 import { useMeasurement } from '../hooks/use-measurement';
 import { useHover } from '../hooks/use-hover';
 import { useKeyboard } from '../hooks/use-keyboard';
 import { useReducedMotion } from '../hooks/use-reduced-motion';
 import { CarouselProvider } from '../hooks/use-carousel';
 import { CarouselProps, SlideHandle } from '../types';
-import { cls, nint } from '../utils';
+import { cls, isMouseEvent } from '../utils';
 import { NavButtons } from './NavButtons';
 import { PageIndicators } from './PageIndicators';
 
@@ -22,6 +29,7 @@ const defaults = {
   dots: <PageIndicators />,
   id: 'nuka-carousel',
   keyboard: true,
+  minSwipeDistance: 50,
   scrollDistance: 'screen',
   showArrows: false,
   showDots: false,
@@ -44,6 +52,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       dots,
       id,
       keyboard,
+      minSwipeDistance,
       scrollDistance,
       showArrows,
       showDots,
@@ -69,16 +78,36 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     });
 
     // -- handle touch scroll events
-    const onContainerScroll = useDebounced(() => {
-      if (!containerRef.current) return;
+    const [touchStart, setTouchStart] = useState<null | number>(null);
+    const [touchEnd, setTouchEnd] = useState<null | number>(null);
 
-      // find the closest page index based on the scroll position
-      const scrollLeft = containerRef.current.scrollLeft;
-      const closestPageIndex = scrollOffset.indexOf(
-        nint(scrollOffset, scrollLeft),
-      );
-      goToPage(closestPageIndex);
-    }, 100);
+    const onTouchStart = (e: MouseEvent | TouchEvent) => {
+      if (!swiping) return;
+      setTouchEnd(null);
+      setTouchStart(isMouseEvent(e) ? e.clientX : e.targetTouches[0].clientX);
+    };
+
+    const onTouchMove = (e: MouseEvent | TouchEvent) => {
+      if (!swiping) return;
+      setTouchEnd(isMouseEvent(e) ? e.clientX : e.targetTouches[0].clientX);
+    };
+
+    const onTouchEnd = () => {
+      if (!swiping) return;
+      if (!containerRef.current) return;
+      if (!touchStart || !touchEnd) return;
+
+      const distance = touchStart - touchEnd;
+      const isLeftSwipe = distance > minSwipeDistance;
+      const isRightSwipe = distance < -minSwipeDistance;
+      if (isLeftSwipe || isRightSwipe) {
+        if (isLeftSwipe) {
+          goForward();
+        } else {
+          goBack();
+        }
+      }
+    };
 
     // -- keyboard nav
     useKeyboard({
@@ -147,10 +176,12 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
             <div
               className="nuka-overflow"
               ref={containerRef}
-              onTouchMove={onContainerScroll}
+              onTouchEnd={onTouchEnd}
+              onTouchMove={onTouchMove}
+              onTouchStart={onTouchStart}
               id="nuka-overflow"
               data-testid="nuka-overflow"
-              style={{ touchAction: swiping ? 'pan-x' : 'none' }}
+              style={{ touchAction: 'pan-y' }}
             >
               <div
                 className="nuka-wrapper"

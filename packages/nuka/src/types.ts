@@ -18,6 +18,7 @@ export type CarouselProps = CarouselCallbacks & {
   dots?: ReactNode;
   id?: string;
   keyboard?: boolean;
+  minSwipeDistance?: number;
   scrollDistance?: ScrollDistanceType;
   showArrows?: ShowArrowsOption;
   showDots?: boolean;
