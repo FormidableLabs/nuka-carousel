@@ -1,5 +1,11 @@
 # Nuka Changelog
 
+## 8.1.1
+
+### Patch Changes
+
+- Improve the stability of swiping ([#1077](https://github.com/FormidableLabs/nuka-carousel/pull/1077))
+
 ## 8.1.0
 
 ### Minor Changes
