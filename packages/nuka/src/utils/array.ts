@@ -17,13 +17,3 @@ export function arraySum(values: number[]): number[] {
   let sum = 0;
   return values.map((value) => (sum += value));
 }
-
-/**
- * Finds the nearest number in an array to a target number
- * @returns A number
- */
-export function nint(array: number[], target: number): number {
-  return array.reduce((prev, curr) =>
-    Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev,
-  );
-}

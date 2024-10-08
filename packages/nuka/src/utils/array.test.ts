@@ -1,4 +1,4 @@
-import { arraySeq, arraySum, nint } from '.';
+import { arraySeq, arraySum } from '.';
 
 describe('utils', () => {
   describe('arraySeq', () => {
@@ -12,13 +12,6 @@ describe('utils', () => {
     it('should return a compounded array', () => {
       const result = arraySum([0, 1, 2, 3, 4]);
       expect(result).toEqual([0, 1, 3, 6, 10]);
-    });
-  });
-
-  describe('nint', () => {
-    it('should return the closest number in an array to a target', () => {
-      const result = nint([0, 1, 2, 3, 4], 2.6);
-      expect(result).toEqual(3);
     });
   });
 });
