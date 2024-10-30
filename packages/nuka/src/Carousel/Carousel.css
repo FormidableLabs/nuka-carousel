@@ -40,6 +40,10 @@
   border-radius: 9999px;
   font-size: 1rem;
   user-select: none;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .nuka-nav-button.nuka-nav-button-prev {
   left: 0;
@@ -51,9 +55,6 @@
 }
 .nuka-nav-button:hover {
   background-color: rgba(146, 148, 151, 0.65);
-}
-.nuka-nav-button-enabled {
-  display: block;
 }
 .nuka-container-auto-hide .nuka-nav-button {
   display: none;
