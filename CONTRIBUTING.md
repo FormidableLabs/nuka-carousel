@@ -17,13 +17,13 @@ $ pnpm run build
 
 ## Running the demos
 
-Run the NextJS example on `localhost:3000`
+Run docosaurus site on `localhost:3000`
 
 ```sh
-$ pnpm run start:nextjs
+$ pnpm run start:website
 ```
 
-To make changes to the Nuka Carousel library and have those changes reflect in the NextJS demo app also run
+To make changes to the Nuka Carousel library and have those changes reflect in the Docosaurus demo app also run
 
 ```sh
 $ pnpm run build:watch

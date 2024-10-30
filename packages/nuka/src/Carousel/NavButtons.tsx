@@ -24,7 +24,12 @@ export function NavButtons() {
 
   return (
     <>
-      <div className={prevNavClassName} onClick={goBack}>
+      <button
+        type="button"
+        className={prevNavClassName}
+        onClick={goBack}
+        aria-label="Go to previous slide"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
@@ -36,8 +41,13 @@ export function NavButtons() {
             clipRule="evenodd"
           />
         </svg>
-      </div>
-      <div className={nextNavClassName} onClick={goForward}>
+      </button>
+      <button
+        type="button"
+        className={nextNavClassName}
+        onClick={goForward}
+        aria-label="Go to next slide"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
@@ -49,7 +59,7 @@ export function NavButtons() {
             clipRule="evenodd"
           />
         </svg>
-      </div>
+      </button>
     </>
   );
 }
