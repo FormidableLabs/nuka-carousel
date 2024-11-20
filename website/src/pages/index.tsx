@@ -64,33 +64,6 @@ export default function Index() {
       <LandingFeaturedProjects
         heading="Other Open Source from Nearform_Commerce"
         showDivider
-        projects={[
-          {
-            name: 'spectacle',
-            link: 'https://commerce.nearform.com/open-source/spectacle',
-            description:
-              'A React.js based library for creating sleek presentations using JSX syntax with the ability to live demo your code!',
-          },
-          {
-            name: 'figlog',
-            link: 'https://github.com/FormidableLabs/FigLog',
-            description:
-              'FigLog is the easiest and most efficient way to document team decisions and the evolution of your changes in Figma.',
-            title: 'FigLog',
-          },
-          {
-            name: 'envy',
-            link: 'https://github.com/FormidableLabs/envy',
-            description:
-              'Envy will trace the network calls from every application in your stack and allow you to view them in a central place.',
-          },
-          {
-            name: 'victory',
-            link: 'https://commerce.nearform.com/open-source/victory/',
-            description:
-              'React.js components for modular charting and data visualization.',
-          },
-        ]}
       />
     </Layout>
   );
