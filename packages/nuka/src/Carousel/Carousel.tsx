@@ -190,8 +190,8 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
               >
                 {children}
               </div>
+              {showArrows && <div className="nuka-arrows">{arrows}</div>}
             </div>
-            {showArrows && arrows}
           </div>
         </div>
         {showDots && dots}
