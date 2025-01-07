@@ -4,11 +4,14 @@
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/okaidia');
 
+const title = 'Nuka Carousel';
+const tagline =
+  'Small, fast, and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site.';
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Nuka Carousel',
-  tagline:
-    'Small, fast, and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site.',
+  title,
+  tagline,
   url: 'https://commerce.nearform.com',
   baseUrl: '/open-source/nuka-carousel',
   onBrokenLinks: 'throw',
@@ -92,6 +95,58 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      metadata: [
+        {
+          name: 'title',
+          content: title,
+        },
+        {
+          name: 'description',
+          content: tagline,
+        },
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1, maximum-scale=1',
+        },
+        {
+          property: 'og:type',
+          content: 'website',
+        },
+        {
+          property: 'og:url',
+          content: 'https://commerce.nearform.com/open-source/nuka-carousel/',
+        },
+        {
+          property: 'og:title',
+          content: title,
+        },
+        {
+          property: 'og:description',
+          content: tagline,
+        },
+        {
+          property: 'og:image',
+          content:
+            'https://commerce.nearform.com/open-source/nuka-carousel/open-graph.png',
+        },
+        {
+          property: 'twitter:card',
+          content: 'summary_large_image',
+        },
+        {
+          property: 'twitter:title',
+          content: title,
+        },
+        {
+          property: 'twitter:description',
+          content: tagline,
+        },
+        {
+          property: 'twitter:image',
+          content:
+            'https://commerce.nearform.com/open-source/nuka-carousel/open-graph.png',
+        },
+      ],
     }),
 };
 
