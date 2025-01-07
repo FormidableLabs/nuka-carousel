@@ -11,7 +11,7 @@ You can also control whether the carousel should wrap around when the first or l
 
 | Prop Name          | Type     | Default Value |
 | :----------------- | :------- | :------------ |
-| `showArrows`       | boolean \| "always" \| "hover" | `false`       |
+| `showArrows`       | boolean \| `always` \| `hover` | `false`       |
 | `showDots`         | boolean  | `false`       |
 | `wrapMode`       | `nowrap` \| `wrap`  | `nowrap`        |
 
@@ -46,7 +46,7 @@ When set to `true` or `always`, the arrows will always be visible. When set to `
 #### Code
 
 ```tsx
-<Carousel showArrows>
+<Carousel showArrows="hover">
   <img src="pexels-01.jpg" />
   <img src="pexels-02.jpg" />
   <img src="pexels-03.jpg" />
