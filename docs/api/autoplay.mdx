@@ -14,7 +14,7 @@ For accessibility, the carousel will pause when the user is interacting with it.
 | `autoplay`         | boolean | `false`       |
 | `autoplayInterval` | number  | `3000`        |
 
-### Example
+#### Example
 
 <Carousel autoplay={true} autoplayInterval={1000} wrapMode="wrap">
   <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
@@ -26,6 +26,29 @@ For accessibility, the carousel will pause when the user is interacting with it.
 
 ```tsx
 <Carousel autoplay={true} autoplayInterval={1000}  wrapMode="wrap">
+  <img src="pexels-01.jpg" />
+  <img src="pexels-02.jpg" />
+  <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+### Navigation Arrows
+
+| Prop Name          | Type    | Default Value |
+| :----------------- | :------ | :------------ |
+| `autoplay`         | boolean | `false`       |
+| `showArrows`       | boolean \| `always` \| `hover` | `false`       |
+
+<Carousel autoplay={true} autoplayInterval={2000} wrapMode="wrap" showArrows={true}>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel autoplay={true} showArrows={true}>
   <img src="pexels-01.jpg" />
   <img src="pexels-02.jpg" />
   <img src="pexels-03.jpg" />
