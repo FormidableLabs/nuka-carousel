@@ -12,13 +12,19 @@ type UsePagingReturnType = {
 type PagingProps = {
   totalPages: number;
   wrapMode: CarouselProps['wrapMode'];
+  initialPage?: number;
 };
 
 export function usePaging({
   totalPages,
   wrapMode,
+  initialPage,
 }: PagingProps): UsePagingReturnType {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(
+    initialPage && initialPage >= 0 && initialPage < totalPages
+      ? initialPage
+      : 0,
+  );
 
   const goToPage = (idx: number) => {
     if (idx < 0 || idx >= totalPages) return;

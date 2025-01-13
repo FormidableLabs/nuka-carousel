@@ -59,6 +59,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       swiping,
       title,
       wrapMode,
+      initialPage,
     } = options;
 
     const carouselRef = useRef<HTMLDivElement | null>(null);
@@ -75,6 +76,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     const { currentPage, goBack, goForward, goToPage } = usePaging({
       totalPages,
       wrapMode,
+      initialPage
     });
 
     // -- handle touch scroll events

@@ -169,6 +169,20 @@ export const GoToPage: Story = {
   },
 };
 
+export const InitialSlide: Story = {
+  args: {
+    initialPage: 2,
+    scrollDistance: 'slide',
+    children: (
+      <>
+        {[...Array(10)].map((_, index) => (
+          <ExampleSlide key={index} index={index} />
+        ))}
+      </>
+    ),
+  },
+};
+
 export const BeforeSlide: Story = {
   args: {
     beforeSlide: (currentSlideIndex, endSlideIndex) =>
