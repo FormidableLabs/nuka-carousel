@@ -76,7 +76,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     const { currentPage, goBack, goForward, goToPage } = usePaging({
       totalPages,
       wrapMode,
-      initialPage
+      initialPage,
     });
 
     // -- handle touch scroll events

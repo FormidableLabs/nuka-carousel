@@ -25,9 +25,35 @@ For accessibility, the carousel will pause when the user is interacting with it.
 #### Code
 
 ```tsx
-<Carousel autoplay={true} autoplayInterval={1000}  wrapMode="wrap">
+<Carousel autoplay={true} autoplayInterval={1000} wrapMode="wrap">
   <img src="pexels-01.jpg" />
   <img src="pexels-02.jpg" />
   <img src="pexels-03.jpg" />
+</Carousel>
+```
+
+## Initial page
+
+The carousel can start on any index within bounds of its length. Anything out of bounds will default back to `0` for its index. This list is `0` indexed.
+
+| Prop Name     | Type   | Default Value |
+| :------------ | :----- | :------------ |
+| `initialPage` | number | `0`           |
+
+### Example
+
+<Carousel initialPage={1}>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
+</Carousel>
+
+#### Code
+
+```tsx
+<Carousel initialPage={1}>
+  <img src="/open-source/nuka-carousel/img/pexels-01.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-02.jpg" />
+  <img src="/open-source/nuka-carousel/img/pexels-03.jpg" />
 </Carousel>
 ```
