@@ -169,7 +169,7 @@ export const GoToPage: Story = {
   },
 };
 
-export const InitialSlide: Story = {
+export const InitialPage: Story = {
   args: {
     initialPage: 2,
     scrollDistance: 'slide',
