@@ -109,9 +109,16 @@ describe('usePaging', () => {
     expect(result.current.currentPage).toBe(2);
   });
 
-  it('should start at index 0 if initial page is out of bounds', () => {
+  it('should start at in bound indices if initial page is out of bounds', () => {
     const { result } = renderHook(() =>
       usePaging({ totalPages: 5, wrapMode: 'wrap', initialPage: 200 }),
+    );
+    expect(result.current.currentPage).toBe(5);
+  });
+
+  it('should start at 0 indices if initial page is out of bounds', () => {
+    const { result } = renderHook(() =>
+      usePaging({ totalPages: 5, wrapMode: 'wrap', initialPage: -2 }),
     );
     expect(result.current.currentPage).toBe(0);
   });
