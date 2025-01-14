@@ -64,6 +64,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     const carouselRef = useRef<HTMLDivElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const previousPageRef = useRef<number>(-1);
+    const arrowsContainerRef = useRef<HTMLDivElement | null>(null);
 
     // -- update page count and scroll offset based on scroll distance
     const { totalPages, scrollOffset } = useMeasurement({
@@ -126,8 +127,13 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
 
     // -- autoplay
     const isHovered = useHover({ element: containerRef, enabled: autoplay });
+    const isArrowHovered = useHover({
+      element: arrowsContainerRef,
+      enabled: autoplay && showArrows === true,
+    });
     const prefersReducedMotion = useReducedMotion({ enabled: autoplay });
-    const autoplayEnabled = autoplay && !(isHovered || prefersReducedMotion);
+    const autoplayEnabled =
+      autoplay && !(isHovered || prefersReducedMotion || isArrowHovered);
     useInterval(goForward, autoplayInterval, autoplayEnabled);
 
     // -- scroll container when page index changes
@@ -191,7 +197,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
                 {children}
               </div>
             </div>
-            {showArrows && arrows}
+            {showArrows && <div ref={arrowsContainerRef}>{arrows}</div>}
           </div>
         </div>
         {showDots && dots}
