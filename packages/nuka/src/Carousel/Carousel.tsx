@@ -79,6 +79,16 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       initialPage,
     });
 
+    // -- remove initial smooth scroll when given initialPage prop
+    const [currentReachedInitialPage, setCurrentReachedInitialPage] =
+      useState(!initialPage);
+
+    useEffect(() => {
+      if (!currentReachedInitialPage && initialPage !== undefined) {
+        setCurrentReachedInitialPage(initialPage === currentPage);
+      }
+    }, [initialPage, currentPage, currentReachedInitialPage]);
+
     // -- handle touch scroll events
     const [touchStart, setTouchStart] = useState<null | number>(null);
     const [touchEnd, setTouchEnd] = useState<null | number>(null);
@@ -176,7 +186,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
           )}
           <div className="nuka-slide-container">
             <div
-              className="nuka-overflow"
+              className={`nuka-overflow ${currentReachedInitialPage ? 'scroll-smooth' : 'scroll-auto'}`}
               ref={containerRef}
               onTouchEnd={onTouchEnd}
               onTouchMove={onTouchMove}
