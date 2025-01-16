@@ -25,6 +25,7 @@ export type CarouselProps = CarouselCallbacks & {
   swiping?: boolean;
   title?: string;
   wrapMode?: 'nowrap' | 'wrap';
+  initialPage?: number;
 };
 
 export type SlideHandle = {

@@ -59,6 +59,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
       swiping,
       title,
       wrapMode,
+      initialPage,
     } = options;
 
     const carouselRef = useRef<HTMLDivElement | null>(null);
@@ -76,6 +77,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     const { currentPage, goBack, goForward, goToPage } = usePaging({
       totalPages,
       wrapMode,
+      initialPage,
     });
 
     // -- handle touch scroll events
@@ -145,8 +147,12 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
         containerRef.current.scrollLeft = scrollOffset[currentPage];
         afterSlide && setTimeout(() => afterSlide(endSlideIndex), 0);
         previousPageRef.current = currentPage;
+        if (initialPage === undefined || currentPage === initialPage) {
+          containerRef.current.classList.remove('scroll-auto');
+          containerRef.current.classList.add('scroll-smooth');
+        }
       }
-    }, [currentPage, scrollOffset, beforeSlide, afterSlide]);
+    }, [currentPage, scrollOffset, beforeSlide, afterSlide, initialPage]);
 
     const containerClassName = cls(
       'nuka-container',

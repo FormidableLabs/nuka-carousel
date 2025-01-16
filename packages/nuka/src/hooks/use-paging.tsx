@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { CarouselProps } from '../types';
 
@@ -12,13 +12,21 @@ type UsePagingReturnType = {
 type PagingProps = {
   totalPages: number;
   wrapMode: CarouselProps['wrapMode'];
+  initialPage?: number;
 };
 
 export function usePaging({
   totalPages,
   wrapMode,
+  initialPage,
 }: PagingProps): UsePagingReturnType {
   const [currentPage, setCurrentPage] = useState(0);
+
+  useEffect(() => {
+    if (initialPage) {
+      setCurrentPage(Math.max(0, Math.min(initialPage, totalPages)));
+    }
+  }, [initialPage, totalPages]);
 
   const goToPage = (idx: number) => {
     if (idx < 0 || idx >= totalPages) return;

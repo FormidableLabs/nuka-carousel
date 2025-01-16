@@ -78,11 +78,11 @@ Feel free to mix React components and HTML elements as children. Nuka Carousel w
 
 :::caution
 
-Nuka Carousel uses a flex container for its magic
-
-:::
+### Nuka Carousel uses a flex container to hold its contents.
 
 In order for Nuka to measure your slides, they must have a width that can be calculated.
+
+:::
 
 ### Images
 
@@ -113,6 +113,12 @@ However, it's recommended to set the width and height of the image in the HTML t
 ### HTML Block Elements
 
 When using HTML block elements, such as `div`, you must set the min width in the HTML.
+
+:::info
+
+Most of the examples use <a href="https://tailwindcss.com/" target="_blank">Tailwind</a> classes for styling
+
+:::
 
 ```jsx
 .demo-slide {
@@ -145,5 +151,5 @@ function CarouselImage() {
   <CarouselImage />
   <CarouselImage />
   <CarouselImage />
-</Carousel>
+</Carousel>;
 ```
