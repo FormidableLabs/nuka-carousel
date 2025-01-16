@@ -146,7 +146,7 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
           containerRef.current.classList.add('scroll-smooth');
         }
       }
-    }, [currentPage, scrollOffset, beforeSlide, afterSlide]);
+    }, [currentPage, scrollOffset, beforeSlide, afterSlide, initialPage]);
 
     const containerClassName = cls(
       'nuka-container',
