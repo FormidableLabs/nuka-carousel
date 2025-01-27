@@ -214,3 +214,16 @@ export const AfterSlide: Story = {
     ),
   },
 };
+
+export const WithArrows: Story = {
+  args: {
+    showArrows: true,
+    children: (
+      <>
+        {[...Array(10)].map((_, index) => (
+          <ExampleSlide key={index} index={index} />
+        ))}
+      </>
+    ),
+  },
+};
