@@ -1,5 +1,11 @@
 # Nuka Changelog
 
+## 8.2.0
+
+### Minor Changes
+
+- Support initial index for slides ([`4908a05c9dc655362d2df5e0fcb0f558d9f57dc9`](https://github.com/FormidableLabs/nuka-carousel/commit/4908a05c9dc655362d2df5e0fcb0f558d9f57dc9))
+
 ## 8.1.1
 
 ### Patch Changes
