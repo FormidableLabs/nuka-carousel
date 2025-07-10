@@ -11,8 +11,22 @@ Small, fast and accessibility-first React carousel library with easily customiza
 
 To add `nuka-carousel` to your project run the following command in your project folder.
 
+#### Yarn
+
 ```bash
 $ yarn add nuka-carousel
+```
+
+#### NPM
+
+```bash
+$ npm install nuka-carousel
+```
+
+#### PNPM
+
+```bash
+$ pnpm add nuka-carousel
 ```
 
 Come learn more and see a live demo at our [docs site](https://commerce.nearform.com/open-source/nuka-carousel)!
