@@ -214,3 +214,41 @@ export const AfterSlide: Story = {
     ),
   },
 };
+
+const RTLRenderComponent = (props: CarouselProps) => {
+  const ref = useRef<SlideHandle>(null);
+  return (
+    <div dir="rtl">
+      <button
+        onClick={() => {
+          if (ref.current) ref.current.goBack();
+        }}
+      >
+        previous
+      </button>
+      <button
+        onClick={() => {
+          if (ref.current) ref.current.goForward();
+        }}
+      >
+        next
+      </button>
+      <Carousel ref={ref} {...props} />
+    </div>
+  );
+};
+
+export const RTL: Story = {
+  render: RTLRenderComponent,
+  args: {
+    scrollDistance: 'slide',
+    showDots: true,
+    children: (
+      <>
+        {[...Array(10)].map((_, index) => (
+          <ExampleSlide key={index} index={index} />
+        ))}
+      </>
+    ),
+  },
+};

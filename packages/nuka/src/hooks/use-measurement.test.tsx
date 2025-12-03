@@ -3,6 +3,7 @@ import { renderHook } from '@testing-library/react';
 
 import { useMeasurement } from './use-measurement';
 import * as hooks from './use-resize-observer';
+import * as browser from '../utils/browser';
 
 const domElement = {} as any;
 jest.spyOn(hooks, 'useResizeObserver').mockImplementation(() => domElement);
@@ -208,5 +209,66 @@ describe('useMeasurement', () => {
 
     expect(totalPages).toBe(3);
     expect(scrollOffset).toEqual([0, 200, 400]);
+  });
+
+  describe('RTL support', () => {
+    let isRTLSpy: jest.SpyInstance;
+
+    const mockElement = {
+      current: {
+        scrollWidth: 900,
+        offsetWidth: 500,
+        querySelector: () => ({
+          children: [
+            { offsetWidth: 200 },
+            { offsetWidth: 300 },
+            { offsetWidth: 400 },
+          ],
+        }),
+      },
+    } as any;
+
+    beforeEach(() => {
+      isRTLSpy = jest.spyOn(browser, 'isRTL');
+    });
+
+    afterEach(() => {
+      isRTLSpy.mockRestore();
+    });
+
+    it.each([
+      ['screen', 2, [0, -500]],
+      ['slide', 3, [0, -200, -500]],
+      [200, 3, [0, -200, -400]],
+    ])(
+      'should return negative scroll offsets for %s mode in RTL',
+      (scrollDistance, expectedPages, expectedOffsets) => {
+        isRTLSpy.mockReturnValue(true);
+
+        const { result } = renderHook(() =>
+          useMeasurement({
+            element: mockElement,
+            scrollDistance: scrollDistance as any,
+          }),
+        );
+
+        expect(result.current.totalPages).toBe(expectedPages);
+        expect(result.current.scrollOffset).toEqual(expectedOffsets);
+      },
+    );
+
+    it('should return positive scroll offsets in LTR mode', () => {
+      isRTLSpy.mockReturnValue(false);
+
+      const { result } = renderHook(() =>
+        useMeasurement({
+          element: mockElement,
+          scrollDistance: 'screen',
+        }),
+      );
+
+      expect(result.current.totalPages).toBe(2);
+      expect(result.current.scrollOffset).toEqual([0, 500]);
+    });
   });
 });
