@@ -61,10 +61,7 @@ export default function Index() {
         body="Build a performative, fully accessible and customizable carousel today!"
         cta={{ link: '/open-source/nuka-carousel/docs', text: 'Documentation' }}
       />
-      <LandingFeaturedProjects
-        heading="Other Open Source from Nearform"
-        showDivider
-      />
+      <LandingFeaturedProjects heading="Other Open Source" showDivider />
     </Layout>
   );
 }

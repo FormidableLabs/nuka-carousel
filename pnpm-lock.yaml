@@ -54,7 +54,7 @@ importers:
         specifier: ^7.3.1
         version: 7.18.0(eslint@8.57.1)(typescript@5.6.3)
       eslint:
-        specifier: ^8.57.0
+        specifier: ^8.57.1
         version: 8.57.1
       eslint-config-prettier:
         specifier: ^9.1.0
@@ -197,6 +197,9 @@ importers:
       clsx:
         specifier: ^1.2.1
         version: 1.2.1
+      formidable-oss-badges:
+        specifier: ^1.7.2
+        version: 1.7.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       nuka-carousel:
         specifier: '*'
         version: 8.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -231,9 +234,6 @@ importers:
       autoprefixer:
         specifier: ^10.4.14
         version: 10.4.20(postcss@8.4.49)
-      formidable-oss-badges:
-        specifier: ^1.6.0
-        version: 1.6.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       postcss:
         specifier: ^8.4.21
         version: 8.4.49
@@ -5672,8 +5672,8 @@ packages:
     resolution: {integrity: sha512-wzsgA6WOq+09wrU1tsJ09udeR/YZRaeArL9e1wPbFg3GG2yDnC2ldKpxs4xunpFF9DgqCqOIra3bc1HWrJ37Ww==}
     engines: {node: '>=0.4.x'}
 
-  formidable-oss-badges@1.6.0:
-    resolution: {integrity: sha512-fwicV8ccKiNR1ZYv/syVXQDjXMUE+4O4W34aOSZuwxPGMv+Iq2VzVgrSBZevII62yY7urJOra8sSb3Pss7r+CQ==}
+  formidable-oss-badges@1.7.2:
+    resolution: {integrity: sha512-qlsQbEC/FGLnGH/wfeIyvnVHz3QLvBzMkNQj/orU9sI9Otu3zb5n0KeaA6Bv74jaj4/ivoewZ9TBnKm/j2nGYw==}
     engines: {node: '>= 0.12.0', npm: '>= 2.0.0'}
     peerDependencies:
       react: '>= 18.0.0'
@@ -18292,7 +18292,7 @@ snapshots:
 
   format@0.2.2: {}
 
-  formidable-oss-badges@1.6.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  formidable-oss-badges@1.7.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
