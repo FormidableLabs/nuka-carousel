@@ -1,5 +1,5 @@
 import React from 'react';
-import { FeaturedBadge } from 'formidable-oss-badges';
+import { NukaBadge } from 'formidable-oss-badges';
 
 export const LandingHero = ({
   body,
@@ -17,7 +17,7 @@ export const LandingHero = ({
       <div className="py-12 lg:py-24 mx-16 lg:mx-32 xl:mx-64 relative">
         <div className="flex-col md:flex-row flex justify-between gap-16 lg:gap-24 mx-auto">
           <div className="self-center md:self-left">
-            <FeaturedBadge name="nuka" className="h-[320px] w-[320px]" />
+            <NukaBadge className="h-[320px] w-[320px]" />
           </div>
           <div className="text-left lg:w-6/12 text-white">
             <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
@@ -26,7 +26,7 @@ export const LandingHero = ({
             <p className="mt-6 text-lg leading-8">{body}</p>
             <div className="mt-10 flex flex-wrap flex-col xl:flex-row xl:items-center justify-start gap-6">
               <button
-                className="overflow-hidden grid-rows-2 md:grid-rows-1 lg:max-w-fit grid lg:grid-cols-6 align-center rounded-md shadow-sm border-none bg-white my-0 py-0 px-0 text-sm font-semibold text-theme-2 hover:text-theme-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-1"
+                className="overflow-hidden grid-rows-2 md:grid-rows-1 lg:max-w-fit grid lg:grid-cols-6 rounded-md shadow-sm border-none bg-white my-0 py-0 px-0 text-sm font-semibold text-theme-2 hover:text-theme-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-1"
                 onClick={() => navigator.clipboard.writeText(copyText)}
               >
                 <code className="max-w-fit py-2.5 pl-3.5 content-center grid-span-12 lg:col-span-4 border-0 bg-white">
