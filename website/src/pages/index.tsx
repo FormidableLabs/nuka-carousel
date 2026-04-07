@@ -62,7 +62,7 @@ export default function Index() {
         cta={{ link: '/open-source/nuka-carousel/docs', text: 'Documentation' }}
       />
       <LandingFeaturedProjects
-        heading="Other Open Source from Nearform_Commerce"
+        heading="Other Open Source from Nearform"
         showDivider
       />
     </Layout>
