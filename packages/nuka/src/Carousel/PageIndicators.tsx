@@ -18,7 +18,7 @@ export const PageIndicators = () => {
           onClick={() => goToPage(index)}
           className={className(index)}
         >
-          <span className="nuka-hidden">{index + 1}</span>
+          <span className="nuka-hidden">Slide {index + 1}</span>
         </button>
       ))}
     </div>
