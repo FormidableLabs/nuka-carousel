@@ -121,11 +121,11 @@ export const Carousel = forwardRef<SlideHandle, CarouselProps>(
     });
 
     // -- forward events to ref
-    useImperativeHandle(ref, () => ({ goForward, goBack, goToPage }), [
-      goForward,
-      goBack,
-      goToPage,
-    ]);
+    useImperativeHandle(
+      ref,
+      () => ({ goForward, goBack, goToPage, totalPages, currentPage }),
+      [goForward, goBack, goToPage, totalPages, currentPage],
+    );
 
     // -- autoplay
     const isHovered = useHover({ element: containerRef, enabled: autoplay });
