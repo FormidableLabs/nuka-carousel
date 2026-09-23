@@ -32,4 +32,6 @@ export type SlideHandle = {
   goForward: () => void;
   goBack: () => void;
   goToPage: (proposedIndex: number) => void;
+  totalPages: number;
+  currentPage: number;
 };
